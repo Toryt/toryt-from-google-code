@@ -189,6 +189,9 @@ public abstract class MethodTest implements Test {
         getMethodContract().validateInertiaAxiom(this);
         validateMore();
       }
+      catch (InvocationTargetException e) {
+        getMethodContract().validateExceptionCondition(this, e.getCause());
+      }
       catch (IllegalArgumentException e) {
         System.out.println(this);
         System.out.println(e);
@@ -203,11 +206,6 @@ public abstract class MethodTest implements Test {
         System.out.println(this);
         System.out.println(e);
         throw new TorytException(getMethodContract(), e);
-      }
-      catch (InvocationTargetException e) {
-        System.out.println(this);
-        System.out.println(e);
-        getMethodContract().validateExceptionCondition(this, e.getCause());
       }
       catch (Throwable e) {
         System.out.println(this);
