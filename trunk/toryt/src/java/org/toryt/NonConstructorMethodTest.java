@@ -49,13 +49,23 @@ public class NonConstructorMethodTest extends MethodTest {
 
 
   
-  protected final Object methodCall()
+  /**
+   * Call the method of the contract with reflection.
+   * The result (if there is one) is stored in the context map with
+   * key {@link #RESULT_KEY}.
+   * 
+   * @throws IllegalAccessException
+   * @throws IllegalArgumentException
+   * @throws InvocationTargetException
+   */
+  protected final void methodCall()
       throws IllegalAccessException,
              IllegalArgumentException,
              InvocationTargetException {
-    return getNonConstructorMethodContract().getMethod()
+    Object result = getNonConstructorMethodContract().getMethod()
               .invoke(getContext().get(MethodContract.SUBJECT_KEY),
                       getActualParameters());
+    getContext().put(RESULT_KEY, result);
   }
   
   protected final void validateMore() {

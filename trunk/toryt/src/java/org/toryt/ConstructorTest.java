@@ -50,21 +50,22 @@ public class ConstructorTest extends MethodTest {
   
   /**
    * Call the method of the contract with reflection.
+   * The new instance is stored in the context map with
+   * key {@link MethodContract#SUBJECT_KEY}.
    * 
-   * @return The result of the method; <code>null</code> for
-   *          <code>void</code> method.
    * @throws InstantiationException
    * @throws IllegalAccessException
    * @throws IllegalArgumentException
    * @throws InvocationTargetException
    */
-  protected final Object methodCall()
+  protected final void methodCall()
       throws InstantiationException,
              IllegalAccessException,
              IllegalArgumentException,
              InvocationTargetException {
-    return getConstructorContract().getConstructor()
+    Object instance = getConstructorContract().getConstructor()
               .newInstance(getActualParameters());
+    getContext().put(MethodContract.SUBJECT_KEY, instance);
   }
   
 

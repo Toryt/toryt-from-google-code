@@ -183,8 +183,7 @@ public abstract class MethodTest implements Test {
     if (getMethodContract().validatePreconditions(this)) {
       try {
         getMethodContract().recordState(this);
-        Object result = methodCall(); 
-        getContext().put(RESULT_KEY, result);
+        methodCall(); 
         getMethodContract().validatePostConditions(this);
         getMethodContract().validateInertiaAxiom(this);
         validateMore();
@@ -217,16 +216,15 @@ public abstract class MethodTest implements Test {
   }
 
   /**
-   * Call the method of the contract with reflection.
+   * Call the method of the contract with reflection and store
+   * the result (if there is one) in the context map.
    * 
-   * @return The result of the method; <code>null</code> for
-   *          <code>void</code> method.
    * @throws InstantiationException
    * @throws IllegalAccessException
    * @throws IllegalArgumentException
    * @throws InvocationTargetException
    */
-  protected abstract Object methodCall()
+  protected abstract void methodCall()
       throws InstantiationException,
              IllegalAccessException,
              IllegalArgumentException,
