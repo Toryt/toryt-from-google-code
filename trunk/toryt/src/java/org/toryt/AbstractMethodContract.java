@@ -1,16 +1,15 @@
 package org.toryt;
 
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
-import org.toryt.support.straightlist.ListWrapperStraightList;
 import org.toryt.support.straightlist.StraightList;
 
 
@@ -52,16 +51,27 @@ public abstract class AbstractMethodContract extends AbstractContract
    */
   private TypeContract $typeContract;
   
+  /**
+   * If {@link #getTestCases()} is empty, there are no method tests.
+   * THIS DOES NOT WORK FOR DEFAULT CONSTRUCTOR OR SOME NO_ARGS STATIC METHODS
+   * INSTANCE METHODS ALWAYS HAVE AT LEAST 1 ARGUMENT (SUBJECT) THAT WILL
+   * BE FOUND IN TESTCASES
+   */
   public final StraightList getMethodTests() throws TorytException {
     // MUDO this order must become priority order
     // MUDO this must become a list of method test factories
-    return new LazyMappingStraightList(getTestCases(),
-          new LazyMappingStraightList.Mapping() {
-                public Object map(Object o) {
-                  Map testCaseMap = (Map)o;
-                  return createMethodTest(testCaseMap);
-                }
-              });
+    StraightList testCases = getTestCases();
+    if (getTestCases().isEmpty()) {
+      // create an empty map, 1 test case, to use as factory for 1 method test
+      testCases = new ArrayStraightList(new Map[] {new HashMap()});
+    }
+    return new LazyMappingStraightList(testCases,
+                                       new LazyMappingStraightList.Mapping() {
+                                             public Object map(Object o) {
+                                               Map testCaseMap = (Map)o;
+                                               return createMethodTest(testCaseMap);
+                                             }
+                                           });
   }
   
   public String[] getFormalParameters() {
