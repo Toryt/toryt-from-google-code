@@ -104,14 +104,16 @@ public class _Contract_Node extends ClassContract {
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
             Node subject = (Node)context.get(SUBJECT_KEY); 
-            Group oldGroup = (Group)context.get("getGroup()@pre"); 
-            return oldGroup != null ? ! oldGroup.getNodes().values().contains(subject) : true;
+            Group oldGroup = (Group)context.get("getGroup()"); 
+            Group oldGroupATpost = (Group)context.get("getGroup()@post"); 
+            return oldGroup != null ? ! oldGroupATpost.getNodes().values().contains(subject) : true;
           }});
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
             Node subject = (Node)context.get(SUBJECT_KEY); 
             Group group = (Group)context.get("group");
-            return group != null ? group.getNodes().values().contains(subject) : true;
+            Group groupATpost = (Group)context.get("group@post");
+            return group != null ? groupATpost.getNodes().values().contains(subject) : true;
           }});
       }
 
@@ -134,8 +136,10 @@ public class _Contract_Node extends ClassContract {
       
       public void recordState(MethodTest test) {
         Map state = test.getContext();
-        Node subject = (Node)state.get(SUBJECT_KEY); 
-        state.put("getGroup()@pre",subject.getGroup());
+        Node subject = (Node)state.get(SUBJECT_KEY);
+        state.put("group@post", state.get("group"));
+        state.put("getGroup()", subject.getGroup());
+        state.put("getGroup()@post", subject.getGroup());
       }
       
     });

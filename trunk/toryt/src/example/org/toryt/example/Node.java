@@ -166,8 +166,8 @@ public abstract class Node implements java.io.Serializable {
   /**
    * @post new.getGroup() == group;
    * @post (getGroup() != null)
-   *        ==> ! (new getGroup()).getNodes().values().contains(this);
-   * @post (group != null) ==> (new group).getNodes().values().contains(this);
+   *        ==> ! getGroup()@post.getNodes().values().contains(this);
+   * @post (group != null) ==> group@post.getNodes().values().contains(this);
    */
   public void setGroup(Group group) {
     if ($group != null) {

@@ -40,7 +40,7 @@ public interface MethodContract extends Contract {
    */
   TypeContract getTypeContract();
   
-  public final static String SUBJECT_KEY = "SUBJECT";
+  public final static String SUBJECT_KEY = "this@post";
   
   public abstract List getTestCases() throws TorytException;
   
