@@ -29,7 +29,9 @@ public final class EmptyStraightList extends AbstractAllValidStraightList {
 
   /*</section>*/
 
-
+ 
+  
+  public final static EmptyStraightList INSTANCE =  new EmptyStraightList();
   
   public final boolean contains(Object o) {
     return false;
