@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -136,20 +138,8 @@ public abstract class MethodTest implements Test {
   //------------------------------------------------------------------
 
   public boolean isSuccessful() {
-    return $nrOfErrors == 0;
+    return hasRun() && getFailedConditions().isEmpty();
   }
-
-  /**
-   * This method is called by contract conditions to assert
-   * the conditions.
-   */
-  public final void validate(boolean assertion) {
-    if (! assertion) {
-      $nrOfErrors++;
-    }
-  }
-  
-  private int $nrOfErrors = 0;
 
   /*</property>*/
 
@@ -232,10 +222,27 @@ public abstract class MethodTest implements Test {
     Iterator iter = conditionSet.iterator();
     while (iter.hasNext()) {
       Condition c = (Condition)iter.next();
-      validate(c.validate(getContext()));
+      if (c.validate(getContext())) {
+        $passedConditions.add(c);
+      }
+      else {
+        $failedConditions.add(c);
+      }
     }
   }
 
+  public Set getPassedConditions() {
+    return Collections.unmodifiableSet($passedConditions);
+  }
+  
+  private Set $passedConditions = new HashSet();
+  
+  public Set getFailedConditions() {
+    return Collections.unmodifiableSet($failedConditions);
+  }
+  
+  private Set $failedConditions = new HashSet();
+  
   /**
    * Call the method of the contract with reflection and store
    * the result (if there is one) in the context map.
@@ -257,6 +264,10 @@ public abstract class MethodTest implements Test {
                 + getMethodContract().getMember().toString());
     out.println(repeat("-", PAGE_WIDTH));
     reportContext(out);
+    out.println("Passed Conditions:");
+    reportConditions(getPassedConditions(), out);
+    out.println("Failed Conditions:");
+    reportConditions(getFailedConditions(), out);
   }
 
   private final static int PAGE_WIDTH = 80; 
@@ -286,6 +297,13 @@ public abstract class MethodTest implements Test {
                       : new Rtsb(e.getValue(), ToStringStyle.DEFAULT_STYLE).toString()));
     }
   }
+  
+  private void reportConditions(Set conditions, PrintStream out) {
+    Iterator iter = conditions.iterator();
+    while (iter.hasNext()) {
+      out.println(repeat(" ", 2) + iter.next());
+    }
+  }
 
   /**
    * Do NOT skip fields that contain a "$".
@@ -304,7 +322,8 @@ public abstract class MethodTest implements Test {
   }
 
   public final String toString() {
-    return "test for " + getMethodContract().getMember();
+    return "test for " + getMethodContract().getMember()
+           + "(" + (hasRun() ? "ran" : "not run") + ")";
   }
 
 }
