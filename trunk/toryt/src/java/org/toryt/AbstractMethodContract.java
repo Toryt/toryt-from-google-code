@@ -15,7 +15,7 @@ import org.toryt.support.straightlist.StraightList;
 
 /**
  * Implementation of most methods of {@link MethodContract}.
- * 
+ *
  * @author Jan Dockx
  */
 public abstract class AbstractMethodContract extends AbstractContract
@@ -32,7 +32,7 @@ public abstract class AbstractMethodContract extends AbstractContract
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
-  
+
 
   /**
    * @pre typeContract != null;
@@ -41,7 +41,7 @@ public abstract class AbstractMethodContract extends AbstractContract
     assert typeContract != null;
     $typeContract = typeContract;
   }
-  
+
   public TypeContract getTypeContract() {
     return $typeContract;
   }
@@ -50,7 +50,7 @@ public abstract class AbstractMethodContract extends AbstractContract
    * @invar $typeContract != null;
    */
   private TypeContract $typeContract;
-  
+
   /**
    * If {@link #getTestCases()} is empty, there are no method tests.
    * THIS DOES NOT WORK FOR DEFAULT CONSTRUCTOR OR SOME NO_ARGS STATIC METHODS
@@ -61,30 +61,30 @@ public abstract class AbstractMethodContract extends AbstractContract
     // MUDO this order must become priority order
     // MUDO this must become a list of method test factories
     StraightList testCases = getTestCases();
-    if (getTestCases().isEmpty()) {
+    if (testCases.isEmpty()) {
       // create an empty map, 1 test case, to use as factory for 1 method test
       testCases = new ArrayStraightList(new Map[] {new HashMap()});
     }
     return new LazyMappingStraightList(testCases,
                                        new LazyMappingStraightList.Mapping() {
-      
+
                                             public boolean isValid(Object o) {
                                               Map testCaseMap = (Map)o;
                                               return validatePreconditions(testCaseMap);
                                             }
-      
+
                                              public Object map(Object o) {
                                                Map testCaseMap = (Map)o;
                                                return createMethodTest(testCaseMap);
                                              }
-                                             
+
                                            });
   }
-  
+
   public String[] getFormalParameters() {
     return new String[0];
   }
-  
+
   /**
    * {@inheritDoc}
    * The default implementation of this method does nothing.
@@ -92,7 +92,7 @@ public abstract class AbstractMethodContract extends AbstractContract
   public void recordState(MethodTest test) {
     // NOP
   }
-  
+
   /**
    * {@inheritDoc}
    * The default implementation of this method returns
@@ -137,9 +137,9 @@ public abstract class AbstractMethodContract extends AbstractContract
     test.getContext().put(EXCEPTION_KEY, exc);
     validateConditionSet(test, getExceptionConditions());
   }
-  
+
   public final static String EXCEPTION_KEY = "EXCEPTION";
-  
+
   private void validateConditionSet(MethodTest test, Set conditionSet) {
     Iterator iter = conditionSet.iterator();
     while (iter.hasNext()) {
@@ -148,8 +148,8 @@ public abstract class AbstractMethodContract extends AbstractContract
     }
   }
 
-  
-  
+
+
   /*<property name="preconditions">*/
   //------------------------------------------------------------------
 
@@ -159,7 +159,7 @@ public abstract class AbstractMethodContract extends AbstractContract
   public final Set getPreconditions() {
     return Collections.unmodifiableSet($preconditions);
   }
-  
+
   /**
    * @pre condition != null;
    * @post getPreconditions().contains(condition);
@@ -173,18 +173,18 @@ public abstract class AbstractMethodContract extends AbstractContract
     }
     $preconditions.add(condition);
   }
-  
+
   /**
    * @invar $preconditions != null;
    * @invar ! $preconditions.contains(null);
    * @invar (forall Object o; $preconditions.contains(o); o instanceof Condition);
    */
   private Set $preconditions = new HashSet();
-  
+
   /*</property>*/
 
-  
-  
+
+
   /*<property name="preconditions">*/
   //------------------------------------------------------------------
 
@@ -194,7 +194,7 @@ public abstract class AbstractMethodContract extends AbstractContract
   public final Set getPostconditions() {
     return Collections.unmodifiableSet($postconditions);
   }
-  
+
   /**
    * @pre condition != null;
    * @post getPostconditions().contains(condition);
@@ -208,18 +208,18 @@ public abstract class AbstractMethodContract extends AbstractContract
     }
     $postconditions.add(condition);
   }
-  
+
   /**
    * @invar $postconditions != null;
    * @invar ! $postconditions.contains(null);
    * @invar (forall Object o; $postconditions.contains(o); o instanceof Condition);
    */
   private Set $postconditions = new HashSet();
-  
+
   /*</property>*/
 
-  
-  
+
+
   /*<property name="exceptionConditions">*/
   //------------------------------------------------------------------
 
@@ -229,7 +229,7 @@ public abstract class AbstractMethodContract extends AbstractContract
   public final Set getExceptionConditions() {
     return Collections.unmodifiableSet($exceptionConditions);
   }
-  
+
   /**
    * @pre condition != null;
    * @post getExceptionConditions().contains(condition);
@@ -243,14 +243,14 @@ public abstract class AbstractMethodContract extends AbstractContract
     }
     $exceptionConditions.add(condition);
   }
-  
+
   /**
    * @invar $exceptionConditions != null;
    * @invar ! $exceptionConditions.contains(null);
    * @invar (forall Object o; $exceptionConditions.contains(o); o instanceof Condition);
    */
   private Set $exceptionConditions = new HashSet();
-  
+
   /*</property>*/
 
 }
