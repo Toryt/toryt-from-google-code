@@ -10,6 +10,7 @@ import org.toryt.AbstractTypeContract;
 import org.toryt.ClassMethodContract;
 import org.toryt.InstanceMethodContract;
 import org.toryt.InterfaceContract;
+import org.toryt.MethodTest;
 import org.toryt.ReflectionSupport;
 import org.toryt.TorytException;
 
@@ -172,5 +173,13 @@ public class TypeContract
   }
   
   private Set $basicInspectors = new HashSet();
+  
+  /**
+   * {@inheritDoc}
+   * The default implementation does nothing.
+   */
+  public void validateTypeInvariants(Object subject, MethodTest test) {
+    // NOP
+  }
 
 }

@@ -8,7 +8,8 @@ import java.util.Map;
 
 /**
  * @author Jan Dockx
- * 
+ *
+ * @invar getTypeContract() != null; 
  * @invar getMember() != null;
  * @invar (getMember() instanceof Method) || (getMember() instanceof Constructor);
  * @invar getMember().getDeclaringClass() == getTypeContract().getType();
@@ -74,8 +75,6 @@ public interface MethodContract extends Contract {
    * on <code>test</code>.
    */
   void validateInertiaAxiom(MethodTest test);
-
-  void validateTypeInvariants(); // MUDO delete this
   
   /**
    * Validate the exception conditions of this method contract

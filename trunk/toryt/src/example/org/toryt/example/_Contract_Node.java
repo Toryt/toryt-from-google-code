@@ -19,7 +19,7 @@ public class _Contract_Node extends ClassContract {
   public _Contract_Node() throws TorytException {
     super(Node.class);
     setSuperClassContract("java.lang.Object");
-    addInstanceMethodContract(new MutatorContract(Node.class, "setDescription(java.lang.String)") {
+    addInstanceMethodContract(new MutatorContract(this, Node.class, "setDescription(java.lang.String)") {
 
       public String[] getFormalParameters() {
         return new String[] {"description"};
@@ -50,7 +50,7 @@ public class _Contract_Node extends ClassContract {
       }
       
     });
-    addInstanceMethodContract(new MutatorContract(Node.class, "setTitle(java.lang.String)") {
+    addInstanceMethodContract(new MutatorContract(this, Node.class, "setTitle(java.lang.String)") {
       public String[] getFormalParameters() {
         return new String[] {"title"};
       }
@@ -80,7 +80,7 @@ public class _Contract_Node extends ClassContract {
       }
       
     });
-    addInstanceMethodContract(new MutatorContract(Node.class, "setGroup(org.toryt.example.Group)") {
+    addInstanceMethodContract(new MutatorContract(this, Node.class, "setGroup(org.toryt.example.Group)") {
       public String[] getFormalParameters() {
         return new String[] {"group"};
       }
@@ -127,8 +127,16 @@ public class _Contract_Node extends ClassContract {
     close();
   }
   
-  public void validateTypeInvariants(Object subject, MethodTest test) {
-    
+  public void validateTypeInvariants(Object subject, MethodTest t) {
+    assert getType().isInstance(subject);
+    Node n = (Node)subject;
+    t.validate(n.getTitle() != null);
+    t.validate(n.getDescription() != null);
+    t.validate(! Double.isNaN(n.getRating()) ? (n.getRating() >= 0) : true);
+    t.validate(! Double.isNaN(n.getRating()) ? (n.getRating() <= 10) : true);
+    t.validate((n.getGroup() != null)
+                   ? n.getGroup().getNodes().get(n.getTitle()) == n
+                   : true);
   }
 
   public List getCases() throws TorytException {

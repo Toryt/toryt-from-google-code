@@ -33,13 +33,23 @@ public abstract class MutatorContract
 
   
   
-  public MutatorContract(Class type, String signature) throws TorytException {
-    this(ReflectionSupport.findMethod(type, signature, null));
-  }
-
-  public MutatorContract(Method method) {
+  /**
+   * @pre typeContract != null;
+   * @pre constructor != null;
+   * @pre constructor.getDeclaringClass() == getTypeContract().getType();
+   */
+  public MutatorContract(TypeContract typeContract, Method method) {
+    super(typeContract);
     assert method != null;
+    assert method.getDeclaringClass() == getTypeContract().getType();
     $method = method;
+  }
+  
+  /**
+   * @pre typeContract != null;
+   */
+  public MutatorContract(TypeContract typeContract, Class type, String signature) throws TorytException {
+    this(typeContract, ReflectionSupport.findMethod(type, signature, null));
   }
   
   public final Member getMember() {

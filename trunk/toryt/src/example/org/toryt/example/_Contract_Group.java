@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.toryt.TorytException;
 import org.toryt.hard.ClassContract;
-import org.toryt.hard.ConstructorContract;
 
 
 public class _Contract_Group extends ClassContract {

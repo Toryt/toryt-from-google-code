@@ -16,8 +16,8 @@ import java.text.NumberFormat;
  * 
  * @invar getTitle() != null;
  * @invar getDescription() != null;
- * @invar getRating() >= 0;
- * @invar getRating() <= 10;
+ * @invar (! Double.isNanN(getRating()) ==> (getRating() >= 0);
+ * @invar (! Double.isNaN(getRating()) ==> (getRating() <= 10);
  * @invar (getGroup() != null)
  *          ? getGroup().getNodes().get(getTitle()) == this
  *          : true;
@@ -105,12 +105,18 @@ public abstract class Node implements java.io.Serializable {
   }
 
   /**
+   * Since the title is used as the key in the group we are in, we also
+   * need to change that entry to keep type invariants!
+   * 
    * @param title
    *        The title to set.
    * @post new.getTitle().equals(title == null ? EMPTY : title);
    */
   public void setTitle(String title) {
+    Group ourGroup = getGroup();
+    setGroup(null);
     $title = (title == null ? EMPTY : title);
+    setGroup(ourGroup);
   }
 
   /**

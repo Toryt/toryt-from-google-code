@@ -28,6 +28,23 @@ public abstract class AbstractMethodContract extends AbstractContract
   /*</section>*/
   
 
+  /**
+   * @pre typeContract != null;
+   */
+  public AbstractMethodContract(TypeContract typeContract) {
+    assert typeContract != null;
+    $typeContract = typeContract;
+  }
+  
+  public TypeContract getTypeContract() {
+    return $typeContract;
+  }
+
+  /**
+   * @invar $typeContract != null;
+   */
+  private TypeContract $typeContract;
+  
   public final List getMethodTests() throws TorytException {
     // MUDO this order must become priority order
     List testCases = getTestCases();
@@ -88,10 +105,6 @@ public abstract class AbstractMethodContract extends AbstractContract
    */
   public void validateExceptionCondition(MethodTest test, Throwable exc) {
     // NOP
-  }
-  
-  public String toString() {
-    return getMember().toString();
   }
     
 }

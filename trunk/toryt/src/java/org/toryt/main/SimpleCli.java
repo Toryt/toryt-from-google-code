@@ -2,11 +2,13 @@ package org.toryt.main;
 
 
 import java.io.PrintStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 
 import org.toryt.AbstractTest;
 import org.toryt.Contract;
@@ -71,9 +73,10 @@ public class SimpleCli extends AbstractTest {
     }
     $failedTests = new ArrayList();
     List tests = getContract().getTests();
-// DEBUG
-System.out.println(tests.size());
-// DEBUG
+    int testsToRun = tests.size();
+    Date startTime = new Date();
+    int testsDone = 0;
+    System.out.println(testsToRun + " tests to run");
     ListIterator iter = tests.listIterator();
     while (iter.hasNext() && ! hasEnough()) {
       Test t = (Test)iter.next();
@@ -83,8 +86,17 @@ System.out.println(tests.size());
         System.out.println();
         t.report(System.out);
       }
+      testsDone++;
     }
+    Date endTime = new Date();
+    System.out.println(testsDone + " tests done");
+    long duration = endTime.getTime() - startTime.getTime();
+    System.out.println("duration: " + duration + "ms");
+    double testsPerSecond = testsDone / (duration / 1000.0);
+    System.out.println("speed: " + NF.format(testsPerSecond) + "tps");
   }
+  
+  private static final NumberFormat NF = NumberFormat.getNumberInstance(new Locale("nl"));
 
   public final boolean isSuccessful() {
     return (getFailedTests() != null) && (getFailedTests().isEmpty());
@@ -111,6 +123,8 @@ System.out.println(tests.size());
         }
       }
     }
+    System.out.println();
+    System.out.println(new Date());
     System.out.println("Tests done.");
   }
   

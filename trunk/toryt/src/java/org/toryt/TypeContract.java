@@ -111,6 +111,8 @@ public interface TypeContract extends Contract {
    * against the state of the given <code>test</code>.
    * Validation should be done by calling {@link MethodTest#validate(boolean)}
    * on <code>test</code> for <code>subject</code>.
+   * 
+   * @pre getType().isInstance(subject);
    */
   void validateTypeInvariants(Object subject, MethodTest test);
   

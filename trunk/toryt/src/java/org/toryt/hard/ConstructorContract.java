@@ -33,13 +33,23 @@ public abstract class ConstructorContract
 
   
   
-  public ConstructorContract(Constructor constructor) {
+  /**
+   * @pre typeContract != null;
+   * @pre constructor != null;
+   * @pre constructor.getDeclaringClass() == getTypeContract().getType();
+   */
+  public ConstructorContract(TypeContract typeContract, Constructor constructor) {
+    super(typeContract);
     assert constructor != null;
+    assert constructor.getDeclaringClass() == getTypeContract().getType();
     $constructor = constructor;
   }
   
-  public ConstructorContract(Class type, String signature) throws TorytException {
-    this(ReflectionSupport.findConstructor(type, signature, null));
+  /**
+   * @pre typeContract != null;
+   */
+  public ConstructorContract(TypeContract typeContract, Class type, String signature) throws TorytException {
+    this(typeContract, ReflectionSupport.findConstructor(type, signature, null));
   }
 
   public final Member getMember() {
