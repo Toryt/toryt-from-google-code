@@ -16,7 +16,7 @@ import org.toryt.support.straightlist.StraightList;
  * The contract of a type. This features type invariants, method contracts
  * for all the methods defined in the type, nested class contracts, and extra tests.
  * Furthermore, there are references to all contracts for all direct supertypes.
- * 
+ *
  * @invar getType() != null;
  * @invar getDirectSuperInterfaceContracts() != null;
  * @invar ! getDirectSuperInterfaceContracts().contains(null);
@@ -64,38 +64,38 @@ public interface TypeContract extends Contract {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
-  
+
   /*<property name="type">*/
   //------------------------------------------------------------------
-  
+
   /**
    * @basic
    */
   Class getType();
-  
+
   /*</property>*/
-  
-  
+
+
   Set getDirectSuperInterfaceContracts();
 
   /**
    * Contracts for all instance (non-static) methods, except
    * basic inspectors.
-   * 
+   *
    * @basic
    */
   Set getInstanceMethodContracts();
 
   /**
    * Contracts for all class (static) methods.
-   * 
+   *
    * @basic
    */
   Set getClassMethodContracts();
 
   /**
    * Contracts for all nested classes.
-   * 
+   *
    * @basic
    */
   Set getNestedClassContracts();
@@ -104,7 +104,7 @@ public interface TypeContract extends Contract {
    * @basic
    */
   Set getBasicInspectors();
-  
+
   /**
    * The union of the method tests of all instance method contracts,
    * all class method contracts and all nested classes contracts.
@@ -119,22 +119,22 @@ public interface TypeContract extends Contract {
    * @basic
    */
   Set getTypeInvariantConditions();
-  
-  /*</property>*/  
 
-  
-  
+  /*</property>*/
+
+
+
   public class AllMembersCoveredTest extends AbstractTest {
-    
+
     public AllMembersCoveredTest(TypeContract tc) {
       assert tc != null;
       $tc = tc;
     }
-    
+
     public final TypeContract getTypeContract() {
       return $tc;
     }
-    
+
     private TypeContract $tc;
 
     public final void test() throws TorytException {
@@ -149,7 +149,7 @@ public interface TypeContract extends Contract {
           Iterator iter = allMethodContracts.iterator();
           while ((! found) && iter.hasNext()) {
             MethodContract mc = (MethodContract)iter.next();
-            if (methods[i] == mc.getMember()) {
+            if (methods[i].equals(mc.getMember())) {
               found = true;
             }
           }
@@ -176,13 +176,13 @@ public interface TypeContract extends Contract {
       }
       setRun();
     }
-    
+
     public final Set getMethodWithoutContracts() {
       return Collections.unmodifiableSet($membersWithoutContracts);
     }
-    
+
     private Set $membersWithoutContracts = new HashSet();
-    
+
     public final boolean isSuccessful() {
       return $membersWithoutContracts.isEmpty();
     }
@@ -202,7 +202,7 @@ public interface TypeContract extends Contract {
         }
       }
     }
-    
+
   }
 
 }
