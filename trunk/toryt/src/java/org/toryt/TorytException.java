@@ -4,8 +4,6 @@ package org.toryt;
 /**
  * Exceptions thrown by Toryt code, or because of faulty test code.
  * <em>Not</em> exceptions thrown by the tested code.
- * 
- * @invar getTest() != null;
  */
 public class TorytException extends Exception {
 
@@ -23,13 +21,11 @@ public class TorytException extends Exception {
   
 
   /**
-   * @pre test != null;
    * @post new.getTest() == test;
    * @post new.getCause() == cause;
    */
   public TorytException(Contract test, Throwable cause) {
     super(cause);
-    assert test != null;
     $test = test;
   }
   
