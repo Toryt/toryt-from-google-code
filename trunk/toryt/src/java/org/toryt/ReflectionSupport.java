@@ -30,7 +30,7 @@ public class ReflectionSupport {
     String search = type.getName() + "." + signature;
     Method[] methods = type.getDeclaredMethods();
     for (int i = 0; i < methods.length; i++) {
-      if (methods[i].toString().indexOf(signature) > -1) {
+      if (methods[i].toString().indexOf(search) > -1) {
         return methods[i];
       }
     }

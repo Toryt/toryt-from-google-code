@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.toryt.AbstractMethodContract;
-import org.toryt.ConstructorTest;
 import org.toryt.MethodTest;
 import org.toryt.NonConstructorMethodTest;
 import org.toryt.ReflectionSupport;

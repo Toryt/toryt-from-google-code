@@ -86,15 +86,6 @@ public abstract class AbstractMethodContract extends AbstractContract
    * The default implementation of this method does
    * nothing.
    */
-  public void validateTypeInvariants(MethodTest test) {
-    // MUDO
-  }
-
-  /**
-   * {@inheritDoc}
-   * The default implementation of this method does
-   * nothing.
-   */
   public void validateExceptionCondition(MethodTest test, Throwable exc) {
     // NOP
   }

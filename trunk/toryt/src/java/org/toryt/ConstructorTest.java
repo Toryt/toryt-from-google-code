@@ -42,7 +42,7 @@ public class ConstructorTest extends MethodTest {
   //------------------------------------------------------------------
 
   public final ConstructorContract getConstructorContract() {
-    return (ConstructorContract)getContract();
+    return (ConstructorContract)getMethodContract();
   }
 
   /* </property> */
@@ -67,4 +67,10 @@ public class ConstructorTest extends MethodTest {
               .newInstance(getActualParameters());
   }
   
+
+  protected final void validateMore() {
+    getTypeContract().validateTypeInvariants(getContext().get(RESULT_KEY), this);
+    // MUDO type invars of all objects
+  }
+
 }

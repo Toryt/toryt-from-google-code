@@ -105,7 +105,14 @@ public interface TypeContract extends Contract {
    */
   List getMethodTests() throws TorytException;
 
-//  public abstract void validateTypeInvariants(Object subject);
+
+  /**
+   * Validate the type invariants of this type contract
+   * against the state of the given <code>test</code>.
+   * Validation should be done by calling {@link MethodTest#validate(boolean)}
+   * on <code>test</code> for <code>subject</code>.
+   */
+  void validateTypeInvariants(Object subject, MethodTest test);
   
   public class AllMembersCoveredTest extends AbstractTest {
 

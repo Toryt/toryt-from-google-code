@@ -42,7 +42,7 @@ public class NonConstructorMethodTest extends MethodTest {
   //------------------------------------------------------------------
 
   public final NonConstructorMethodContract getNonConstructorMethodContract() {
-    return (NonConstructorMethodContract)getContract();
+    return (NonConstructorMethodContract)getMethodContract();
   }
 
   /* </property> */
@@ -58,4 +58,9 @@ public class NonConstructorMethodTest extends MethodTest {
                       getActualParameters());
   }
   
+  protected final void validateMore() {
+    getTypeContract().validateTypeInvariants(getContext().get(MethodContract.SUBJECT_KEY), this);
+    // MUDO type invars of all objects
+  }
+
 }

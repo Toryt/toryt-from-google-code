@@ -1,15 +1,13 @@
 package org.toryt.hard;
 
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.toryt.CaseProvider;
-import org.toryt.InstanceMethodContract;
 import org.toryt.TorytException;
-
-
 
 
 /**

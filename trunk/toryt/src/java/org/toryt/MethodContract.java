@@ -11,6 +11,7 @@ import java.util.Map;
  * 
  * @invar getMember() != null;
  * @invar (getMember() instanceof Method) || (getMember() instanceof Constructor);
+ * @invar getMember().getDeclaringClass() == getTypeContract().getType();
  */
 public interface MethodContract extends Contract {
 
@@ -25,13 +26,19 @@ public interface MethodContract extends Contract {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
-
+  
+  
   
   /**
    * @basic
    */
   Member getMember();
     
+  /**
+   * The contract of the type in which this method is defined.
+   */
+  TypeContract getTypeContract();
+  
   public final static String SUBJECT_KEY = "SUBJECT";
   
   public abstract List getTestCases() throws TorytException;
@@ -68,14 +75,8 @@ public interface MethodContract extends Contract {
    */
   void validateInertiaAxiom(MethodTest test);
 
-  /**
-   * Validate the type invariants of this method contract
-   * against the state of the given <code>test</code>.
-   * Validation should be done by calling {@link MethodTest#validate(boolean)}
-   * on <code>test</code>.
-   */
-  void validateTypeInvariants(MethodTest test);
-
+  void validateTypeInvariants(); // MUDO delete this
+  
   /**
    * Validate the exception conditions of this method contract
    * against the state of the given <code>test</code> for the

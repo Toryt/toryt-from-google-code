@@ -2,10 +2,15 @@ package org.toryt;
 
 
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 
 /**
@@ -35,7 +40,7 @@ public abstract class MethodTest implements Test {
   //------------------------------------------------------------------
 
   public MethodTest(MethodContract methodContract, Map testCase) {
-    $contract = methodContract;
+    $methodContract = methodContract;
     $context = testCase;
   }
 
@@ -45,14 +50,18 @@ public abstract class MethodTest implements Test {
   /*<property name="contract">*/
   //------------------------------------------------------------------
 
-  public MethodContract getContract() {
-    return $contract;
+  public final MethodContract getMethodContract() {
+    return $methodContract;
+  }
+  
+  public final TypeContract getTypeContract() {
+    return $methodContract.getTypeContract();
   }
 
   /**
-   * @invar $contract != null;
+   * @invar $methodContract != null;
    */
-  private MethodContract $contract;
+  private MethodContract $methodContract;
 
   /*</property>*/
 
@@ -98,7 +107,7 @@ public abstract class MethodTest implements Test {
    * with the help of the {@link MethodContract#getFormalParameters() formal parameters}.
    */
   protected final Object[] getActualParameters() {
-    String[] fp = getContract().getFormalParameters();
+    String[] fp = getMethodContract().getFormalParameters();
     int n = fp.length;
     Object[] result = new Object[n];
     for (int i = 0; i < n; i++) {
@@ -158,7 +167,7 @@ public abstract class MethodTest implements Test {
    * is called. Afterwards, if the method ended nominally, we validate the
    * {@link MethodContract#validatePostConditions(MethodTest) postconditions}, the
    * {@link MethodContract#validateInertiaAxiom(MethodTest) inertia axiom}, and the
-   * {@link MethodContract#validateTypeInvariants(MethodTest) type invariants}.
+   * {@link TypeContract#validateTypeInvariants(Object, MethodTest) type invariants}.
    * If the method does not end nominally, we validate the
    * {@link MethodContract#validateExceptionCondition(MethodTest, InvocationTargetException)
    * exception conditions}.
@@ -169,41 +178,41 @@ public abstract class MethodTest implements Test {
    */
   public final void test() throws TorytException {
     if (hasRun()) {
-      throw new TorytException(getContract(), null);
+      throw new TorytException(getMethodContract(), null);
     }
-    if (getContract().validatePreconditions(this)) {
+    if (getMethodContract().validatePreconditions(this)) {
       try {
-        getContract().recordState(this);
+        getMethodContract().recordState(this);
         Object result = methodCall(); 
         getContext().put(RESULT_KEY, result);
-        getContract().validatePostConditions(this);
-        getContract().validateInertiaAxiom(this);
-        getContract().validateTypeInvariants(this);
+        getMethodContract().validatePostConditions(this);
+        getMethodContract().validateInertiaAxiom(this);
+        validateMore();
       }
       catch (IllegalArgumentException e) {
         System.out.println(this);
         System.out.println(e);
-        throw new TorytException(getContract(), e);
+        throw new TorytException(getMethodContract(), e);
       }
       catch (IllegalAccessException e) {
         System.out.println(this);
         System.out.println(e);
-        throw new TorytException(getContract(), e);
+        throw new TorytException(getMethodContract(), e);
       }
       catch (InstantiationException e) {
         System.out.println(this);
         System.out.println(e);
-        throw new TorytException(getContract(), e);
+        throw new TorytException(getMethodContract(), e);
       }
       catch (InvocationTargetException e) {
         System.out.println(this);
         System.out.println(e);
-        getContract().validateExceptionCondition(this, e.getCause());
+        getMethodContract().validateExceptionCondition(this, e.getCause());
       }
       catch (Throwable e) {
         System.out.println(this);
         System.out.println(e);
-        throw new TorytException(getContract(), e);
+        throw new TorytException(getMethodContract(), e);
       }
     }
     setRun();
@@ -225,10 +234,12 @@ public abstract class MethodTest implements Test {
              IllegalArgumentException,
              InvocationTargetException;
   
+  protected abstract void validateMore();
+  
   public final void report(PrintStream out) {
     out.println((isSuccessful() ? "success" : "FAILURE")
                 + ": "
-                + getContract().getMember().toString());
+                + getMethodContract().getMember().toString());
     out.println(repeat("-", PAGE_WIDTH));
     reportContext(out);
   }
@@ -255,8 +266,26 @@ public abstract class MethodTest implements Test {
       out.println(repeat(" ", KEY_WIDTH - keyLength)
                   + e.getKey()
                   + " :: "
-                  + e.getValue());
+                  + ((e.getValue() == null)
+                      ? "null"
+                      : new Rtsb(e.getValue(), ToStringStyle.DEFAULT_STYLE).toString()));
     }
   }
-  
+
+  /**
+   * Do NOT skip fields that contain a "$".
+   */
+  private class Rtsb extends ReflectionToStringBuilder {
+    
+    public Rtsb(Object object, ToStringStyle style) {
+      super(object, style);
+    }
+
+    protected boolean accept(Field field) {
+      return (this.isAppendTransients() || !Modifier.isTransient(field.getModifiers()))
+          && (!Modifier.isStatic(field.getModifiers()));
+    }
+
+  }
+
 }

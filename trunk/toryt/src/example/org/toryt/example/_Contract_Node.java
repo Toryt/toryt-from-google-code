@@ -114,7 +114,7 @@ public class _Contract_Node extends ClassContract {
         Group oldGroup = (Group)test.getContext().get("getGroup()@pre"); 
         test.validate(subject.getGroup() == group);
         test.validate(oldGroup != null ?
-                      oldGroup.getNodes().values().contains(subject) : true);
+                      ! oldGroup.getNodes().values().contains(subject) : true);
         test.validate(group != null ?
                       group.getNodes().values().contains(subject) : true);
       }
@@ -125,6 +125,10 @@ public class _Contract_Node extends ClassContract {
     addBasicInspector("getRating()");
     addBasicInspector("getGroup()");
     close();
+  }
+  
+  public void validateTypeInvariants(Object subject, MethodTest test) {
+    
   }
 
   public List getCases() throws TorytException {
