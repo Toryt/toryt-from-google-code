@@ -26,7 +26,16 @@ public interface Condition {
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
 
-  
+  /**
+   * @see MethodTest#SUBJECT_KEY
+   */
+  final static String SUBJECT_KEY = MethodTest.SUBJECT_KEY;
+
+  /**
+   * @see MethodTest#RESULT_KEY
+   */
+  final static String RESULT_KEY = MethodTest.RESULT_KEY;
+
   /**
    * Validate a context.
    */
