@@ -13,7 +13,6 @@ public class _Contract_Bookmark extends ClassContract {
 
   public _Contract_Bookmark() throws TorytException {
     super(Bookmark.class);
-    setSuperClassContract("org.toryt.example.Node");
     addConstructorContract(new ConstructorContract(this, Bookmark.class, "Bookmark()") {
 
       public StraightList getTestCases() throws TorytException {

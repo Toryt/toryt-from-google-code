@@ -30,7 +30,6 @@ public class _Contract_Node extends ClassContract {
 
   public _Contract_Node() throws TorytException {
     super(Node.class);
-    setSuperClassContract("java.lang.Object");
 
     // basic inspectors
     addBasicInspector("getDescription()");

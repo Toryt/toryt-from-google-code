@@ -8,7 +8,7 @@ public class _Package_Contract_ extends PackageContract {
     super(_Package_Contract_.class.getPackage());
     addClassContract(new _Contract_Node());
     addClassContract(new _Contract_Group());
-    addClassContract(new _Contract_Bookmark());
+//    addClassContract(new _Contract_Bookmark());
     close();
   }
   

@@ -1,6 +1,7 @@
 package org.toryt.hard;
 
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.toryt.CaseProvider;
+import org.toryt.Contracts;
 import org.toryt.TorytException;
 import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
@@ -39,6 +41,7 @@ public abstract class ClassContract
   public ClassContract(Class type) {
     super(type);
     assert ! type.isInterface();
+    initDirectSuperClassContract();
   }
 
   /**
@@ -48,30 +51,42 @@ public abstract class ClassContract
     super(fqn);
   }
 
-  public final ClassContract getSuperClassContract() {
-    return $superClassContract;
+  public final org.toryt.ClassContract getDirectSuperClassContract() {
+    return $directSuperClassContract;
   }
   
-  /**
-   * @pre cc != null;
-   * @post new.getSuperClassContract() != null;
-   */
-  protected final void setSuperClassContract(ClassContract cc) {
-    assert cc != null;
-    $superClassContract = cc;
+  private void initDirectSuperClassContract() {
+    if (getType() == Object.class) {
+      /* We don't need a superclass contract, since class Object doesn't
+       * have a superclass.
+       */
+      return;
+    }
+    Class superClass = getType().getSuperclass();
+    if (superClass == null) {
+      assert false : "Can't be, every class but Object has a superclass.";
+    }
+    try {
+      $directSuperClassContract = (ClassContract)Contracts.typeContractInstance(superClass);
+    }
+    catch (IOException e) {
+      // MUDO better output
+      e.printStackTrace(System.out);
+      assert false;
+    }
+    catch (ClassCastException e) {
+      // MUDO better output
+      e.printStackTrace(System.out);
+      assert false : "expected class contract";
+    }
+    catch (ClassNotFoundException e) {
+      // there should be a contract, but there is none
+      // MUDO log this as a test failure, or a warning, or something
+      System.out.println("No contract for superclass " + superClass.getName());
+    }
   }
-  
-  /**
-   * @pre fqn != null;
-   */
-  protected final void setSuperClassContract(String fqn) throws TorytException {
-    assert fqn != null;
-//  Class si = Class.forName(fqn with prefix contract; look in specific package);
-  }
-  
-  
-  
-  private ClassContract $superClassContract;
+   
+  private org.toryt.ClassContract $directSuperClassContract;
   
   public final Set getConstructorContracts() {
     return Collections.unmodifiableSet($constructorContracts);

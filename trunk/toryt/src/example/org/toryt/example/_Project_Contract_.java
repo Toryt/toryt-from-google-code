@@ -1,6 +1,9 @@
 package org.toryt.example;
+
+
 import org.toryt.TorytException;
 import org.toryt.hard.ProjectContract;
+
 
 public class _Project_Contract_ extends ProjectContract {
 

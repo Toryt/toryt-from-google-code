@@ -23,7 +23,6 @@ public class _Contract_Group extends ClassContract {
 
   public _Contract_Group() throws TorytException {
     super(Group.class);
-    setSuperClassContract("org.toryt.example.Node");
     
     // basic inspectors
     addBasicInspector("getNodes()");

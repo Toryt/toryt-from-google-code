@@ -64,6 +64,8 @@ public interface TypeContract extends Contract {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
+
+  
   
   /*<property name="type">*/
   //------------------------------------------------------------------

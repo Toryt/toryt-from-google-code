@@ -46,7 +46,8 @@ public class PackageContract
    * @throws TorytException
    *         ! pc.isClosed();
    */
-  public final void addSubPackageContract(PackageContract pc) throws TorytException {
+  public final void addSubPackageContract(org.toryt.PackageContract pc)
+      throws TorytException {
     assert pc != null;
     if (isClosed()) {
       throw new TorytException(this, null);

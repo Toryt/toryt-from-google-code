@@ -1,6 +1,7 @@
 package org.toryt;
 
 
+import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -64,6 +65,35 @@ public abstract class AbstractPackageContract
     result.addAll(getSubPackageContracts());
     result.addAll(getClassContracts());
     return Collections.unmodifiableSet(result);
+  }
+  
+  public final void report(PrintStream out, int indent) {
+    out.println(repeat(" ", indent) + getPackage().toString());
+    out.println(repeat(" ", indent) + repeat("-", 80 - indent));
+    int newIndent = indent + 2;
+    out.println(repeat(" ", indent) + "Subpackage Contracts");
+    out.println(repeat(" ", indent) + repeat("-", 80 - indent));
+    reportSubcontracts(out, getSubPackageContracts(), newIndent);
+    out.println(repeat(" ", indent) + "Class Contracts");
+    out.println(repeat(" ", indent) + repeat("-", 80 - indent));
+    reportSubcontracts(out, getClassContracts(), newIndent);
+  }
+
+  private void reportSubcontracts(PrintStream out, Set contracts, int indent) {
+    Iterator iter = contracts.iterator();
+    while (iter.hasNext()) {
+      Contract c = (Contract)iter.next();
+      out.println(c);
+//      c.report(out, indent);
+    }
+  }
+
+  private String repeat(String s, int nr) {
+    StringBuffer result = new StringBuffer();
+    for (int i = nr; i > 0; i--) {
+      result.append(s);
+    }
+    return result.toString();
   }
   
 }
