@@ -2,23 +2,19 @@
 <?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
   <extend>ppw-libraries-settings/project.xml</extend>
-  <pomVersion>1</pomVersion>
   <name>Toryt</name>
   <groupId>toryt</groupId>
   <organization>
     <name>toryt.org</name>
-    <url>www.toryt.org</url>
+    <url>http://www.toryt.org/</url>
   </organization>
-  <logo>logo/toryt174x143.jpeg</logo>
+  <logo>/logo/toryt174x143.jpeg</logo>
   <artifactId>toryt-I</artifactId>
   <shortDescription>Contract-based Unit Testing Framework</shortDescription>
   <description>Contract-based Unit Testing Framework.</description>
   <inceptionYear>2001</inceptionYear>
   <currentVersion>1.0.0-1.0</currentVersion>
   <package>org.toryt_I</package>
-  <!--
-  <logo>http://maven.apache.org/images/maven.jpg</logo>
-  -->
   <developers>
     <developer>
       <name>Jan Dockx</name>
