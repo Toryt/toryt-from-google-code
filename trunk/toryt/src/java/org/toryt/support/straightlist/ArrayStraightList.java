@@ -37,7 +37,7 @@ public class ArrayStraightList extends AbstractStraightList {
    * @post ; the order of <code>l</code> and <code>this</code> is the same
    */
   public ArrayStraightList(Object[] a) {
-    assert a != null;
+    assert a != null : "array cannot be null";
     $a = a;
     $l = Arrays.asList($a);
   }
