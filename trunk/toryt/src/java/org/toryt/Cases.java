@@ -174,43 +174,22 @@ public final class Cases {
                         new Date(System.currentTimeMillis() + DECADE), // Next decade
                         new Date(0)});                                  // Unix Epoch
 
-  // @mudo (nsmeets): This has to be adapted so that it uses doubles
-//  private final static StraightList TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH
-//  = new ArrayList();
-//  static {
-//    Iterator i = TOL_JAVA_LANG_LONG.iterator();
-//    while (i.hasNext()) {
-//      Long longObject = (Long) i.next();
-//      long longValue = longObject.longValue();
-//      TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH.add(
-//          Length.lengthOf(Quantity.valueOf(longValue, SI.METER))
-//      );
-//    }
-//  }
-//  // @mudo (nsmeets): This has to be adapted so that it uses doubles
-//  private final static StraightList TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_MASS
-//  = new ArrayList();
-//  static {
-//    Iterator i = TOL_JAVA_LANG_LONG.iterator();
-//    while (i.hasNext()) {
-//      Long longObject = (Long) i.next();
-//      long longValue = longObject.longValue();
-//      TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_MASS.add(
-//          Mass.massOf(Quantity.valueOf(longValue, SI.KILOGRAM))
-//      );
-//    }
-//  }
 
   private final static Map TEST_OBJECT_LISTS = new HashMap();
 
   static {
-    TEST_OBJECT_LISTS.put(Integer.class.getName(), TOL_JAVA_LANG_INTEGER);
-    TEST_OBJECT_LISTS.put(Long.class.getName(), TOL_JAVA_LANG_LONG);
-    TEST_OBJECT_LISTS.put(Object.class.getName(), TOL_JAVA_LANG_OBJECT);
-//    TEST_OBJECT_LISTS.put(Throwable.class.getName(), TOL_JAVA_LANG_THROWABLE);
-    TEST_OBJECT_LISTS.put(String.class.getName(), TOL_JAVA_LANG_STRING);
-    TEST_OBJECT_LISTS.put(Date.class.getName(), TOL_JAVA_UTIL_DATE);
-//    TEST_OBJECT_LISTS.put(Length.class.getName(), TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH);
+    addTol(Integer.class, TOL_JAVA_LANG_INTEGER);
+    addTol(Long.class, TOL_JAVA_LANG_LONG);
+    addTol(Object.class, TOL_JAVA_LANG_OBJECT);
+//    addTol(Throwable.class, TOL_JAVA_LANG_THROWABLE);
+    addTol(String.class, TOL_JAVA_LANG_STRING);
+    addTol(Date.class, TOL_JAVA_UTIL_DATE);
+  }
+
+  public static void addTol(Class forClass, StraightList tol) {
+    assert forClass != null;
+    assert tol != null;
+    TEST_OBJECT_LISTS.put(forClass.getName(), tol);
   }
 
   /**
