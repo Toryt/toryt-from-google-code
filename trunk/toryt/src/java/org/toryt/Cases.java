@@ -2,20 +2,23 @@ package org.toryt;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import org.jscience.physics.quantities.Length;
+import org.jscience.physics.quantities.Quantity;
+import org.jscience.physics.units.SI;
 
 import be.peopleware.bean_II.Beans;
 
 
 /**
  * <p>Static methods to retrieve {@link TestObjectList} instances.</p>
- * 
+ *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
@@ -62,7 +65,7 @@ public final class Cases {
                                new Integer(-1023),
                                new Integer(-1024),
                                new Integer(-1025)});
-  
+
   private final static List TOL_JAVA_LANG_LONG
       = Arrays.asList(
             new Long[] {new Long(0),
@@ -105,7 +108,7 @@ public final class Cases {
                         new Long(Long.MIN_VALUE / 4),
                         new Long(Long.MIN_VALUE / 2)});
 
-  
+
   private final static List TOL_JAVA_LANG_OBJECT
       = Arrays.asList(new Object[] {new Object()});
 
@@ -146,9 +149,9 @@ public final class Cases {
                       "Jan Dockx ",
                       " Jan Dockx ",
                       " JanD "});
-  
+
   // MUDO (dvankeer): This needs to be moved elsewhere
-  
+
   /** Number of millisecongs in a day. */
   private static final long DAY     = 86400000L;
   /** Number of milliseconds in a week. */
@@ -159,7 +162,7 @@ public final class Cases {
   private static final long YEAR    = 31556926000L;
   /** Number of milliseconds in a decade. */
   private static final long DECADE  = 3155692597470L;
- 
+
   private final static List TOL_JAVA_UTIL_DATE
     = Arrays.asList(
             new Date[] {new Date(),                                    // Today
@@ -174,9 +177,23 @@ public final class Cases {
                         new Date(System.currentTimeMillis() - DECADE), // Last decade
                         new Date(System.currentTimeMillis() + DECADE), // Next decade
                         new Date(0)});                                  // Unix Epoch
-  
+
+  // @mudo (nsmeets): This has to be adapted so that it uses doubles
+  private final static List TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH
+  = new ArrayList();
+  static {
+    Iterator i = TOL_JAVA_LANG_LONG.iterator();
+    while (i.hasNext()) {
+      Long longObject = (Long) i.next();
+      long longValue = longObject.longValue();
+      TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH.add(
+          Length.lengthOf(Quantity.valueOf(longValue, SI.METER))
+      );
+    }
+  }
+
   private final static Map TEST_OBJECT_LISTS = new HashMap();
-  
+
   static {
     TEST_OBJECT_LISTS.put(Integer.class.getName(), TOL_JAVA_LANG_INTEGER);
     TEST_OBJECT_LISTS.put(Long.class.getName(), TOL_JAVA_LANG_LONG);
@@ -184,6 +201,7 @@ public final class Cases {
 //    TEST_OBJECT_LISTS.put(Throwable.class.getName(), TOL_JAVA_LANG_THROWABLE);
     TEST_OBJECT_LISTS.put(String.class.getName(), TOL_JAVA_LANG_STRING);
     TEST_OBJECT_LISTS.put(Date.class.getName(), TOL_JAVA_UTIL_DATE);
+    TEST_OBJECT_LISTS.put(Length.class.getName(), TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH);
   }
 
   /**
@@ -201,7 +219,7 @@ public final class Cases {
    * fails, we throw an {@link TestObjectListNotFoundException}.<br />
    * If a match is found outside the map, it is added to the map,
    * which so functions as a cache.
-   * 
+   *
    * @param fqcn
    *        The fully qualified class name of the type we want a
    *        {@link TestObjectList} for.
@@ -231,22 +249,22 @@ public final class Cases {
     // BeanTOL impossible; give up
     throw new TorytException(null, null);
   }
- 
+
   private static List cached(String key, List tol) {
     TEST_OBJECT_LISTS.put(key, tol);
     return tol;
   }
-  
+
   /**
    * <strong>= {@value}</strong>
    */
   public static final String TOL_PREFIX = "_TOL_";
-  
+
   /**
    * <strong>= {@value}</strong>
    */
   public static final String TEST_PREFIX = "_Test_";
-  
+
   private static List findTOLClass(String totn)
       throws TorytException {
     try {
@@ -264,12 +282,12 @@ public final class Cases {
       return null;
     }
   }
-  
+
   /**
    * <strong>= {@value}</strong>
    */
   public static final String TOL_CONSTANT_NAME = "TEST_OBJECT_LIST";
-  
+
   private static List findTOLVariable(String totn)
       throws TorytException {
     try {
@@ -299,19 +317,19 @@ public final class Cases {
       throw new TorytException(null, e);
     }
   }
-  
+
   private static /*Bean*/List  createBTOL(String totn)
       throws TorytException {
     Object createAWarning;
     return null; // MUDO stub
   }
-  
+
   /**
    * Convenience method to look for {@link TestObjectList} instances
    * based on a type, instead of on a FQCN.
-   * 
+   *
    * @see #findTestObjectList(String)
-   * 
+   *
    * @pre type != null;
    * @return findTestObjectList(type.getName());
    * @throws TestObjectListNotFoundException
@@ -326,9 +344,9 @@ public final class Cases {
 //  /**
 //   * Convenience method to look for {@link TestObjectList} instances,
 //   * and immediately return a list iterator of that instance.
-//   * 
+//   *
 //   * @see #findTestObjectList(String)
-//   * 
+//   *
 //   * @return findTestObjectList(fqcn).listIterator();
 //   * @throws TestObjectListNotFoundException
 //   * @throws TestFault
@@ -342,9 +360,9 @@ public final class Cases {
 //   * Convenience method to look for {@link TestObjectList} instances,
 //   * and immediately return a list iterator of that instance, given
 //   * a start index.
-//   * 
+//   *
 //   * @see #findTestObjectList(String)
-//   * 
+//   *
 //   * @return findTestObjectList(fqcn).listIterator();
 //   * @throws TestObjectListNotFoundException
 //   * @throws TestFault
@@ -354,5 +372,5 @@ public final class Cases {
 //      throws TestObjectListNotFoundException, TestFault, IndexOutOfBoundsException {
 //    return findTestObjectList(fqcn).listIterator(startIndex);
 //  }
-  
+
 }
