@@ -70,7 +70,10 @@ public abstract class MethodTest implements Test {
   /*<property name="context">*/
   //------------------------------------------------------------------
 
+  
+  public final static String SUBJECT_KEY = "this'";
   public final static String RESULT_KEY = "org.toryt.MethodTest.RESULT";
+  public final static String EXCEPTION_KEY = "org.toryt.MethodTest.EXCEPTION";
   
   /**
    * This method gives direct access to the map that holds the context
@@ -87,10 +90,10 @@ public abstract class MethodTest implements Test {
   private Map $context;
 
   /**
-   * @return getContext().get(MethodTest.RESULT_KEY);
+   * @return getContext().get(MethodTest.SUBJECT_KEY);
    */
   public final Object getSubject() {
-    return getContext().get(MethodTest.RESULT_KEY);
+    return getContext().get(MethodContract.SUBJECT_KEY);
   }
   
   /**
@@ -100,6 +103,15 @@ public abstract class MethodTest implements Test {
    */
   public final Object getResult() {
     return getContext().get(RESULT_KEY);
+  }
+
+  /**
+   * @return getContext().get(EXCEPTIOn_KEY);
+   * 
+   * @idea move to constructor and inspector test
+   */
+  public final Throwable getException() {
+    return (Throwable)getContext().get(EXCEPTION_KEY);
   }
 
   /**
@@ -163,12 +175,11 @@ public abstract class MethodTest implements Test {
    * The contract is asked to record the pre-state on this with
    * {@link MethodContract#recordState(MethodTest)}. Then the method-under-test
    * is called. Afterwards, if the method ended nominally, we validate the
-   * {@link MethodContract#validatePostConditions(MethodTest) postconditions}, the
-   * {@link MethodContract#validateInertiaAxiom(MethodTest) inertia axiom}, and the
-   * {@link TypeContract#validateTypeInvariants(Object, MethodTest) type invariants}.
+   * {@link MethodContract#getPostconditions() postconditions}, the
+   * inertia axiom, and the
+   * {@link TypeContract#getTypeInvariants() type invariants}.
    * If the method does not end nominally, we validate the
-   * {@link MethodContract#validateExceptionCondition(MethodTest, InvocationTargetException)
-   * exception conditions}.
+   * {@link MethodContract#getExceptionConditions() exception conditions}.
    * 
    * @post new.hasRun();
    * @throws TorytException
@@ -181,12 +192,13 @@ public abstract class MethodTest implements Test {
     try {
       getMethodContract().recordState(this);
       methodCall(); 
-      getMethodContract().validatePostConditions(this);
-      getMethodContract().validateInertiaAxiom(this);
+      validateConditionSet(getMethodContract().getPostconditions());
+      validateInertiaAxiom();
       validateMore();
     }
     catch (InvocationTargetException e) {
-      getMethodContract().validateExceptionCondition(this, e.getCause());
+      getContext().put(EXCEPTION_KEY, e.getCause());
+      validateConditionSet(getMethodContract().getExceptionConditions());
     }
     catch (IllegalArgumentException e) {
       System.out.println(this);
@@ -209,6 +221,18 @@ public abstract class MethodTest implements Test {
       throw new TorytException(getMethodContract(), e);
     }
     setRun();
+  }
+  
+  private void validateInertiaAxiom() {
+    // MUDO
+  }
+
+  private void validateConditionSet(Set conditionSet) {
+    Iterator iter = conditionSet.iterator();
+    while (iter.hasNext()) {
+      Condition c = (Condition)iter.next();
+      validate(c.validate(getContext()));
+    }
   }
 
   /**

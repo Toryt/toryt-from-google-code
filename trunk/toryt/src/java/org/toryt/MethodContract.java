@@ -3,6 +3,7 @@ package org.toryt;
 
 import java.lang.reflect.Member;
 import java.util.Map;
+import java.util.Set;
 
 import org.toryt.support.straightlist.StraightList;
 
@@ -41,18 +42,38 @@ public interface MethodContract extends Contract {
    */
   TypeContract getTypeContract();
   
-  public final static String SUBJECT_KEY = "this@post";
+  public final static String SUBJECT_KEY = MethodTest.SUBJECT_KEY;
+  public final static String RESULT_KEY = MethodTest.RESULT_KEY;
+  public final static String EXCEPTION_KEY = MethodTest.EXCEPTION_KEY;
   
   public abstract StraightList getTestCases() throws TorytException;
   
   public abstract String[] getFormalParameters();
 
-//  /**
-//   * Validate the preconditions of this method contract against
-//   * the state of the given <code>test</code>.
-//   */
-//  boolean validatePreconditions(MethodTest test);
-//
+  /*<property name="postconditions">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  Set getPostconditions();
+
+  /*</property>*/
+
+  
+  
+  /*<property name="exceptionConditions">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  Set getExceptionConditions();
+
+  /*</property>*/
+
+  
+  
   /**
    * Record the old state of the test case (that is the
    * current state of <code>test.getContext()</state> now)
@@ -60,32 +81,6 @@ public interface MethodContract extends Contract {
    * The default implementation of this method does nothing.
    */
   void recordState(MethodTest test);
-  
-  /**
-   * Validate the postconditions of this method contract
-   * against the state of the given <code>test</code>.
-   * Validation should be done by calling {@link MethodTest#validate(boolean)}
-   * on <code>test</code>.
-   */
-  void validatePostConditions(MethodTest test);
-
-  /**
-   * Validate the inertia axiom
-   * against the state of the given <code>test</code>.
-   * Validation should be done by calling {@link MethodTest#validate(boolean)}
-   * on <code>test</code>.
-   */
-  void validateInertiaAxiom(MethodTest test);
-  
-  /**
-   * Validate the exception conditions of this method contract
-   * against the state of the given <code>test</code> for the
-   * exception <code>exc</code>.
-   * Validation should be done by calling {@link MethodTest#validate(boolean)}
-   * on <code>test</code>.
-   */
-  void validateExceptionCondition(MethodTest test, Throwable exc);
-
   
   /**
    * Factory method for the creation of method tests of the correct
