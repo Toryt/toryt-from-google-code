@@ -2,6 +2,7 @@ package org.toryt.main;
 
 
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -11,6 +12,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
 import org.toryt.AbstractTest;
 import org.toryt.Contract;
 import org.toryt.Test;
@@ -37,9 +46,10 @@ public class SimpleCli extends AbstractTest {
   
 
 
-  public SimpleCli(Contract contract) {
+  public SimpleCli(Contract contract, int maximumNrOfFailures) {
     assert contract != null;
     $contract = contract;
+    $maximumNrOfFailures = maximumNrOfFailures;
   }
   
   /*<property name="failed tests">*/
@@ -60,10 +70,14 @@ public class SimpleCli extends AbstractTest {
   
   private Contract $contract;
   
-  public final static int MAXIMUM_NR_FAILURES = 20;
+  public static final int DEFAULT_MAXIMUM_NUMBER_OF_FAILURES = 20;
+  
+  public int $maximumNrOfFailures = DEFAULT_MAXIMUM_NUMBER_OF_FAILURES;
   
   private final boolean hasEnough() {
-    return (getFailedTests() != null) && (getFailedTests().size() > MAXIMUM_NR_FAILURES);
+    return ($maximumNrOfFailures >= 0)
+             ? ((getFailedTests() != null) && (getFailedTests().size() > $maximumNrOfFailures))
+             : false;
   }
   
   public final void test() throws TorytException {
@@ -156,18 +170,74 @@ public class SimpleCli extends AbstractTest {
   }
 
   public static void main(String[] args) throws TorytException {
+    Option helpOption = new Option("h", "help", false, "print this message" );
+    OptionBuilder.withLongOpt("maxFailures");
+    OptionBuilder.withArgName("natural");
+    OptionBuilder.hasOptionalArg();
+    OptionBuilder.withDescription("The maximum number of failures. Default is no maximum, "
+                        + "without arguments, the default is "
+                        + DEFAULT_MAXIMUM_NUMBER_OF_FAILURES);
+    Option maxFailuresOption = OptionBuilder.create("f");
+    OptionBuilder.withLongOpt("contracts");
+    OptionBuilder.withArgName("Fqn1[:Fqn2[:...]]");
+    OptionBuilder.hasArgs();
+    OptionBuilder.withValueSeparator(':');
+    OptionBuilder.isRequired();
+    OptionBuilder.withDescription("Fully qualified names of the contracts to test (separated by a ':')");
+    Option contractsOption = OptionBuilder.create("c");
+    Options clOptions = new Options();
+    clOptions.addOption(helpOption);
+    clOptions.addOption(maxFailuresOption);
+    clOptions.addOption(contractsOption);
+    CommandLineParser clParser = new PosixParser();
+    CommandLine cl = null;
+    try {
+      cl = clParser.parse(clOptions, args);
+    }
+    catch (ParseException e) {
+      System.err.println("Parsing failed.  Reason: " + e.getMessage());
+      printHelp(clOptions, -1, System.err);
+    }
+    if (cl.hasOption("h")) {
+      printHelp(clOptions, 0, System.out);
+    }
+    int maxFailures = -1;
+    if (cl.hasOption('f')) {
+      maxFailures = DEFAULT_MAXIMUM_NUMBER_OF_FAILURES;
+      String maxFailuresString = cl.getOptionValue("f");
+      Number maxFailuresNumber = null;
+      if (maxFailuresString != null) {
+        try {
+          maxFailuresNumber = INTEGER_NUMBER_FORMATTER.parse(maxFailuresString);
+        }
+        catch (java.text.ParseException pExc) {
+          System.err.println("Parsing failed.  Reason: -f not a natural");
+          printHelp(clOptions, -2, System.err);
+        }
+        maxFailures = maxFailuresNumber.intValue();
+      }
+    }
     System.out.println("Starting tests.");
     System.out.println(new Date());
+    if (maxFailures < 0) {
+      System.out.println("Will run complete test.");
+    }
+    else {
+      System.out.println("Will stop after "
+                         + INTEGER_NUMBER_FORMATTER.format(maxFailures)
+                         + " test failures.");
+    }
     System.out.println("\n");
-    for (int i = 0; i < args.length; i++) {
+    String[] contractNames = cl.getOptionValues("c");
+    for (int i = 0; i < contractNames.length; i++) {
       System.out.println("Starting test for \""
-                         + args[i]
+                         + contractNames[i]
                          + "\".");
-      Class contractClass = instantiateClass(args[i]);
+      Class contractClass = instantiateClass(contractNames[i]);
       if (contractClass != null) {
         Contract contractInstance = getContractInstance(contractClass);
         if (contractInstance != null) {
-          SimpleCli test = new SimpleCli(contractInstance);
+          SimpleCli test = new SimpleCli(contractInstance, maxFailures);
           test.test();
         }
       }
@@ -177,6 +247,26 @@ public class SimpleCli extends AbstractTest {
     System.out.println("Tests done.");
   }
   
+  private static void printHelp(Options clOptions, int exitCode, PrintStream ps) {
+    printHelp(clOptions, exitCode, new PrintWriter(ps));
+  }
+  
+  private static void printHelp(Options clOptions, int exitCode, PrintWriter pw) {
+    HelpFormatter hf = new HelpFormatter();
+    hf.printHelp(72, "java " + SimpleCli.class.getName(),
+                 "Toryt " + CVS_REVISION + ", " + CVS_DATE,
+                 clOptions,
+                 "May the force be with you.",
+                 true);
+//    hf.printHelp(pw, 72, "java " + SimpleCli.class.getName(),
+//                 "Toryt " + CVS_REVISION + ", " + CVS_DATE,
+//                 clOptions,
+//                 2, 10,
+//                 "May the force be with you.",
+//                 true);
+    System.exit(exitCode);
+  }
+
   private static Class instantiateClass(final String clazz) {
     Class result = null;
     try {
