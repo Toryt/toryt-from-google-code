@@ -61,7 +61,7 @@ public class Group extends Node {
    * @post new.getDescription()
    *        .equals(description == null ? EMPTY : description);
    * @post new.getTitle().equals(title == null ? EMPTY : title);
-   * @post new.getRating() == 0;
+   * @post Double.isNaN(new.getRating());
    * @post new.getGroup() == parent;
    * @post new.getNodes().isEmpty();
    */

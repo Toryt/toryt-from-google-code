@@ -61,7 +61,7 @@ public abstract class AbstractMethodContract extends AbstractContract
     // MUDO this order must become priority order
     // MUDO this must become a list of method test factories
     StraightList testCases = getTestCases();
-    if (getTestCases().isEmpty()) {
+    if (testCases.isEmpty()) {
       // create an empty map, 1 test case, to use as factory for 1 method test
       testCases = new ArrayStraightList(new Map[] {new HashMap()});
     }

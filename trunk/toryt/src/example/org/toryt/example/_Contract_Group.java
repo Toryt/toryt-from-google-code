@@ -94,7 +94,7 @@ public class _Contract_Group extends ClassContract {
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
             Group subject = (Group)context.get(SUBJECT_KEY);
-            return subject.getRating() == 0;
+            return Double.isNaN(subject.getRating());
           }});
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
@@ -141,7 +141,7 @@ public class _Contract_Group extends ClassContract {
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
             Group subject = (Group)context.get(SUBJECT_KEY);
-            return subject.getRating() == 0;
+            return Double.isNaN(subject.getRating());
           }
         });
         addPostcondition(new Condition() {
