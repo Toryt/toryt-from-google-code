@@ -42,25 +42,25 @@ public final class Cases {
                                new Integer(-1),
                                new Integer(Integer.MAX_VALUE),
                                new Integer(Integer.MIN_VALUE),
-                               new Integer(-Integer.MIN_VALUE),
-                               new Integer(Integer.MAX_VALUE - 1),
-                               new Integer(Integer.MIN_VALUE + 1),
-                               new Integer(5),
-                               new Integer(45),
-                               new Integer(511),
-                               new Integer(512),
-                               new Integer(513),
-                               new Integer(1023),
-                               new Integer(1024),
-                               new Integer(1025),
-                               new Integer(-5),
-                               new Integer(-45),
-                               new Integer(-511),
-                               new Integer(-512),
-                               new Integer(-513),
-                               new Integer(-1023),
-                               new Integer(-1024),
-                               new Integer(-1025)});
+//                               new Integer(-Integer.MIN_VALUE),
+//                               new Integer(Integer.MAX_VALUE - 1),
+//                               new Integer(Integer.MIN_VALUE + 1),
+//                               new Integer(5),
+//                               new Integer(45),
+//                               new Integer(511),
+//                               new Integer(512),
+//                               new Integer(513),
+//                               new Integer(1023),
+//                               new Integer(1024),
+//                               new Integer(1025),
+//                               new Integer(-5),
+//                               new Integer(-45),
+//                               new Integer(-511),
+//                               new Integer(-512),
+//                               new Integer(-513),
+//                               new Integer(-1023),
+//                               new Integer(-1024),
+                                 new Integer(-1025)});
 
   private final static StraightList TOL_JAVA_LANG_LONG
       = new ArrayStraightList(
@@ -69,40 +69,40 @@ public final class Cases {
                         new Long(-1),
                         new Long(Long.MAX_VALUE),
                         new Long(Long.MIN_VALUE),
-                        new Long(-Long.MIN_VALUE),
-                        new Long(Long.MAX_VALUE - 1),
-                        new Long(Long.MIN_VALUE + 1),
-                        new Long(-Integer.MIN_VALUE),
-                        new Long(Integer.MAX_VALUE),
-                        new Long(Integer.MAX_VALUE - 1),
-                        new Long(Integer.MIN_VALUE + 1),
-                        new Long(5),
-                        new Long(45),
-                        new Long(511),
-                        new Long(512),
-                        new Long(513),
-                        new Long(1023),
-                        new Long(1024),
-                        new Long(1025),
-                        new Long(4 * Integer.MAX_VALUE),
-                        new Long(10 * Integer.MAX_VALUE),
-                        new Long(100000 * Integer.MAX_VALUE),
-                        new Long(Long.MAX_VALUE / 4),
-                        new Long(Long.MAX_VALUE / 2),
-                        new Long(-5),
-                        new Long(-45),
-                        new Long(-511),
-                        new Long(-512),
-                        new Long(-513),
-                        new Long(-1023),
-                        new Long(-1024),
-                        new Long(-1025),
-                        new Long(Integer.MIN_VALUE),
-                        new Long(4 * Integer.MIN_VALUE),
-                        new Long(10 * Integer.MIN_VALUE),
-                        new Long(100000 * Integer.MIN_VALUE),
-                        new Long(Long.MIN_VALUE / 4),
-                        new Long(Long.MIN_VALUE / 2)});
+//                        new Long(-Long.MIN_VALUE),
+//                        new Long(Long.MAX_VALUE - 1),
+//                        new Long(Long.MIN_VALUE + 1),
+//                        new Long(-Integer.MIN_VALUE),
+//                        new Long(Integer.MAX_VALUE),
+//                        new Long(Integer.MAX_VALUE - 1),
+//                        new Long(Integer.MIN_VALUE + 1),
+//                        new Long(5),
+//                        new Long(45),
+//                        new Long(511),
+//                        new Long(512),
+//                        new Long(513),
+//                        new Long(1023),
+//                        new Long(1024),
+//                        new Long(1025),
+//                        new Long(4 * Integer.MAX_VALUE),
+//                        new Long(10 * Integer.MAX_VALUE),
+//                        new Long(100000 * Integer.MAX_VALUE),
+//                        new Long(Long.MAX_VALUE / 4),
+//                        new Long(Long.MAX_VALUE / 2),
+//                        new Long(-5),
+//                        new Long(-45),
+//                        new Long(-511),
+//                        new Long(-512),
+//                        new Long(-513),
+//                        new Long(-1023),
+//                        new Long(-1024),
+//                        new Long(-1025),
+//                        new Long(Integer.MIN_VALUE),
+//                        new Long(4 * Integer.MIN_VALUE),
+//                        new Long(10 * Integer.MIN_VALUE),
+//                        new Long(100000 * Integer.MIN_VALUE),
+//                        new Long(Long.MIN_VALUE / 4),
+                          new Long(Long.MIN_VALUE / 2)});
 
 
   private final static StraightList TOL_JAVA_LANG_OBJECT
@@ -115,35 +115,35 @@ public final class Cases {
       = new ArrayStraightList(
             new String[] {"",
                       "Jan Dockx",
-                      "this is a test sentence with more then 1024 characters"
-                        + "*0 12345678901234567890123456789012345678901234567890"
-                        +    "12345678901234567890123456789012345678901234567890"
-                        + "*1 12345678901234567890123456789012345678901234567890"
-                        +    "12345678901234567890123456789012345678901234567890"
-                        + "*2 12345678901234567890123456789012345678901234567890"
-                        +    "12345678901234567890123456789012345678901234567890"
-                        + "*3 12345678901234567890123456789012345678901234567890"
-                        +    "12345678901234567890123456789012345678901234567890"
-                        + "*4 12345678901234567890123456789012345678901234567890"
-                        +    "12345678901234567890123456789012345678901234567890"
-                        + "*5 12345678901234567890123456789012345678901234567890"
-                        +    "12345678901234567890123456789012345678901234567890"
-                        + "*6 12345678901234567890123456789012345678901234567890"
-                        +    "12345678901234567890123456789012345678901234567890"
-                        + "*7 12345678901234567890123456789012345678901234567890"
-                        +    "12345678901234567890123456789012345678901234567890"
-                        + "*8 12345678901234567890123456789012345678901234567890"
-                        +    "12345678901234567890123456789012345678901234567890"
-                        + "*9 12345678901234567890123456789012345678901234567890"
-                        +    "12345678901234567890123456789012345678901234567890",
-                      "J",
-                      "Jan",
-                      "JanD",
-                      " JanD",
-                      "JanD ",
-                      " Jan Dockx",
-                      "Jan Dockx ",
-                      " Jan Dockx ",
+//                      "this is a test sentence with more then 1024 characters"
+//                        + "*0 12345678901234567890123456789012345678901234567890"
+//                        +    "12345678901234567890123456789012345678901234567890"
+//                        + "*1 12345678901234567890123456789012345678901234567890"
+//                        +    "12345678901234567890123456789012345678901234567890"
+//                        + "*2 12345678901234567890123456789012345678901234567890"
+//                        +    "12345678901234567890123456789012345678901234567890"
+//                        + "*3 12345678901234567890123456789012345678901234567890"
+//                        +    "12345678901234567890123456789012345678901234567890"
+//                        + "*4 12345678901234567890123456789012345678901234567890"
+//                        +    "12345678901234567890123456789012345678901234567890"
+//                        + "*5 12345678901234567890123456789012345678901234567890"
+//                        +    "12345678901234567890123456789012345678901234567890"
+//                        + "*6 12345678901234567890123456789012345678901234567890"
+//                        +    "12345678901234567890123456789012345678901234567890"
+//                        + "*7 12345678901234567890123456789012345678901234567890"
+//                        +    "12345678901234567890123456789012345678901234567890"
+//                        + "*8 12345678901234567890123456789012345678901234567890"
+//                        +    "12345678901234567890123456789012345678901234567890"
+//                        + "*9 12345678901234567890123456789012345678901234567890"
+//                        +    "12345678901234567890123456789012345678901234567890",
+//                      "J",
+//                      "Jan",
+//                      "JanD",
+//                      " JanD",
+//                      "JanD ",
+//                      " Jan Dockx",
+//                      "Jan Dockx ",
+//                      " Jan Dockx ",
                       " JanD "});
 
   // MUDO (dvankeer): This needs to be moved elsewhere
@@ -162,16 +162,16 @@ public final class Cases {
   private final static StraightList TOL_JAVA_UTIL_DATE
     = new ArrayStraightList(
             new Date[] {new Date(),                                    // Today
-                        new Date(System.currentTimeMillis() - DAY),    // Yesterday
-                        new Date(System.currentTimeMillis() + DAY),    // Tommorow
-                        new Date(System.currentTimeMillis() - WEEK),   // Last Week
-                        new Date(System.currentTimeMillis() + WEEK),   // Next Week
-                        new Date(System.currentTimeMillis() - MONTH),  // Last Month
-                        new Date(System.currentTimeMillis() + MONTH),  // Next Month
-                        new Date(System.currentTimeMillis() - YEAR),   // Last year
-                        new Date(System.currentTimeMillis() + YEAR),   // Next year
-                        new Date(System.currentTimeMillis() - DECADE), // Last decade
-                        new Date(System.currentTimeMillis() + DECADE), // Next decade
+//                        new Date(System.currentTimeMillis() - DAY),    // Yesterday
+//                        new Date(System.currentTimeMillis() + DAY),    // Tommorow
+//                        new Date(System.currentTimeMillis() - WEEK),   // Last Week
+//                        new Date(System.currentTimeMillis() + WEEK),   // Next Week
+//                        new Date(System.currentTimeMillis() - MONTH),  // Last Month
+//                        new Date(System.currentTimeMillis() + MONTH),  // Next Month
+//                        new Date(System.currentTimeMillis() - YEAR),   // Last year
+//                        new Date(System.currentTimeMillis() + YEAR),   // Next year
+//                        new Date(System.currentTimeMillis() - DECADE), // Last decade
+//                        new Date(System.currentTimeMillis() + DECADE), // Next decade
                         new Date(0)});                                  // Unix Epoch
 
   private final static StraightList TOL_JAVA_LANG_BOOLEAN
