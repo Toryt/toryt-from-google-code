@@ -6,8 +6,8 @@ import java.util.Map;
 
 /**
  * A Condition is used to validate boolean expressions during a method test.
- * Conditions are used as preconditions, postconditions, type invariants and
- * exception conditions.
+ * Conditions are used as preconditions, postconditions, and type invariants.
+ * {@link ExceptionCondition Exception conditions} use a subtype.
  * 
  * @author Jan Dockx
  * 

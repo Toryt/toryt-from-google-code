@@ -188,9 +188,7 @@ public abstract class MethodTest implements Test {
 //      validateMore();
     }
     catch (InvocationTargetException e) {
-      e.printStackTrace();
-      getContext().put(EXCEPTION_KEY, e.getCause());
-      validateConditionSet(getMethodContract().getExceptionConditions());
+      validateExceptionConditions(e.getCause());
     }
     catch (IllegalArgumentException e) {
       System.out.println(this);
@@ -213,6 +211,98 @@ public abstract class MethodTest implements Test {
       throw new TorytException(getMethodContract(), e);
     }
     setRun();
+  }
+
+  private void validateExceptionConditions(Throwable e) {
+    assert e != null;
+    Set conditionSet = (Set)getMethodContract().getExceptionConditions().get(e.getClass());
+    if (conditionSet == null) {
+      /* there are no conditions recorded for this exception type;
+       * it is thus unexpected, and thus a failure.
+       */
+      $failedConditions.add(new FailedExceptionCondition(e, null));
+    }
+    else {
+      getContext().put(EXCEPTION_KEY, e);
+      Iterator iter = conditionSet.iterator();
+      while (iter.hasNext()) {
+        ExceptionCondition c = (ExceptionCondition)iter.next();
+        if (c.validate(getContext())) {
+          $passedConditions.add(new PassedExpectedExceptionCondition(e, c));
+          return;
+        }
+      }
+      // if we get here, no condition was valid
+      $failedConditions.add(new FailedExceptionCondition(e, conditionSet));
+    }
+  }
+  
+  public abstract class ReportExceptionCondition implements Condition {
+
+    public ReportExceptionCondition(Throwable e) {
+      assert e != null;
+      $exception = e;
+    }
+    
+    public final Throwable getException() {
+      return $exception;
+    }
+    
+    public final MethodTest getMethodTest() {
+      return MethodTest.this;
+    }
+    
+    private Throwable $exception;
+    
+  }
+
+  public final class FailedExceptionCondition extends ReportExceptionCondition {
+
+    public FailedExceptionCondition(Throwable e,
+                                      Set exceptionConditions) {
+      super(e);
+      $exceptionConditions = exceptionConditions;
+    }
+    
+    /**
+     * The exception conditions for the type of exception
+     * that all validated <code>false</code>. If <code>null</code>
+     * the exception was wholy unexpected.
+     */
+    public Set getExceptionCondition() {
+      return $exceptionConditions;
+    }
+    
+    private Set $exceptionConditions;
+
+    public boolean validate(Map context) {
+      return false;
+    }
+
+  }
+
+  public final class PassedExpectedExceptionCondition extends ReportExceptionCondition {
+
+    public PassedExpectedExceptionCondition(Throwable e,
+                                      ExceptionCondition exceptionCondition) {
+      super(e);
+      assert exceptionCondition != null;
+      $exceptionCondition = exceptionCondition;
+    }
+    
+    /**
+     * The exception condition that validated <code>true</code>.
+     */
+    public ExceptionCondition getExceptionCondition() {
+      return $exceptionCondition;
+    }
+    
+    private ExceptionCondition $exceptionCondition;
+
+    public boolean validate(Map context) {
+      return true;
+    }
+    
   }
 
   private void validateInertiaAxiom() {

@@ -188,8 +188,15 @@ public abstract class AbstractMethodContract extends AbstractContract
   /**
    * @basic
    */
-  public final Set getExceptionConditions() {
-    return Collections.unmodifiableSet($exceptionConditions);
+  public final Map getExceptionConditions() {
+    //unmodifiable map of unmodifiable sets of exception conditions
+    Map result = new HashMap();
+    Iterator iter = $exceptionConditions.entrySet().iterator();
+    while (iter.hasNext()) {
+      Map.Entry entry = (Map.Entry)iter.next();
+      result.put(entry.getKey(), Collections.unmodifiableSet((Set)entry.getValue()));
+    }
+    return Collections.unmodifiableMap(result);
   }
   
   /**
@@ -198,12 +205,17 @@ public abstract class AbstractMethodContract extends AbstractContract
    * @throws TorytException
    *         isClosed();
    */
-  public void addExceptionCondition(Condition condition) throws TorytException {
+  public void addExceptionCondition(ExceptionCondition condition) throws TorytException {
     assert condition != null;
     if (isClosed()) {
       throw new TorytException(this, null);
     }
-    $exceptionConditions.add(condition);
+    Set exceptionConditionSet = (Set)$exceptionConditions.get(condition.getExceptionType());
+    if (exceptionConditionSet == null) {
+      exceptionConditionSet = new HashSet();
+      $exceptionConditions.put(condition.getExceptionType(), exceptionConditionSet);
+    }
+    exceptionConditionSet.add(condition);
   }
   
   /**
@@ -211,7 +223,7 @@ public abstract class AbstractMethodContract extends AbstractContract
    * @invar ! $exceptionConditions.contains(null);
    * @invar (forall Object o; $exceptionConditions.contains(o); o instanceof Condition);
    */
-  private Set $exceptionConditions = new HashSet();
+  private Map $exceptionConditions = new HashMap();
   
   /*</property>*/
 

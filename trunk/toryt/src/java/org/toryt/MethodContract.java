@@ -101,9 +101,16 @@ public interface MethodContract extends Contract {
   //------------------------------------------------------------------
 
   /**
+   * The exception conditions as a map. The map contains sets of
+   * {@link ExceptionCondition} instances, with the
+   * {@link ExceptionCondition#getExceptionType() exception type}
+   * as key.
+   * One of the conditions in the set for a given exception type
+   * must validate <code>true</code>, not all of them.
+   * 
    * @basic
    */
-  Set getExceptionConditions();
+  Map getExceptionConditions();
 
   /*</property>*/
 
