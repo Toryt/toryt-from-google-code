@@ -1,10 +1,12 @@
 package org.toryt.example;
 
 
-import java.util.List;
+import java.util.Map;
 
 import org.toryt.TorytException;
 import org.toryt.hard.ClassContract;
+import org.toryt.support.straightlist.LazyMappingStraightList;
+import org.toryt.support.straightlist.StraightList;
 
 
 public class _Contract_Group extends ClassContract {
@@ -22,21 +24,36 @@ public class _Contract_Group extends ClassContract {
     close();
   }
   
-  public List getCases() throws TorytException {
-    return getCases(new GroupFactory());
-  }
-
-  public static List getCases(GroupFactory gf) throws TorytException {
-    return _Contract_Node.getCases(gf);
+  public StraightList getCasesMaps() throws TorytException {
+    return _C_N.getCasesMaps();
   }
   
-  public static class GroupFactory extends _Contract_Node.NodeFactory {
-    
-    public Node createNode() {
-      return new Group();
+  public static _Contract_Node _C_N;
+  
+  static {
+    try {
+      _C_N = new _Contract_Node();
     }
-    
+    catch (TorytException e) {
+      assert false;
+    }
   }
   
+  public LazyMappingStraightList.Mapping getCaseMapping() {
+    return CASE_MAPPING;
+  }
+  
+  public final static LazyMappingStraightList.Mapping CASE_MAPPING
+      = new LazyMappingStraightList.Mapping() {
+          public Object map(Object o) {
+            Map m = (Map)o;
+            Node subject = new Group();
+            subject.setDescription((String)m.get("description"));
+            subject.setTitle((String)m.get("title"));
+            subject.setGroup((Group)m.get("group"));
+            return subject;
+          }
+        };
+
   
 }

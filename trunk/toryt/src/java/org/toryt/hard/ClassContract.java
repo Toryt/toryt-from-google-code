@@ -3,11 +3,14 @@ package org.toryt.hard;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.toryt.CaseProvider;
 import org.toryt.TorytException;
+import org.toryt.support.straightlist.LazyMappingStraightList;
+import org.toryt.support.straightlist.NullFirstStraightList;
+import org.toryt.support.straightlist.StraightList;
 
 
 /**
@@ -91,16 +94,24 @@ public abstract class ClassContract
   }
   
   private Set $constructorContracts = new HashSet();
-    
+  
+  /**
+   * Return a list of {@link Map} instances, that contain
+   * combinations with wich we can generate a test instance
+   * with {@link #getCaseMapping()}.
+   * @throws TorytException
+   */
+  public abstract StraightList getCasesMaps() throws TorytException;
+  
+  public abstract LazyMappingStraightList.Mapping getCaseMapping();
+  
   /**
    * All possible relevant cases for this type,
    * with <code>null</code>.
    * @throws TorytException
    */
-  public final List getCasesWithNull() throws TorytException {
-    List result = getCases();
-    result.add(0, null);
-    return result;
+  public final NullFirstStraightList getCasesWithNull() throws TorytException {
+    return new NullFirstStraightList(getCases());
   }
 
   /**
@@ -108,17 +119,17 @@ public abstract class ClassContract
    * without <code>null</code>.
    * @throws TorytException
    */
-  public abstract List getCases() throws TorytException;
+  public final StraightList getCases() throws TorytException {
+    return new LazyMappingStraightList(getCasesMaps(), getCaseMapping());
+  }
 
   /**
    * A limited number of most important cases for this type,
    * without <code>null</code>.
    * @throws TorytException
    */
-  public final List getSomeCasesWithNull() throws TorytException {
-    List result = getSomeCases();
-    result.add(0, null);
-    return result;
+  public final NullFirstStraightList getSomeCasesWithNull() throws TorytException {
+    return new NullFirstStraightList(getSomeCases());
   }
 
   /**
@@ -126,7 +137,7 @@ public abstract class ClassContract
    * with <code>null</code>.
    * @throws TorytException
    */
-  public List getSomeCases() throws TorytException {
+  public StraightList getSomeCases() throws TorytException {
     return getCases();
   }
 

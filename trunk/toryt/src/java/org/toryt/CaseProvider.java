@@ -1,7 +1,8 @@
 package org.toryt;
 
 
-import java.util.List;
+import org.toryt.support.straightlist.NullFirstStraightList;
+import org.toryt.support.straightlist.StraightList;
 
 
 /**
@@ -31,27 +32,27 @@ public interface CaseProvider {
    * with <code>null</code>.
    * @throws TorytException
    */
-  List getCasesWithNull() throws TorytException;
+  NullFirstStraightList getCasesWithNull() throws TorytException;
 
   /**
    * All possible relevant cases for this type,
    * without <code>null</code>.
    * @throws TorytException
    */
-  List getCases() throws TorytException;
+  StraightList getCases() throws TorytException;
 
   /**
    * A limited number of most important cases for this type,
    * without <code>null</code>.
    * @throws TorytException
    */
-  List getSomeCasesWithNull() throws TorytException;
+  NullFirstStraightList getSomeCasesWithNull() throws TorytException;
 
   /**
    * A limited number of most important cases for this type,
    * with <code>null</code>.
    * @throws TorytException
    */
-  List getSomeCases() throws TorytException;
+  StraightList getSomeCases() throws TorytException;
 
 }

@@ -1,10 +1,6 @@
 package org.toryt.example;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.toryt.Cases;
@@ -14,8 +10,9 @@ import org.toryt.MethodTest;
 import org.toryt.TorytException;
 import org.toryt.hard.ClassContract;
 import org.toryt.hard.MutatorContract;
+import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
-import org.toryt.support.straightlist.ListWrapperStraightList;
+import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
 
 
@@ -53,8 +50,8 @@ public class _Contract_Node extends ClassContract {
       
       public StraightList getTestCases() throws TorytException {
         return new LazyCombinationStraightList(
-             new StraightList[] {new ListWrapperStraightList(getCases()),
-                                 new ListWrapperStraightList(Cases.findTestObjectList(String.class))},
+             new StraightList[] {getCases(),
+                                 Cases.findTestObjectList(String.class)},
              new String[] {SUBJECT_KEY, "description"});
       }
 
@@ -76,8 +73,8 @@ public class _Contract_Node extends ClassContract {
 
       public StraightList getTestCases() throws TorytException {
         return new LazyCombinationStraightList(
-             new StraightList[] {new ListWrapperStraightList(getCases()),
-                                 new ListWrapperStraightList(Cases.findTestObjectList(String.class))},
+             new StraightList[] {getCases(),
+                                 Cases.findTestObjectList(String.class)},
              new String[] {SUBJECT_KEY, "title"});
       }
       
@@ -113,8 +110,8 @@ public class _Contract_Node extends ClassContract {
 
       public StraightList getTestCases() throws TorytException {
         return new LazyCombinationStraightList(
-              new StraightList[] {new ListWrapperStraightList(getCases()),
-                                  new ListWrapperStraightList(_C_G.getCasesWithNull())},
+              new StraightList[] {getCases(),
+                                  _C_G.getCasesWithNull()},
               new String[] {SUBJECT_KEY, "group"});
       }
       
@@ -166,45 +163,37 @@ public class _Contract_Node extends ClassContract {
     close();
   }
     
-  public List getCases() throws TorytException {
-    return getCases(new NodeFactory());
+  public StraightList getCasesMaps() throws TorytException {
+    ArrayStraightList groups // this must become a factory, since now we share the groups
+      = new ArrayStraightList(new Group[] {null,
+                                           new Group(),
+                                           new Group("title","description",null),
+                                           new Group("title","description",new Group())});
+    return new LazyCombinationStraightList(
+                new StraightList[] {Cases.findTestObjectList(String.class),
+                                    Cases.findTestObjectList(String.class),
+                                    groups},
+                new String[] {"description", "title", "group"});
   }
 
-  public static List getCases(NodeFactory nf) throws TorytException {
-    List result = new ArrayList();
-    Iterator descriptions = Cases.findTestObjectList(String.class).iterator();
-    while (descriptions.hasNext()) {
-      String description = (String)descriptions.next();
-      Iterator titles = Cases.findTestObjectList(String.class).iterator();
-      while (titles.hasNext()) {
-        String title = (String)titles.next();
-        // If we just use the group cases, we get an infinite loop
-        result.add(nf.createNode(description, title, null));
-        result.add(nf.createNode(description, title, new Group()));
-        result.add(nf.createNode(description, title, new Group("title","description",null)));
-        result.add(nf.createNode(description, title, new Group("title","description",new Group())));
-      }
-    }
-    return result;
+  public LazyMappingStraightList.Mapping getCaseMapping() {
+    return CASE_MAPPING;
   }
   
-  public static class NodeFactory {
-    
-    public Node createNode() {
-      return new NodeStub();
-    }
+  public final static LazyMappingStraightList.Mapping CASE_MAPPING
+      = new LazyMappingStraightList.Mapping() {
+          public Object map(Object o) {
+            Map m = (Map)o;
+            Node subject = new NodeStub();
+            subject.setDescription((String)m.get("description"));
+            subject.setTitle((String)m.get("title"));
+            subject.setGroup((Group)m.get("group"));
+            return subject;
+          }
+        };
+  
 
-    public Node createNode(String description, String title, Group group) {
-      Node subject = createNode();
-      subject.setDescription(description);
-      subject.setTitle(title);
-      subject.setGroup(group);
-      return subject;
-    }
-    
-  }
-  
-  private static class NodeStub extends Node {
+  public static class NodeStub extends Node {
 
     protected int getTotalOfRatings() {
       return 0;
@@ -215,5 +204,5 @@ public class _Contract_Node extends ClassContract {
     }
     
   }
-  
+
 }

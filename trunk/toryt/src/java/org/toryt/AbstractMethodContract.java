@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.ListWrapperStraightList;
 import org.toryt.support.straightlist.StraightList;
 
@@ -54,17 +55,15 @@ public abstract class AbstractMethodContract extends AbstractContract
   public final StraightList getMethodTests() throws TorytException {
     // MUDO this order must become priority order
     // MUDO this must become a list of method test factories
-    StraightList testCases = getTestCases();
-    List result = new ArrayList(testCases.size());
-    Iterator iterCases = testCases.iterator();
-    while (iterCases.hasNext()) {
-      Map testCase = (Map)iterCases.next();
-      MethodTest test = createMethodTest(testCase);
-      result.add(test);
-    }
-    return new ListWrapperStraightList(result);
+    return new LazyMappingStraightList(getTestCases(),
+          new LazyMappingStraightList.Mapping() {
+                public Object map(Object o) {
+                  Map testCaseMap = (Map)o;
+                  return createMethodTest(testCaseMap);
+                }
+              });
   }
-
+  
   public String[] getFormalParameters() {
     return new String[0];
   }

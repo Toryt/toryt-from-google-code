@@ -1,7 +1,6 @@
 package org.toryt.support.straightlist;
 
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,7 +20,7 @@ import java.util.NoSuchElementException;
  * 
  * @mudo better contract
  */
-public class LazyCombinationStraightList extends AbstractStraightList {
+public class LazyCombinationStraightList extends AbstractLazyStraightList {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -66,26 +65,6 @@ public class LazyCombinationStraightList extends AbstractStraightList {
    * @invar $labels != null;
    */
   private String[] $labels;
-
-  /**
-   * {@inheritDoc}
-   * This method is very costly, since it actually generates the combinations
-   * until a match failure is found.
-   */
-  public final boolean contains(Object o) {
-    Iterator iter = iterator();
-    while (iter.hasNext()) {
-      Map entry = (Map)iter.next();
-      if (! entry.equals(o)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  public final boolean isEmpty() {
-    return size() == 0;
-  }
 
   public final Iterator iterator() {
     return new Iterator() {
@@ -159,24 +138,6 @@ public class LazyCombinationStraightList extends AbstractStraightList {
       }
     }
     return $size;
-  }
-
-  /**
-   * {@inheritDoc}
-   * This method is very costly, since it actually generates the combinations.
-   */
-  public final Object[] toArray(Class clazz, int size) {
-    if (size < size()) {
-      throw new ArrayIndexOutOfBoundsException();
-    }
-    Object[] result = (Object[])Array.newInstance(clazz, size); 
-    int i = 0;
-    Iterator iter = iterator();
-    while (iter.hasNext()) {
-      Map entry = (Map)iter.next();
-      result[i] = entry;
-    }
-    return result;
   }
 
 }

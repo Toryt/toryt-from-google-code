@@ -2,17 +2,12 @@ package org.toryt;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import org.jscience.physics.quantities.Length;
-import org.jscience.physics.quantities.Mass;
-import org.jscience.physics.quantities.Quantity;
-import org.jscience.physics.units.SI;
+
+import org.toryt.support.straightlist.ArrayStraightList;
+import org.toryt.support.straightlist.StraightList;
 
 import be.peopleware.bean_II.Beans;
 
@@ -40,8 +35,8 @@ public final class Cases {
   /*</section>*/
 
 
-  private final static List TOL_JAVA_LANG_INTEGER
-      = Arrays.asList(
+  private final static StraightList TOL_JAVA_LANG_INTEGER
+      = new ArrayStraightList(
                 new Integer[] {new Integer(0),
                                new Integer(1),
                                new Integer(-1),
@@ -67,8 +62,8 @@ public final class Cases {
                                new Integer(-1024),
                                new Integer(-1025)});
 
-  private final static List TOL_JAVA_LANG_LONG
-      = Arrays.asList(
+  private final static StraightList TOL_JAVA_LANG_LONG
+      = new ArrayStraightList(
             new Long[] {new Long(0),
                         new Long(1),
                         new Long(-1),
@@ -110,14 +105,14 @@ public final class Cases {
                         new Long(Long.MIN_VALUE / 2)});
 
 
-  private final static List TOL_JAVA_LANG_OBJECT
-      = Arrays.asList(new Object[] {new Object()});
+  private final static StraightList TOL_JAVA_LANG_OBJECT
+      = new ArrayStraightList(new Object[] {new Object()});
 
 //  private final static TestObjectList TOL_JAVA_LANG_THROWABLE
 //      = new TOL_Throwable(true);
 
-  private final static List TOL_JAVA_LANG_STRING
-      = Arrays.asList(
+  private final static StraightList TOL_JAVA_LANG_STRING
+      = new ArrayStraightList(
             new String[] {"",
                       "Jan Dockx",
                       "this is a test sentence with more then 1024 characters"
@@ -164,8 +159,8 @@ public final class Cases {
   /** Number of milliseconds in a decade. */
   private static final long DECADE  = 3155692597470L;
 
-  private final static List TOL_JAVA_UTIL_DATE
-    = Arrays.asList(
+  private final static StraightList TOL_JAVA_UTIL_DATE
+    = new ArrayStraightList(
             new Date[] {new Date(),                                    // Today
                         new Date(System.currentTimeMillis() - DAY),    // Yesterday
                         new Date(System.currentTimeMillis() + DAY),    // Tommorow
@@ -180,31 +175,31 @@ public final class Cases {
                         new Date(0)});                                  // Unix Epoch
 
   // @mudo (nsmeets): This has to be adapted so that it uses doubles
-  private final static List TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH
-  = new ArrayList();
-  static {
-    Iterator i = TOL_JAVA_LANG_LONG.iterator();
-    while (i.hasNext()) {
-      Long longObject = (Long) i.next();
-      long longValue = longObject.longValue();
-      TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH.add(
-          Length.lengthOf(Quantity.valueOf(longValue, SI.METER))
-      );
-    }
-  }
-  // @mudo (nsmeets): This has to be adapted so that it uses doubles
-  private final static List TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_MASS
-  = new ArrayList();
-  static {
-    Iterator i = TOL_JAVA_LANG_LONG.iterator();
-    while (i.hasNext()) {
-      Long longObject = (Long) i.next();
-      long longValue = longObject.longValue();
-      TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_MASS.add(
-          Mass.massOf(Quantity.valueOf(longValue, SI.KILOGRAM))
-      );
-    }
-  }
+//  private final static StraightList TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH
+//  = new ArrayList();
+//  static {
+//    Iterator i = TOL_JAVA_LANG_LONG.iterator();
+//    while (i.hasNext()) {
+//      Long longObject = (Long) i.next();
+//      long longValue = longObject.longValue();
+//      TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH.add(
+//          Length.lengthOf(Quantity.valueOf(longValue, SI.METER))
+//      );
+//    }
+//  }
+//  // @mudo (nsmeets): This has to be adapted so that it uses doubles
+//  private final static StraightList TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_MASS
+//  = new ArrayList();
+//  static {
+//    Iterator i = TOL_JAVA_LANG_LONG.iterator();
+//    while (i.hasNext()) {
+//      Long longObject = (Long) i.next();
+//      long longValue = longObject.longValue();
+//      TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_MASS.add(
+//          Mass.massOf(Quantity.valueOf(longValue, SI.KILOGRAM))
+//      );
+//    }
+//  }
 
   private final static Map TEST_OBJECT_LISTS = new HashMap();
 
@@ -215,7 +210,7 @@ public final class Cases {
 //    TEST_OBJECT_LISTS.put(Throwable.class.getName(), TOL_JAVA_LANG_THROWABLE);
     TEST_OBJECT_LISTS.put(String.class.getName(), TOL_JAVA_LANG_STRING);
     TEST_OBJECT_LISTS.put(Date.class.getName(), TOL_JAVA_UTIL_DATE);
-    TEST_OBJECT_LISTS.put(Length.class.getName(), TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH);
+//    TEST_OBJECT_LISTS.put(Length.class.getName(), TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH);
   }
 
   /**
@@ -238,10 +233,10 @@ public final class Cases {
    *        The fully qualified class name of the type we want a
    *        {@link TestObjectList} for.
    */
-  public static List findTestObjectList(String fqcn)
+  public static StraightList findTestObjectList(String fqcn)
       throws TorytException {
-    List result = null;
-    result = (List)TEST_OBJECT_LISTS.get(fqcn);
+    StraightList result = null;
+    result = (StraightList)TEST_OBJECT_LISTS.get(fqcn);
     if (result != null) {
       return result;
     }
@@ -264,7 +259,7 @@ public final class Cases {
     throw new TorytException(null, null);
   }
 
-  private static List cached(String key, List tol) {
+  private static StraightList cached(String key, StraightList tol) {
     TEST_OBJECT_LISTS.put(key, tol);
     return tol;
   }
@@ -279,10 +274,10 @@ public final class Cases {
    */
   public static final String TEST_PREFIX = "_Test_";
 
-  private static List findTOLClass(String totn)
+  private static StraightList findTOLClass(String totn)
       throws TorytException {
     try {
-      return (List)Beans.
+      return (StraightList)Beans.
                   instantiatePrefixed(null, TOL_PREFIX, totn);
     }
     catch (IOException e) {
@@ -302,10 +297,10 @@ public final class Cases {
    */
   public static final String TOL_CONSTANT_NAME = "TEST_OBJECT_LIST";
 
-  private static List findTOLVariable(String totn)
+  private static StraightList findTOLVariable(String totn)
       throws TorytException {
     try {
-      return (List)Beans.constant(
+      return (StraightList)Beans.constant(
                  Beans.prefixedFqcn(TEST_PREFIX, TOL_CONSTANT_NAME),
                  totn);
     }
@@ -332,7 +327,7 @@ public final class Cases {
     }
   }
 
-  private static /*Bean*/List  createBTOL(String totn)
+  private static /*Bean*/StraightList  createBTOL(String totn)
       throws TorytException {
     Object createAWarning;
     return null; // MUDO stub
@@ -349,7 +344,7 @@ public final class Cases {
    * @throws TestObjectListNotFoundException
    * @throws TestFault
    */
-  public static List findTestObjectList(Class type)
+  public static StraightList findTestObjectList(Class type)
       throws TorytException {
     assert type != null;
     return findTestObjectList(type.getName());

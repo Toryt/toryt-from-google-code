@@ -79,6 +79,7 @@ public class SimpleCli extends AbstractTest {
     int testsDone = 0;
     System.out.println(testsToRun + " tests to run");
     Iterator iter = tests.iterator();
+    Date loopTimer = new Date();
     while (iter.hasNext() && ! hasEnough()) {
       Test t = (Test)iter.next();
       t.test();
@@ -88,6 +89,11 @@ public class SimpleCli extends AbstractTest {
         t.report(System.out);
       }
       testsDone++;
+      Date loopEnd = new Date();
+      if (loopEnd.getTime() - loopTimer.getTime() > 2000) {
+        System.out.println(((loopEnd.getTime() - startTime.getTime()) / 1000) + "s, " + testsDone + " tests done");
+        loopTimer = loopEnd;
+      }
     }
     Date endTime = new Date();
     System.out.println(testsDone + " tests done");
