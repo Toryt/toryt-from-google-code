@@ -3,11 +3,13 @@ package org.toryt.hard;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.toryt.CaseProvider;
 import org.toryt.TorytException;
+import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.NullFirstStraightList;
 import org.toryt.support.straightlist.StraightList;
@@ -94,6 +96,23 @@ public abstract class ClassContract
   }
   
   private Set $constructorContracts = new HashSet();
+  
+  /**
+   *
+   */
+
+  public StraightList getMethodTests() throws TorytException {
+    StraightList[] lists = new StraightList[getConstructorContracts().size() + 1];
+    Iterator iter = getConstructorContracts().iterator();
+    int i = 0;
+    while (iter.hasNext()) {
+      ConstructorContract cc = (ConstructorContract)iter.next();
+      lists[i] = cc.getMethodTests();
+      i++;
+    }
+    lists[i] = super.getMethodTests();
+    return new ConcatStraightList(lists);
+  }
   
   /**
    * Return a list of {@link Map} instances, that contain

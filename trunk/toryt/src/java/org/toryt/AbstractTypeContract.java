@@ -120,7 +120,7 @@ public abstract class AbstractTypeContract
     }
   }
 
-  public final StraightList getMethodTests() throws TorytException {
+  public StraightList getMethodTests() throws TorytException {
     StraightList[] lists
         = new StraightList[getInstanceMethodContracts().size()
                            + getClassMethodContracts().size()
