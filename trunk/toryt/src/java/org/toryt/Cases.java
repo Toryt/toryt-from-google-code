@@ -3,9 +3,12 @@ package org.toryt;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import be.peopleware.bean_II.Beans;
 
@@ -144,6 +147,34 @@ public final class Cases {
                       " Jan Dockx ",
                       " JanD "});
   
+  // MUDO (dvankeer): This needs to be moved elsewhere
+  
+  /** Number of millisecongs in a day. */
+  private static final long DAY     = 86400000L;
+  /** Number of milliseconds in a week. */
+  private static final long WEEK    = 604800000L;
+  /** Number of milliseconds in a month. */
+  private static final long MONTH   = 2629743830L;
+  /** Number of milliseconds in a year. */
+  private static final long YEAR    = 31556926000L;
+  /** Number of milliseconds in a decade. */
+  private static final long DECADE  = 3155692597470L;
+ 
+  private final static List TOL_JAVA_UTIL_DATE
+    = Arrays.asList(
+            new Date[] {new Date(),                                    // Today
+                        new Date(System.currentTimeMillis() - DAY),    // Yesterday
+                        new Date(System.currentTimeMillis() + DAY),    // Tommorow
+                        new Date(System.currentTimeMillis() - WEEK),   // Last Week
+                        new Date(System.currentTimeMillis() + WEEK),   // Next Week
+                        new Date(System.currentTimeMillis() - MONTH),  // Last Month
+                        new Date(System.currentTimeMillis() + MONTH),  // Next Month
+                        new Date(System.currentTimeMillis() - YEAR),   // Last year
+                        new Date(System.currentTimeMillis() + YEAR),   // Next year
+                        new Date(System.currentTimeMillis() - DECADE), // Last decade
+                        new Date(System.currentTimeMillis() + DECADE), // Next decade
+                        new Date(0)});                                  // Unix Epoch
+  
   private final static Map TEST_OBJECT_LISTS = new HashMap();
   
   static {
@@ -152,6 +183,7 @@ public final class Cases {
     TEST_OBJECT_LISTS.put(Object.class.getName(), TOL_JAVA_LANG_OBJECT);
 //    TEST_OBJECT_LISTS.put(Throwable.class.getName(), TOL_JAVA_LANG_THROWABLE);
     TEST_OBJECT_LISTS.put(String.class.getName(), TOL_JAVA_LANG_STRING);
+    TEST_OBJECT_LISTS.put(Date.class.getName(), TOL_JAVA_UTIL_DATE);
   }
 
   /**
