@@ -226,45 +226,66 @@ public abstract class MethodTest implements Test {
 
   private void validateExceptionConditions(Throwable e) {
     assert e != null;
-    Set conditionSet = (Set)getMethodContract().getExceptionConditions().get(e.getClass());
-    if (conditionSet == null) {
-      /* there are no conditions recorded for this exception type;
-       * it is thus unexpected, and thus a failure.
-       */
-      $failedConditions.add(new FailedExceptionCondition(e, null));
-    }
-    else {
-      getContext().put(EXCEPTION_KEY, e);
-      Iterator iter = conditionSet.iterator();
-      while (iter.hasNext()) {
-        ExceptionCondition c = (ExceptionCondition)iter.next();
-        if (c.validate(getContext())) {
-          $passedConditions.add(new PassedExpectedExceptionCondition(e, c));
-          return;
+    Map exceptionConditionsMap = getMethodContract().getExceptionConditions();
+    getContext().put(EXCEPTION_KEY, e);
+    Iterator iterMap = exceptionConditionsMap.keySet().iterator();
+    while (iterMap.hasNext()) {
+      Class exceptionType = (Class)iterMap.next();
+      if (exceptionType.isAssignableFrom(e.getClass())) {
+        Set exceptionConditions =
+          (Set)exceptionConditionsMap.get(exceptionType);
+        Iterator iterSet = exceptionConditions.iterator();
+        while(iterSet.hasNext()) {
+          ExceptionCondition exceptionCondition = (ExceptionCondition) iterSet.next();
+          if (exceptionCondition.validate(getContext())) {
+            $passedConditions.add(new PassedExpectedExceptionCondition(e, exceptionCondition));
+          }
         }
       }
-      // if we get here, no condition was valid
-      $failedConditions.add(new FailedExceptionCondition(e, conditionSet));
     }
+    if ($passedConditions.size() == 0) {
+      $failedConditions.add(new FailedExceptionCondition(e, null)); //todo
+    }
+//    assert e != null;
+//    Set conditionSet = (Set)getMethodContract().getExceptionConditions().get(e.getClass());
+//    if (conditionSet == null) {
+//      /* there are no conditions recorded for this exception type;
+//       * it is thus unexpected, and thus a failure.
+//       */
+//      $failedConditions.add(new FailedExceptionCondition(e, null));
+//    }
+//    else {
+//      getContext().put(EXCEPTION_KEY, e);
+//      Iterator iter = conditionSet.iterator();
+//      while (iter.hasNext()) {
+//        ExceptionCondition c = (ExceptionCondition)iter.next();
+//        if (c.validate(getContext())) {
+//          $passedConditions.add(new PassedExpectedExceptionCondition(e, c));
+//          return;
+//        }
+//      }
+//      // if we get here, no condition was valid
+//      $failedConditions.add(new FailedExceptionCondition(e, conditionSet));
+//    }
   }
-  
+
   public abstract class ReportExceptionCondition implements Condition {
 
     public ReportExceptionCondition(Throwable e) {
       assert e != null;
       $exception = e;
     }
-    
+
     public final Throwable getException() {
       return $exception;
     }
-    
+
     public final MethodTest getMethodTest() {
       return MethodTest.this;
     }
-    
+
     private Throwable $exception;
-    
+
     public String toString() {
       return "Exception: " + getException().toString();
     }
@@ -278,7 +299,7 @@ public abstract class MethodTest implements Test {
       super(e);
       $exceptionConditions = exceptionConditions;
     }
-    
+
     /**
      * The exception conditions for the type of exception
      * that all validated <code>false</code>. If <code>null</code>
@@ -287,7 +308,7 @@ public abstract class MethodTest implements Test {
     public Set getExceptionCondition() {
       return $exceptionConditions;
     }
-    
+
     private Set $exceptionConditions;
 
     public boolean validate(Map context) {
@@ -304,20 +325,20 @@ public abstract class MethodTest implements Test {
       assert exceptionCondition != null;
       $exceptionCondition = exceptionCondition;
     }
-    
+
     /**
      * The exception condition that validated <code>true</code>.
      */
     public ExceptionCondition getExceptionCondition() {
       return $exceptionCondition;
     }
-    
+
     private ExceptionCondition $exceptionCondition;
 
     public boolean validate(Map context) {
       return true;
     }
-    
+
   }
 
   private void validateInertiaAxiom() {
