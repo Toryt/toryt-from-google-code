@@ -18,7 +18,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 /**
  * An actual instance of a test of a method. This is a test with actual
  * test arguments.
- * 
+ *
  * @invar getContract() != null;
  * @invar getContext() != null;
  */
@@ -55,7 +55,7 @@ public abstract class MethodTest implements Test {
   public final MethodContract getMethodContract() {
     return $methodContract;
   }
-  
+
   public final TypeContract getTypeContract() {
     return $methodContract.getTypeContract();
   }
@@ -72,11 +72,11 @@ public abstract class MethodTest implements Test {
   /*<property name="context">*/
   //------------------------------------------------------------------
 
-  
+
   public final static String SUBJECT_KEY = "this'";
   public final static String RESULT_KEY = "org.toryt.MethodTest.RESULT";
   public final static String EXCEPTION_KEY = "org.toryt.MethodTest.EXCEPTION";
-  
+
   /**
    * This method gives direct access to the map that holds the context
    * of the test. This is the map that is passed in the constructor as test case.
@@ -97,10 +97,10 @@ public abstract class MethodTest implements Test {
   public final Object getSubject() {
     return getContext().get(MethodContract.SUBJECT_KEY);
   }
-  
+
   /**
    * @return getContext().get(RESULT_KEY);
-   * 
+   *
    * @idea move to constructor and inspector test
    */
   public final Object getResult() {
@@ -109,7 +109,7 @@ public abstract class MethodTest implements Test {
 
   /**
    * @return getContext().get(EXCEPTIOn_KEY);
-   * 
+   *
    * @idea move to constructor and inspector test
    */
   public final Throwable getException() {
@@ -132,8 +132,8 @@ public abstract class MethodTest implements Test {
 
   /*</property>*/
 
-  
-  
+
+
   /*<property name="success">*/
   //------------------------------------------------------------------
 
@@ -143,23 +143,23 @@ public abstract class MethodTest implements Test {
 
   /*</property>*/
 
-  
-  
+
+
   /*<property name="run">*/
   //------------------------------------------------------------------
 
   public boolean hasRun() {
     return $run;
   }
-  
+
   protected void setRun() {
     $run = true;
   }
-  
+
   private boolean $run;
   /* </property> */
 
-  
+
   /**
    * Call the method under test and validate the contract.
    * The contract is asked to record the pre-state on this with
@@ -170,7 +170,7 @@ public abstract class MethodTest implements Test {
    * {@link TypeContract#getTypeInvariantConditions() type invariants}.
    * If the method does not end nominally, we validate the
    * {@link MethodContract#getExceptionConditions() exception conditions}.
-   * 
+   *
    * @post new.hasRun();
    * @throws TorytException
    *         hasRun();
@@ -181,13 +181,14 @@ public abstract class MethodTest implements Test {
     }
     try {
       getMethodContract().recordState(this);
-      methodCall(); 
+      methodCall();
       validateConditionSet(getMethodContract().getPostconditions());
       validateConditionSet(getMethodContract().getTypeContract().getTypeInvariantConditions());
       validateInertiaAxiom();
 //      validateMore();
     }
     catch (InvocationTargetException e) {
+      e.printStackTrace();
       getContext().put(EXCEPTION_KEY, e.getCause());
       validateConditionSet(getMethodContract().getExceptionConditions());
     }
@@ -213,7 +214,7 @@ public abstract class MethodTest implements Test {
     }
     setRun();
   }
-  
+
   private void validateInertiaAxiom() {
     // MUDO
   }
@@ -234,19 +235,19 @@ public abstract class MethodTest implements Test {
   public Set getPassedConditions() {
     return Collections.unmodifiableSet($passedConditions);
   }
-  
+
   private Set $passedConditions = new HashSet();
-  
+
   public Set getFailedConditions() {
     return Collections.unmodifiableSet($failedConditions);
   }
-  
+
   private Set $failedConditions = new HashSet();
-  
+
   /**
    * Call the method of the contract with reflection and store
    * the result (if there is one) in the context map.
-   * 
+   *
    * @throws InstantiationException
    * @throws IllegalAccessException
    * @throws IllegalArgumentException
@@ -257,7 +258,7 @@ public abstract class MethodTest implements Test {
              IllegalAccessException,
              IllegalArgumentException,
              InvocationTargetException;
-  
+
   public final void report(PrintStream out) {
     out.println((isSuccessful() ? "success" : "FAILURE")
                 + ": "
@@ -272,9 +273,9 @@ public abstract class MethodTest implements Test {
     reportConditions(getFailedConditions(), out);
   }
 
-  private final static int PAGE_WIDTH = 80; 
-  private final static int KEY_WIDTH = 30; 
-  
+  private final static int PAGE_WIDTH = 80;
+  private final static int KEY_WIDTH = 30;
+
   private String repeat(String c, int times) {
     StringBuffer r = new StringBuffer();
     while (times > 0) {
@@ -283,7 +284,7 @@ public abstract class MethodTest implements Test {
     }
     return r.toString();
   }
-  
+
   private void reportContext(PrintStream out) {
     Set map = getContext().entrySet();
     Iterator iter = map.iterator();
@@ -299,7 +300,7 @@ public abstract class MethodTest implements Test {
                       : new Rtsb(e.getValue(), ToStringStyle.DEFAULT_STYLE).toString()));
     }
   }
-  
+
   private void reportConditions(Set conditions, PrintStream out) {
     Iterator iter = conditions.iterator();
     while (iter.hasNext()) {
@@ -311,7 +312,7 @@ public abstract class MethodTest implements Test {
    * Do NOT skip fields that contain a "$".
    */
   private class Rtsb extends ReflectionToStringBuilder {
-    
+
     public Rtsb(Object object, ToStringStyle style) {
       super(object, style);
     }
