@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.jscience.physics.quantities.Length;
+import org.jscience.physics.quantities.Mass;
 import org.jscience.physics.quantities.Quantity;
 import org.jscience.physics.units.SI;
 
@@ -188,6 +189,19 @@ public final class Cases {
       long longValue = longObject.longValue();
       TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_LENGTH.add(
           Length.lengthOf(Quantity.valueOf(longValue, SI.METER))
+      );
+    }
+  }
+  // @mudo (nsmeets): This has to be adapted so that it uses doubles
+  private final static List TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_MASS
+  = new ArrayList();
+  static {
+    Iterator i = TOL_JAVA_LANG_LONG.iterator();
+    while (i.hasNext()) {
+      Long longObject = (Long) i.next();
+      long longValue = longObject.longValue();
+      TOL_ORG_JSCIENCE_PHYSICS_QUANTITIES_MASS.add(
+          Mass.massOf(Quantity.valueOf(longValue, SI.KILOGRAM))
       );
     }
   }
