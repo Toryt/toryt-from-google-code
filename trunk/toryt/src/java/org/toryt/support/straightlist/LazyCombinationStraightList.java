@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
  * 
  * @mudo better contract
  */
-public class LazyCombinationStraightList extends AbstractLazyStraightList {
+public final class LazyCombinationStraightList extends AbstractLazyStraightList {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------

@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author    Jan Dockx
  */
-public class ListWrapperStraightList extends AbstractAllValidStraightList {
+public final class ListWrapperStraightList extends AbstractAllValidStraightList {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------

@@ -13,7 +13,7 @@ import java.util.Iterator;
  *
  * @author    Jan Dockx
  */
-public class NullFirstStraightList extends AbstractStraightList {
+public final class NullFirstStraightList extends AbstractStraightList {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------

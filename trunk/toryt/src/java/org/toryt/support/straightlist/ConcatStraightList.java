@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
  *
  * @author    Jan Dockx
  */
-public class ConcatStraightList extends AbstractStraightList {
+public final class ConcatStraightList extends AbstractStraightList {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------

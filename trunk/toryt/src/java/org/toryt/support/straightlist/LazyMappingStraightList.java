@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  *
  * @author    Jan Dockx
  */
-public class LazyMappingStraightList extends AbstractLazyStraightList {
+public final class LazyMappingStraightList extends AbstractLazyStraightList {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
