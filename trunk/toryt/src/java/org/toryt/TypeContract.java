@@ -144,7 +144,6 @@ public interface TypeContract extends Contract {
       Method[] methods = $tc.getType().getDeclaredMethods();
       for (int i = 0; i < methods.length; i++) {
         if (Modifier.isPublic(methods[i].getModifiers())
-            && (! Modifier.isAbstract(methods[i].getModifiers()))
         	&& (! $tc.getBasicInspectors().contains(methods[i]))) {
           boolean found = false;
           Iterator iter = allMethodContracts.iterator();
