@@ -1,8 +1,12 @@
 package org.toryt.hard;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.toryt.CaseProvider;
+import org.toryt.InstanceMethodContract;
 import org.toryt.TorytException;
 
 
@@ -66,6 +70,30 @@ public abstract class ClassContract
   
   private ClassContract $superClassContract;
   
+  public final Set getConstructorContracts() {
+    return Collections.unmodifiableSet($constructorContracts);
+  }
+  
+  /**
+   * @pre    cc != null;
+   * @throws TorytException
+   *         isClosed();
+   * @throws TorytException
+   *         imc.isClosed();
+   */
+  public final void addConstructorContract(ConstructorContract cc) throws TorytException {
+    assert cc != null;
+    if (isClosed()) {
+      throw new TorytException(this, null);
+    }
+    if (cc.isClosed()) {
+      throw new TorytException(this, null);
+    }
+    $constructorContracts.add(cc);
+  }
+  
+  private Set $constructorContracts = new HashSet();
+    
   /**
    * All possible relevant cases for this type,
    * with <code>null</code>.

@@ -1,16 +1,15 @@
 package org.toryt;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
 
-
-
 /**
+ * Implementation of most methods of {@link MethodContract}.
+ * 
  * @author Jan Dockx
  */
 public abstract class AbstractMethodContract extends AbstractContract
@@ -29,28 +28,14 @@ public abstract class AbstractMethodContract extends AbstractContract
   /*</section>*/
   
 
-  protected AbstractMethodContract(Method method) {
-    assert method != null;
-    $method = method;
-  }
-  
-  protected AbstractMethodContract(Class type, String signature) throws TorytException {
-    this(ReflectionSupport.findMethod(type, signature, null));
-  }
-  
-  public Method getMethod() {
-    return $method;
-  }
-  
-  private Method $method;
-  
   public final List getMethodTests() throws TorytException {
     // MUDO this order must become priority order
-    List result = new ArrayList(getTestCases().size());
-    ListIterator iterCases = getTestCases().listIterator();
+    List testCases = getTestCases();
+    List result = new ArrayList(testCases.size());
+    ListIterator iterCases = testCases.listIterator();
     while (iterCases.hasNext()) {
       Map testCase = (Map)iterCases.next();
-      MethodTest test = new MethodTest(this, testCase);
+      MethodTest test = createMethodTest(testCase);
       result.add(test);
     }
     return result;
@@ -60,28 +45,62 @@ public abstract class AbstractMethodContract extends AbstractContract
     return new String[0];
   }
   
-  public void recordOldState(MethodTest test, Map state) {
+  /**
+   * {@inheritDoc}
+   * The default implementation of this method does nothing.
+   */
+  public void recordState(MethodTest test) {
     // NOP
   }
   
+  /**
+   * {@inheritDoc}
+   * The default implementation of this method returns
+   * <code>true</code>. This means that all test cases
+   * will be used in the test.
+   */
   public boolean validatePreconditions(MethodTest test) {
     return true;
   }
 
+  /**
+   * {@inheritDoc}
+   * The default implementation of this method does
+   * nothing.
+   */
   public void validatePostConditions(MethodTest test) {
     // NOP
   }
 
+  /**
+   * {@inheritDoc}
+   * The default implementation of this method does
+   * nothing.
+   */
   public void validateInertiaAxiom(MethodTest test) {
     // MUDO
   }
 
+  /**
+   * {@inheritDoc}
+   * The default implementation of this method does
+   * nothing.
+   */
   public void validateTypeInvariants(MethodTest test) {
     // MUDO
   }
 
-  public void validateExceptionCondition(MethodTest test, InvocationTargetException e) {
+  /**
+   * {@inheritDoc}
+   * The default implementation of this method does
+   * nothing.
+   */
+  public void validateExceptionCondition(MethodTest test, Throwable exc) {
     // NOP
+  }
+  
+  public String toString() {
+    return getMember().toString();
   }
     
 }

@@ -1,9 +1,14 @@
 package org.toryt.hard;
 
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
+import java.util.Map;
 
 import org.toryt.AbstractMethodContract;
+import org.toryt.ConstructorTest;
+import org.toryt.MethodTest;
+import org.toryt.ReflectionSupport;
 import org.toryt.TorytException;
 
 
@@ -28,12 +33,27 @@ public abstract class ConstructorContract
 
   
   
+  public ConstructorContract(Constructor constructor) {
+    assert constructor != null;
+    $constructor = constructor;
+  }
+  
   public ConstructorContract(Class type, String signature) throws TorytException {
-    super(type, signature);
+    this(ReflectionSupport.findConstructor(type, signature, null));
   }
 
-  public ConstructorContract(Method method) {
-    super(method);
+  public final Member getMember() {
+    return $constructor;
   }
-
+  
+  public final Constructor getConstructor() {
+    return $constructor;
+  }
+  
+  private Constructor $constructor;
+  
+  public final MethodTest createMethodTest(Map testcase) {
+    return new ConstructorTest(this, testcase);
+  }
+  
 }

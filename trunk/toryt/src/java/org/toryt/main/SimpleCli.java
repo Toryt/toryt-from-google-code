@@ -69,7 +69,11 @@ public class SimpleCli extends AbstractTest {
       setRun();
     }
     $failedTests = new ArrayList();
-    ListIterator iter = getContract().getTests().listIterator();
+    List tests = getContract().getTests();
+// DEBUG
+System.out.println(tests.size());
+// DEBUG
+    ListIterator iter = tests.listIterator();
     while (iter.hasNext() && ! hasEnough()) {
       Test t = (Test)iter.next();
       t.test();

@@ -13,12 +13,12 @@ public class _Contract_Group extends ClassContract {
   public _Contract_Group() throws TorytException {
     super(Group.class);
     setSuperClassContract("org.toryt.example.Node");
-    addClassMethodContract(new ConstructorContract(Group.class, "Group()") {
-      
-                                });
-    addClassMethodContract(new ConstructorContract(Group.class, "Group(java.lang.String, java.lang.String, org.toryt.example.Group)") {
-      
-                                });
+//    addClassMethodContract(new ConstructorContract(Group.class, "Group()") {
+//      
+//                                });
+//    addClassMethodContract(new ConstructorContract(Group.class, "Group(java.lang.String, java.lang.String, org.toryt.example.Group)") {
+//      
+//                                });
     addBasicInspector("getNodes()");
     close();
   }

@@ -1,12 +1,10 @@
 package org.toryt;
 
 
-
-
 /**
  * @author Jan Dockx
  */
-public interface InstanceMethodContract extends MethodContract {
+public interface InstanceMethodContract extends NonConstructorMethodContract {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -20,6 +18,4 @@ public interface InstanceMethodContract extends MethodContract {
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
 
-  
-  
 }

@@ -19,7 +19,5 @@ public interface MutatorContract extends InstanceMethodContract {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
-
-  
   
 }

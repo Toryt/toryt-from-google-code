@@ -1,12 +1,15 @@
 package org.toryt;
 
 
+import java.lang.reflect.Constructor;
 
 
 /**
  * @author Jan Dockx
+ * 
+ * @invar getMember() instanceof Constructor;
  */
-public interface ConstructorContract extends ClassMethodContract {
+public interface ConstructorContract extends MethodContract {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -22,4 +25,11 @@ public interface ConstructorContract extends ClassMethodContract {
 
   
   
+
+  
+  /**
+   * @return getMember();
+   */
+  public Constructor getConstructor();
+
 }
