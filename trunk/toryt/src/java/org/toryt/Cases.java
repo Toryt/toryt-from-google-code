@@ -162,8 +162,8 @@ public final class Cases {
   private final static StraightList TOL_JAVA_UTIL_DATE
     = new ArrayStraightList(
             new Date[] {new Date(),                                    // Today
-//                        new Date(System.currentTimeMillis() - DAY),    // Yesterday
-//                        new Date(System.currentTimeMillis() + DAY),    // Tommorow
+                        new Date(System.currentTimeMillis() - DAY),    // Yesterday
+                        new Date(System.currentTimeMillis() + DAY),    // Tommorow
 //                        new Date(System.currentTimeMillis() - WEEK),   // Last Week
 //                        new Date(System.currentTimeMillis() + WEEK),   // Next Week
 //                        new Date(System.currentTimeMillis() - MONTH),  // Last Month
