@@ -14,11 +14,23 @@ import org.toryt.MethodTest;
 import org.toryt.TorytException;
 import org.toryt.hard.ClassContract;
 import org.toryt.hard.MutatorContract;
+import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.ListWrapperStraightList;
 import org.toryt.support.straightlist.StraightList;
 
 
 public class _Contract_Node extends ClassContract {
+
+  private static _Contract_Group _C_G;
+  
+  static {
+    try {
+      _C_G = new _Contract_Group();
+    }
+    catch (TorytException e) {
+      assert false;
+    }
+  }
 
   public _Contract_Node() throws TorytException {
     super(Node.class);
@@ -40,20 +52,10 @@ public class _Contract_Node extends ClassContract {
       }
       
       public StraightList getTestCases() throws TorytException {
-        List result = new ArrayList();
-        Iterator subjects = getCases().iterator();
-        while (subjects.hasNext()) {
-          Node subject = (Node)subjects.next();
-          Iterator descriptions = Cases.findTestObjectList(String.class).iterator();
-          while (descriptions.hasNext()) {
-            String description = (String)descriptions.next();
-            Map testCase = new HashMap();
-            testCase.put(SUBJECT_KEY, subject);
-            testCase.put("description", description);
-            result.add(testCase);
-          }
-        }
-        return new ListWrapperStraightList(result);
+        return new LazyCombinationStraightList(
+             new StraightList[] {new ListWrapperStraightList(getCases()),
+                                 new ListWrapperStraightList(Cases.findTestObjectList(String.class))},
+             new String[] {SUBJECT_KEY, "description"});
       }
 
     });
@@ -73,20 +75,10 @@ public class _Contract_Node extends ClassContract {
       }
 
       public StraightList getTestCases() throws TorytException {
-        List result = new ArrayList();
-        Iterator subjects = getCases().iterator();
-        while (subjects.hasNext()) {
-          Node subject = (Node)subjects.next();
-          Iterator titles = Cases.findTestObjectList(String.class).iterator();
-          while (titles.hasNext()) {
-            String title = (String)titles.next();
-            Map testCase = new HashMap();
-            testCase.put(SUBJECT_KEY, subject);
-            testCase.put("title", title);
-            result.add(testCase);
-          }
-        }
-        return new ListWrapperStraightList(result);
+        return new LazyCombinationStraightList(
+             new StraightList[] {new ListWrapperStraightList(getCases()),
+                                 new ListWrapperStraightList(Cases.findTestObjectList(String.class))},
+             new String[] {SUBJECT_KEY, "title"});
       }
       
     });
@@ -120,20 +112,10 @@ public class _Contract_Node extends ClassContract {
       }
 
       public StraightList getTestCases() throws TorytException {
-        List result = new ArrayList();
-        Iterator subjects = getCases().iterator();
-        while (subjects.hasNext()) {
-          Node subject = (Node)subjects.next();
-          Iterator groups = new _Contract_Group().getCasesWithNull().iterator();
-          while (groups.hasNext()) {
-            Group group = (Group)groups.next();
-            Map testCase = new HashMap();
-            testCase.put(SUBJECT_KEY, subject);
-            testCase.put("group", group);
-            result.add(testCase);
-          }
-        }
-        return new ListWrapperStraightList(result);
+        return new LazyCombinationStraightList(
+              new StraightList[] {new ListWrapperStraightList(getCases()),
+                                  new ListWrapperStraightList(_C_G.getCasesWithNull())},
+              new String[] {SUBJECT_KEY, "group"});
       }
       
       public void recordState(MethodTest test) {
@@ -183,7 +165,7 @@ public class _Contract_Node extends ClassContract {
     });
     close();
   }
-  
+    
   public List getCases() throws TorytException {
     return getCases(new NodeFactory());
   }
