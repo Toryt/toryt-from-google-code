@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.toryt.Cases;
 import org.toryt.Condition;
+import org.toryt.MethodContract;
 import org.toryt.MethodTest;
 import org.toryt.TorytException;
 import org.toryt.hard.ClassContract;
@@ -142,21 +143,41 @@ public class _Contract_Node extends ClassContract {
     addBasicInspector("getTitle()");
     addBasicInspector("getRating()");
     addBasicInspector("getGroup()");
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
+        return subject.getTitle() != null;
+      }
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
+        return subject.getDescription() != null;
+      }
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
+        return ! Double.isNaN(subject.getRating()) ? (subject.getRating() >= 0) : true;
+      }
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
+        return ! Double.isNaN(subject.getRating()) ? (subject.getRating() <= 10) : true;
+      }
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
+        return (subject.getGroup() != null)
+                ? subject.getGroup().getNodes().get(subject.getTitle()) == subject
+                : true;
+      }
+    });
     close();
   }
   
-  public void validateTypeInvariants(Object subject, MethodTest t) {
-    assert getType().isInstance(subject);
-    Node n = (Node)subject;
-    t.validate(n.getTitle() != null);
-    t.validate(n.getDescription() != null);
-    t.validate(! Double.isNaN(n.getRating()) ? (n.getRating() >= 0) : true);
-    t.validate(! Double.isNaN(n.getRating()) ? (n.getRating() <= 10) : true);
-    t.validate((n.getGroup() != null)
-                   ? n.getGroup().getNodes().get(n.getTitle()) == n
-                   : true);
-  }
-
   public List getCases() throws TorytException {
     return getCases(new NodeFactory());
   }
