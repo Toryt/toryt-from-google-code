@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.toryt.Cases;
+import org.toryt.Condition;
 import org.toryt.MethodTest;
 import org.toryt.TorytException;
 import org.toryt.hard.ClassContract;
@@ -25,6 +26,16 @@ public class _Contract_Node extends ClassContract {
         return new String[] {"description"};
       }
 
+      {
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Node subject = (Node)context.get(SUBJECT_KEY); 
+            String description = (String)context.get("description");
+            boolean result = subject.getDescription().equals(description == null ? "" : description);
+            return result;
+          }});
+      }
+      
       public List getTestCases() throws TorytException {
         List result = new ArrayList();
         Iterator subjects = getCases().iterator();
@@ -42,19 +53,22 @@ public class _Contract_Node extends ClassContract {
         return result;
       }
 
-      public void validatePostConditions(MethodTest test) {
-        Node subject = (Node)test.getContext().get(SUBJECT_KEY); 
-        String description = (String)test.getContext().get("description");
-        test.validate(subject.getDescription()
-                 .equals(description == null ? "" : description));
-      }
-      
     });
     addInstanceMethodContract(new MutatorContract(this, Node.class, "setTitle(java.lang.String)") {
+
       public String[] getFormalParameters() {
         return new String[] {"title"};
       }
       
+      {
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Node subject = (Node)context.get(SUBJECT_KEY); 
+            String title = (String)context.get("title");
+            return subject.getTitle().equals(title == null ? "" : title);
+          }});
+      }
+
       public List getTestCases() throws TorytException {
         List result = new ArrayList();
         Iterator subjects = getCases().iterator();
@@ -72,19 +86,34 @@ public class _Contract_Node extends ClassContract {
         return result;
       }
       
-      public void validatePostConditions(MethodTest test) {
-        Node subject = (Node)test.getContext().get(SUBJECT_KEY); 
-        String title = (String)test.getContext().get("title");
-        test.validate(subject.getTitle()
-                 .equals(title == null ? "" : title));
-      }
-      
     });
     addInstanceMethodContract(new MutatorContract(this, Node.class, "setGroup(org.toryt.example.Group)") {
+
       public String[] getFormalParameters() {
         return new String[] {"group"};
       }
       
+      {
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Node subject = (Node)context.get(SUBJECT_KEY); 
+            Group group = (Group)context.get("group");
+            return subject.getGroup() == group;
+          }});
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Node subject = (Node)context.get(SUBJECT_KEY); 
+            Group oldGroup = (Group)context.get("getGroup()@pre"); 
+            return oldGroup != null ? ! oldGroup.getNodes().values().contains(subject) : true;
+          }});
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Node subject = (Node)context.get(SUBJECT_KEY); 
+            Group group = (Group)context.get("group");
+            return group != null ? group.getNodes().values().contains(subject) : true;
+          }});
+      }
+
       public List getTestCases() throws TorytException {
         List result = new ArrayList();
         Iterator subjects = getCases().iterator();
@@ -108,17 +137,6 @@ public class _Contract_Node extends ClassContract {
         state.put("getGroup()@pre",subject.getGroup());
       }
       
-      public void validatePostConditions(MethodTest test) {
-        Node subject = (Node)test.getContext().get(SUBJECT_KEY); 
-        Group group = (Group)test.getContext().get("group");
-        Group oldGroup = (Group)test.getContext().get("getGroup()@pre"); 
-        test.validate(subject.getGroup() == group);
-        test.validate(oldGroup != null ?
-                      ! oldGroup.getNodes().values().contains(subject) : true);
-        test.validate(group != null ?
-                      group.getNodes().values().contains(subject) : true);
-      }
-
     });
     addBasicInspector("getDescription()");
     addBasicInspector("getTitle()");
