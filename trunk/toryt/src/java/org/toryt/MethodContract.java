@@ -47,12 +47,12 @@ public interface MethodContract extends Contract {
   
   public abstract String[] getFormalParameters();
 
-  /**
-   * Validate the preconditions of this method contract against
-   * the state of the given <code>test</code>.
-   */
-  boolean validatePreconditions(MethodTest test);
-
+//  /**
+//   * Validate the preconditions of this method contract against
+//   * the state of the given <code>test</code>.
+//   */
+//  boolean validatePreconditions(MethodTest test);
+//
   /**
    * Record the old state of the test case (that is the
    * current state of <code>test.getContext()</state> now)

@@ -44,7 +44,7 @@ public class _Contract_Group extends ClassContract {
   }
   
   public final static LazyMappingStraightList.Mapping CASE_MAPPING
-      = new LazyMappingStraightList.Mapping() {
+      = new LazyMappingStraightList.AllValidMapping() {
           public Object map(Object o) {
             Map m = (Map)o;
             Node subject = new Group();

@@ -66,8 +66,8 @@ public class NullFirstStraightList extends AbstractStraightList {
   }
 
   public final Iterator iterator() {
-    return new Iterator() {
-
+    return new AbstractUnmodifiableIterator() {
+      
       Iterator $iter = $l.iterator();
       boolean $givenNull = false;
       
@@ -90,10 +90,10 @@ public class NullFirstStraightList extends AbstractStraightList {
         }
       }
 
-      public void remove() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+      public BigInteger getSizeGuess() {
+        return $l.getBigSize().add(ONE);
       }
-      
+
     };
   }
 
@@ -111,6 +111,10 @@ public class NullFirstStraightList extends AbstractStraightList {
 
   public final BigInteger getBigSize() {
     return $l.getBigSize().add(ONE);
+  }
+
+  public final boolean isSizeFixed() {
+    return $l.isSizeFixed();
   }
 
 }

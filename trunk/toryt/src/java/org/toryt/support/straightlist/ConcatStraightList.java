@@ -66,7 +66,7 @@ public class ConcatStraightList extends AbstractStraightList {
   }
 
   public final Iterator iterator() {
-    return new Iterator() {
+    return new AbstractUnmodifiableIterator() {
 
       /**
        * The next iterator.
@@ -80,8 +80,6 @@ public class ConcatStraightList extends AbstractStraightList {
        * $iter will always be ready for the next element.
        * If it is null, there are no more elements.
        * There will be no iterator for an empty list.
-       * 
-       * @invar ($iter != null) ? $iter.hasNext();
        */
       private Iterator $iter = null;
       
@@ -92,17 +90,14 @@ public class ConcatStraightList extends AbstractStraightList {
       private void nextIter() {
         $iter = null;
         while (($li < $l.length) && ($iter == null)) {
-          if (! $l[$li].isEmpty()) {
-            $iter = $l[$li].iterator();
+          $iter = $l[$li].iterator();
+          if (! $iter.hasNext()) {
+            $iter = null;
           }
           $li++;
         }
       }
       
-      public final boolean hasNext() {
-        return $iter != null;
-      }
-
       public final Object next() throws NoSuchElementException {
         if ($iter == null) {
           throw new NoSuchElementException();
@@ -113,29 +108,20 @@ public class ConcatStraightList extends AbstractStraightList {
         }
         return result;
       }
-  
-      public final void remove() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+
+      public final BigInteger getSizeGuess() {
+        return getBigSize();
+      }
+
+      public final boolean hasNext() {
+        return $iter != null;
       }
       
     };
   }
-
-  private int $size = -1;
   
   public final int size() {
-    if ($size < 0) {
-      $size = 0;
-      for (int i = 0; i < $l.length; i++) {
-        if ($size < Integer.MAX_VALUE - $l[i].size()) {
-          $size += $l[i].size();
-        }
-        else {
-          $size = Integer.MAX_VALUE;
-        }
-      }
-    }
-    return $size;
+    return getBigSize().intValue();
   }
 
   public final Object[] toArray(Class clazz, int size) {
@@ -152,16 +138,32 @@ public class ConcatStraightList extends AbstractStraightList {
     return result;
   }
 
+  /**
+   * Not null means fixed.
+   */
   private BigInteger $bigSize = null;
 
   public final BigInteger getBigSize() {
     if ($bigSize == null) {
-      $bigSize = ONE;
+      BigInteger acc = ZERO;
+      boolean fixed = true;
       for (int i = 0; i < $l.length; i++) {
-        $bigSize = $bigSize.add($l[i].getBigSize());
+        acc = acc.add($l[i].getBigSize());
+        fixed &= $l[i].isSizeFixed();
       }
+      if (fixed) {
+        $bigSize = acc;
+      }
+      return acc;
     }
-    return $bigSize;
+    else {
+      return $bigSize;
+    }
+  }
+  
+  public boolean isSizeFixed() {
+    getBigSize();
+    return ($bigSize != null);
   }
 
 }

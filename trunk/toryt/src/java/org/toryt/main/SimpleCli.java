@@ -98,15 +98,21 @@ public class SimpleCli extends AbstractTest {
       }
       testsDone = testsDone.add(BigInteger.ONE);
       Date loopEnd = new Date();
-      if (loopEnd.getTime() - loopTimer.getTime() > 10000) {
+      if (loopEnd.getTime() - loopTimer.getTime() > 1000) {
         long loopDuration = loopEnd.getTime() - startTime.getTime();
         double loopTestsPerSecond = testsDone.subtract(loopCounter).doubleValue() / (loopDuration/ 1000.0);
+        System.out.println();
         System.out.println((loopDuration / 1000)
                            + "s, "
                            + INTEGER_NUMBER_FORMATTER.format(testsDone)
                            + " tests done ("
                            + FLOAT_NUMBER_FORMATTER.format(loopTestsPerSecond)
                            + "tps)");
+        BigInteger totalDo = tests.getBigSize();
+        System.out.println(PERCENT_FORMATTER.format(testsDone.doubleValue() / totalDo.doubleValue())
+                           + " done ("
+                           + INTEGER_NUMBER_FORMATTER.format(totalDo)
+                           + " tests total)");
         System.out.println("current test: " + t.toString());
         loopTimer = loopEnd;
         loopCounter = testsDone;
@@ -114,15 +120,21 @@ public class SimpleCli extends AbstractTest {
       }
     }
     Date endTime = new Date();
-    System.out.println(INTEGER_NUMBER_FORMATTER.format(testsDone) + " tests done");
+    System.out.println();
+    System.out.println(INTEGER_NUMBER_FORMATTER.format(testsDone)
+                       + " tests done ("
+                       + INTEGER_NUMBER_FORMATTER.format(testsToRun.subtract(testsDone))
+                       + " tests skipped)");
     long duration = endTime.getTime() - startTime.getTime();
     System.out.println("duration: " + FLOAT_NUMBER_FORMATTER.format(duration) + "ms");
     double testsPerSecond = testsDone.doubleValue() / (duration / 1000.0);
     System.out.println("speed: " + FLOAT_NUMBER_FORMATTER.format(testsPerSecond) + "tps");
   }
   
-  private static final NumberFormat INTEGER_NUMBER_FORMATTER = NumberFormat.getIntegerInstance(new Locale("nl"));
-  private static final NumberFormat FLOAT_NUMBER_FORMATTER = NumberFormat.getNumberInstance(new Locale("nl"));
+  private static final Locale FL = new Locale("nl", "BE");
+  private static final NumberFormat INTEGER_NUMBER_FORMATTER = NumberFormat.getIntegerInstance(FL);
+  private static final NumberFormat FLOAT_NUMBER_FORMATTER = NumberFormat.getNumberInstance(FL);
+  private static final NumberFormat PERCENT_FORMATTER = NumberFormat.getPercentInstance(FL);
 
   public final boolean isSuccessful() {
     return (getFailedTests() != null) && (getFailedTests().isEmpty());

@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author    Jan Dockx
  */
-public class ListWrapperStraightList extends AbstractStraightList {
+public class ListWrapperStraightList extends AbstractAllValidStraightList {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -60,8 +60,23 @@ public class ListWrapperStraightList extends AbstractStraightList {
     return $l.isEmpty();
   }
 
+  /**
+   * All elements are valid.
+   */
   public final Iterator iterator() {
-    return $l.iterator();
+    return new AbstractUnmodifiableIterator() {
+
+      Iterator $i = $l.iterator();
+
+      public Object next() {
+        return $i.next();
+      }
+
+      public boolean hasNext() {
+        return $i.hasNext();
+      }
+
+    };
   }
 
   public final int size() {

@@ -160,9 +160,7 @@ public abstract class MethodTest implements Test {
   
   /**
    * Call the method under test and validate the contract.
-   * This method starts with calling {@link MethodContract#validatePreconditions(MethodTest)}
-   * on itself. If the preconditions fail, the test is not performed, but it is considered
-   * as &quot;run&quot;. Next, the contract is asked to record the pre-state on this with
+   * The contract is asked to record the pre-state on this with
    * {@link MethodContract#recordState(MethodTest)}. Then the method-under-test
    * is called. Afterwards, if the method ended nominally, we validate the
    * {@link MethodContract#validatePostConditions(MethodTest) postconditions}, the
@@ -180,37 +178,35 @@ public abstract class MethodTest implements Test {
     if (hasRun()) {
       throw new TorytException(getMethodContract(), null);
     }
-    if (getMethodContract().validatePreconditions(this)) {
-      try {
-        getMethodContract().recordState(this);
-        methodCall(); 
-        getMethodContract().validatePostConditions(this);
-        getMethodContract().validateInertiaAxiom(this);
-        validateMore();
-      }
-      catch (InvocationTargetException e) {
-        getMethodContract().validateExceptionCondition(this, e.getCause());
-      }
-      catch (IllegalArgumentException e) {
-        System.out.println(this);
-        System.out.println(e);
-        throw new TorytException(getMethodContract(), e);
-      }
-      catch (IllegalAccessException e) {
-        System.out.println(this);
-        System.out.println(e);
-        throw new TorytException(getMethodContract(), e);
-      }
-      catch (InstantiationException e) {
-        System.out.println(this);
-        System.out.println(e);
-        throw new TorytException(getMethodContract(), e);
-      }
-      catch (Throwable e) {
-        System.out.println(this);
-        System.out.println(e);
-        throw new TorytException(getMethodContract(), e);
-      }
+    try {
+      getMethodContract().recordState(this);
+      methodCall(); 
+      getMethodContract().validatePostConditions(this);
+      getMethodContract().validateInertiaAxiom(this);
+      validateMore();
+    }
+    catch (InvocationTargetException e) {
+      getMethodContract().validateExceptionCondition(this, e.getCause());
+    }
+    catch (IllegalArgumentException e) {
+      System.out.println(this);
+      System.out.println(e);
+      throw new TorytException(getMethodContract(), e);
+    }
+    catch (IllegalAccessException e) {
+      System.out.println(this);
+      System.out.println(e);
+      throw new TorytException(getMethodContract(), e);
+    }
+    catch (InstantiationException e) {
+      System.out.println(this);
+      System.out.println(e);
+      throw new TorytException(getMethodContract(), e);
+    }
+    catch (Throwable e) {
+      System.out.println(this);
+      System.out.println(e);
+      throw new TorytException(getMethodContract(), e);
     }
     setRun();
   }

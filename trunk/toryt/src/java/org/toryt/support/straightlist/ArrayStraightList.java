@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  *
  * @author    Jan Dockx
  */
-public class ArrayStraightList extends AbstractStraightList {
+public class ArrayStraightList extends AbstractAllValidStraightList {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -40,7 +41,6 @@ public class ArrayStraightList extends AbstractStraightList {
   public ArrayStraightList(Object[] a) {
     assert a != null : "array cannot be null";
     $a = a;
-    $l = Arrays.asList($a);
   }
   
   /**
@@ -48,16 +48,19 @@ public class ArrayStraightList extends AbstractStraightList {
    */
   private Object[] $a;
   
-  /**
-   * @invar $l != null;
-   */
   private List $l;
   
   public final boolean contains(Object o) {
+    if ($l == null) {
+      $l = Arrays.asList($a);
+    }
     return $l.contains(o);
   }
 
   public final boolean containsAll(Collection c) {
+    if ($l == null) {
+      $l = Arrays.asList($a);
+    }
     return $l.containsAll(c);
   }
 
@@ -65,8 +68,30 @@ public class ArrayStraightList extends AbstractStraightList {
     return $a.length == 0;
   }
 
+  /**
+   * All elements are valid.
+   */
   public final Iterator iterator() {
-    return $l.iterator();
+    return new AbstractUnmodifiableIterator() {
+
+      int $i = 0;
+
+      public Object next() {
+        try {
+          Object result = $a[$i];
+          $i++;
+          return result;
+        }
+        catch (ArrayIndexOutOfBoundsException aioobExc) {
+          throw new NoSuchElementException();
+        }
+      }
+
+      public boolean hasNext() {
+        return $i < $a.length;
+      }
+
+    };
   }
 
   public final int size() {
@@ -82,7 +107,7 @@ public class ArrayStraightList extends AbstractStraightList {
     return result;
   }
 
-  public BigInteger getBigSize() {
+  public final BigInteger getBigSize() {
     return BigInteger.valueOf($a.length); 
   }
 

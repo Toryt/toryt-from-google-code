@@ -3,6 +3,7 @@ package org.toryt.support.straightlist;
 
 import java.math.BigInteger;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 
 /**
@@ -38,6 +39,7 @@ public class LazyMappingStraightList extends AbstractLazyStraightList {
     assert mapping != null;
     $l = l;
     $mapping = mapping;
+    setSizeGuess($l.getBigSize());
   }
   
   /**
@@ -48,35 +50,96 @@ public class LazyMappingStraightList extends AbstractLazyStraightList {
   private Mapping $mapping;
   
   public final Iterator iterator() {
-    return new Iterator() {
+    return new AbstractUnmodifiableIterator() {
+      /**
+       * Since the mapping can fail for the last element in the list,
+       * we need to prefetch the next element, because otherwise
+       * hasNext might have been a lie.
+       */
 
-      Iterator $iter = $l.iterator();
+      private Iterator $iter = $l.iterator();
       
-      public boolean hasNext() {
-        return $iter.hasNext();
+      /**
+       * <code>null</code> can be a valid element
+       */
+      private Object $nextElement;
+      
+      /**
+       * $nextElement contains the real next element;
+       * if this is <code>false</code>, there is no next element.
+       */
+      private boolean $nextElementOk = false;
+      
+      {
+        proceed();
+      }
+      
+      private void proceed() {
+        $nextElementOk = false;
+        BigInteger invalidMappings = ZERO;
+        while ((! $nextElementOk) && $iter.hasNext()) {
+          Object iterNext = $iter.next();
+              // the size of the source list may have shrunk
+          if ($mapping.isValid(iterNext)) {
+            $nextElementOk = true;
+            $nextElement = $mapping.map(iterNext);
+          }
+          else {
+            invalidMappings = invalidMappings.add(ONE);
+          }
+        }
+        if (! isSizeFixed()) {
+          updateListSize($l.getBigSize().subtract(invalidMappings), $iter.hasNext());
+        }
+      }
+      
+      public final boolean hasNext() {
+        return $nextElementOk;
       }
 
-      public Object next() {
-        return $mapping.map($iter.next());
-      }
-
-      public void remove() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+      public final Object next() {
+        if (! $nextElementOk) {
+          throw new NoSuchElementException();          
+        }
+        Object result = $nextElement;
+        proceed();
+        return result;
       }
       
     };
   }
 
-  public final int size() {
-    return $l.size();
-  }
-  
+  /**
+   * Mapping of objects to other objects.
+   * The mapping can be be not applicable to certain
+   * object. In that case, {@link #isValid(Object)}
+   * is <code>false</code>, and {@link #map(Object)}
+   * will not be called. This means that the algorithm
+   * of {@link #map(Object)} does not need to produce
+   * a meaningful result, or even has to end, if the object
+   * is flagged as not-valid.
+   */
   static public interface Mapping {
+    
+    boolean isValid(Object o);
+    
+    /**
+     * @pre isValid(o);
+     */
     Object map(Object o);
+
   }
-  
-  public final BigInteger getBigSize() {
-    return $l.getBigSize();
+
+  /**
+   * Utility class that says that all source
+   * object are valid for the mapping.
+   */
+  static public abstract class AllValidMapping implements  Mapping {
+    
+    public final boolean isValid(Object o) {
+      return true;
+    }
+
   }
 
 }

@@ -55,6 +55,7 @@ public class LazyCombinationStraightList extends AbstractLazyStraightList {
     assert labels.length == sources.length;
     $sources = sources;
     $labels = labels;
+    productSizeGuess();
   }
   
   /**
@@ -68,7 +69,7 @@ public class LazyCombinationStraightList extends AbstractLazyStraightList {
   private String[] $labels;
 
   public final Iterator iterator() {
-    return new Iterator() {
+    return new AbstractUnmodifiableIterator() {
 
       /**
        * $iter will always be ready for the next element.
@@ -102,6 +103,9 @@ public class LazyCombinationStraightList extends AbstractLazyStraightList {
         if ((! init) && (i == -1)) {
           $entries = null;
         }
+        if (! isSizeFixed()) {
+          productSizeGuess();
+        }
       }
       
       public final boolean hasNext() {
@@ -119,41 +123,18 @@ public class LazyCombinationStraightList extends AbstractLazyStraightList {
         nextElement(false);
         return result;
       }
-  
-      public final void remove() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
-      }
       
     };
   }
 
-  private int $size = -1;
-  
-  public final int size() {
-    if ($size < 0) {
-      $size = 1;
-      for (int i = 0; i < $sources.length; i++) {
-        if ($size < Integer.MAX_VALUE / $sources[i].size()) {
-          $size *= $sources[i].size();
-        }
-        else {
-          $size = Integer.MAX_VALUE;
-        }
-      }
+  private void productSizeGuess() {
+    BigInteger acc = ONE;
+    boolean fixed = true;
+    for (int i = 0; i < $sources.length; i++) {
+      acc = acc.multiply($sources[i].getBigSize());
+      fixed &= $sources[i].isSizeFixed();
     }
-    return $size;
+    updateListSize(acc, fixed);
   }
-
-  private BigInteger $bigSize = null;
   
-  public final BigInteger getBigSize() {
-    if ($bigSize == null) {
-      $bigSize = ONE;
-      for (int i = 0; i < $sources.length; i++) {
-        $bigSize = $bigSize.multiply($sources[i].getBigSize());
-      }
-    }
-    return $bigSize;
-  }
-
 }

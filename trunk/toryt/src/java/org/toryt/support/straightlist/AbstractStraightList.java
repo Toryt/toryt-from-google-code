@@ -104,4 +104,12 @@ public abstract class AbstractStraightList implements StraightList {
     return result.toString();
   }
 
+  protected abstract class AbstractUnmodifiableIterator implements Iterator {
+
+    public final void remove() throws UnsupportedOperationException {
+      throw new UnsupportedOperationException();
+    }
+
+  }
+
 }

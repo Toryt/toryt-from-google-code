@@ -67,10 +67,17 @@ public abstract class AbstractMethodContract extends AbstractContract
     }
     return new LazyMappingStraightList(testCases,
                                        new LazyMappingStraightList.Mapping() {
+      
+                                            public boolean isValid(Object o) {
+                                              Map testCaseMap = (Map)o;
+                                              return validatePreconditions(testCaseMap);
+                                            }
+      
                                              public Object map(Object o) {
                                                Map testCaseMap = (Map)o;
                                                return createMethodTest(testCaseMap);
                                              }
+                                             
                                            });
   }
   
@@ -92,11 +99,11 @@ public abstract class AbstractMethodContract extends AbstractContract
    * <code>true</code>. This means that all test cases
    * will be used in the test.
    */
-  public final boolean validatePreconditions(MethodTest test) {
+  private boolean validatePreconditions(Map testCase) {
     Iterator iter = getPreconditions().iterator();
     while (iter.hasNext()) {
       Condition c = (Condition)iter.next();
-      if (! c.validate(test.getContext())) {
+      if (! c.validate(testCase)) {
         return false;
       }
     }

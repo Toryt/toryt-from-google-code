@@ -2,6 +2,7 @@ package org.toryt.support.straightlist;
 
 
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -71,5 +72,48 @@ public abstract class AbstractLazyStraightList extends AbstractStraightList {
     }
     return result;
   }
+
+  private final static BigInteger MAX_INTEGER
+      = BigInteger.valueOf(Integer.MAX_VALUE);
+
+  public final int size() {
+    return (getBigSize().compareTo(MAX_INTEGER) < 0) 
+            ? getBigSize().intValue()
+            : Integer.MAX_VALUE;
+  }
+
+  public final BigInteger getBigSize() {
+    return $sizeGuess;
+  }
+
+  /**
+   * @pre ! $sizeFixed
+   */
+  protected void updateListSize(BigInteger sizeGuess, boolean stillMoreToCheck) {
+    if (($sizeGuess == null) || ($sizeGuess.compareTo(sizeGuess) > 0)) {
+      // the iterator has a tighther guess; copy it
+      $sizeGuess = sizeGuess;
+    }
+    $sizeFixed |= (! stillMoreToCheck);
+  }
+
+  protected void setSizeGuess(BigInteger sizeGuess) {
+    $sizeGuess = sizeGuess;
+  }
+  
+  /**
+   * The best guess of the size of this list. This can only
+   * shrink.
+   * 
+   * @invar $sizeGuess <= '$sizeGuess;
+   * @invar $sizeFixed ==> ($sizeGuess == '$sizeGuess);
+   */
+  private BigInteger $sizeGuess;
+  
+  public final boolean isSizeFixed() {
+    return $sizeFixed;
+  }
+
+  private boolean $sizeFixed;
 
 }
