@@ -1,8 +1,11 @@
 package org.toryt;
 
 
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -221,5 +224,39 @@ public abstract class MethodTest implements Test {
              IllegalAccessException,
              IllegalArgumentException,
              InvocationTargetException;
+  
+  public final void report(PrintStream out) {
+    out.println((isSuccessful() ? "success" : "FAILURE")
+                + ": "
+                + getContract().getMember().toString());
+    out.println(repeat("-", PAGE_WIDTH));
+    reportContext(out);
+  }
+
+  private final static int PAGE_WIDTH = 80; 
+  private final static int KEY_WIDTH = 30; 
+  
+  private String repeat(String c, int times) {
+    StringBuffer r = new StringBuffer();
+    while (times > 0) {
+      r.append(c);
+      times--;
+    }
+    return r.toString();
+  }
+  
+  private void reportContext(PrintStream out) {
+    Set map = getContext().entrySet();
+    Iterator iter = map.iterator();
+    while (iter.hasNext()) {
+      Map.Entry e = (Map.Entry)iter.next();
+      String key = (String)e.getKey();
+      int keyLength = key.length();
+      out.println(repeat(" ", KEY_WIDTH - keyLength)
+                  + e.getKey()
+                  + " :: "
+                  + e.getValue());
+    }
+  }
   
 }

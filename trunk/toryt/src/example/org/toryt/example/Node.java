@@ -187,9 +187,4 @@ public abstract class Node implements java.io.Serializable {
     NF.setMaximumFractionDigits(NF_DIGITS);
   }
   
-  public String toString() {
-    return getTitle()
-            + ": \"" + getDescription() + "\"" //$NON-NLS-1$ //$NON-NLS-2$
-            + " (" + NF.format(getRating()) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-  }
 }

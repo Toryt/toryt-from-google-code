@@ -1,5 +1,7 @@
 package org.toryt;
 
+import java.io.PrintStream;
+
 
 /**
  * An actual instance of a test.
@@ -37,5 +39,11 @@ public interface Test {
    *         ! hasRun();
    */
   boolean isSuccessful() throws TorytException;
+  
+  /**
+   * Structured output on an output stream.
+   *
+   */
+  void report(PrintStream out);
   
 }

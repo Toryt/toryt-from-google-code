@@ -1,6 +1,7 @@
 package org.toryt;
 
 
+import java.io.PrintStream;
 import java.util.List;
 import java.util.Set;
 
@@ -122,9 +123,17 @@ public interface TypeContract extends Contract {
 //      return TypeContract.this;
 //    }
     
-    public boolean isSuccessful() throws TorytException {
+    public boolean isSuccessful() {
       // MUDO
       return false;
+    }
+
+    public final void report(PrintStream out) {
+      out.println((isSuccessful() ? "success" : "FAILURE")
+                  + ": "
+//                  + TypeContract.this.getType().toString()
+                  + " all members covered");
+      out.println("-------------------------------------------------------------");
     }
     
   }

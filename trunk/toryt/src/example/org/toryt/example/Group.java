@@ -146,18 +146,18 @@ public class Group extends Node {
   /* </property> */
 
   
-  public String toString() {
-    StringBuffer result = new StringBuffer(super.toString() + "\n["); //$NON-NLS-1$
-    Iterator iter = getNodes().values().iterator();
-    while (iter.hasNext()) {
-      Node n = (Node)iter.next();
-      result.append(n.toString());
-      if (iter.hasNext()) {
-        result.append("; "); //$NON-NLS-1$
-      }
-    }
-    result.append("]\n"); //$NON-NLS-1$
-    return result.toString();
-  }
+//  public String toString() {
+//    StringBuffer result = new StringBuffer(super.toString() + "\n["); //$NON-NLS-1$
+//    Iterator iter = getNodes().values().iterator();
+//    while (iter.hasNext()) {
+//      Node n = (Node)iter.next();
+//      result.append(n.toString());
+//      if (iter.hasNext()) {
+//        result.append("; "); //$NON-NLS-1$
+//      }
+//    }
+//    result.append("]\n"); //$NON-NLS-1$
+//    return result.toString();
+//  }
   
 }

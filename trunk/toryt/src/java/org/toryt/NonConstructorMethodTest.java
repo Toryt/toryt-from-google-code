@@ -58,11 +58,4 @@ public class NonConstructorMethodTest extends MethodTest {
                       getActualParameters());
   }
   
-  public String toString() {
-    return getContract().toString()
-            + "["
-            + getContext()
-            + "]";
-  }
- 
 }

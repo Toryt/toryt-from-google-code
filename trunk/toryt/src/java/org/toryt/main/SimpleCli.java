@@ -1,6 +1,7 @@
 package org.toryt.main;
 
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -79,13 +80,18 @@ System.out.println(tests.size());
       t.test();
       if (! t.isSuccessful()) {
         $failedTests.add(t);
-        System.out.println(t);
+        System.out.println();
+        t.report(System.out);
       }
     }
   }
 
   public final boolean isSuccessful() {
     return (getFailedTests() != null) && (getFailedTests().isEmpty());
+  }
+
+  public final void report(PrintStream out) {
+    out.println(isSuccessful() ? "success" : "FAILURE");
   }
 
   public static void main(String[] args) throws TorytException {
