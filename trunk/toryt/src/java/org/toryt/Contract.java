@@ -1,6 +1,8 @@
 package org.toryt;
 
 
+import java.util.Set;
+
 import org.toryt.support.straightlist.StraightList;
 
 
@@ -69,5 +71,7 @@ public interface Contract {
    * @init false;
    */
   boolean isClosed();
+  
+  Set getSubContracts();
   
 }

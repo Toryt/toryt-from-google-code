@@ -2,6 +2,11 @@ package org.toryt;
 
 
 import java.io.PrintStream;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.toryt.support.straightlist.StraightList;
@@ -120,24 +125,66 @@ public interface TypeContract extends Contract {
   
   
   public class AllMembersCoveredTest extends AbstractTest {
+    
+    public AllMembersCoveredTest(TypeContract tc) {
+      assert tc != null;
+      $tc = tc;
+    }
+    
+    public final TypeContract getTypeContract() {
+      return $tc;
+    }
+    
+    private TypeContract $tc;
 
-    public void test() throws TorytException {
-      // MUDO
-      // TypeContract.this.getType, get all methods
-      // check that instance methods are in the contracts, except basic inspectors
-      // same for class methods are in the contracts, except basic inspectors
-      // log members for which a contract is missing
-      // set successful status
+    public final void test() throws TorytException {
+      Set allMethodContracts = new HashSet();
+      allMethodContracts.addAll($tc.getClassMethodContracts());
+      allMethodContracts.addAll($tc.getInstanceMethodContracts());
+      Method[] methods = $tc.getType().getDeclaredMethods();
+      for (int i = 0; i < methods.length; i++) {
+        if (Modifier.isPublic(methods[i].getModifiers())
+            && (! $tc.getBasicInspectors().contains(methods[i]))) {
+          boolean found = false;
+          Iterator iter = allMethodContracts.iterator();
+          while ((! found) && iter.hasNext()) {
+            MethodContract mc = (MethodContract)iter.next();
+            if (methods[i] == mc.getMember()) {
+              found = true;
+            }
+          }
+          if (! found) {
+            $membersWithoutContracts.add(methods[i]);
+          }
+        }
+      }
+      Class[] nestedClasses = $tc.getType().getDeclaredClasses();
+      for (int i = 0; i < nestedClasses.length; i++) {
+        if (Modifier.isPublic(nestedClasses[i].getModifiers())) {
+          boolean found = false;
+          Iterator iter = $tc.getNestedClassContracts().iterator();
+          while ((! found) && iter.hasNext()) {
+            TypeContract tc = (TypeContract)iter.next();
+            if (nestedClasses[i] == tc.getType()) {
+              found = true;
+            }
+          }
+          if (! found) {
+            $membersWithoutContracts.add(nestedClasses[i]);
+          }
+        }
+      }
       setRun();
     }
-//
-//    public final TypeContract getTypeContract() {
-//      return TypeContract.this;
-//    }
     
-    public boolean isSuccessful() {
-      // MUDO
-      return false;
+    public final Set getMethodWithoutContracts() {
+      return Collections.unmodifiableSet($membersWithoutContracts);
+    }
+    
+    private Set $membersWithoutContracts = new HashSet();
+    
+    public final boolean isSuccessful() {
+      return $membersWithoutContracts.isEmpty();
     }
 
     public final void report(PrintStream out) {
@@ -146,6 +193,14 @@ public interface TypeContract extends Contract {
 //                  + TypeContract.this.getType().toString()
                   + " all members covered");
       out.println("-------------------------------------------------------------");
+      if (! isSuccessful()) {
+        out.println("Members missing contract:");
+        Iterator iter = $membersWithoutContracts.iterator();
+        while (iter.hasNext()) {
+          Object member = iter.next();
+          out.println("  " + member.toString());
+        }
+      }
     }
     
   }

@@ -181,5 +181,5 @@ public class TypeContract
   public void validateTypeInvariants(Object subject, MethodTest test) {
     // NOP
   }
-
+  
 }

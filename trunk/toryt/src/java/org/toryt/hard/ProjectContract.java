@@ -39,7 +39,6 @@ public class ProjectContract
   }
   
   /**
-   * 
    * @pre    pc != null;
    * @throws TorytException
    *         isClosed();
@@ -58,5 +57,5 @@ public class ProjectContract
   }
   
   private Set $packageContracts = new HashSet();
-
+  
 }

@@ -226,5 +226,10 @@ public abstract class AbstractMethodContract extends AbstractContract
   private Map $exceptionConditions = new HashMap();
   
   /*</property>*/
+  
+  
+  public final Set getSubContracts() {
+    return Collections.EMPTY_SET;
+  }
 
 }

@@ -2,6 +2,7 @@ package org.toryt;
 
 
 import java.util.Iterator;
+import java.util.Set;
 
 import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.StraightList;
@@ -50,4 +51,8 @@ public abstract class AbstractProjectContract
     return new ConcatStraightList(lists);
   }
   
+  public final Set getSubContracts() {
+    return getPackageContracts();
+  }
+
 }

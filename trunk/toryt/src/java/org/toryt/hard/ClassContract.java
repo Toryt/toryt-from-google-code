@@ -160,4 +160,10 @@ public abstract class ClassContract
     return getCases();
   }
 
+  public final Set getSubContracts() {
+    Set result = super.typeSubContracts();
+    result.addAll($constructorContracts);
+    return Collections.unmodifiableSet(result);
+  }
+  
 }

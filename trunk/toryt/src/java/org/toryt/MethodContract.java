@@ -131,5 +131,10 @@ public interface MethodContract extends Contract {
    * @post result.getContract() == this;
    */
   MethodTest createMethodTest(Map testcase);
+  
+  /**
+   * @result result.isEmpty();
+   */
+  Set getSubContracts();
 
 }

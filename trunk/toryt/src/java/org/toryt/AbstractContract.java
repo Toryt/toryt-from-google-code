@@ -2,7 +2,9 @@ package org.toryt;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.ListWrapperStraightList;
@@ -29,7 +31,22 @@ public abstract class AbstractContract implements Contract {
 
   
   public final StraightList getExtraTests() {
-    return new ListWrapperStraightList($extraTests);
+    Set subcontracts = getSubContracts();
+    if (subcontracts.isEmpty()) {
+      return new ListWrapperStraightList($extraTests);
+    }
+    else {
+      StraightList[] result =  new StraightList[subcontracts.size() + 1];
+      result[0] = new ListWrapperStraightList($extraTests);
+      int i = 1;
+      Iterator iter = subcontracts.iterator();
+      while (iter.hasNext()) {
+        Contract c = (Contract)iter.next();
+        result[i] = c.getExtraTests();
+        i++;
+      }
+      return new ConcatStraightList(result);
+    }
   }
   
   /**

@@ -38,7 +38,7 @@ public abstract class AbstractTypeContract
    */
   protected AbstractTypeContract(Class type) {
     try {
-      addExtraTests(new AllMembersCoveredTest());
+      addExtraTests(new AllMembersCoveredTest(this));
     }
     catch (TorytException e) {
       assert false : "we should not be closed";
@@ -133,6 +133,18 @@ public abstract class AbstractTypeContract
       i++;
     }
     return new ConcatStraightList(lists);
+  }
+
+  public Set getSubContracts() {
+    return Collections.unmodifiableSet(typeSubContracts());
+  }
+  
+  protected final Set typeSubContracts() {
+    Set result = new HashSet();
+    result.addAll(getClassMethodContracts());
+    result.addAll(getInstanceMethodContracts());
+    result.addAll(getNestedClassContracts());
+    return result;
   }
   
 }

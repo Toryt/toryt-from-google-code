@@ -1,7 +1,10 @@
 package org.toryt;
 
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.StraightList;
@@ -56,4 +59,11 @@ public abstract class AbstractPackageContract
     return new ConcatStraightList(lists);
   }
 
+  public final Set getSubContracts() {
+    Set result = new HashSet();
+    result.addAll(getSubPackageContracts());
+    result.addAll(getClassContracts());
+    return Collections.unmodifiableSet(result);
+  }
+  
 }
