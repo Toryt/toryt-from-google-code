@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.toryt.example.Node;
+//import org.toryt.example.Node;
 
 import be.peopleware.bean_II.Beans;
 
@@ -230,14 +230,14 @@ public class Contracts {
     return pc;
   }
   
-  public static void main(String[] args) throws IOException, ClassNotFoundException {
-    Contract c = typeContractInstance(Node.class);
-    System.out.println(c);
-    c = projectContractInstance("Toryt", "org.toryt.example");
-    System.out.println(c);
-    c = packageContractInstance("org.toryt.example",
-                                new File("/Users/jand/Documents/eclipse/workspace/toryt/src/example"));
-    ((PackageContract)c).report(System.out, 0);
-  }
+//  public static void main(String[] args) throws IOException, ClassNotFoundException {
+//    Contract c = typeContractInstance(Node.class);
+//    System.out.println(c);
+//    c = projectContractInstance("Toryt", "org.toryt.example");
+//    System.out.println(c);
+//    c = packageContractInstance("org.toryt.example",
+//                                new File("/Users/jand/Documents/eclipse/workspace/toryt/src/example"));
+//    ((PackageContract)c).report(System.out, 0);
+//  }
   
 }
