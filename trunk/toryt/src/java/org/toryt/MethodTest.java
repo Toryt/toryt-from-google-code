@@ -177,7 +177,7 @@ public abstract class MethodTest implements Test {
    * is called. Afterwards, if the method ended nominally, we validate the
    * {@link MethodContract#getPostconditions() postconditions}, the
    * inertia axiom, and the
-   * {@link TypeContract#getTypeInvariants() type invariants}.
+   * {@link TypeContract#getTypeInvariantConditions() type invariants}.
    * If the method does not end nominally, we validate the
    * {@link MethodContract#getExceptionConditions() exception conditions}.
    * 
@@ -193,8 +193,9 @@ public abstract class MethodTest implements Test {
       getMethodContract().recordState(this);
       methodCall(); 
       validateConditionSet(getMethodContract().getPostconditions());
+      validateConditionSet(getMethodContract().getTypeContract().getTypeInvariantConditions());
       validateInertiaAxiom();
-      validateMore();
+//      validateMore();
     }
     catch (InvocationTargetException e) {
       getContext().put(EXCEPTION_KEY, e.getCause());
@@ -249,8 +250,6 @@ public abstract class MethodTest implements Test {
              IllegalAccessException,
              IllegalArgumentException,
              InvocationTargetException;
-  
-  protected abstract void validateMore();
   
   public final void report(PrintStream out) {
     out.println((isSuccessful() ? "success" : "FAILURE")

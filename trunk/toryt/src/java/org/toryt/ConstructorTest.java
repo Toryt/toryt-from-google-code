@@ -68,10 +68,4 @@ public class ConstructorTest extends MethodTest {
     getContext().put(MethodContract.SUBJECT_KEY, instance);
   }
   
-
-  protected final void validateMore() {
-    getTypeContract().validateTypeInvariants(getContext().get(RESULT_KEY), this);
-    // MUDO type invars of all objects
-  }
-
 }

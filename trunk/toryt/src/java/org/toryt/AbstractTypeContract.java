@@ -2,10 +2,8 @@ package org.toryt;
 
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import org.toryt.support.straightlist.ConcatStraightList;
@@ -76,7 +74,7 @@ public abstract class AbstractTypeContract
 
   
   
-  /*<property name="preconditions">*/
+  /*<property name="type invariant conditions">*/
   //------------------------------------------------------------------
 
   /**
@@ -110,16 +108,6 @@ public abstract class AbstractTypeContract
   /*</property>*/
 
   
-  public void validateTypeInvariants(Object subject, MethodTest test) {
-    Map subjectContext = new HashMap();
-    subjectContext.put(MethodContract.SUBJECT_KEY, subject);
-    Iterator iter = getTypeInvariantConditions().iterator();
-    while (iter.hasNext()) {
-      Condition c = (Condition)iter.next();
-      test.validate(c.validate(subjectContext));
-    }
-  }
-
   public StraightList getMethodTests() throws TorytException {
     StraightList[] lists
         = new StraightList[getInstanceMethodContracts().size()

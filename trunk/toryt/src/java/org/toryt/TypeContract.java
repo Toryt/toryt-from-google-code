@@ -107,15 +107,17 @@ public interface TypeContract extends Contract {
   StraightList getMethodTests() throws TorytException;
 
 
+  /*<property name="type invariant conditions">*/
+  //------------------------------------------------------------------
+
   /**
-   * Validate the type invariants of this type contract
-   * against the state of the given <code>test</code>.
-   * Validation should be done by calling {@link MethodTest#validate(boolean)}
-   * on <code>test</code> for <code>subject</code>.
-   * 
-   * @pre getType().isInstance(subject);
+   * @basic
    */
-  void validateTypeInvariants(Object subject, MethodTest test);
+  Set getTypeInvariantConditions();
+  
+  /*</property>*/  
+
+  
   
   public class AllMembersCoveredTest extends AbstractTest {
 
