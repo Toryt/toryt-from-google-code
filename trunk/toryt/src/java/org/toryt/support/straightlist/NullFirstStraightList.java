@@ -2,6 +2,7 @@ package org.toryt.support.straightlist;
 
 
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -97,13 +98,19 @@ public class NullFirstStraightList extends AbstractStraightList {
   }
 
   public final int size() {
-    return $l.size() + 1;
+    return ($l.size() < Integer.MAX_VALUE)
+              ? $l.size() + 1
+              : Integer.MAX_VALUE;
   }
 
   public Object[] toArray(Class clazz, int size) {
     Object[] array = (Object[])Array.newInstance(clazz, size);
     System.arraycopy($l.toArray(clazz,  size - 1), 0, array, 1, $l.size());
     return array;
+  }
+
+  public final BigInteger getBigSize() {
+    return $l.getBigSize().add(ONE);
   }
 
 }

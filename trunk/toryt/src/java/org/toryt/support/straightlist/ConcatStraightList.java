@@ -2,6 +2,7 @@ package org.toryt.support.straightlist;
 
 
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -130,7 +131,6 @@ public class ConcatStraightList extends AbstractStraightList {
           $size += $l[i].size();
         }
         else {
-          System.out.println("OVERFLOW IN CONCATSTRAIGTHLIST SIZE");
           $size = Integer.MAX_VALUE;
         }
       }
@@ -150,6 +150,18 @@ public class ConcatStraightList extends AbstractStraightList {
       start += lSize;
     }
     return result;
+  }
+
+  private BigInteger $bigSize = null;
+
+  public final BigInteger getBigSize() {
+    if ($bigSize == null) {
+      $bigSize = ONE;
+      for (int i = 0; i < $l.length; i++) {
+        $bigSize = $bigSize.add($l[i].getBigSize());
+      }
+    }
+    return $bigSize;
   }
 
 }

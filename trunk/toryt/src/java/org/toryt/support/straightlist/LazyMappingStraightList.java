@@ -1,6 +1,7 @@
 package org.toryt.support.straightlist;
 
 
+import java.math.BigInteger;
 import java.util.Iterator;
 
 
@@ -74,4 +75,8 @@ public class LazyMappingStraightList extends AbstractLazyStraightList {
     Object map(Object o);
   }
   
+  public final BigInteger getBigSize() {
+    return $l.getBigSize();
+  }
+
 }

@@ -2,6 +2,7 @@ package org.toryt.support.straightlist;
 
 
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -79,6 +80,10 @@ public class ArrayStraightList extends AbstractStraightList {
     Object[] result = (Object[])Array.newInstance(clazz, size); 
     System.arraycopy($a, 0, result, 0, $a.length);
     return result;
+  }
+
+  public BigInteger getBigSize() {
+    return BigInteger.valueOf($a.length); 
   }
 
 }

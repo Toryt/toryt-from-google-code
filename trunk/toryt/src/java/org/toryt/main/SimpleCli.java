@@ -2,6 +2,7 @@ package org.toryt.main;
 
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,32 +75,39 @@ public class SimpleCli extends AbstractTest {
     }
     $failedTests = new ArrayList();
     StraightList tests = getContract().getTests();
-    int testsToRun = tests.size();
+    BigInteger testsToRun = tests.getBigSize();
     Date startTime = new Date();
-    int testsDone = 0;
+    BigInteger testsDone = BigInteger.ZERO;
     System.out.println(INTEGER_NUMBER_FORMATTER.format(testsToRun) + " tests to run");
     Iterator iter = tests.iterator();
     Date loopTimer = new Date();
-    int loopCounter = testsDone;
+    BigInteger loopCounter = testsDone;
     while (iter.hasNext() && ! hasEnough()) {
       Test t = (Test)iter.next();
+      try {
       t.test();
       if (! t.isSuccessful()) {
         $failedTests.add(t);
         System.out.println();
         t.report(System.out);
       }
-      testsDone++;
+      }
+      catch (Throwable exc) {
+        $failedTests.add(t);
+        exc.printStackTrace(); 
+      }
+      testsDone = testsDone.add(BigInteger.ONE);
       Date loopEnd = new Date();
       if (loopEnd.getTime() - loopTimer.getTime() > 10000) {
         long loopDuration = loopEnd.getTime() - startTime.getTime();
-        double loopTestsPerSecond = (testsDone - loopCounter) / (loopDuration/ 1000.0);
+        double loopTestsPerSecond = testsDone.subtract(loopCounter).doubleValue() / (loopDuration/ 1000.0);
         System.out.println((loopDuration / 1000)
                            + "s, "
                            + INTEGER_NUMBER_FORMATTER.format(testsDone)
                            + " tests done ("
                            + FLOAT_NUMBER_FORMATTER.format(loopTestsPerSecond)
                            + "tps)");
+        System.out.println("current test: " + t.toString());
         loopTimer = loopEnd;
         loopCounter = testsDone;
         System.gc();
@@ -109,7 +117,7 @@ public class SimpleCli extends AbstractTest {
     System.out.println(INTEGER_NUMBER_FORMATTER.format(testsDone) + " tests done");
     long duration = endTime.getTime() - startTime.getTime();
     System.out.println("duration: " + FLOAT_NUMBER_FORMATTER.format(duration) + "ms");
-    double testsPerSecond = testsDone / (duration / 1000.0);
+    double testsPerSecond = testsDone.doubleValue() / (duration / 1000.0);
     System.out.println("speed: " + FLOAT_NUMBER_FORMATTER.format(testsPerSecond) + "tps");
   }
   

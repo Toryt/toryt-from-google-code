@@ -1,6 +1,7 @@
 package org.toryt.support.straightlist;
 
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
@@ -79,5 +80,20 @@ public interface StraightList extends Collection {
    * @mudo better contract
    */
   Object[] toArray(Class clazz, int size);
+
+  /**
+   * @basic
+   */
+  BigInteger getBigSize();
+  
+  /**
+   * @return (getBigSize() < Integer.MAX_VALUE)
+   *            ? getBigSize()
+   *            : Integer.MAX_VALUE;
+   */
+  int size();
+  
+  public final static BigInteger ZERO = BigInteger.ZERO;
+  public final static BigInteger ONE = BigInteger.ONE;
 
 }

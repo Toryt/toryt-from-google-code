@@ -1,6 +1,7 @@
 package org.toryt.support.straightlist;
 
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -136,12 +137,23 @@ public class LazyCombinationStraightList extends AbstractLazyStraightList {
           $size *= $sources[i].size();
         }
         else {
-          System.out.println("OVERFLOW IN LAZYCOMBINATIONSTRAIGTHLIST SIZE");
           $size = Integer.MAX_VALUE;
         }
       }
     }
     return $size;
+  }
+
+  private BigInteger $bigSize = null;
+  
+  public final BigInteger getBigSize() {
+    if ($bigSize == null) {
+      $bigSize = ONE;
+      for (int i = 0; i < $sources.length; i++) {
+        $bigSize = $bigSize.multiply($sources[i].getBigSize());
+      }
+    }
+    return $bigSize;
   }
 
 }

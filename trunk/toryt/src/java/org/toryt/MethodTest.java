@@ -284,4 +284,8 @@ public abstract class MethodTest implements Test {
 
   }
 
+  public final String toString() {
+    return "test for " + getMethodContract().getMember();
+  }
+
 }
