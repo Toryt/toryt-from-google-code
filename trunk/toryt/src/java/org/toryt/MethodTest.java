@@ -200,6 +200,17 @@ public abstract class MethodTest implements Test {
       System.out.println(e);
       throw new TorytException(getMethodContract(), e);
     }
+    catch (NullPointerException e) {
+      System.out.println("This method was called in test on null. Check your cases (no null as subject allowed).");
+      System.out.println(this);
+      System.out.println(e);
+      throw new TorytException(getMethodContract(), e);
+    }
+    catch (ExceptionInInitializerError e) {
+      System.out.println(this);
+      System.out.println(e);
+      throw new TorytException(getMethodContract(), e);
+    }
     catch (InstantiationException e) {
       System.out.println(this);
       System.out.println(e);
