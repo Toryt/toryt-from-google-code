@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
-  <extend>ppw-libraries-settings/project.xml</extend>
+  <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>1</pomVersion>
   <name>Toryt</name>
   <groupId>toryt</groupId>
@@ -50,6 +50,12 @@
       <type>jar</type>
     </dependency>
     <dependency>
+      <groupId>commons-jexl</groupId>
+      <artifactId>commons-jexl</artifactId>
+      <version>1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-bean-II</artifactId>
       <version>1.1.0-2.0</version>
@@ -59,12 +65,6 @@
       <groupId>taglibs</groupId>
       <artifactId>standard</artifactId>
       <version>1.1.2</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>commons-jexl</groupId>
-      <artifactId>commons-jexl</artifactId>
-      <version>1.0</version>
       <type>jar</type>
     </dependency>
   </dependencies>
