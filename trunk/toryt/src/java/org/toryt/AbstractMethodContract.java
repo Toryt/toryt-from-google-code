@@ -119,7 +119,7 @@ public abstract class AbstractMethodContract extends AbstractContract
     validateConditionSet(test, getExceptionConditions());
   }
   
-  private final static String EXCEPTION_KEY = "EXCEPTION";
+  public final static String EXCEPTION_KEY = "EXCEPTION";
   
   private void validateConditionSet(MethodTest test, Set conditionSet) {
     Iterator iter = conditionSet.iterator();
