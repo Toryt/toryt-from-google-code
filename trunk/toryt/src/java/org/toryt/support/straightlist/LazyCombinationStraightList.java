@@ -48,7 +48,7 @@ public class LazyCombinationStraightList extends AbstractLazyStraightList {
    * 
    * @mudo better contract
    */
-  public LazyCombinationStraightList(StraightList[] sources, String[] labels) {
+  public LazyCombinationStraightList(String[] labels, StraightList[] sources) {
     assert sources != null;
     assert labels != null;
     assert labels.length == sources.length;

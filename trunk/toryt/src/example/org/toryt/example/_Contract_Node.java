@@ -51,9 +51,9 @@ public class _Contract_Node extends ClassContract {
       
       public StraightList getTestCases() throws TorytException {
         return new LazyCombinationStraightList(
+             new String[] {SUBJECT_KEY, "description"},
              new StraightList[] {getCases(),
-                                 Cases.findTestObjectList(String.class)},
-             new String[] {SUBJECT_KEY, "description"});
+                                 Cases.findTestObjectList(String.class)});
       }
 
     });
@@ -75,9 +75,9 @@ public class _Contract_Node extends ClassContract {
 
       public StraightList getTestCases() throws TorytException {
         return new LazyCombinationStraightList(
+             new String[] {SUBJECT_KEY, "title"},
              new StraightList[] {getCases(),
-                                 Cases.findTestObjectList(String.class)},
-             new String[] {SUBJECT_KEY, "title"});
+                                 Cases.findTestObjectList(String.class)});
       }
       
     });
@@ -113,9 +113,9 @@ public class _Contract_Node extends ClassContract {
 
       public StraightList getTestCases() throws TorytException {
         return new LazyCombinationStraightList(
+              new String[] {SUBJECT_KEY, "group"},
               new StraightList[] {getCases(),
-                                  _C_G.getCasesWithNull()},
-              new String[] {SUBJECT_KEY, "group"});
+                                  _C_G.getCasesWithNull()});
       }
       
       public void recordState(MethodTest test) {
@@ -173,10 +173,10 @@ public class _Contract_Node extends ClassContract {
                                            new Group("title","description",null),
                                            new Group("title","description",new Group())});
     return new LazyCombinationStraightList(
+                new String[] {"description", "title", "group"},
                 new StraightList[] {Cases.findTestObjectList(String.class),
                                     Cases.findTestObjectList(String.class),
-                                    groups},
-                new String[] {"description", "title", "group"});
+                                    groups});
   }
 
   public LazyMappingStraightList.Mapping getCaseMapping() {
