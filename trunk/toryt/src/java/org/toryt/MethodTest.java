@@ -261,6 +261,8 @@ public abstract class MethodTest implements Test {
   public final void report(PrintStream out) {
     out.println((isSuccessful() ? "success" : "FAILURE")
                 + ": "
+                + ((getSubject() != null) ? getSubject().getClass() : getMethodContract().getTypeContract().getType()).getName()
+                + " # "
                 + getMethodContract().getMember().toString());
     out.println(repeat("-", PAGE_WIDTH));
     reportContext(out);
@@ -323,7 +325,7 @@ public abstract class MethodTest implements Test {
 
   public final String toString() {
     return "test for " + getMethodContract().getMember()
-           + "(" + (hasRun() ? "ran" : "not run") + ")";
+           + " (" + (hasRun() ? "run" : "not run") + ")";
   }
 
 }

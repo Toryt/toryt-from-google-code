@@ -97,6 +97,14 @@ public class SimpleCli extends AbstractTest {
         exc.printStackTrace(); 
       }
       testsDone = testsDone.add(BigInteger.ONE);
+// MUDO DEBUG
+if (! tests.getBigSize().equals(testsToRun)) {
+  System.out.println("SKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPEDSKIPPED");
+  System.out.println("WARN JAN == WARN JAN == WARN JAN == WARN JAN == WARN JAN == WARN JAN == WARN JAN == WARN JAN == WARN JAN == WARN JAN");
+  System.out.println(tests.getBigSize());
+  System.out.println(testsToRun);
+}
+//MUDO DEBUG
       Date loopEnd = new Date();
       if (loopEnd.getTime() - loopTimer.getTime() > 10000) {
         long loopDuration = loopEnd.getTime() - startTime.getTime();
@@ -121,6 +129,9 @@ public class SimpleCli extends AbstractTest {
     }
     Date endTime = new Date();
     System.out.println();
+// MUDO DEBUG    
+System.out.println("BIG SIZE: " + tests.getBigSize());
+//  MUDO DEBUG    
     System.out.println(INTEGER_NUMBER_FORMATTER.format(testsDone)
                        + " tests done ("
                        + INTEGER_NUMBER_FORMATTER.format(testsToRun.subtract(testsDone))
