@@ -174,6 +174,8 @@ public final class Cases {
                         new Date(System.currentTimeMillis() + DECADE), // Next decade
                         new Date(0)});                                  // Unix Epoch
 
+  private final static StraightList TOL_JAVA_LANG_BOOLEAN
+      = new ArrayStraightList(new Boolean[] {Boolean.FALSE, Boolean.TRUE});
 
   private final static Map TEST_OBJECT_LISTS = new HashMap();
 
@@ -181,6 +183,7 @@ public final class Cases {
     addTol(Integer.class, TOL_JAVA_LANG_INTEGER);
     addTol(Long.class, TOL_JAVA_LANG_LONG);
     addTol(Object.class, TOL_JAVA_LANG_OBJECT);
+    addTol(Boolean.class, TOL_JAVA_LANG_BOOLEAN);
 //    addTol(Throwable.class, TOL_JAVA_LANG_THROWABLE);
     addTol(String.class, TOL_JAVA_LANG_STRING);
     addTol(Date.class, TOL_JAVA_UTIL_DATE);
