@@ -10,7 +10,6 @@ import org.toryt.MethodTest;
 import org.toryt.TorytException;
 import org.toryt.hard.ClassContract;
 import org.toryt.hard.MutatorContract;
-import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
@@ -32,6 +31,48 @@ public class _Contract_Node extends ClassContract {
   public _Contract_Node() throws TorytException {
     super(Node.class);
     setSuperClassContract("java.lang.Object");
+
+    // basic inspectors
+    addBasicInspector("getDescription()");
+    addBasicInspector("getTitle()");
+    addBasicInspector("getRating()");
+    addBasicInspector("getGroup()");
+    
+    // type invariants
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
+        return subject.getTitle() != null;
+      }
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
+        return subject.getDescription() != null;
+      }
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
+        return ! Double.isNaN(subject.getRating()) ? (subject.getRating() >= 0) : true;
+      }
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
+        return ! Double.isNaN(subject.getRating()) ? (subject.getRating() <= 10) : true;
+      }
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
+        return (subject.getGroup() != null)
+                ? subject.getGroup().getNodes().get(subject.getTitle()) == subject
+                : true;
+      }
+    });
+    
+    // instance methods
     addInstanceMethodContract(new MutatorContract(this, Node.class, "setDescription(java.lang.String)") {
 
       public String[] getFormalParameters() {
@@ -55,6 +96,7 @@ public class _Contract_Node extends ClassContract {
              new StraightList[] {getCases(),
                                  Cases.findTestObjectList(String.class)});
       }
+
 
     });
     addInstanceMethodContract(new MutatorContract(this, Node.class, "setTitle(java.lang.String)") {
@@ -127,56 +169,16 @@ public class _Contract_Node extends ClassContract {
       }
       
     });
-    addBasicInspector("getDescription()");
-    addBasicInspector("getTitle()");
-    addBasicInspector("getRating()");
-    addBasicInspector("getGroup()");
-    addTypeInvariantCondition(new Condition() {
-      public boolean validate(Map context) {
-        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
-        return subject.getTitle() != null;
-      }
-    });
-    addTypeInvariantCondition(new Condition() {
-      public boolean validate(Map context) {
-        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
-        return subject.getDescription() != null;
-      }
-    });
-    addTypeInvariantCondition(new Condition() {
-      public boolean validate(Map context) {
-        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
-        return ! Double.isNaN(subject.getRating()) ? (subject.getRating() >= 0) : true;
-      }
-    });
-    addTypeInvariantCondition(new Condition() {
-      public boolean validate(Map context) {
-        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
-        return ! Double.isNaN(subject.getRating()) ? (subject.getRating() <= 10) : true;
-      }
-    });
-    addTypeInvariantCondition(new Condition() {
-      public boolean validate(Map context) {
-        Node subject = (Node)context.get(MethodContract.SUBJECT_KEY);
-        return (subject.getGroup() != null)
-                ? subject.getGroup().getNodes().get(subject.getTitle()) == subject
-                : true;
-      }
-    });
+
     close();
   }
     
   public StraightList getCasesMaps() throws TorytException {
-    ArrayStraightList groups // this must become a factory, since now we share the groups
-      = new ArrayStraightList(new Group[] {null,
-                                           new Group(),
-                                           new Group("title","description",null),
-                                           new Group("title","description",new Group())});
     return new LazyCombinationStraightList(
                 new String[] {"description", "title", "group"},
                 new StraightList[] {Cases.findTestObjectList(String.class),
                                     Cases.findTestObjectList(String.class),
-                                    groups});
+                                    _C_G.getSomeCasesWithNull()});
   }
 
   public LazyMappingStraightList.Mapping getCaseMapping() {

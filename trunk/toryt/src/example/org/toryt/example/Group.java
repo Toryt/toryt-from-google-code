@@ -15,15 +15,13 @@ import java.util.Map;
  * @author    Abdul Shoudouev
  * @author    Peopleware n.v.
  * 
+ * @toryt:cC toryt.contract.Collections;
+ * 
  * @invar getNodes() != null;
- * @invar (foreach Object o; getNodes().values().contains(o);
- *            o != null);
- * @invar (foreach Object o; getNodes().keySet().contains(o);
- *            o != null);
- * @invar (foreach Object o; getNodes().values().contains(o);
- *            o instanceof Node);
- * @invar (foreach Object o; getNodes().keySet().contains(o);
- *            o instanceof String);
+ * @invar cC:noNull(getNodes().values());
+ * @invar cC:noNull(getNodes().keySet());
+ * @invar cC:instanceOf(getNodes().values(), Node.class);
+ * @invar cC:instanceOf(getNodes().keySet(), String.class);
  * @invar (foreach Node n; getNodes().values().contains(n);
  *            n.getGroup() == this);
  */
@@ -144,20 +142,5 @@ public class Group extends Node {
   }
 
   /* </property> */
-
-  
-//  public String toString() {
-//    StringBuffer result = new StringBuffer(super.toString() + "\n["); //$NON-NLS-1$
-//    Iterator iter = getNodes().values().iterator();
-//    while (iter.hasNext()) {
-//      Node n = (Node)iter.next();
-//      result.append(n.toString());
-//      if (iter.hasNext()) {
-//        result.append("; "); //$NON-NLS-1$
-//      }
-//    }
-//    result.append("]\n"); //$NON-NLS-1$
-//    return result.toString();
-//  }
   
 }

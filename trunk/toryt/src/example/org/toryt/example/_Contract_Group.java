@@ -1,10 +1,20 @@
 package org.toryt.example;
 
 
+import java.util.Iterator;
 import java.util.Map;
 
+import org.toryt.Cases;
+import org.toryt.Condition;
+import org.toryt.MethodContract;
 import org.toryt.TorytException;
+import org.toryt.contract.Collections;
+import org.toryt.contract.Strings;
 import org.toryt.hard.ClassContract;
+import org.toryt.hard.ConstructorContract;
+import org.toryt.support.straightlist.ArrayStraightList;
+import org.toryt.support.straightlist.EmptyStraightList;
+import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
 
@@ -14,13 +24,140 @@ public class _Contract_Group extends ClassContract {
   public _Contract_Group() throws TorytException {
     super(Group.class);
     setSuperClassContract("org.toryt.example.Node");
-//    addClassMethodContract(new ConstructorContract(Group.class, "Group()") {
-//      
-//                                });
-//    addClassMethodContract(new ConstructorContract(Group.class, "Group(java.lang.String, java.lang.String, org.toryt.example.Group)") {
-//      
-//                                });
+    
+    // basic inspectors
     addBasicInspector("getNodes()");
+
+    // type invariants
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
+        return subject.getNodes() != null;
+      }      
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
+        return Collections.noNull(subject.getNodes().values());
+      }      
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
+        return Collections.noNull(subject.getNodes().keySet());
+      }      
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
+        return Collections.instanceOf(subject.getNodes().values(), Node.class);
+      }      
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
+        return Collections.instanceOf(subject.getNodes().keySet(), String.class);
+      }      
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
+        Iterator iter = subject.getNodes().values().iterator();
+        while (iter.hasNext()) {
+          Node n = (Node)iter.next();
+          if (n.getGroup() != subject) {
+            return false;
+          }
+        }
+        return true;
+      }      
+    });
+    
+    // constructors
+    addConstructorContract(new ConstructorContract(this, Group.class, "Group()") {
+
+      public StraightList getTestCases() throws TorytException {
+        return EmptyStraightList.INSTANCE;
+      }
+
+      {
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Group subject = (Group)context.get(SUBJECT_KEY);
+            return subject.getDescription().equals(Strings.EMPTY);
+          }});
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Group subject = (Group)context.get(SUBJECT_KEY);
+            return subject.getTitle().equals(Strings.EMPTY);
+          }});
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Group subject = (Group)context.get(SUBJECT_KEY);
+            return subject.getRating() == 0;
+          }});
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Group subject = (Group)context.get(SUBJECT_KEY);
+            return subject.getGroup() == null;
+          }});
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Group subject = (Group)context.get(SUBJECT_KEY);
+            return subject.getNodes().isEmpty();
+          }});
+        close();
+      }
+
+    });
+    addConstructorContract(new ConstructorContract(this, Group.class, "Group(java.lang.String,java.lang.String,org.toryt.example.Group)") {
+
+      public String[] getFormalParameters() {
+        return new String[] {"title", "description", "parent"};
+      }
+      
+      public StraightList getTestCases() throws TorytException {
+        return new LazyCombinationStraightList(
+           new String[] {"title", "description", "parent"},
+           new StraightList[] {Cases.findTestObjectList(String.class),
+                               Cases.findTestObjectList(String.class),
+                               getSomeCasesWithNull()});
+      }
+
+      {
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Group subject = (Group)context.get(SUBJECT_KEY);
+            String description = (String)context.get("description");
+            return subject.getDescription()
+                .equals(description == null ? Strings.EMPTY : description);
+          }});
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Group subject = (Group)context.get(SUBJECT_KEY);
+            String title = (String)context.get("title");
+            return subject.getTitle().equals(title == null ? Strings.EMPTY : title);
+          }});
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Group subject = (Group)context.get(SUBJECT_KEY);
+            return subject.getRating() == 0;
+          }});
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Group subject = (Group)context.get(SUBJECT_KEY);
+            Group parent = (Group)context.get("parent");
+            return subject.getGroup() == parent;
+          }});
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Group subject = (Group)context.get(SUBJECT_KEY);
+            return subject.getNodes().isEmpty();
+          }});
+        close();
+      }
+
+    });
     close();
   }
   
@@ -55,5 +192,12 @@ public class _Contract_Group extends ClassContract {
           }
         };
 
-  
+  public StraightList getSomeCases() throws TorytException {
+    ArrayStraightList groups // this must become a factory, since now we share the groups
+    = new ArrayStraightList(new Group[] {new Group(),
+                                         new Group("title","description",null),
+                                         new Group("title","description",new Group())});
+    return groups;
+  }
+
 }
