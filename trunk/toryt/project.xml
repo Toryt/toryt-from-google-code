@@ -9,6 +9,7 @@
     <name>toryt.org</name>
     <url>www.toryt.org</url>
   </organization>
+  <logo>logo/toryt174x143.jpeg</logo>
   <artifactId>toryt-I</artifactId>
   <shortDescription>Contract-based Unit Testing Framework</shortDescription>
   <description>Contract-based Unit Testing Framework.</description>
