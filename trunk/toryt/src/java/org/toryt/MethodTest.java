@@ -265,6 +265,10 @@ public abstract class MethodTest implements Test {
     
     private Throwable $exception;
     
+    public String toString() {
+      return "Exception: " + getException().toString();
+    }
+
   }
 
   public final class FailedExceptionCondition extends ReportExceptionCondition {
