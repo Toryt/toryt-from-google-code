@@ -1,4 +1,4 @@
-package org.toryt.example;
+package org.toryt.example.jexl;
 
 
 import org.toryt.TorytException;

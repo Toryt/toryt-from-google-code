@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.toryt.example.Node;
+import org.toryt.example.hard.Node;
 
 import be.peopleware.bean_II.Beans;
 

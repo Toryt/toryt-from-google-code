@@ -1,4 +1,4 @@
-package org.toryt.example;
+package org.toryt.example.jexl;
 
 
 import java.util.Iterator;
@@ -12,6 +12,7 @@ import org.toryt.contract.Collections;
 import org.toryt.contract.Strings;
 import org.toryt.hard.ClassContract;
 import org.toryt.hard.ConstructorContract;
+import org.toryt.jexl.JexlCondition;
 import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.EmptyStraightList;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
@@ -80,36 +81,16 @@ public class _Contract_Group extends ClassContract {
       }
 
       {
-        addPostcondition(new Condition() {
-          public boolean validate(Map context) {
-            Group subject = (Group)context.get(SUBJECT_KEY);
-            return subject.getDescription().equals(Strings.EMPTY);
-          }});
-        addPostcondition(new Condition() {
-          public boolean validate(Map context) {
-            Group subject = (Group)context.get(SUBJECT_KEY);
-            return subject.getTitle().equals(Strings.EMPTY);
-          }});
-        addPostcondition(new Condition() {
-          public boolean validate(Map context) {
-            Group subject = (Group)context.get(SUBJECT_KEY);
-            return Double.isNaN(subject.getRating());
-          }});
-        addPostcondition(new Condition() {
-          public boolean validate(Map context) {
-            Group subject = (Group)context.get(SUBJECT_KEY);
-            return subject.getGroup() == null;
-          }});
-        addPostcondition(new Condition() {
-          public boolean validate(Map context) {
-            Group subject = (Group)context.get(SUBJECT_KEY);
-            return subject.getNodes().isEmpty();
-          }});
+        addPostcondition(new JexlCondition("this.getDescription().equals(EMPTY);"));
+        addPostcondition(new JexlCondition("this.getTitle().equals(EMPTY);"));
+        addPostcondition(new JexlCondition("java.lang.Double.isNaN(this.getRating() == 0);"));
+        addPostcondition(new JexlCondition("this.getGroup() == null;"));
+        addPostcondition(new JexlCondition("this.getNodes().isEmpty();"));
         close();
       }
 
     });
-    addConstructorContract(new ConstructorContract(this, Group.class, "Group(java.lang.String,java.lang.String,org.toryt.example.Group)") {
+    addConstructorContract(new ConstructorContract(this, Group.class, "Group(java.lang.String,java.lang.String,org.toryt.example.jexl.Group)") {
 
       public String[] getFormalParameters() {
         return new String[] {"title", "description", "parent"};
@@ -172,7 +153,7 @@ public class _Contract_Group extends ClassContract {
       _C_N = new _Contract_Node();
     }
     catch (TorytException e) {
-      assert false;
+      assert false : "TorytExceptionshould not happen: " + e;
     }
   }
   

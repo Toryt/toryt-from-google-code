@@ -73,7 +73,7 @@ public abstract class MethodTest implements Test {
   //------------------------------------------------------------------
 
 
-  public final static String SUBJECT_KEY = "this'";
+  public final static String SUBJECT_KEY = "this";
   public final static String RESULT_KEY = "org.toryt.MethodTest.RESULT";
   public final static String EXCEPTION_KEY = "org.toryt.MethodTest.EXCEPTION";
 

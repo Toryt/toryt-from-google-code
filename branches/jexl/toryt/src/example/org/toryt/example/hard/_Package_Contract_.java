@@ -1,4 +1,4 @@
-package org.toryt.example;
+package org.toryt.example.hard;
 import org.toryt.TorytException;
 import org.toryt.hard.PackageContract;
 

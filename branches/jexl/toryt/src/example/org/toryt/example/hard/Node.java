@@ -1,4 +1,4 @@
-package org.toryt.example;
+package org.toryt.example.hard;
 
 import java.text.NumberFormat;
 
