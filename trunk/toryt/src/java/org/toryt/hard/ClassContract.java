@@ -80,14 +80,14 @@ public abstract class ClassContract
    * @throws TorytException
    *         isClosed();
    * @throws TorytException
-   *         imc.isClosed();
+   *         ! cc.isClosed();
    */
   public final void addConstructorContract(ConstructorContract cc) throws TorytException {
     assert cc != null;
     if (isClosed()) {
       throw new TorytException(this, null);
     }
-    if (cc.isClosed()) {
+    if (! cc.isClosed()) {
       throw new TorytException(this, null);
     }
     $constructorContracts.add(cc);

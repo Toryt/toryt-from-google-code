@@ -44,14 +44,14 @@ public class PackageContract
    * @throws TorytException
    *         isClosed();
    * @throws TorytException
-   *         pc.isClosed();
+   *         ! pc.isClosed();
    */
   public final void addSubPackageContract(PackageContract pc) throws TorytException {
     assert pc != null;
     if (isClosed()) {
       throw new TorytException(this, null);
     }
-    if (pc.isClosed()) {
+    if (! pc.isClosed()) {
       throw new TorytException(this, null);
     }
     $subPackageContracts.add(pc);
@@ -69,14 +69,14 @@ public class PackageContract
    * @throws TorytException
    *         isClosed();
    * @throws TorytException
-   *         pc.isClosed();
+   *         ! cc.isClosed();
    */
   public final void addClassContract(ClassContract cc) throws TorytException {
     assert cc != null;
     if (isClosed()) {
       throw new TorytException(this, null);
     }
-    if (cc.isClosed()) {
+    if (! cc.isClosed()) {
       throw new TorytException(this, null);
     }
     $classContracts.add(cc);

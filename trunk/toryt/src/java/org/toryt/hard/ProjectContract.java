@@ -44,14 +44,14 @@ public class ProjectContract
    * @throws TorytException
    *         isClosed();
    * @throws TorytException
-   *         pc.isClosed();
+   *         ! pc.isClosed();
    */
   public final void addPackageContract(PackageContract pc) throws TorytException {
     assert pc != null;
     if (isClosed()) {
       throw new TorytException(this, null);
     }
-    if (pc.isClosed()) {
+    if (! pc.isClosed()) {
       throw new TorytException(this, null);
     }
     $packageContracts.add(pc);

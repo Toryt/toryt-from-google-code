@@ -46,6 +46,7 @@ public class _Contract_Node extends ClassContract {
             boolean result = subject.getDescription().equals(description == null ? "" : description);
             return result;
           }});
+        close();
       }
       
       public StraightList getTestCases() throws TorytException {
@@ -69,6 +70,7 @@ public class _Contract_Node extends ClassContract {
             String title = (String)context.get("title");
             return subject.getTitle().equals(title == null ? "" : title);
           }});
+        close();
       }
 
       public StraightList getTestCases() throws TorytException {
@@ -106,6 +108,7 @@ public class _Contract_Node extends ClassContract {
             Group groupATpost = (Group)context.get("group@post");
             return group != null ? groupATpost.getNodes().values().contains(subject) : true;
           }});
+        close();
       }
 
       public StraightList getTestCases() throws TorytException {

@@ -55,14 +55,14 @@ public class TypeContract
    * @throws TorytException
    *         isClosed();
    * @throws TorytException
-   *         ic.isClosed();
+   *         ! ic.isClosed();
    */
   public final void addDirectSuperInterfaceContract(InterfaceContract ic) throws TorytException {
     assert ic != null;
     if (isClosed()) {
       throw new TorytException(this, null);
     }
-    if (ic.isClosed()) {
+    if (! ic.isClosed()) {
       throw new TorytException(this, null);
     }
     $directSuperInterfaceContracts.add(ic);
@@ -88,14 +88,14 @@ public class TypeContract
    * @throws TorytException
    *         isClosed();
    * @throws TorytException
-   *         imc.isClosed();
+   *         ! imc.isClosed();
    */
   public final void addInstanceMethodContract(InstanceMethodContract imc) throws TorytException {
     assert imc != null;
     if (isClosed()) {
       throw new TorytException(this, null);
     }
-    if (imc.isClosed()) {
+    if (! imc.isClosed()) {
       throw new TorytException(this, null);
     }
     $instanceMethodContracts.add(imc);
@@ -112,14 +112,14 @@ public class TypeContract
    * @throws TorytException
    *         isClosed();
    * @throws TorytException
-   *         cmc.isClosed();
+   *         ! cmc.isClosed();
    */
   public final void addClassMethodContract(ClassMethodContract cmc) throws TorytException {
     assert cmc != null;
     if (isClosed()) {
       throw new TorytException(this, null);
     }
-    if (cmc.isClosed()) {
+    if (! cmc.isClosed()) {
       throw new TorytException(this, null);
     }
     $classMethodContracts.add(cmc);
@@ -136,14 +136,14 @@ public class TypeContract
    * @throws TorytException
    *         isClosed();
    * @throws TorytException
-   *         ncc.isClosed();
+   *         ! ncc.isClosed();
    */
   public final void addNestedClassContract(TypeContract ncc) throws TorytException {
     assert ncc != null;
     if (isClosed()) {
       throw new TorytException(this, null);
     }
-    if (ncc.isClosed()) {
+    if (! ncc.isClosed()) {
       throw new TorytException(this, null);
     }
     $nestedClassContracts.add(ncc);
