@@ -132,9 +132,13 @@ public class LazyCombinationStraightList extends AbstractLazyStraightList {
     if ($size < 0) {
       $size = 1;
       for (int i = 0; i < $sources.length; i++) {
-        $size = ($size < Integer.MAX_VALUE / $sources[i].size())
-                    ? ($size * $sources[i].size())
-                    : Integer.MAX_VALUE;
+        if ($size < Integer.MAX_VALUE / $sources[i].size()) {
+          $size *= $sources[i].size();
+        }
+        else {
+          System.out.println("OVERFLOW IN LAZYCOMBINATIONSTRAIGTHLIST SIZE");
+          $size = Integer.MAX_VALUE;
+        }
       }
     }
     return $size;

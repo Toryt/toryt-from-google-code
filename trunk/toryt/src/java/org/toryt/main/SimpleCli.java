@@ -77,9 +77,10 @@ public class SimpleCli extends AbstractTest {
     int testsToRun = tests.size();
     Date startTime = new Date();
     int testsDone = 0;
-    System.out.println(testsToRun + " tests to run");
+    System.out.println(INTEGER_NUMBER_FORMATTER.format(testsToRun) + " tests to run");
     Iterator iter = tests.iterator();
     Date loopTimer = new Date();
+    int loopCounter = testsDone;
     while (iter.hasNext() && ! hasEnough()) {
       Test t = (Test)iter.next();
       t.test();
@@ -90,20 +91,30 @@ public class SimpleCli extends AbstractTest {
       }
       testsDone++;
       Date loopEnd = new Date();
-      if (loopEnd.getTime() - loopTimer.getTime() > 2000) {
-        System.out.println(((loopEnd.getTime() - startTime.getTime()) / 1000) + "s, " + testsDone + " tests done");
+      if (loopEnd.getTime() - loopTimer.getTime() > 10000) {
+        long loopDuration = loopEnd.getTime() - startTime.getTime();
+        double loopTestsPerSecond = (testsDone - loopCounter) / (loopDuration/ 1000.0);
+        System.out.println((loopDuration / 1000)
+                           + "s, "
+                           + INTEGER_NUMBER_FORMATTER.format(testsDone)
+                           + " tests done ("
+                           + FLOAT_NUMBER_FORMATTER.format(loopTestsPerSecond)
+                           + "tps)");
         loopTimer = loopEnd;
+        loopCounter = testsDone;
+        System.gc();
       }
     }
     Date endTime = new Date();
-    System.out.println(testsDone + " tests done");
+    System.out.println(INTEGER_NUMBER_FORMATTER.format(testsDone) + " tests done");
     long duration = endTime.getTime() - startTime.getTime();
-    System.out.println("duration: " + duration + "ms");
+    System.out.println("duration: " + FLOAT_NUMBER_FORMATTER.format(duration) + "ms");
     double testsPerSecond = testsDone / (duration / 1000.0);
-    System.out.println("speed: " + NF.format(testsPerSecond) + "tps");
+    System.out.println("speed: " + FLOAT_NUMBER_FORMATTER.format(testsPerSecond) + "tps");
   }
   
-  private static final NumberFormat NF = NumberFormat.getNumberInstance(new Locale("nl"));
+  private static final NumberFormat INTEGER_NUMBER_FORMATTER = NumberFormat.getIntegerInstance(new Locale("nl"));
+  private static final NumberFormat FLOAT_NUMBER_FORMATTER = NumberFormat.getNumberInstance(new Locale("nl"));
 
   public final boolean isSuccessful() {
     return (getFailedTests() != null) && (getFailedTests().isEmpty());

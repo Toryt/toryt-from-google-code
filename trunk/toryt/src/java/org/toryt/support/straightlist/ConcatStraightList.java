@@ -126,9 +126,13 @@ public class ConcatStraightList extends AbstractStraightList {
     if ($size < 0) {
       $size = 0;
       for (int i = 0; i < $l.length; i++) {
-        $size = ($size < Integer.MAX_VALUE - $l[i].size())
-                    ? ($size + $l[i].size())
-                    : Integer.MAX_VALUE;
+        if ($size < Integer.MAX_VALUE - $l[i].size()) {
+          $size += $l[i].size();
+        }
+        else {
+          System.out.println("OVERFLOW IN CONCATSTRAIGTHLIST SIZE");
+          $size = Integer.MAX_VALUE;
+        }
       }
     }
     return $size;
