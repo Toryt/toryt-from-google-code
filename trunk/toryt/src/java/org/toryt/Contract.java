@@ -1,7 +1,8 @@
 package org.toryt;
 
 
-import java.util.List;
+import org.toryt.support.straightlist.StraightList;
+
 
 
 /**
@@ -46,18 +47,18 @@ public interface Contract {
    * @return getExtraTests() + getMethodTests();
    * @throws TorytException
    */
-  List getTests() throws TorytException;
+  StraightList getTests() throws TorytException;
 
   /**
    * @throws TorytException
    * @basic
    */
-  List getMethodTests() throws TorytException;
+  StraightList getMethodTests() throws TorytException;
 
   /**
    * @basic
    */
-  List getExtraTests();
+  StraightList getExtraTests();
 
   /**
    * Contracts are often built at runtime. When the building process

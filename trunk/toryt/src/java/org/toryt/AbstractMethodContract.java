@@ -6,9 +6,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+
+import org.toryt.support.straightlist.ListWrapperStraightList;
+import org.toryt.support.straightlist.StraightList;
 
 
 /**
@@ -49,17 +51,18 @@ public abstract class AbstractMethodContract extends AbstractContract
    */
   private TypeContract $typeContract;
   
-  public final List getMethodTests() throws TorytException {
+  public final StraightList getMethodTests() throws TorytException {
     // MUDO this order must become priority order
-    List testCases = getTestCases();
+    // MUDO this must become a list of method test factories
+    StraightList testCases = getTestCases();
     List result = new ArrayList(testCases.size());
-    ListIterator iterCases = testCases.listIterator();
+    Iterator iterCases = testCases.iterator();
     while (iterCases.hasNext()) {
       Map testCase = (Map)iterCases.next();
       MethodTest test = createMethodTest(testCase);
       result.add(test);
     }
-    return result;
+    return new ListWrapperStraightList(result);
   }
 
   public String[] getFormalParameters() {

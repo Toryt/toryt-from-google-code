@@ -1,9 +1,10 @@
 package org.toryt;
 
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+
+import org.toryt.support.straightlist.ConcatStraightList;
+import org.toryt.support.straightlist.StraightList;
 
 
 
@@ -37,15 +38,16 @@ public abstract class AbstractProjectContract
   
   private String $projectName;
   
-  public final List getMethodTests() throws TorytException {
-    // MUDO optimize list?
-    List result = new ArrayList();
-    Iterator i = getPackageContracts().iterator();
-    while (i.hasNext()) {
-      PackageContract pc = (PackageContract)i.next();
-      result.addAll(pc.getMethodTests());
+  public final StraightList getMethodTests() throws TorytException {
+    StraightList[] lists = new StraightList[getPackageContracts().size()];
+    Iterator iter = getPackageContracts().iterator();
+    int i = 0;
+    while (iter.hasNext()) {
+      PackageContract pc = (PackageContract)iter.next();
+      lists[i] = pc.getMethodTests();
+      i++;
     }
-    return result;
+    return new ConcatStraightList(lists);
   }
   
 }

@@ -2,8 +2,11 @@ package org.toryt;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import org.toryt.support.straightlist.ConcatStraightList;
+import org.toryt.support.straightlist.ListWrapperStraightList;
+import org.toryt.support.straightlist.StraightList;
 
 
 /**
@@ -25,8 +28,8 @@ public abstract class AbstractContract implements Contract {
   
 
   
-  public final List getExtraTests() {
-    return Collections.unmodifiableList($extraTests);
+  public final StraightList getExtraTests() {
+    return new ListWrapperStraightList($extraTests);
   }
   
   /**
@@ -44,11 +47,8 @@ public abstract class AbstractContract implements Contract {
   
   private List $extraTests = new ArrayList();
 
-  public final List getTests() throws TorytException {
-    // MUDO lazy
-    ArrayList result = new ArrayList(getExtraTests());
-    result.addAll(getMethodTests());
-    return result;
+  public final StraightList getTests() throws TorytException {
+    return new ConcatStraightList(new StraightList[] {getExtraTests(), getMethodTests()});
   }
 
   public final boolean isClosed() {

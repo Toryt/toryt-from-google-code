@@ -2,8 +2,9 @@ package org.toryt;
 
 
 import java.io.PrintStream;
-import java.util.List;
 import java.util.Set;
+
+import org.toryt.support.straightlist.StraightList;
 
 
 /**
@@ -103,7 +104,7 @@ public interface TypeContract extends Contract {
    * The union of the method tests of all instance method contracts,
    * all class method contracts and all nested classes contracts.
    */
-  List getMethodTests() throws TorytException;
+  StraightList getMethodTests() throws TorytException;
 
 
   /**

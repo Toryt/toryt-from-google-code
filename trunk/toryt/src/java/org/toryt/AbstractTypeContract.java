@@ -1,14 +1,15 @@
 package org.toryt;
 
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.toryt.support.straightlist.ConcatStraightList;
+import org.toryt.support.straightlist.StraightList;
 
 
 /**
@@ -119,25 +120,31 @@ public abstract class AbstractTypeContract
     }
   }
 
-  public final List getMethodTests() throws TorytException {
-    // MUDO optimize list?
-    List result = new ArrayList();
-    Iterator i = getInstanceMethodContracts().iterator();
-    while (i.hasNext()) {
-      InstanceMethodContract imc = (InstanceMethodContract)i.next();
-      result.addAll(imc.getMethodTests());
+  public final StraightList getMethodTests() throws TorytException {
+    StraightList[] lists
+        = new StraightList[getInstanceMethodContracts().size()
+                           + getClassMethodContracts().size()
+                           + getNestedClassContracts().size()];
+    Iterator iter = getInstanceMethodContracts().iterator();
+    int i = 0;
+    while (iter.hasNext()) {
+      InstanceMethodContract imc = (InstanceMethodContract)iter.next();
+      lists[i] = imc.getMethodTests();
+      i++;
     }
-    i = getClassMethodContracts().iterator();
-    while (i.hasNext()) {
-      ClassMethodContract cmc = (ClassMethodContract)i.next();
-      result.addAll(cmc.getMethodTests());
+    iter = getClassMethodContracts().iterator();
+    while (iter.hasNext()) {
+      ClassMethodContract cmc = (ClassMethodContract)iter.next();
+      lists[i] = cmc.getMethodTests();
+      i++;
     }
-    i = getNestedClassContracts().iterator();
-    while (i.hasNext()) {
-      ClassContract cc = (ClassContract)i.next();
-      result.addAll(cc.getMethodTests());
+    iter = getNestedClassContracts().iterator();
+    while (iter.hasNext()) {
+      ClassContract ncc = (ClassContract)iter.next();
+      lists[i] = ncc.getMethodTests();
+      i++;
     }
-    return result;
+    return new ConcatStraightList(lists);
   }
   
 }

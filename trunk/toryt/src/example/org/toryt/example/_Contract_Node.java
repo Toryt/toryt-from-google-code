@@ -14,6 +14,8 @@ import org.toryt.MethodTest;
 import org.toryt.TorytException;
 import org.toryt.hard.ClassContract;
 import org.toryt.hard.MutatorContract;
+import org.toryt.support.straightlist.ListWrapperStraightList;
+import org.toryt.support.straightlist.StraightList;
 
 
 public class _Contract_Node extends ClassContract {
@@ -37,7 +39,7 @@ public class _Contract_Node extends ClassContract {
           }});
       }
       
-      public List getTestCases() throws TorytException {
+      public StraightList getTestCases() throws TorytException {
         List result = new ArrayList();
         Iterator subjects = getCases().iterator();
         while (subjects.hasNext()) {
@@ -51,7 +53,7 @@ public class _Contract_Node extends ClassContract {
             result.add(testCase);
           }
         }
-        return result;
+        return new ListWrapperStraightList(result);
       }
 
     });
@@ -70,7 +72,7 @@ public class _Contract_Node extends ClassContract {
           }});
       }
 
-      public List getTestCases() throws TorytException {
+      public StraightList getTestCases() throws TorytException {
         List result = new ArrayList();
         Iterator subjects = getCases().iterator();
         while (subjects.hasNext()) {
@@ -84,7 +86,7 @@ public class _Contract_Node extends ClassContract {
             result.add(testCase);
           }
         }
-        return result;
+        return new ListWrapperStraightList(result);
       }
       
     });
@@ -117,7 +119,7 @@ public class _Contract_Node extends ClassContract {
           }});
       }
 
-      public List getTestCases() throws TorytException {
+      public StraightList getTestCases() throws TorytException {
         List result = new ArrayList();
         Iterator subjects = getCases().iterator();
         while (subjects.hasNext()) {
@@ -131,7 +133,7 @@ public class _Contract_Node extends ClassContract {
             result.add(testCase);
           }
         }
-        return result;
+        return new ListWrapperStraightList(result);
       }
       
       public void recordState(MethodTest test) {

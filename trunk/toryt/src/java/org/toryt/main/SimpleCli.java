@@ -6,14 +6,15 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 
 import org.toryt.AbstractTest;
 import org.toryt.Contract;
 import org.toryt.Test;
 import org.toryt.TorytException;
+import org.toryt.support.straightlist.StraightList;
 
 
 /**
@@ -72,12 +73,12 @@ public class SimpleCli extends AbstractTest {
       setRun();
     }
     $failedTests = new ArrayList();
-    List tests = getContract().getTests();
+    StraightList tests = getContract().getTests();
     int testsToRun = tests.size();
     Date startTime = new Date();
     int testsDone = 0;
     System.out.println(testsToRun + " tests to run");
-    ListIterator iter = tests.listIterator();
+    Iterator iter = tests.iterator();
     while (iter.hasNext() && ! hasEnough()) {
       Test t = (Test)iter.next();
       t.test();

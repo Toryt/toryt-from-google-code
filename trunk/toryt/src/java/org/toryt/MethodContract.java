@@ -2,8 +2,9 @@ package org.toryt;
 
 
 import java.lang.reflect.Member;
-import java.util.List;
 import java.util.Map;
+
+import org.toryt.support.straightlist.StraightList;
 
 
 /**
@@ -42,7 +43,7 @@ public interface MethodContract extends Contract {
   
   public final static String SUBJECT_KEY = "this@post";
   
-  public abstract List getTestCases() throws TorytException;
+  public abstract StraightList getTestCases() throws TorytException;
   
   public abstract String[] getFormalParameters();
 
