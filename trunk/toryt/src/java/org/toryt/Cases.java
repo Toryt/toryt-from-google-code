@@ -177,6 +177,39 @@ public final class Cases {
   private final static StraightList TOL_JAVA_LANG_BOOLEAN
       = new ArrayStraightList(new Boolean[] {Boolean.FALSE, Boolean.TRUE});
 
+  private final static StraightList TOL_JAVA_LANG_DOUBLE
+  = new ArrayStraightList(
+            new Double[] { new Double(0.0),
+                           new Double(1.0),
+                           new Double(-1.0),
+                           new Double(1.0 - Double.MIN_VALUE),
+                           new Double(-1.0 + Double.MIN_VALUE),
+                           new Double(0.5),
+                           new Double(-0.5),
+                           new Double(1.0E-2d),
+                           new Double(-1.0E-2d),
+                           new Double(Double.MAX_VALUE),
+                           new Double(Double.MIN_VALUE),
+                           new Double(Double.NEGATIVE_INFINITY),
+                           new Double(Double.POSITIVE_INFINITY),
+                           new Double(-Double.MIN_VALUE),
+                           new Double(Double.MAX_VALUE - Double.MIN_VALUE),
+                           new Double(Double.MIN_VALUE + Double.MIN_VALUE),
+                           new Double(1.0E5d),
+                           new Double(1.0E45),
+                           new Double(1.0E-5),
+                           new Double(1.0E-45),
+                           new Double(-1.0E5d),
+                           new Double(-1.0E45),
+                           new Double(-1.0E-5),
+                           new Double(-1.0E-45),
+                           new Double(3.333333),
+                           new Double(512.512),
+                           new Double(-3.333333),
+                           new Double(-512.512),
+                           new Double(1000.01),
+                           new Double(-1000.01)});
+
   private final static Map TEST_OBJECT_LISTS = new HashMap();
 
   static {
@@ -187,6 +220,7 @@ public final class Cases {
 //    addTol(Throwable.class, TOL_JAVA_LANG_THROWABLE);
     addTol(String.class, TOL_JAVA_LANG_STRING);
     addTol(Date.class, TOL_JAVA_UTIL_DATE);
+    addTol(Double.class, TOL_JAVA_LANG_DOUBLE);
   }
 
   public static void addTol(Class forClass, StraightList tol) {
