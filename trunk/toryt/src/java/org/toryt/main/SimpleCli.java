@@ -98,7 +98,7 @@ public class SimpleCli extends AbstractTest {
       }
       testsDone = testsDone.add(BigInteger.ONE);
       Date loopEnd = new Date();
-      if (loopEnd.getTime() - loopTimer.getTime() > 1000) {
+      if (loopEnd.getTime() - loopTimer.getTime() > 10000) {
         long loopDuration = loopEnd.getTime() - startTime.getTime();
         double loopTestsPerSecond = testsDone.subtract(loopCounter).doubleValue() / (loopDuration/ 1000.0);
         System.out.println();
