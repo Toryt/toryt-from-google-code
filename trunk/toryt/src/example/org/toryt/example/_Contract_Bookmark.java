@@ -1,19 +1,19 @@
 package org.toryt.example;
 
 
-import org.toryt.TorytException;
-import org.toryt.hard.ClassContract;
-import org.toryt.hard.ConstructorContract;
-import org.toryt.hard.MutatorContract;
 import org.toryt.support.straightlist.StraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList.Mapping;
+import org.toryt_II.TorytException;
+import org.toryt_II.method.HardConstructorContract;
+import org.toryt_II.method.HardMutatorContract;
+import org.toryt_II.type.HardClassContract;
 
 
-public class _Contract_Bookmark extends ClassContract {
+public class _Contract_Bookmark extends HardClassContract {
 
   public _Contract_Bookmark() throws TorytException {
     super(Bookmark.class);
-    addConstructorContract(new ConstructorContract(this, Bookmark.class, "Bookmark()") {
+    addConstructorContract(new HardConstructorContract(this, Bookmark.class, "Bookmark()") {
 
       public StraightList getTestCases() throws TorytException {
         // TODO Auto-generated method stub
@@ -22,7 +22,7 @@ public class _Contract_Bookmark extends ClassContract {
       
     });
 
-    addConstructorContract(new ConstructorContract(this, Bookmark.class, "Bookmark(String, String, String, int, Group)") {
+    addConstructorContract(new HardConstructorContract(this, Bookmark.class, "Bookmark(String, String, String, int, Group)") {
 
       public StraightList getTestCases() throws TorytException {
         // TODO Auto-generated method stub
@@ -30,7 +30,7 @@ public class _Contract_Bookmark extends ClassContract {
       }
       
                                 });
-    addInstanceMethodContract(new MutatorContract(this, Bookmark.class, "setUrl(String)") {
+    addInstanceMethodContract(new HardMutatorContract(this, Bookmark.class, "setUrl(String)") {
 
       public StraightList getTestCases() throws TorytException {
         // TODO Auto-generated method stub
@@ -38,7 +38,7 @@ public class _Contract_Bookmark extends ClassContract {
       }
       
                                   });
-    addInstanceMethodContract(new MutatorContract(this, Bookmark.class, "clicked()") {
+    addInstanceMethodContract(new HardMutatorContract(this, Bookmark.class, "clicked()") {
 
       public StraightList getTestCases() throws TorytException {
         // TODO Auto-generated method stub
@@ -46,7 +46,7 @@ public class _Contract_Bookmark extends ClassContract {
       }
       
                                   });
-    addInstanceMethodContract(new MutatorContract(this, Bookmark.class, "setRating(int)") {
+    addInstanceMethodContract(new HardMutatorContract(this, Bookmark.class, "setRating(int)") {
 
       public StraightList getTestCases() throws TorytException {
         // TODO Auto-generated method stub

@@ -4,22 +4,22 @@ package org.toryt.example;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.toryt.Cases;
-import org.toryt.Condition;
-import org.toryt.MethodContract;
-import org.toryt.TorytException;
-import org.toryt.contract.Collections;
-import org.toryt.contract.Strings;
-import org.toryt.hard.ClassContract;
-import org.toryt.hard.ConstructorContract;
 import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.EmptyStraightList;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
+import org.toryt_II.Cases;
+import org.toryt_II.Condition;
+import org.toryt_II.TorytException;
+import org.toryt_II.contract.Collections;
+import org.toryt_II.contract.Strings;
+import org.toryt_II.method.HardConstructorContract;
+import org.toryt_II.method.MethodContract;
+import org.toryt_II.type.HardClassContract;
 
 
-public class _Contract_Group extends ClassContract {
+public class _Contract_Group extends HardClassContract {
 
   public _Contract_Group() throws TorytException {
     super(Group.class);
@@ -73,7 +73,7 @@ public class _Contract_Group extends ClassContract {
     });
     
     // constructors
-    addConstructorContract(new ConstructorContract(this, Group.class, "Group()") {
+    addConstructorContract(new HardConstructorContract(this, Group.class, "Group()") {
 
       public StraightList getTestCases() throws TorytException {
         return EmptyStraightList.INSTANCE;
@@ -109,7 +109,7 @@ public class _Contract_Group extends ClassContract {
       }
 
     });
-    addConstructorContract(new ConstructorContract(this, Group.class, "Group(java.lang.String,java.lang.String,org.toryt.example.Group)") {
+    addConstructorContract(new HardConstructorContract(this, Group.class, "Group(java.lang.String,java.lang.String,org.toryt_II.example.Group)") {
 
       public String[] getFormalParameters() {
         return new String[] {"title", "description", "parent"};

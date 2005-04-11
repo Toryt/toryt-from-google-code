@@ -3,19 +3,19 @@ package org.toryt.example;
 
 import java.util.Map;
 
-import org.toryt.Cases;
-import org.toryt.Condition;
-import org.toryt.MethodContract;
-import org.toryt.MethodTest;
-import org.toryt.TorytException;
-import org.toryt.hard.ClassContract;
-import org.toryt.hard.MutatorContract;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
+import org.toryt_II.Cases;
+import org.toryt_II.Condition;
+import org.toryt_II.TorytException;
+import org.toryt_II.method.HardMutatorContract;
+import org.toryt_II.method.MethodContract;
+import org.toryt_II.method.MethodTest;
+import org.toryt_II.type.HardClassContract;
 
 
-public class _Contract_Node extends ClassContract {
+public class _Contract_Node extends HardClassContract {
 
   private static _Contract_Group _C_G;
   
@@ -72,7 +72,7 @@ public class _Contract_Node extends ClassContract {
     });
     
     // instance methods
-    addInstanceMethodContract(new MutatorContract(this, Node.class, "setDescription(java.lang.String)") {
+    addInstanceMethodContract(new HardMutatorContract(this, Node.class, "setDescription(java.lang.String)") {
 
       public String[] getFormalParameters() {
         return new String[] {"description"};
@@ -98,7 +98,7 @@ public class _Contract_Node extends ClassContract {
 
 
     });
-    addInstanceMethodContract(new MutatorContract(this, Node.class, "setTitle(java.lang.String)") {
+    addInstanceMethodContract(new HardMutatorContract(this, Node.class, "setTitle(java.lang.String)") {
 
       public String[] getFormalParameters() {
         return new String[] {"title"};
@@ -122,7 +122,7 @@ public class _Contract_Node extends ClassContract {
       }
       
     });
-    addInstanceMethodContract(new MutatorContract(this, Node.class, "setGroup(org.toryt.example.Group)") {
+    addInstanceMethodContract(new HardMutatorContract(this, Node.class, "setGroup(org.toryt_II.example.Group)") {
 
       public String[] getFormalParameters() {
         return new String[] {"group"};
