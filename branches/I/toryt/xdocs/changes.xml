@@ -1,0 +1,21 @@
+<document>
+
+  <!-- see http://maven.apache.org/reference/plugins/changes/ for documentation -->
+  <!-- There are four valid values for action type:  add, fix, remove,  update. -->
+
+
+  <properties>
+    <title>Changes</title>
+    <author email="jandockx@mac.com">Jan Dockx</author>
+  </properties>
+  <body>
+ 
+    <release version="I v1.0.0/2.0" date="2005-06-14"
+    			description="Upgrade to ppw-bean IV">
+      <action dev="jand" type="update">
+				This version works with ppw-bean IV. We also started a branch in cvs for the Toryt I version.
+      </action>              
+    </release>
+
+  </body>
+</document>
