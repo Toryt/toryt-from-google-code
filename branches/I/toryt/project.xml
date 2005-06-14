@@ -57,8 +57,8 @@
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
-      <artifactId>ppw-bean-II</artifactId>
-      <version>1.1.0-2.0</version>
+      <artifactId>ppw-bean-IV</artifactId>
+      <version>1.1.0-1.1</version>
       <type>jar</type>
     </dependency>
     <dependency>

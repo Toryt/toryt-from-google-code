@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import be.peopleware.bean_II.Beans;
+import be.peopleware.bean_IV.Beans;
 
 
 /**

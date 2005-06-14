@@ -9,7 +9,7 @@ import java.util.Map;
 
 //import org.toryt.example.Node;
 
-import be.peopleware.bean_II.Beans;
+import be.peopleware.bean_IV.Beans;
 
 
 /**
