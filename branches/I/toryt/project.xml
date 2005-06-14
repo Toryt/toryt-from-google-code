@@ -14,7 +14,7 @@
   <shortDescription>Contract-based Unit Testing Framework</shortDescription>
   <description>Contract-based Unit Testing Framework.</description>
   <inceptionYear>2001</inceptionYear>
-  <currentVersion>1.0.0-2.0</currentVersion>
+  <currentVersion>1.0.1-2.0</currentVersion>
   <package>org.toryt_I</package>
   <developers>
     <developer>

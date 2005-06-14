@@ -10,7 +10,7 @@
   </properties>
   <body>
  
-    <release version="I v1.0.0/2.0" date="2005-06-14"
+    <release version="I v1.0.1/2.0" date="2005-06-14"
     			description="Upgrade to ppw-bean IV">
       <action dev="jand" type="update">
 				This version works with ppw-bean IV. We also started a branch in cvs for the Toryt I version.
