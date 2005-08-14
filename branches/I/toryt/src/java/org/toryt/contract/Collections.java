@@ -26,14 +26,14 @@ public class Collections {
   private Collections() {
     // NOP
   }
-  
+
   /**
    * @return ! c.contains(null)
    */
   public static boolean noNull(Collection c) {
     return ! c.contains(null);
   }
-  
+
   /**
    * @return (forall Object o, c.contains(o); type.isInstance(o));
    */
@@ -46,7 +46,7 @@ public class Collections {
     }
     return true;
   }
-  
+
   /**
    * @result ! m.containsKey(null)
    * @result ! m.containsValue(null)
@@ -54,7 +54,7 @@ public class Collections {
   public static boolean noNull(Map m) {
     return (! m.containsKey(null)) && (! m.containsValue(null));
   }
-  
+
   /**
    * @result (forall Object o, m.containsKey(o); keyType.isInstance(o));
    * @result (forall Object o, m.containsValue(o); valueType.isInstance(o));
@@ -70,5 +70,12 @@ public class Collections {
     }
     return true;
   }
-  
+
+  /**
+   * @return c1.containsAll(c2) && c2.containsAll(c1);
+   */
+  public static boolean hasSameContents(Collection c1, Collection c2) {
+    return c1.containsAll(c2) && c2.containsAll(c1);
+  }
+
 }

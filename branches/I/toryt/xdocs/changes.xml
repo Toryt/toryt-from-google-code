@@ -9,12 +9,19 @@
     <author email="jandockx@mac.com">Jan Dockx</author>
   </properties>
   <body>
- 
+
+    <release version="I v1.2.0/2.0" date="2005-08-14"
+      description="Added method">
+      <action dev="jand" type="add">
+        Added method org.toryt.contract.Collections.hasSameContents(Collection, Collection).
+      </action>
+    </release>
+
     <release version="I v1.0.1/2.0" date="2005-06-14"
-    			description="Upgrade to ppw-bean IV">
+          description="Upgrade to ppw-bean IV">
       <action dev="jand" type="update">
-				This version works with ppw-bean IV. We also started a branch in cvs for the Toryt I version.
-      </action>              
+        This version works with ppw-bean IV. We also started a branch in cvs for the Toryt I version.
+      </action>
     </release>
 
   </body>
