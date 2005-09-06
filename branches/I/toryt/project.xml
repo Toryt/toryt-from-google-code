@@ -14,7 +14,7 @@
   <shortDescription>Contract-based Unit Testing Framework</shortDescription>
   <description>Contract-based Unit Testing Framework.</description>
   <inceptionYear>2001</inceptionYear>
-  <currentVersion>1.2.0-2.0</currentVersion>
+  <currentVersion>1.2.0-3.0</currentVersion>
   <package>org.toryt_I</package>
   <developers>
     <developer>
@@ -30,6 +30,11 @@
       <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
       <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.7.0</version>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
@@ -50,21 +55,9 @@
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>commons-jexl</groupId>
-      <artifactId>commons-jexl</artifactId>
-      <version>1.0</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
       <groupId>ppw-libraries</groupId>
-      <artifactId>ppw-bean-IV</artifactId>
-      <version>1.1.0-1.1</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>taglibs</groupId>
-      <artifactId>standard</artifactId>
-      <version>1.1.2</version>
+      <artifactId>ppw-bean-V</artifactId>
+      <version>1.0.0-1.0</version>
       <type>jar</type>
     </dependency>
   </dependencies>

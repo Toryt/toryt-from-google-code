@@ -9,7 +9,7 @@ import java.util.Map;
 import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.StraightList;
 
-import be.peopleware.bean_IV.Beans;
+import be.peopleware.bean_V.Beans;
 
 
 /**

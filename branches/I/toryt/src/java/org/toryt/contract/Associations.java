@@ -7,14 +7,16 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import be.peopleware.bean_IV.Beans;
+import org.apache.commons.beanutils.PropertyUtils;
+
+import be.peopleware.bean_V.Beans;
 
 
 /**
  * Often used contracts for unidirectional and bidirectional associations.
  *
  * @author    Jan Dockx
- * 
+ *
  * @toryt:cC Collections;
  */
 public class Associations {
@@ -38,7 +40,7 @@ public class Associations {
   private Associations() {
     // NOP
   }
-  
+
   /**
    * This method gathers the type invariants for a reference that implements
    * the to-one part of a bidirectional one-to-many association. The reference
@@ -87,13 +89,10 @@ public class Associations {
       }
       Set manySet = null;
       try {
-        manySet = (Set)Beans.getPropertyValue(reference, toManySetPropertyName);
+        manySet = (Set)PropertyUtils.getProperty(reference, toManySetPropertyName);
       }
       catch (NullPointerException npExc) {
         assert false : "NullPointerExceptionshould not happen: " + npExc; //$NON-NLS-1$
-      }
-      catch (IntrospectionException iExc) {
-        assert false : "IntrospectionExceptionshould not happen: " + iExc; //$NON-NLS-1$
       }
       catch (NoSuchMethodException nsmExc) {
         assert false : "NoSuchMethodExceptionshould not happen: " + nsmExc; //$NON-NLS-1$
@@ -148,7 +147,7 @@ public class Associations {
         Object manyObject = iter.next();
         try {
           if ((!manyType.isInstance(manyObject))
-              || (Beans.getPropertyValue(manyObject, toOneReferencePropertyName)
+              || (PropertyUtils.getProperty(manyObject, toOneReferencePropertyName)
                       != oneObject)) {
             return false; // break
           }
@@ -156,9 +155,6 @@ public class Associations {
         }
         catch (NullPointerException npExc) {
           assert false : "NullPointerExceptionshould not happen: " + npExc; //$NON-NLS-1$
-        }
-        catch (IntrospectionException iExc) {
-          assert false : "IntrospectionExceptionshould not happen: " + iExc; //$NON-NLS-1$
         }
         catch (NoSuchMethodException nsmExc) {
           assert false : "NoSuchMethodExceptionshould not happen: " + nsmExc; //$NON-NLS-1$
@@ -233,14 +229,11 @@ public class Associations {
     if (result && (oldOneObject != null)) {
       try {
         Collection oldManyCollection
-            = (Collection)Beans.getPropertyValue(oldOneObject, manyCollectionPropertyName);
+            = (Collection)PropertyUtils.getProperty(oldOneObject, manyCollectionPropertyName);
         result &= (! oldManyCollection.contains(manyObject));
       }
       catch (NullPointerException e) {
         assert false : "NullPointerExceptionshould not happen: " + e;
-      }
-      catch (IntrospectionException e) {
-        assert false : "IntrospectionExceptionshould not happen: " + e;
       }
       catch (NoSuchMethodException e) {
         assert false : "NoSuchMethodExceptionshould not happen: " + e;
@@ -255,14 +248,11 @@ public class Associations {
     if (result && (newOneObject != null)) {
       try {
         Collection newManyCollection
-            = (Collection)Beans.getPropertyValue(newOneObject, manyCollectionPropertyName);
+            = (Collection)PropertyUtils.getProperty(newOneObject, manyCollectionPropertyName);
         result &= (newManyCollection.contains(manyObject));
       }
       catch (NullPointerException e) {
         assert false : "NullPointerExceptionshould not happen: " + e;
-      }
-      catch (IntrospectionException e) {
-        assert false : "IntrospectionExceptionshould not happen: " + e;
       }
       catch (NoSuchMethodException e) {
         assert false : "NoSuchMethodExceptionshould not happen: " + e;

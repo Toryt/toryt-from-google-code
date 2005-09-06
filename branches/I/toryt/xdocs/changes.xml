@@ -10,6 +10,13 @@
   </properties>
   <body>
 
+    <release version="I v1.2.0/2.0" date="2005-09-06"
+      description="Dependency">
+      <action dev="jand" type="update">
+        ppw-bean V
+      </action>
+    </release>
+
     <release version="I v1.2.0/2.0" date="2005-08-14"
       description="Added method">
       <action dev="jand" type="add">

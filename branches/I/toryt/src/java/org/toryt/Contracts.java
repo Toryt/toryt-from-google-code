@@ -7,15 +7,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-//import org.toryt.example.Node;
-
-import be.peopleware.bean_IV.Beans;
+import be.peopleware.bean_V.Beans;
 
 
 /**
  * This class offers a number of static methods that will retrieve specific
  * contracts through reflection, based on naming conventions.
- * 
+ *
  * @author Jan Dockx
  */
 public class Contracts {
@@ -33,22 +31,22 @@ public class Contracts {
   /*</section>*/
 
 
-  
+
   private Contracts() {
     // NOP
   }
-  
 
-  
+
+
   public static final Map CONTRACT_CACHE = new HashMap();
 
-  
-  
+
+
   /**
    * {@value}
    */
   public static final String TYPE_CONTRACT_NAME_PREFIX = "_Contract_";
-  
+
   /**
    * Return an instance of the class that implements the contract of
    * <code>type</code>. This class should be in the same package
@@ -57,12 +55,12 @@ public class Contracts {
    * This is implemented as a singleton-like pattern, in that the same instance
    * will be returned each time this method is run with the same argument, in the same
    * VM.
-   * 
+   *
    * @pre type != null;
    * @result result != null;
    * @result result.getClass().getName()
    *            .equals(Beans.prefixedFqcn(TYPE_CONTRACT_NAME_PREFIX, type.getName());
-   * 
+   *
    * @throws ClassNotFoundException
    * @throws IOException
    */
@@ -88,12 +86,12 @@ public class Contracts {
    * This is implemented as a singleton-like pattern, in that the same instance
    * will be returned each time this method is run with the same argument, in the same
    * VM.
-   * 
+   *
    * @pre typeName != null;
    * @result Class.forName(typeName).isInterface()
    *          ? null
    *          : typeContractInstance(Class.forName(typeName));
-   * 
+   *
    * @throws ClassNotFoundException
    * @throws IOException
    */
@@ -110,19 +108,19 @@ public class Contracts {
   }
 
 
-  
+
 //  /**
 //   * {@value}
 //   */
 //  public static final String PACKAGE_CONTRACT_CLASS_NAME = "_Package_Contract_";
-  
+
   /**
    * Return an instance of the class that implements the
    * {@link PackageContract contract of the package} with name <code>packageName</code>.
    * First, we look in the {@link #CONTRACT_CACHE}. If we cannot find it there,
    * we will create a {@link PackageContract} dynamically, by looking in the sourcePath,
    * and adding contracts for all subpackages and types in the package.
-   *  
+   *
    * @pre packageName != null;
    * @pre sourcePath != null;
    * @pre sourcePath.isDirectory();
@@ -197,23 +195,23 @@ public class Contracts {
   }
 
 
-  
+
   /**
    * {@value}
    */
   public static final String PROJECT_CONTRACT_CLASS_NAME = "_Project_Contract_";
-  
+
   /**
    * Return an instance of the class that implements the contract of
    * a project with name <code>projectName</code>. This class should be
    * in the package with name <code>packageName</code>, and have the simple
    * name {@link #PROJECT_CONTRACT_CLASS_NAME}.
-   *  
+   *
    * @pre packageName != null;
    * @result result != null;
    * @result result.getClass().getName()
    *            .equals(packageName + "." + PROJECT_CONTRACT_CLASS_NAME);
-   * 
+   *
    * @throws ClassNotFoundException
    * @throws IOException
    */
@@ -229,7 +227,7 @@ public class Contracts {
     }
     return pc;
   }
-  
+
 //  public static void main(String[] args) throws IOException, ClassNotFoundException {
 //    Contract c = typeContractInstance(Node.class);
 //    System.out.println(c);
@@ -239,5 +237,5 @@ public class Contracts {
 //                                new File("/Users/jand/Documents/eclipse/workspace/toryt/src/example"));
 //    ((PackageContract)c).report(System.out, 0);
 //  }
-  
+
 }
