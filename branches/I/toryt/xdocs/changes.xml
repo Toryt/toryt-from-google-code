@@ -10,6 +10,13 @@
   </properties>
   <body>
 
+    <release version="I v1.3.0/2.0" date="2005-09-22"
+      description="Added method">
+      <action dev="jand" type="add">
+        Is a collection sorted?
+      </action>
+    </release>
+
     <release version="I v1.2.0/2.0" date="2005-09-06"
       description="Dependency">
       <action dev="jand" type="update">

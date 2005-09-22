@@ -2,6 +2,7 @@ package org.toryt.contract;
 
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -76,6 +77,30 @@ public class Collections {
    */
   public static boolean hasSameContents(Collection c1, Collection c2) {
     return c1.containsAll(c2) && c2.containsAll(c1);
+  }
+
+  /**
+   * The elements in <code>collection</code> are presented by its
+   * {@link Collection#iterator()} in the order defined by
+   * <code>comparator</code>.
+   *
+   * @pre collection != null;
+   * @pre comparator != null;
+   */
+  public static boolean isSorted(Collection collection, Comparator comparator) {
+    assert collection != null;
+    assert comparator != null;
+    if (collection.isEmpty()) {
+      return true;
+    }
+    Iterator iter = collection.iterator();
+    Object previous = iter.next(); // there is at least 1 element
+    while (iter.hasNext()) {
+      if ((previous == null) || (comparator.compare(previous, iter.next()) > 0)) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }
