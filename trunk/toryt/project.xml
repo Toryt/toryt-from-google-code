@@ -16,11 +16,15 @@
   <inceptionYear>2001</inceptionYear>
   <currentVersion>1.0.0-1.0</currentVersion>
   <package>org.toryt_II</package>
+  <repository>
+    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:toryt</developerConnection>
+    <url>https://cvs.peopleware.be/viewcvs/JavaLibraries/repository/toryt</url>
+  </repository>
   <developers>
     <developer>
       <name>Jan Dockx</name>
       <id>jand</id>
-      <email>Jan.Dockx@peopleware.be</email>
+      <email>Jan_Dockx@peopleware.be</email>
       <timezone>+1</timezone>
     </developer>
   </developers>
