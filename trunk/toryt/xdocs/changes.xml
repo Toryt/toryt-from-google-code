@@ -1,0 +1,71 @@
+<document>
+  <properties>
+    <title>Toryt</title>
+    <author email="dvankeer@peopleware.be">David Van Keer</author>
+    <author email="jand@peopleware.be">Jan Dockx</author>
+    <author email="nsmeets@peopleware.be">Nele Smeets</author>
+  </properties>
+  <body>
+
+    <release version="II v1.0.0/1.0" date="2005-04-11" description="Moved classes around, and renamed classes, moved some methods, limited dependencies. No functional change.">
+      <action dev="jand" type="update">
+        Moved classes around, and renamed classes, moved some methods, limited dependencies. No functional change.
+      </action>
+    </release>
+
+    <release version="I v1.3.0/3.0" date="2005-09-22" description="Added method to check that a collection is sorted.">
+      <action dev="jand" type="add">
+        Added method to check that a collection is sorted.
+      </action>
+    </release>
+
+    <release version="I v1.2.0/3.0" date="2005-09-06" description="New version based on ppw-bean V.">
+      <action dev="jand" type="update">
+        New version based on ppw-bean V.
+      </action>
+    </release>
+
+    <release version="I v1.2.0/2.0" date="2005-08-14" description="Added method.">
+      <action dev="jand" type="add">
+        Added method. New version.
+      </action>
+    </release>
+
+    <release version="I v1.0.1/2.0" date="2005-06-14" description="Wrong version number. Corrected.">
+      <action dev="jand" type="fix">
+        Wrong version number. Corrected.
+      </action>
+    </release>
+
+    <release version="I v1.0.0/2.0" date="2005-06-14" description="Ready for I v1.0.0/2.0.">
+      <action dev="jand" type="update">
+        Now using ppw-bean-IV.
+      </action>
+      <action dev="jand" type="update">
+        Changed the pom extends path.
+      </action>
+      <action dev="jand" type="update">
+        We now depend on maven.
+      </action>
+      <action dev="jand" type="add">
+        Now classcontracts find their own superclass contracts. We don't need to specify them ourselves anymore. There is a warning when the superclass contract is not found.
+      </action>
+      <action dev="jand" type="add">
+        Now the simple cli main has command line arguments. Do -h for help.
+      </action>
+      <action dev="jand" type="add">
+        Added logo.
+      </action>
+
+
+
+    </release>
+
+    <release version="I v1.0.0/1.0" date="2005-06-14" description="First release.">
+      <action dev="jand" type="add">
+        First release.
+      </action>
+    </release>
+
+  </body>
+</document>
