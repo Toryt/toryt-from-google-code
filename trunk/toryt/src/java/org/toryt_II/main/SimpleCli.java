@@ -285,7 +285,7 @@ public class SimpleCli extends AbstractTest {
       System.out.println();
     }
     catch (LinkageError lErr) {
-      System.out.println("ERROR: a linkage error occured "
+      System.out.println("ERROR: a linkage error occurred "
                          + "when loading class\""
                          + clazz + "\". This is extreme.\n");
       lErr.printStackTrace();
