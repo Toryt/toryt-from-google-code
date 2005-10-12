@@ -67,14 +67,35 @@ public abstract class AbstractStraightList implements StraightList {
     return toArray(Object.class);
   }
 
+  /**
+   * Returns an array containing all of the elements in this list;
+   * the runtime type of the returned array is that of the specified array.
+   * If the collection fits in the specified array, it is returned therein.
+   * Otherwise, a new array is allocated with the runtime type of the specified
+   * array and the size of this collection.
+   *
+   * @see     Collection
+   * @result  size() <= a.length
+   *            ==> result == a
+   *                &&
+   *                (forAll int i;
+   *                     0 <= i < size();
+   *                     result[i] == toArray(a.getClass().getComponentType())[i])
+   *                &&
+   *                (forAll int i;
+   *                     size() <= i < a.length;
+   *                     result[i] == null);
+   * @result  size() > a.length
+   *            ==> result == toArray(a.getClass().getComponentType());
+   */
   public Object[] toArray(Object[] a) {
     if (a.length >= size()) {
-      System.arraycopy(toArray(a.getClass().getComponentType()), 0, a, 0, a.length);
-      Arrays.fill(a, size(), a.length - 1, null);
+      System.arraycopy(toArray(a.getClass().getComponentType()), 0, a, 0, size());
+      Arrays.fill(a, size(), a.length, null);
       return a;
     }
     else {
-      return toArray(a.getClass());
+      return toArray(a.getClass().getComponentType());
     }
   }
 
