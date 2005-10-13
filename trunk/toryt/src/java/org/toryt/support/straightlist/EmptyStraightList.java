@@ -29,10 +29,10 @@ public final class EmptyStraightList extends AbstractAllValidStraightList {
 
   /*</section>*/
 
- 
-  
+
+
   public final static EmptyStraightList INSTANCE =  new EmptyStraightList();
-  
+
   public final boolean contains(Object o) {
     return false;
   }
@@ -47,7 +47,7 @@ public final class EmptyStraightList extends AbstractAllValidStraightList {
 
   public final Iterator iterator() {
     return new AbstractUnmodifiableIterator() {
-      
+
       public boolean hasNext() {
         return false;
       }
@@ -69,10 +69,6 @@ public final class EmptyStraightList extends AbstractAllValidStraightList {
 
   public final BigInteger getBigSize() {
     return ZERO;
-  }
-
-  public final boolean isSizeFixed() {
-    return true;
   }
 
 }
