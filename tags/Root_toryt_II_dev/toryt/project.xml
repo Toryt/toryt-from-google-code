@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
+<project>
+  <extend>../ppw-libraries-settings/project.xml</extend>
+  <pomVersion>4</pomVersion>
+  <name>Toryt</name>
+  <groupId>toryt</groupId>
+  <organization>
+    <name>toryt.org</name>
+    <url>http://www.toryt.org/</url>
+  </organization>
+  <logo>/logo/toryt174x143.jpeg</logo>
+  <artifactId>toryt-II</artifactId>
+  <shortDescription>Contract-based Unit Testing Framework</shortDescription>
+  <description>Contract-based Unit Testing Framework.</description>
+  <inceptionYear>2001</inceptionYear>
+  <currentVersion>1.0.0-1.0</currentVersion>
+  <package>org.toryt_II</package>
+  <repository>
+    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:toryt</developerConnection>
+    <url>https://cvs.peopleware.be/viewcvs/JavaLibraries/repository/toryt</url>
+  </repository>
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jand</id>
+      <email>Jan_Dockx@peopleware.be</email>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <name>David Van Keer</name>
+      <id>dvankeer</id>
+      <email>David_Van_Keer@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+    <developer>
+      <name>Wim Lambrechts</name>
+      <id>wlambrec</id>
+      <email>Wim_Lambrechts@peopleware.be</email>
+      <organization>PeopleWare n.v.</organization>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <name>Nele Smeets</name>
+      <id>nsmeets</id>
+      <email>Nele_Smeets@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+    <developer>
+      <name>Rene Clerckx</name>
+      <id>rclerckx</id>
+      <email>Rene_Clerckx@peopleware.be</email>
+      <organization>PeopleWare n.v.</organization>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <name>Abdul Shoudouev</name>
+      <id>ashoudou</id>
+      <email>Abdulvakhid_Shoudouev@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+  </developers>
+  <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <version>1.0</version>
+      <type>jar</type>
+    </dependency>
+  </dependencies>
+  <properties />
+</project>
+
