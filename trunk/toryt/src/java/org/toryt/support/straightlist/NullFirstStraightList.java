@@ -50,11 +50,20 @@ public final class NullFirstStraightList extends AbstractStraightList {
     return (o == null) || $l.contains(o);
   }
 
+  /**
+   * Returns true if this collection contains all of the elements in the
+   * specified collection.
+   *
+   * @see     Collection
+   * @return  (forAll Object obj;
+   *             c.contains(obj);
+   *             contains(obj));
+   */
   public final boolean containsAll(Collection c) {
-    Iterator iter = iterator();
+    Iterator iter = c.iterator();
     while (iter.hasNext()) {
       Object cObj = iter.next();
-      if ((cObj != null) && (! contains(cObj))) {
+      if (!contains(cObj)) {
         return false;
       }
     }
