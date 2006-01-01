@@ -33,17 +33,19 @@ public interface Test {
   void test() throws TorytException;
 
   boolean hasRun();
-  
+
   /**
    * @throws TorytException
    *         ! hasRun();
    */
   boolean isSuccessful() throws TorytException;
-  
+
   /**
    * Structured output on an output stream.
    *
+   * @deprecated
+   * @mudo not sure about deprecation
    */
   void report(PrintStream out);
-  
+
 }
