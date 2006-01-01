@@ -13,8 +13,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.toryt_II.AbstractTest;
 import org.toryt_II.Condition;
-import org.toryt_II.Test;
 import org.toryt_II.TorytException;
 import org.toryt_II.type.HardTypeContract;
 import org.toryt_II.type.TypeContract;
@@ -27,7 +27,7 @@ import org.toryt_II.type.TypeContract;
  * @invar getContract() != null;
  * @invar getContext() != null;
  */
-public abstract class MethodTest implements Test {
+public abstract class MethodTest extends AbstractTest {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -148,21 +148,6 @@ public abstract class MethodTest implements Test {
 
   /*</property>*/
 
-
-
-  /*<property name="run">*/
-  //------------------------------------------------------------------
-
-  public boolean hasRun() {
-    return $run;
-  }
-
-  protected void setRun() {
-    $run = true;
-  }
-
-  private boolean $run;
-  /* </property> */
 
 
   /**
