@@ -4,8 +4,8 @@ package org.toryt_II.testmodel;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.toryt.support.priorityList.PriorityList;
-import org.toryt.support.priorityList.UnionPriorityList;
+import org.toryt.util_I.priorityList.PriorityList;
+import org.toryt.util_I.priorityList.UnionPriorityList;
 
 
 /**
@@ -17,7 +17,7 @@ import org.toryt.support.priorityList.UnionPriorityList;
  *
  * @author Jan Dockx
  *
- * @invar toryt:cC org.toryt_II.contract.Collections;
+ * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getChildTestModels() != null;
  * @invar cC:noNull(getChildTestModels());
  * @invar cC:instanceOf(getChildTestModels(), TestModel);

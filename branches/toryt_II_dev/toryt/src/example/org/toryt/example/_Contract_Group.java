@@ -4,6 +4,8 @@ package org.toryt.example;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.toryt.patterns_I.Collections;
+import org.toryt.patterns_I.Strings;
 import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.EmptyStraightList;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
@@ -12,8 +14,6 @@ import org.toryt.support.straightlist.StraightList;
 import org.toryt_II.Cases;
 import org.toryt_II.Condition;
 import org.toryt_II.TorytException;
-import org.toryt_II.contract.Collections;
-import org.toryt_II.contract.Strings;
 import org.toryt_II.method.HardConstructorContract;
 import org.toryt_II.method.MethodContract;
 import org.toryt_II.type.HardClassContract;

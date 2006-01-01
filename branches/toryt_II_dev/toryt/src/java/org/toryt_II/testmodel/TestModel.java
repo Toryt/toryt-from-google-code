@@ -3,7 +3,7 @@ package org.toryt_II.testmodel;
 
 import java.io.PrintStream;
 
-import org.toryt.support.priorityList.PriorityList;
+import org.toryt.util_I.priorityList.PriorityList;
 
 
 /**
@@ -12,7 +12,7 @@ import org.toryt.support.priorityList.PriorityList;
  *
  * @author Jan Dockx
  *
- * @invar toryt:cC org.toryt_II.contract.Collections;
+ * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getTestFactoryList() != null;
  * @invar getTestFactoryList().getElementType() == TestFactory.class;
  */

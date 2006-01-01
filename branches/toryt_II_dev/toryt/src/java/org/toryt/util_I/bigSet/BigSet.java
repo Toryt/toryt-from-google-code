@@ -1,4 +1,4 @@
-package org.toryt.support.bigSet;
+package org.toryt.util_I.bigSet;
 
 
 import java.math.BigInteger;
@@ -18,7 +18,7 @@ import java.util.Set;
  *   are to be considered very expensive.</p>
  *
  *
- * @invar toryt:cC org.toryt_II.contract.Collections;
+ * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getElementType() !=  null;
  * @invar cC:noNull(this);
  * @invar cC:instanceOf(this, getElementType());

@@ -1,4 +1,4 @@
-package org.toryt_II.contract;
+package org.toryt.patterns_I;
 
 
 import java.util.Collection;

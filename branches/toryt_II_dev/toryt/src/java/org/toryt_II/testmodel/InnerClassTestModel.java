@@ -8,7 +8,7 @@ package org.toryt_II.testmodel;
  *
  * @author Jan Dockx
  *
- * @invar toryt:cC org.toryt_II.contract.Collections;
+ * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getClassTestModels() != null;
  * @invar cC:noNull(getClassTestModels());
  * @invar cC:instanceOf(getClassTestModels(), ClassTestModel);

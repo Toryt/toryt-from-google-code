@@ -1,4 +1,4 @@
-package org.toryt.support.priorityList;
+package org.toryt.util_I.priorityList;
 
 
 import java.math.BigInteger;

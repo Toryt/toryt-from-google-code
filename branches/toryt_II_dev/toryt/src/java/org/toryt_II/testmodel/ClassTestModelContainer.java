@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.toryt.support.priorityList.PriorityList;
+import org.toryt.util_I.priorityList.PriorityList;
 
 
 /**
@@ -14,7 +14,7 @@ import org.toryt.support.priorityList.PriorityList;
  *
  * @author Jan Dockx
  *
- * @invar toryt:cC org.toryt_II.contract.Collections;
+ * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getClassTestModels() != null;
  * @invar cC:noNull(getClassTestModels());
  * @invar cC:instanceOf(getClassTestModels(), ClassTestModel);

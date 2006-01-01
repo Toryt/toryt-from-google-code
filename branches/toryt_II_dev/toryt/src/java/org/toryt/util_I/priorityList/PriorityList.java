@@ -1,10 +1,10 @@
-package org.toryt.support.priorityList;
+package org.toryt.util_I.priorityList;
 
 
 import java.math.BigInteger;
 import java.util.List;
 
-import org.toryt.support.bigSet.BigSet;
+import org.toryt.util_I.bigSet.BigSet;
 
 
 /**
@@ -24,7 +24,7 @@ import org.toryt.support.bigSet.BigSet;
  *   object of type {@link BigInteger}.</p>
  *
  *
- * @invar toryt:cC org.toryt_II.contract.Collections;
+ * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getElementType() !=  null;
  * @invar cC:noNull(this);
  * @invar cC:instanceOf(this, BigSet);

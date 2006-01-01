@@ -12,7 +12,7 @@ import java.util.Set;
  *
  * @author Jan Dockx
  *
- * @invar toryt:cC org.toryt_II.contract.Collections;
+ * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getPackageTestModels() != null;
  * @invar cC:noNull(getPackageTestModels());
  * @invar cC:instanceOf(getPackageTestModels(), PackageTestModel);

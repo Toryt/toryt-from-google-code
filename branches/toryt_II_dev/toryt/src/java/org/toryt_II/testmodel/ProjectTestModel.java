@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.toryt.support.priorityList.PriorityList;
+import org.toryt.util_I.priorityList.PriorityList;
 import org.toryt_II.testmodel.AbstractTestModel.IndentPrinter;
 
 
@@ -18,7 +18,7 @@ import org.toryt_II.testmodel.AbstractTestModel.IndentPrinter;
  *
  * @author Jan Dockx
  *
- * @invar toryt:cC org.toryt_II.contract.Collections;
+ * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getPackageTestModels() != null;
  * @invar cC:noNull(getPackageTestModels());
  * @invar cC:instanceOf(getPackageTestModels(), PackageTestModel);
