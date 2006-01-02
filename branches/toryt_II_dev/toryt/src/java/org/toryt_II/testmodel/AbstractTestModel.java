@@ -5,6 +5,9 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.toryt_II.TestModel;
+
+
 
 /**
  * Implementation of a number of methods of {@link TestModel}.

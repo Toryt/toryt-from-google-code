@@ -1,6 +1,6 @@
 package org.toryt.example;
 import org.toryt_II.TorytException;
-import org.toryt_II.packache.HardPackageContract;
+import org.toryt_II.contract.hard.HardPackageContract;
 
 public class _Package_Contract_ extends HardPackageContract {
 

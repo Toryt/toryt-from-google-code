@@ -4,10 +4,10 @@ package org.toryt_II;
 import java.util.Set;
 
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.method.MethodContract;
-import org.toryt_II.packache.PackageContract;
-import org.toryt_II.project.ProjectContract;
-import org.toryt_II.type.TypeContract;
+import org.toryt_II.contract.MethodContract;
+import org.toryt_II.contract.PackageContract;
+import org.toryt_II.contract.ProjectContract;
+import org.toryt_II.contract.TypeContract;
 
 
 

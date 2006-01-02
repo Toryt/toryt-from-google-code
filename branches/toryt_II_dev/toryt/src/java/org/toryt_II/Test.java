@@ -3,6 +3,7 @@ package org.toryt_II;
 import java.io.PrintStream;
 
 
+
 /**
  * An actual instance of a test.
  * After {@link #test()} has been called, {@link #isSuccessful()}
@@ -43,7 +44,7 @@ public interface Test {
   /**
    * Structured output on an output stream.
    *
-   * @deprecated
+   * ATdeprecated
    * @mudo not sure about deprecation
    */
   void report(PrintStream out);

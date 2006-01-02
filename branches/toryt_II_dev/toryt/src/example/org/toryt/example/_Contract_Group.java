@@ -11,12 +11,12 @@ import org.toryt.support.straightlist.EmptyStraightList;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.Cases;
-import org.toryt_II.Condition;
 import org.toryt_II.TorytException;
-import org.toryt_II.method.HardConstructorContract;
-import org.toryt_II.method.MethodContract;
-import org.toryt_II.type.HardClassContract;
+import org.toryt_II.cases.Cases;
+import org.toryt_II.contract.MethodContract;
+import org.toryt_II.contract.condition.Condition;
+import org.toryt_II.contract.hard.HardClassContract;
+import org.toryt_II.contract.hard.HardConstructorContract;
 
 
 public class _Contract_Group extends HardClassContract {

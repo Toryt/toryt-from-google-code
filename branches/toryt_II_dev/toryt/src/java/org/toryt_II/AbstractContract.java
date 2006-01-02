@@ -72,7 +72,7 @@ public abstract class AbstractContract implements Contract {
     return $closed;
   }
   
-  protected final void close() {
+  public final void close() {
     $closed = true;
   }
   

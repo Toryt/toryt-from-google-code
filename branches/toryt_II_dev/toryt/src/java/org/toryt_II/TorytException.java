@@ -1,6 +1,7 @@
 package org.toryt_II;
 
 
+
 /**
  * Exceptions thrown by Toryt code, or because of faulty test code.
  * <em>Not</em> exceptions thrown by the tested code.

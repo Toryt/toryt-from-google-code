@@ -3,6 +3,7 @@ package org.toryt_II.testmodel;
 import java.io.File;
 
 import org.toryt.example.Bookmark;
+import org.toryt_II.main.TestModelFactory;
 
 import junit.framework.TestCase;
 

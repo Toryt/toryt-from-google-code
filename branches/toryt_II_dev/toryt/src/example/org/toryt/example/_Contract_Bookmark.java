@@ -4,9 +4,9 @@ package org.toryt.example;
 import org.toryt.support.straightlist.StraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList.Mapping;
 import org.toryt_II.TorytException;
-import org.toryt_II.method.HardConstructorContract;
-import org.toryt_II.method.HardMutatorContract;
-import org.toryt_II.type.HardClassContract;
+import org.toryt_II.contract.hard.HardClassContract;
+import org.toryt_II.contract.hard.HardConstructorContract;
+import org.toryt_II.contract.hard.HardMutatorContract;
 
 
 public class _Contract_Bookmark extends HardClassContract {
