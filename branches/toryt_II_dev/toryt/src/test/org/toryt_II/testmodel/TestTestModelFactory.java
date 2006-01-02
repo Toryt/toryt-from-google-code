@@ -33,11 +33,11 @@ public class TestTestModelFactory extends TestCase {
 
   public static final Package PACKAGE_UNDER_TEST_2 = Package.getPackage(PACKAGE_NAME_UNDER_TEST_2);
 
-  public static final File SOURCE_DIRECTORY_UNDER_TEST_1 = new File("/Users/jand/Documents/eclipse/workspace/toryt/src/example");
+  public static final File SOURCE_DIRECTORY_UNDER_TEST_1 = new File("/Users/jand/Documents/eclipse/workspace/toryt/target/classes");
 
   public static final String PROJECT_NAME_UNDER_TEST_1 = "Toryt Example";
 
-  public static final File SOURCE_DIRECTORY_UNDER_TEST_2 = new File("/Users/jand/Documents/eclipse/workspace/toryt/src/java");
+  public static final File SOURCE_DIRECTORY_UNDER_TEST_2 = new File("/Users/jand/Documents/eclipse/workspace/toryt/target/classes");
 
   public static final String PROJECT_NAME_UNDER_TEST_2 = "Toryt";
 
