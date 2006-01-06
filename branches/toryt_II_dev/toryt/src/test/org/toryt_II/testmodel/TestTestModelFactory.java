@@ -3,7 +3,7 @@ package org.toryt_II.testmodel;
 import java.io.File;
 
 import org.toryt.example.Bookmark;
-import org.toryt_II.main.TestModelFactory;
+import org.toryt_II.TestModelFactory;
 
 import junit.framework.TestCase;
 
@@ -13,7 +13,7 @@ public class TestTestModelFactory extends TestCase {
 
   protected void setUp() throws Exception {
     super.setUp();
-    $testModelFactory = new TestModelFactory();
+    $testModelFactory = new DefaultTestModelFactory();
   }
 
   protected void tearDown() throws Exception {

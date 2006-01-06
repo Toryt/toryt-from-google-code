@@ -1,12 +1,9 @@
 package org.toryt_II.testmodel;
 
-import java.io.PrintStream;
+
 import java.lang.reflect.Constructor;
 
 import org.toryt.util_I.priorityList.PriorityList;
-import org.toryt_II.testmodel.AbstractTestModel.IndentPrinter;
-
-
 
 
 /**
@@ -18,7 +15,7 @@ import org.toryt_II.testmodel.AbstractTestModel.IndentPrinter;
  * @invar getTestFactoryList() != null;
  * @invar getTestFactoryList().getElementType() == TestFactory.class;
  */
-public class ConstructorTestModel extends AbstractTestModel {
+public class ConstructorTestModel extends MethodTestModel {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -31,6 +28,16 @@ public class ConstructorTestModel extends AbstractTestModel {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
+
+
+
+  /**
+   * @return getConstructor();
+   */
+  public final Object getMethod() {
+    return getConstructor();
+  }
+
 
 
   /*<property name="constructor">*/

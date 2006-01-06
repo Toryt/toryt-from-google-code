@@ -1,6 +1,8 @@
 package org.toryt_II.testmodel;
 
 
+import java.lang.reflect.Method;
+
 import org.toryt.util_I.priorityList.PriorityList;
 
 
@@ -16,9 +18,8 @@ import org.toryt.util_I.priorityList.PriorityList;
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getTestFactoryList() != null;
  * @invar getTestFactoryList().getElementType() == TestFactory.class;
- * @invar (getMethod() instanceof Method) || (getMethod() instanceof Constructor);
  */
-public abstract class MethodTestModel extends AbstractTestModel {
+public abstract class NonConstructorMethodTestModel extends MethodTestModel {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -34,27 +35,35 @@ public abstract class MethodTestModel extends AbstractTestModel {
 
 
 
-  /*<property name="method">*/
+  /**
+   * @return getNonConstructorMethod();
+   */
+  public final Object getMethod() {
+    return getNonConstructorMethod();
+  }
+
+
+
+  /*<property name="nonConstructorMethod">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    * @init null;
    */
-  public abstract Object getMethod();
+  public final Method getNonConstructorMethod() {
+    return $nonConstructorMethod;
+  }
+
+  /**
+   * @post new.getNonConstructorMethod() == nonConstructorMethod;
+   */
+  protected final void setNonConstructorMethod(Method nonConstructorMethod) {
+    $nonConstructorMethod = nonConstructorMethod;
+  }
+
+  private Method $nonConstructorMethod;
 
   /*</property>*/
-
-
-
-
-  public String toString() {
-    return getClass().getName() + "[" + getMethod() + "]";
-  }
-
-  void printStructure(IndentPrinter out) {
-    assert out != null;
-    out.println(getMethod());
-  }
 
 }

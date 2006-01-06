@@ -1,4 +1,4 @@
-package org.toryt_II.main;
+package org.toryt_II.testmodel;
 
 
 import java.io.File;
@@ -8,15 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import org.toryt_II.TestModel;
-import org.toryt_II.testmodel.ClassInspectorTestModel;
-import org.toryt_II.testmodel.ClassMutatorTestModel;
-import org.toryt_II.testmodel.ClassTestModel;
-import org.toryt_II.testmodel.ConstructorTestModel;
-import org.toryt_II.testmodel.InnerClassTestModel;
-import org.toryt_II.testmodel.InstanceInspectorTestModel;
-import org.toryt_II.testmodel.InstanceMutatorTestModel;
-import org.toryt_II.testmodel.PackageTestModel;
-import org.toryt_II.testmodel.ProjectTestModel;
+import org.toryt_II.TestModelFactory;
 
 
 /**
@@ -25,7 +17,7 @@ import org.toryt_II.testmodel.ProjectTestModel;
  *
  * @author Jan Dockx
  */
-public class TestModelFactory {
+public class DefaultTestModelFactory implements TestModelFactory {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -89,6 +81,32 @@ public class TestModelFactory {
     ClassInspectorTestModel result = new ClassInspectorTestModel();
     result.setClassInspector(classInspector);
     return result;
+  }
+
+  public MethodTestModel createMethodTestModel(Object method) {
+    assert (method instanceof Constructor) || (method instanceof Method);
+    if (method instanceof Constructor) {
+      return createConstructorTestModel((Constructor)method);
+    }
+    else {
+      Method m = (Method)method;
+      if (Modifier.isStatic(m.getModifiers())) { // class
+        if (m.getReturnType().equals(Void.TYPE)) { // mutator
+          return createClassMutatorTestModel(m);
+        }
+        else { // inspector
+          return createClassInspectorTestModel(m);
+        }
+      }
+      else { // instance
+        if (m.getReturnType().equals(Void.TYPE)) { // mutator
+          return createInstanceMutatorTestModel(m);
+        }
+        else { // inspector
+          return createInstanceInspectorTestModel(m);
+        }
+      }
+    }
   }
 
   /**

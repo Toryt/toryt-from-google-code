@@ -1,14 +1,7 @@
 package org.toryt_II.testmodel;
 
 
-import java.io.PrintStream;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-
-import org.toryt.util_I.priorityList.PriorityList;
-import org.toryt_II.testmodel.AbstractTestModel.IndentPrinter;
 
 
 /**

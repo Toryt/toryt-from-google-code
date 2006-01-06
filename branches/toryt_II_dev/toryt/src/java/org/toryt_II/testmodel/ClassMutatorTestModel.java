@@ -16,7 +16,7 @@ import org.toryt.util_I.priorityList.PriorityList;
  * @invar getTestFactoryList() != null;
  * @invar getTestFactoryList().getElementType() == TestFactory.class;
  */
-public class ClassMutatorTestModel extends MethodTestModel {
+public class ClassMutatorTestModel extends NonConstructorMethodTestModel {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -40,14 +40,14 @@ public class ClassMutatorTestModel extends MethodTestModel {
    * @init null;
    */
   public final Method getClassMutator() {
-    return getMethod();
+    return getNonConstructorMethod();
   }
 
   /**
    * @post new.getMethod() == method;
    */
   public final void setClassMutator(Method classMutator) {
-    setMethod(classMutator);
+    setNonConstructorMethod(classMutator);
   }
 
   /*</property>*/
