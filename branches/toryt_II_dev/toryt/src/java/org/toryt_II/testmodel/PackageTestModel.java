@@ -1,21 +1,20 @@
 package org.toryt_II.testmodel;
 
 
-import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-
-import org.toryt.util_I.priorityList.PriorityList;
-import org.toryt_II.testmodel.AbstractTestModel.IndentPrinter;
 
 
 /**
- * Instances represent a package to test. A <code>PackageTestModel</code>
- * is an aggregate of
- * {@link #getPackageTestModels() PackageTestModels} for sub packages
- * and {@link #getClassTestModels() ClassTestModels}.
+ * <p>Instances represent a package to test. A <code>PackageTestModel</code>
+ *   is an aggregate of {@link #getPackageTestModels() PackageTestModels}
+ *   for sub packages and {@link #getClassTestModels() ClassTestModels}.</p>
+ * <p>We do not use the reflection {@link Package} class to refer to
+ *   packages, since this class doesn't help us for modelling the software.
+ *   Instances only exist when at least one class of the package has been
+ *   loaded (and even then), and you cannot get a list of types in the package
+ *   from such instances. We refer to a package just by its name.</p>
  *
  * @author Jan Dockx
  *
@@ -39,25 +38,25 @@ public class PackageTestModel extends PackageTestModelContainer {
   /*</section>*/
 
 
-  /*<property name="projectName">*/
+  /*<property name="packageName">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    * @init null;
    */
-  public final Package getPackage() {
-    return $pack;
+  public final String getPackageName() {
+    return $packageName;
   }
 
   /**
-   * @post new.getPackage() == pack;
+   * @post new.getPackageName() == packageName;
    */
-  public final void setPackage(Package pack) {
-    $pack = pack;
+  public final void setPackageName(String packageName) {
+    $packageName = packageName;
   }
 
-  private Package $pack;
+  private String $packageName;
 
   /*</property>*/
 
@@ -81,12 +80,12 @@ public class PackageTestModel extends PackageTestModelContainer {
 
 
   public String toString() {
-    return getClass().getName() + "[" + getPackage() + "]";
+    return getClass().getName() + "[" + getPackageName() + "]";
   }
 
   void printStructure(IndentPrinter out) {
     assert out != null;
-    out.println(getPackage());
+    out.println(getPackageName());
     IndentPrinter sections = new IndentPrinter(out, 2);
     sections.printChildren("classes:", getClassTestModels());
     sections.printChildren("subpackages:", getPackageTestModels());

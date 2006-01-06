@@ -189,9 +189,7 @@ public class TestModelFactory {
     assert classDirectory.isDirectory();
     assert packageName != null;
     PackageTestModel result = new PackageTestModel();
-    Package pack = Package.getPackage(packageName);
-      // will be null if there are no types in the directory
-    result.setPackage(pack); // MUDO stupid; package often doesn't exist; use package name and forget the Package type for toryt
+    result.setPackageName(packageName);
     File packageDirectory = new File(classDirectory, packageName.replace('.', '/'));
     assert packageDirectory.exists();
     assert packageDirectory.isDirectory();

@@ -27,17 +27,13 @@ public class TestTestModelFactory extends TestCase {
 
   public static final String PACKAGE_NAME_UNDER_TEST_1 = "org.toryt.example";
 
-  public static final Package PACKAGE_UNDER_TEST_1 = Package.getPackage(PACKAGE_NAME_UNDER_TEST_1);
-
   public static final String PACKAGE_NAME_UNDER_TEST_2 = "org";
 
-  public static final Package PACKAGE_UNDER_TEST_2 = Package.getPackage(PACKAGE_NAME_UNDER_TEST_2);
-
-  public static final File SOURCE_DIRECTORY_UNDER_TEST_1 = new File("/Users/jand/Documents/eclipse/workspace/toryt/target/classes");
+  public static final File SOURCE_DIRECTORY_UNDER_TEST_1 = new File("target/classes");
 
   public static final String PROJECT_NAME_UNDER_TEST_1 = "Toryt Example";
 
-  public static final File SOURCE_DIRECTORY_UNDER_TEST_2 = new File("/Users/jand/Documents/eclipse/workspace/toryt/target/classes");
+  public static final File SOURCE_DIRECTORY_UNDER_TEST_2 = new File("target/classes");
 
   public static final String PROJECT_NAME_UNDER_TEST_2 = "Toryt";
 
@@ -105,7 +101,7 @@ public class TestTestModelFactory extends TestCase {
   public void testCreatePackageTestModel1() {
     PackageTestModel result = $testModelFactory.createPackageTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PACKAGE_NAME_UNDER_TEST_1);
     result.printStructure(System.out);
-    assertEquals(PACKAGE_UNDER_TEST_1, result.getPackage());
+    assertEquals(PACKAGE_NAME_UNDER_TEST_1, result.getPackageName());
     assertTrue(result.getChildTestModels().containsAll(result.getPackageTestModels()));
     assertTrue(result.getChildTestModels().containsAll(result.getClassTestModels()));
   }
@@ -116,7 +112,7 @@ public class TestTestModelFactory extends TestCase {
   public void testCreatePackageTestModel2() {
     PackageTestModel result = $testModelFactory.createPackageTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PACKAGE_NAME_UNDER_TEST_2);
     result.printStructure(System.out);
-    assertEquals(PACKAGE_UNDER_TEST_2, result.getPackage());
+    assertEquals(PACKAGE_NAME_UNDER_TEST_2, result.getPackageName());
     assertTrue(result.getChildTestModels().containsAll(result.getPackageTestModels()));
     assertTrue(result.getChildTestModels().containsAll(result.getClassTestModels()));
   }
