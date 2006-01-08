@@ -1,13 +1,14 @@
 package org.toryt.util_I.collections;
 
+
 import java.util.Collection;
-
-
 
 
 /**
  * <p>Collection that only allows elements of type
  *   {@link #getElementType()}.</p>
+ *
+ * @author Jan Dockx
  *
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getElementType() !=  null;

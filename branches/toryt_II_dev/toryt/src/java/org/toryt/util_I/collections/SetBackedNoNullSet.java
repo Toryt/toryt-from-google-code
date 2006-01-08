@@ -10,6 +10,8 @@ import java.util.Set;
 /**
  * <p>Implementation of {@link NoNullCollection} and {@link Set}
  *   through a backing set.</p>
+ *
+ * @author Jan Dockx
  */
 public class SetBackedNoNullSet implements NoNullSet {
 

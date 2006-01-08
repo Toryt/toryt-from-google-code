@@ -11,9 +11,11 @@ import org.toryt.util_I.collections.AbstractLockedCollection;
 
 /**
  * <p>Implementation of some methods for a locked {@link BigSet}.</p>
+ *
+ * @author Jan Dockx
  */
 public abstract class AbstractLockedBigSet extends AbstractLockedCollection
-    implements LockBigSet {
+    implements LockableBigSet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -31,10 +33,15 @@ public abstract class AbstractLockedBigSet extends AbstractLockedCollection
 
   /**
    * @pre elementType != null;
+   * @pre bigSize != null;
+   * @pre bigSize >= 0;
    */
-  public AbstractLockedBigSet(Class elementType) {
+  protected AbstractLockedBigSet(Class elementType, BigInteger bigSize) {
     assert elementType != null;
+    assert bigSize != null;
+    assert bigSize.compareTo(BigInteger.ZERO) >= 0;
     $elementType = elementType;
+    $bigSize = bigSize;
   }
 
 
@@ -58,6 +65,13 @@ public abstract class AbstractLockedBigSet extends AbstractLockedCollection
   /* <property name="size"> */
   //------------------------------------------------------------------
 
+  /**
+   * @basic
+   */
+  public final BigInteger getBigSize() {
+    return $bigSize;
+  }
+
   private final static BigInteger MAXINT = BigInteger.valueOf(Integer.MAX_VALUE);
 
   /**
@@ -69,13 +83,26 @@ public abstract class AbstractLockedBigSet extends AbstractLockedCollection
              Integer.MAX_VALUE;
   }
 
+  /**
+   * @invar $bigSize != null;
+   */
+  private BigInteger $bigSize;
+
   /*</property>*/
 
 
+  /* this implementation is too expensive
+  public boolean contains(final Object o) {
+    Iterator iter = iterator();
+    while (iter.hasNext()) {
+      if (iter.next().equals(o)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  */
 
-  /**
-   * @deprecated
-   */
   public final boolean containsAll(Collection c) {
     return Collections.forAll(c,
                               new Assertion() {
@@ -85,13 +112,6 @@ public abstract class AbstractLockedBigSet extends AbstractLockedCollection
                                     }
 
                                   });
-  }
-
-  /**
-   * @deprecated
-   */
-  public final Object[] toArray() {
-    return toArray(new Object[size()]);
   }
 
 }

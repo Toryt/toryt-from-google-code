@@ -11,20 +11,21 @@ import java.util.Collection;
  *   override {@link Object#equals(Object)} for semantics to
  *   be correct (an implementation as <code>this == other</code>,
  *   i.e., reference semantics, is not allowed for elements).</p>
- * <p>Since elements are created lazily, {@link #contains(Object)}
- *   {@link #containsAll(Collection)}, {@link #toArray()} and
+ * <p>Since elements are created lazily, {@link #toArray()} and
  *   {@link #toArray(Object[])} are
  *   especially expensive and <em>shouldn't be called</em>. To warn
  *   the developer about this, this method is declared depracated.</p>
  * <p>Lazy collections are unmodifiable. They are configured using
  *   constructor arguments. If these arguments are
  *   {@link Collection Collections} themselves, they should be of type
- *   {@link LockCollection}, and {@link LockCollection#isLocked() locked}
+ *   {@link LockableCollection}, and {@link LockableCollection#isLocked() locked}
  *   before they are used.</p>
+ *
+ * @author Jan Dockx
  *
  * @invar isLocked();
  */
-public interface LazyCollection extends Collection, LockCollection {
+public interface LazyCollection extends Collection, LockableCollection {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -38,20 +39,6 @@ public interface LazyCollection extends Collection, LockCollection {
   public static final String CVS_TAG = "$Name$";
   /* </section> */
 
-
-  /**
-   * This operation is very expensive. Don't call this method.
-   *
-   * @deprecated
-   */
-  boolean contains(Object o);
-
-  /**
-   * This operation is very expensive. Don't call this method.
-   *
-   * @deprecated
-   */
-  boolean containsAll(Collection c);
 
   /**
    * This operation is very expensive. Don't call this method.

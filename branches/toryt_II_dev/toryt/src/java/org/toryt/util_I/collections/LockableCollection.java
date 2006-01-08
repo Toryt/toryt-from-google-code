@@ -9,12 +9,14 @@ import java.util.Iterator;
  * <p>{@link Collection} that becomes unmodifiable once it is
  *   locked. The collection could be locked at construction.</p>
  *
+ * @author Jan Dockx
+ *
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getElementType() !=  null;
  * @invar cC:noNull(this);
  * @invar cC:instanceOf(this, getElementType());
  */
-public interface LockCollection extends Collection {
+public interface LockableCollection extends Collection {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

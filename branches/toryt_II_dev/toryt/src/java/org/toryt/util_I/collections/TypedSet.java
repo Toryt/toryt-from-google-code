@@ -8,6 +8,8 @@ import java.util.Set;
  * <p>Set that only allows elements of type
  *   {@link #getElementType()}.</p>
  *
+ * @author Jan Dockx
+ *
  * @note When moving to Java 5, replace this with a generics.
  */
 public interface TypedSet extends TypedCollection, Set {

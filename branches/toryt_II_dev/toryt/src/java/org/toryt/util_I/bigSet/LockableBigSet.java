@@ -1,14 +1,16 @@
 package org.toryt.util_I.bigSet;
 
 
-import org.toryt.util_I.collections.LockSet;
+import org.toryt.util_I.collections.LockableSet;
 
 
 /**
  * <p>{@link BigSet} that becomes unmodifiable once it is
  *   locked. The set could be locked at construction.</p>
+ *
+ * @author Jan Dockx
  */
-public interface LockBigSet extends BigSet, LockSet {
+public interface LockableBigSet extends BigSet, LockableSet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

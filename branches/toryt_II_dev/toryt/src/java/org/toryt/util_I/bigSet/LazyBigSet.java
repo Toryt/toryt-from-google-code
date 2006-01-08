@@ -7,8 +7,10 @@ import org.toryt.util_I.collections.LazySet;
 /**
  * <p>{@link BigSet} that becomes unmodifiable once it is
  *   locked. The set could be locked at construction.</p>
+ *
+ * @author Jan Dockx
  */
-public interface LazyBigSet extends LockBigSet, LazySet {
+public interface LazyBigSet extends LockableBigSet, LazySet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

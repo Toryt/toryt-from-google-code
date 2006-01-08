@@ -4,14 +4,14 @@ package org.toryt.util_I.bigSet;
 import java.math.BigInteger;
 import java.util.HashSet;
 
-import org.toryt.util_I.collections.LockSet;
-import org.toryt.util_I.collections.SetBackedLockSet;
+import org.toryt.util_I.collections.LockableSet;
+import org.toryt.util_I.collections.SetBackedLockableSet;
 import org.toryt.util_I.collections.SetBackedTypedSet;
 import org.toryt.util_I.collections.TypedSet;
 
 
 /**
- * <p>A {@link BigSet} implemented as a {@link SetBackedLockSet},
+ * <p>A {@link BigSet} implemented as a {@link SetBackedLockableSet},
  *   and a backing {@link SetBackedTypedSet}. This is for small sets,
  *   where actually <code>{@link #getBigSize()} &lt;&lt; {@link Integer#MAX_VALUE}</code>
  *   (A {@link BigSet} <em>can</em> be big, but doesn't <em>have</em> to be).</p>
@@ -20,7 +20,7 @@ import org.toryt.util_I.collections.TypedSet;
  *
  * @protected-invar TypedSet.isAssignableFrom(getBackingSet());
  */
-public class SetBackedLockBigSet extends SetBackedLockSet implements BigSet, LockSet {
+public class SetBackedLockableBigSet extends SetBackedLockableSet implements BigSet, LockableSet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -38,7 +38,7 @@ public class SetBackedLockBigSet extends SetBackedLockSet implements BigSet, Loc
   /**
    * @pre backingSet != null;
    */
-  public SetBackedLockBigSet(TypedSet backingSet) {
+  public SetBackedLockableBigSet(TypedSet backingSet) {
     super(backingSet);
   }
 
@@ -48,7 +48,7 @@ public class SetBackedLockBigSet extends SetBackedLockSet implements BigSet, Loc
    *
    * @pre elementType != null;
    */
-  public SetBackedLockBigSet(Class elementType) {
+  public SetBackedLockableBigSet(Class elementType) {
     super(new SetBackedTypedSet(elementType));
   }
 

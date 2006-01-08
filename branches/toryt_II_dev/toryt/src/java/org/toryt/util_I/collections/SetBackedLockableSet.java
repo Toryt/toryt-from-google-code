@@ -8,10 +8,12 @@ import java.util.Set;
 
 
 /**
- * <p>Implementation of {@link LockCollection} and {@link Set},
+ * <p>Implementation of {@link LockableCollection} and {@link Set},
  * backed by another {@link Set}.</p>
+ *
+ * @author Jan Dockx
  */
-public class SetBackedLockSet implements LockSet {
+public class SetBackedLockableSet implements LockableSet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -30,7 +32,7 @@ public class SetBackedLockSet implements LockSet {
    * @pre backingSet != null;
    * @post ! new.isLocked();
    */
-  public SetBackedLockSet(Set backingSet) {
+  public SetBackedLockableSet(Set backingSet) {
     assert backingSet != null;
     $backingSet = backingSet;
   }
@@ -38,7 +40,7 @@ public class SetBackedLockSet implements LockSet {
   /**
    * Create an instance backed by a fresh {@link HashSet}
    */
-  public SetBackedLockSet() {
+  public SetBackedLockableSet() {
     this(new HashSet());
   }
 

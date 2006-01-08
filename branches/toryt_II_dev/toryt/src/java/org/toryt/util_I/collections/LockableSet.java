@@ -8,9 +8,11 @@ import java.util.Set;
  * <p>{@link Set} that becomes unmodifiable once it is
  *   locked.</p>
  *
- * @see LockCollection
+ * @see LockableCollection
+ *
+ * @author Jan Dockx
  */
-public interface LockSet extends LockCollection, Set {
+public interface LockableSet extends LockableCollection, Set {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

@@ -11,6 +11,8 @@ import org.toryt.patterns_I.Collections;
 /**
  * <p>Implementation of {@link TypedSet} and {@link Set},
  *   backed by another {@link Set}.</p>
+ *
+ * @author Jan Dockx
  */
 public class SetBackedTypedSet extends SetBackedNoNullSet implements TypedSet {
 

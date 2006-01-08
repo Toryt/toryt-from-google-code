@@ -9,8 +9,10 @@ import java.util.Set;
  *   iterating over them.</p>
  *
  * @see LazyCollection
+
+ * @author Jan Dockx
  */
-public interface LazySet extends LazyCollection, LockSet {
+public interface LazySet extends LazyCollection, LockableSet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

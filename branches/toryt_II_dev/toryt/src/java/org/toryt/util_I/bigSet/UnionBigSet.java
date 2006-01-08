@@ -1,25 +1,33 @@
 package org.toryt.util_I.bigSet;
 
 
-import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.Iterator;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
 
 
 /**
  * <p>A lazy big set, that is the union of all component BigSets.</p>
- * <p>Because big sets can be so large (and {@link #contains(Object)}
+ * <p>Because big sets can be so large (and <code>contains(Object)</code>
  *   and <code>containsAll(Collection)</code> are deprecated to signal this),
  *   it is not sensible to try to avoid {@link Object#equals(Object) equal}
  *   elements from different component sets in this implementation.
  *   Therefor, it is a precondition in the constructor for all
  *   component sets to be <em>disjunct</em>.</p>
+ *
+ * @author Jan Dockx
+ *
+ * @invar (forall int i; (i >= 0) && (i < getComponents().length);
+ *          getElementType().isAssignableFrom(getComponents()[i].getElementType()));
+ * @invar (forall int i; (i >= 0) && (i < getComponents().length);
+ *          (forall int j; (j >= 0) && (j < getComponents().length) && (j != i);
+ *            (forall Object o; getComponents()[i].contains(o);
+ *              ! getComponents()[j].contains(o)));
+ *        component sets are disjunct
  */
-public class UnionBigSet extends AbstractLockedBigSet implements LazyBigSet {
+public class UnionBigSet extends AbstractComponentBigSet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -42,115 +50,53 @@ public class UnionBigSet extends AbstractLockedBigSet implements LazyBigSet {
    * @pre (forall int i; (i >= 0) && (i < components.length);
    *        components[i].isLocked());
    * @pre (forall int i; (i >= 0) && (i < components.length);
-   *        components[i].getElementType() == getElementType());
+   *        getElementType().isAssignableFrom(components[i].getElementType()));
    * @pre (forall int i; (i >= 0) && (i < components.length);
    *        (forall int j; (j >= 0) && (j < components.length) && (j != i);
-   *          (forall Object o; $components[i].contains(o);
-   *             ! $components[j].contains(o)));
+   *          (forall Object o; components[i].contains(o);
+   *             ! components[j].contains(o)));
    *      component sets must be disjunct (not checked with an assertion
    *      because too expensive)
    * @post Collections.containsAll(components, new.getComponents());
    */
-  public UnionBigSet(Class elementType, LockBigSet[] components) {
-    super(elementType);
-    assert components != null;
-    assert Collections.noNull(components);
+  public UnionBigSet(Class elementType, LockableBigSet[] components) {
+    super(elementType, calculateSize(components), components);
     assert Collections.forAll(components,
                               new Assertion() {
 
                                     public boolean isTrueFor(Object o) {
-                                      return ((LockBigSet)o).isLocked();
+                                      return getElementType().
+                                              isAssignableFrom(((LockableBigSet)o).
+                                                               getElementType());
                                     }
 
                                   });
-    $components = (LockBigSet[])ArrayUtils.clone(components);
   }
 
-
-
-  /* <property name="components"> */
-  //------------------------------------------------------------------
-
-  /**
-   * @basic
-   */
-  public final LockBigSet[] getComponents() {
-    return (LockBigSet[])ArrayUtils.clone($components);
+  private static BigInteger calculateSize(LockableBigSet[] components) {
+    BigInteger result = BigInteger.ZERO;
+    for (int i = 0; i < components.length; i++) {
+      result = result.add(components[i].getBigSize());
+    }
+    return result;
   }
-
-  /**
-   * @invar $components != null;
-   * @invar cC:noNull($components);
-   * @invar (forall int i; (i >= 0) && (i < $components.length);
-   *          $components[i].isLocked());
-   */
-  private final LockBigSet[] $components;
-
-  /*</property>*/
-
-
-
-  /* <property name="size"> */
-  //------------------------------------------------------------------
 
   /**
    * @return (sum int i; (i >=0 ) && (i < getComponents().length);
    *            getComponents()[i].getBigSize());
+   *
+  public final BigInteger getBigSize();
    */
-  public final BigInteger getBigSize() {
-    if ($cachedSize ==  null) {
-      initCachedSize();
-    }
-    return $cachedSize;
-  }
 
-  private void initCachedSize() {
-    $cachedSize = BigInteger.ZERO;
-    for (int i = 0; i < $components.length; i++) {
-      $cachedSize = $cachedSize.and($components[i].getBigSize());
-
-    }
-  }
-
-  private BigInteger $cachedSize;
-
-  /*</property>*/
-
-
-
-  /**
-   * @deprecated
-   */
-  public boolean contains(final Object o) {
-    return Collections.exists($components,
+  public final boolean contains(final Object o) {
+    return Collections.exists(getComponents(),
                               new Assertion() {
 
-      public boolean isTrueFor(Object s) {
-        return ((LockBigSet)s).contains(o);
-      }
+                                    public boolean isTrueFor(Object s) {
+                                      return ((LockableBigSet)s).contains(o);
+                                    }
 
-    });
-  }
-
-  /**
-   * @deprecated
-   */
-  public Object[] toArray(Object[] a) {
-    int size = size();
-    Object[] result;
-    if (a.length >= size) {
-      result = a;
-    }
-    else {
-      result = (Object[])Array.newInstance(a.getClass().getComponentType(), size);
-    }
-    int insert = 0;
-    for (int i = 0; i < $components.length; i++) {
-      Object[] lbsTa = $components[i].toArray();
-      System.arraycopy(lbsTa, 0, result, insert, lbsTa.length);
-      insert += lbsTa.length;
-    }
-    return result;
+                                  });
   }
 
   /**
@@ -158,11 +104,11 @@ public class UnionBigSet extends AbstractLockedBigSet implements LazyBigSet {
    *            getComponents()[i].isEmpty());
    */
   public final boolean isEmpty() {
-    return Collections.forAll($components,
+    return Collections.forAll(getComponents(),
                               new Assertion() {
 
                                     public boolean isTrueFor(Object o) {
-                                      return ((LockBigSet)o).isEmpty();
+                                      return ((LockableBigSet)o).isEmpty();
                                     }
 
                                   });
@@ -170,6 +116,8 @@ public class UnionBigSet extends AbstractLockedBigSet implements LazyBigSet {
 
   public Iterator iterator() {
     return new AbstractLockedCollectionIterator() {
+
+      private final LockableBigSet[] $components = getComponents();
 
       private int $componentIndex = -1;
 

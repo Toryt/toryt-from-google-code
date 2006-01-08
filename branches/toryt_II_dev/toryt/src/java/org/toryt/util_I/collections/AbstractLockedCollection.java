@@ -6,12 +6,14 @@ import java.util.Iterator;
 
 
 /**
- * <p>Implementation of modifying methods for a {@link LockCollection}
+ * <p>Implementation of modifying methods for a {@link LockableCollection}
  *   that is locked always.</p>
+ *
+ * @author Jan Dockx
  *
  * @invar isLocked();
  */
-public abstract class AbstractLockedCollection implements LockCollection {
+public abstract class AbstractLockedCollection implements LockableCollection {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

@@ -12,9 +12,11 @@ import org.toryt.util_I.collections.TypedSet;
  *   {@link Integer#MAX_VALUE}. Therefor, {@link #getBigSize()}
  *   should be used instead of {@link #size()}.</p>
  * <p><code>BigSets</code> are almost always lazy,
- *   and generative. Therefor, operations like {@link #contains(Object)}
+ *   and generative. Therefor, operations like {@link #toArray()}
+ *   and {@link #toArray(Object[])}
  *   are to be considered very expensive.</p>
  *
+ * @author Jan Dockx
  *
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getBigSize() >= 0;

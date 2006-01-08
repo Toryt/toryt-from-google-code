@@ -8,6 +8,7 @@ import java.util.Collection;
  * <p>Collection that does not allow <code>null</code> as
  *   element.</p>
  *
+ * @author Jan Dockx
  *
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar cC:noNull(this);

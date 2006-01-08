@@ -8,6 +8,8 @@ import java.util.Set;
 /**
  * <p>Set that does not allow <code>null</code> as
  *   element.</p>
+ *
+ * @author Jan Dockx
  */
 public interface NoNullSet extends NoNullCollection, Set {
 
