@@ -1,10 +1,9 @@
-package org.toryt.util_I.bigSet;
+package org.toryt.util_I.collections.bigSet;
 
 
 import java.math.BigInteger;
 import java.util.HashSet;
 
-import org.toryt.util_I.collections.LockableSet;
 import org.toryt.util_I.collections.SetBackedLockableSet;
 import org.toryt.util_I.collections.SetBackedTypedSet;
 import org.toryt.util_I.collections.TypedSet;
@@ -20,7 +19,7 @@ import org.toryt.util_I.collections.TypedSet;
  *
  * @protected-invar TypedSet.isAssignableFrom(getBackingSet());
  */
-public class SetBackedLockableBigSet extends SetBackedLockableSet implements BigSet, LockableSet {
+public class SetBackedLockableBigSet extends SetBackedLockableSet implements LockableBigSet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

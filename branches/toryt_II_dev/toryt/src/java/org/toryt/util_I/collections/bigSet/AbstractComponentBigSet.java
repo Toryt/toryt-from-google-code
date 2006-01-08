@@ -1,4 +1,4 @@
-package org.toryt.util_I.bigSet;
+package org.toryt.util_I.collections.bigSet;
 
 
 import java.lang.reflect.Array;

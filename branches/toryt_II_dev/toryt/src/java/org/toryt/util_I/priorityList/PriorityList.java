@@ -4,7 +4,7 @@ package org.toryt.util_I.priorityList;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.toryt.util_I.bigSet.BigSet;
+import org.toryt.util_I.collections.bigSet.BigSet;
 
 
 /**

@@ -1,4 +1,4 @@
-package org.toryt.util_I.bigSet;
+package org.toryt.util_I.collections.bigSet;
 
 
 import java.lang.reflect.Array;
@@ -134,7 +134,7 @@ public class ProductBigSet extends AbstractComponentBigSet {
       {
         $next = (Object[])Array.newInstance(componentType, dim);
         for (int j = dim - 1; j >= 0; j--) {
-          if ($iterators[j].hasNext()) {
+          if (! $iterators[j].hasNext()) {
             // we have an empty component
             $next = null;
             assert isEmpty();
