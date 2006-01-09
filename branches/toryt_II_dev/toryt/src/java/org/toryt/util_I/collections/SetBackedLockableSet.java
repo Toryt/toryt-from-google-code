@@ -13,7 +13,8 @@ import java.util.Set;
  *
  * @author Jan Dockx
  */
-public class SetBackedLockableSet implements LockableSet {
+public class SetBackedLockableSet extends AbstractCollectionBackedLockableCollection
+    implements LockableSet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -48,132 +49,28 @@ public class SetBackedLockableSet implements LockableSet {
     return $backingSet;
   }
 
+  protected final Collection getBackingCollection() {
+    return $backingSet;
+  }
+
   /**
    * @invar $backingSet != null;
    */
   private Set $backingSet;
+  
+  public final Iterator iterator() {
+    return new CollectionBackedLockIterator() {
 
-
-
-  /* <property name="locked"> */
-  //------------------------------------------------------------------
-
-  public boolean isLocked() {
-    return $locked;
+      /**
+       * @invar $backingIterator != null;
+       */
+      private Iterator $iterator = $backingSet.iterator();
+      
+      protected Iterator getIterator() {
+        return $iterator;
+      }
+      
+    };
   }
-
-  public void lock() {
-    $locked = true;
-  }
-
-  private boolean $locked;
-
-  /*</property>*/
-
-
-
-  /* <section name="Inspectors"> */
-  //------------------------------------------------------------------
-
-  public int size() {
-    return $backingSet.size();
-  }
-
-  public boolean isEmpty() {
-    return $backingSet.isEmpty();
-  }
-
-  public boolean contains(Object o) {
-    return $backingSet.contains(o);
-  }
-
-  public boolean containsAll(Collection c) {
-    return $backingSet.containsAll(c);
-  }
-
-  public Iterator iterator() {
-    return new LockIterator() {
-
-                 /**
-                  * @invar $backingSetIterator != null;
-                  */
-                 private Iterator $backingSetIterator = $backingSet.iterator();
-
-                 public boolean hasNext() {
-                   return $backingSetIterator.hasNext();
-                 }
-
-                 public Object next() {
-                   return $backingSetIterator.next();
-                 }
-
-                 public void remove() {
-                   if (isLocked()) {
-                     throw new UnsupportedOperationException("Set is locked");
-                   }
-                   $backingSetIterator.remove();
-                 }
-
-               };
-  }
-
-  public Object[] toArray() {
-    return $backingSet.toArray();
-  }
-
-  public Object[] toArray(Object[] a) {
-    return $backingSet.toArray(a);
-  }
-
-  /*</section>*/
-
-
-
-  /* <section name="Modifying Operations"> */
-  //------------------------------------------------------------------
-
-  public boolean add(Object o) {
-    if (isLocked()) {
-      throw new UnsupportedOperationException("Set is locked");
-    }
-    return $backingSet.add(o);
-  }
-
-  public boolean remove(Object o) {
-    if (isLocked()) {
-      throw new UnsupportedOperationException("Set is locked");
-    }
-    return $backingSet.remove(o);
-  }
-
-  public boolean addAll(Collection c) {
-    if (isLocked()) {
-      throw new UnsupportedOperationException("Set is locked");
-    }
-    return $backingSet.addAll(c);
-  }
-
-  public boolean retainAll(Collection c) {
-    if (isLocked()) {
-      throw new UnsupportedOperationException("Set is locked");
-    }
-    return $backingSet.retainAll(c);
-  }
-
-  public boolean removeAll(Collection c) {
-    if (isLocked()) {
-      throw new UnsupportedOperationException("Set is locked");
-    }
-    return $backingSet.removeAll(c);
-  }
-
-  public void clear() {
-    if (isLocked()) {
-      throw new UnsupportedOperationException("Set is locked");
-    }
-    $backingSet.clear();
-  }
-
-  /*</section>*/
 
 }

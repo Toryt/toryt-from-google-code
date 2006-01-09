@@ -46,7 +46,7 @@ public interface LockableCollection extends Collection {
      * @throws UnsupportedOperationException
      *         isLocked();
      */
-    void remove();
+    void remove() throws UnsupportedOperationException;
 
   }
 
@@ -60,42 +60,42 @@ public interface LockableCollection extends Collection {
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean add(Object o);
+  boolean add(Object o) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean remove(Object o);
+  boolean remove(Object o) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean addAll(Collection c);
+  boolean addAll(Collection c) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean retainAll(Collection c);
+  boolean retainAll(Collection c) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean removeAll(Collection c);
+  boolean removeAll(Collection c) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  void clear();
+  void clear() throws UnsupportedOperationException;
 
   /*</section>*/
 

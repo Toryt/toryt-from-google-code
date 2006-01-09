@@ -1,16 +1,18 @@
 package org.toryt.util_I.collections;
 
 
-import java.util.Set;
+import java.util.List;
 
 
 /**
- * <p>Set that does not allow <code>null</code> as
- *   element.</p>
+ * <p>{@link List} that generates its elements fresh while
+ *   iterating over them.</p>
  *
+ * @see LazyCollection
+
  * @author Jan Dockx
  */
-public interface NoNullSet extends NoNullCollection, Set {
+public interface LazyList extends LazyCollection, LockableList {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
