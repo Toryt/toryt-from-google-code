@@ -10,12 +10,15 @@ import org.toryt.patterns_I.Collections;
 
 /**
  * <p>A lazy big set, that is the union of all component BigSets.</p>
- * <p>Because big sets can be so large (and <code>contains(Object)</code>
- *   and <code>containsAll(Collection)</code> are deprecated to signal this),
+ * <p>Because big sets can be so large (and <code>toArray()</code>
+ *   and <code>toArray(Object[])</code> are deprecated to signal this),
  *   it is not sensible to try to avoid {@link Object#equals(Object) equal}
  *   elements from different component sets in this implementation.
  *   Therefor, it is a precondition in the constructor for all
  *   component sets to be <em>disjunct</em>.</p>
+ * <p>If one of the {@link #getComponents()} is <code>null</code>,
+ *   it behaves as an empty set with
+ *   {@link BigSet#getElementType() <var>component</var>.getElementType()}<code> == </code>{@link #getElementType()}.
  *
  * @author Jan Dockx
  *
@@ -46,15 +49,15 @@ public class UnionBigSet extends AbstractComponentBigSet {
   /**
    * @pre elementType != null;
    * @pre components != null;
-   * @pre cC:noNull(components);
    * @pre (forall int i; (i >= 0) && (i < components.length);
-   *        components[i].isLocked());
+   *        (components[i] != null) ? components[i].isLocked());
    * @pre (forall int i; (i >= 0) && (i < components.length);
-   *        getElementType().isAssignableFrom(components[i].getElementType()));
+   *        (components[i] != null) ? getElementType().isAssignableFrom(components[i].getElementType()));
    * @pre (forall int i; (i >= 0) && (i < components.length);
    *        (forall int j; (j >= 0) && (j < components.length) && (j != i);
-   *          (forall Object o; components[i].contains(o);
-   *             ! components[j].contains(o)));
+   *          (components[i] != null) && (components[j] != null) ?
+   *            (forall Object o; components[i].contains(o);
+   *              ! components[j].contains(o)));
    *      component sets must be disjunct (not checked with an assertion
    *      because too expensive)
    * @post Collections.containsAll(components, new.getComponents());
@@ -76,7 +79,9 @@ public class UnionBigSet extends AbstractComponentBigSet {
   private static BigInteger calculateSize(LockableBigSet[] components) {
     BigInteger result = BigInteger.ZERO;
     for (int i = 0; i < components.length; i++) {
-      result = result.add(components[i].getBigSize());
+      if (components[i] != null) {
+        result = result.add(components[i].getBigSize());
+      }
     }
     return result;
   }
@@ -93,7 +98,8 @@ public class UnionBigSet extends AbstractComponentBigSet {
                               new Assertion() {
 
                                     public boolean isTrueFor(Object s) {
-                                      return ((LockableBigSet)s).contains(o);
+                                      return (s != null) &&
+                                             ((LockableBigSet)s).contains(o);
                                     }
 
                                   });
@@ -108,7 +114,8 @@ public class UnionBigSet extends AbstractComponentBigSet {
                               new Assertion() {
 
                                     public boolean isTrueFor(Object o) {
-                                      return ((LockableBigSet)o).isEmpty();
+                                      return (o == null) ||
+                                             ((LockableBigSet)o).isEmpty();
                                     }
 
                                   });
@@ -125,9 +132,11 @@ public class UnionBigSet extends AbstractComponentBigSet {
         do {
           $componentIndex++;
         } while (($componentIndex < $components.length) &&
-                  $components[$componentIndex].isEmpty());
+                 (($components[$componentIndex] == null) ||
+                  $components[$componentIndex].isEmpty()));
         if ($componentIndex < $components.length) {
-          assert ! $components[$componentIndex].isEmpty();
+          assert ($components[$componentIndex] != null) &&
+                 (! $components[$componentIndex].isEmpty());
           $componentIterator = $components[$componentIndex].iterator();
         }
         else {

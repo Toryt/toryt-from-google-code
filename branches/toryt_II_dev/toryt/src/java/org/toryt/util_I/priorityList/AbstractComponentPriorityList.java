@@ -1,4 +1,4 @@
-package org.toryt.util_I.collections.bigSet;
+package org.toryt.util_I.priorityList;
 
 
 import java.lang.reflect.Array;
@@ -8,24 +8,22 @@ import java.util.Iterator;
 import org.apache.commons.lang.ArrayUtils;
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
+import org.toryt.util_I.collections.LazyList;
 
 
 /**
- * <p>A lazy big set, build from component BigSets.</p>
+ * <p>A lazy {@link PriorityList}, build from component PriorityLists.</p>
  * <p>This class contains common implementations for subtypes.</p>
- * <p>If one of the {@link #getComponents()} is <code>null</code>,
- *   the implementation in the subclass will behave as if it
- *   refers to an empty set with an appropriate
- *   {@link BigSet#getElementType()}.</p>
- * 
+ *
  * @author Jan Dockx
  *
  * @invar getComponents() != null;
+ * @invar cC:noNull(getComponents());
  * @invar (forall int i; (i >= 0) && (i < getComponents().length);
- *          (getComponents()[i] != null) ?getComponents()[i].isLocked());
+ *          getComponents()[i].isLocked());
  */
-public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
-    implements LazyBigSet {
+public abstract class AbstractComponentPriorityList extends AbstractLockedPriorityList
+    implements LazyList {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -42,26 +40,29 @@ public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
 
 
   /**
-   * @pre elementType != null;
+   * @pre priorityElementType != null;
    * @pre bigSize != null;
    * @pre bigSize >= 0;
    * @pre components != null;
+   * @pre cC:noNull(components);
    * @pre (forall int i; (i >= 0) && (i < components.length);
-   *        (components[i] != null) ? components[i].isLocked());
+   *        components[i].isLocked());
    * @post Collections.containsAll(components, new.getComponents());
    */
-  public AbstractComponentBigSet(Class elementType, BigInteger bigSize, LockableBigSet[] components) {
-    super(elementType, bigSize);
+  public AbstractComponentPriorityList(Class priorityElementType, BigInteger bigSize,
+                                       PriorityList[] components) {
+    super(priorityElementType, bigSize);
     assert components != null;
+    assert Collections.noNull(components);
     assert Collections.forAll(components,
                               new Assertion() {
 
                                     public boolean isTrueFor(Object o) {
-                                      return ((LockableBigSet)o).isLocked();
+                                      return ((PriorityList)o).isLocked();
                                     }
 
                                   });
-    $components = (LockableBigSet[])ArrayUtils.clone(components);
+    $components = (PriorityList[])ArrayUtils.clone(components);
   }
 
 
@@ -72,16 +73,17 @@ public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
   /**
    * @basic
    */
-  public final LockableBigSet[] getComponents() {
-    return (LockableBigSet[])ArrayUtils.clone($components);
+  public final PriorityList[] getComponents() {
+    return (PriorityList[])ArrayUtils.clone($components);
   }
 
   /**
    * @invar $components != null;
+   * @invar cC:noNull($components);
    * @invar (forall int i; (i >= 0) && (i < $components.length);
-   *          ($components[i] != null) ? $components[i].isLocked());
+   *          $components[i].isLocked());
    */
-  private final LockableBigSet[] $components;
+  private final PriorityList[] $components;
 
   /*</property>*/
 

@@ -42,27 +42,27 @@ public abstract class AbstractLockedCollection implements LockableCollection {
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
 
-  public boolean add(Object o) throws UnsupportedOperationException {
+  public final boolean add(Object o) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
-  public boolean remove(Object o) throws UnsupportedOperationException {
+  public final boolean remove(Object o) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
-  public boolean addAll(Collection c) throws UnsupportedOperationException {
+  public final boolean addAll(Collection c) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
-  public boolean retainAll(Collection c) throws UnsupportedOperationException {
+  public final boolean retainAll(Collection c) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
-  public boolean removeAll(Collection c) throws UnsupportedOperationException {
+  public final boolean removeAll(Collection c) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
-  public void clear() throws UnsupportedOperationException {
+  public final void clear() throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 

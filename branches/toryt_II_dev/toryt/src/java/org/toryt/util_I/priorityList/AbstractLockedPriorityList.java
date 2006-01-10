@@ -1,4 +1,4 @@
-package org.toryt.util_I.collections.bigSet;
+package org.toryt.util_I.priorityList;
 
 
 import java.math.BigInteger;
@@ -6,16 +6,17 @@ import java.util.Collection;
 
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
-import org.toryt.util_I.collections.AbstractLockedSet;
+import org.toryt.util_I.collections.AbstractLockedList;
+import org.toryt.util_I.collections.bigSet.LockableBigSet;
 
 
 /**
- * <p>Implementation of some methods for a locked {@link BigSet}.</p>
+ * <p>Implementation of some methods for a locked {@link PriorityList}.</p>
  *
  * @author Jan Dockx
  */
-public abstract class AbstractLockedBigSet extends AbstractLockedSet
-    implements LockableBigSet {
+public abstract class AbstractLockedPriorityList extends AbstractLockedList
+    implements PriorityList {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -32,16 +33,16 @@ public abstract class AbstractLockedBigSet extends AbstractLockedSet
 
 
   /**
-   * @pre elementType != null;
-   * @pre bigSize != null;
-   * @pre bigSize >= 0;
+   * @pre priorityPriorityElementType != null;
+   * @pre cardinality != null;
+   * @pre cardinality >= 0;
    */
-  protected AbstractLockedBigSet(Class elementType, BigInteger bigSize) {
-    assert elementType != null;
-    assert bigSize != null;
-    assert bigSize.compareTo(BigInteger.ZERO) >= 0;
-    $elementType = elementType;
-    $bigSize = bigSize;
+  protected AbstractLockedPriorityList(Class priorityPriorityElementType, BigInteger cardinality) {
+    assert priorityPriorityElementType != null;
+    assert cardinality != null;
+    assert cardinality.compareTo(BigInteger.ZERO) >= 0;
+    $priorityPriorityElementType = priorityPriorityElementType;
+    $cardinality = cardinality;
   }
 
 
@@ -49,14 +50,25 @@ public abstract class AbstractLockedBigSet extends AbstractLockedSet
   /* <property name="element type"> */
   //------------------------------------------------------------------
 
-  public final Class getElementType() {
-    return $elementType;
+  public Class getElementType() {
+    return LockableBigSet.class;
+  }
+
+  /*</property>*/
+
+  
+
+  /* <property name="priority element type"> */
+  //------------------------------------------------------------------
+
+  public final Class getPriorityElementType() {
+    return $priorityPriorityElementType;
   }
 
   /**
-   * @invar $elementType != null;
+   * @invar $priorityPriorityElementType != null;
    */
-  private Class $elementType;
+  private Class $priorityPriorityElementType;
 
   /*</property>*/
 
@@ -68,25 +80,14 @@ public abstract class AbstractLockedBigSet extends AbstractLockedSet
   /**
    * @basic
    */
-  public final BigInteger getBigSize() {
-    return $bigSize;
-  }
-
-  private final static BigInteger MAXINT = BigInteger.valueOf(Integer.MAX_VALUE);
-
-  /**
-   * @deprecated
-   */
-  public final int size() {
-    return (getBigSize().compareTo(MAXINT) < 0) ?
-             getBigSize().intValue() :
-             Integer.MAX_VALUE;
+  public final BigInteger getCardinality() {
+    return $cardinality;
   }
 
   /**
-   * @invar $bigSize != null;
+   * @invar $cardinality != null;
    */
-  private BigInteger $bigSize;
+  private BigInteger $cardinality;
 
   /*</property>*/
 

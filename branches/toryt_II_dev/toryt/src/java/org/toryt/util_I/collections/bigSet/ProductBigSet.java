@@ -36,7 +36,7 @@ public class ProductBigSet extends AbstractComponentBigSet {
   public static final String CVS_TAG = "$Name$";
   /* </section> */
 
-
+COMPONENTS CAN BE NULL
 
   /**
    * @pre elementType != null;
