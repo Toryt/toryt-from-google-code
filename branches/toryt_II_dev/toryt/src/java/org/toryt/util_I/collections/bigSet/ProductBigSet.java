@@ -14,6 +14,8 @@ import org.toryt.patterns_I.Collections;
  *   BigSets. The elements of this BigSet are arrays of type
  *   {@link #getElementType()} with 1 element per
  *   {@link #getComponents() component}.</p>
+ * <p>If one of the {@link #getComponents()} is <code>null</code>,
+ *   it behaves as an empty set, making this an empty set too.</p>
  *
  * @author Jan Dockx
  *
@@ -36,16 +38,14 @@ public class ProductBigSet extends AbstractComponentBigSet {
   public static final String CVS_TAG = "$Name$";
   /* </section> */
 
-COMPONENTS CAN BE NULL
-
   /**
    * @pre elementType != null;
    * @pre components != null;
-   * @pre cC:noNull(components);
    * @pre (forall int i; (i >= 0) && (i < components.length);
-   *        components[i].isLocked());
+   *        (components[i] != null) ? components[i].isLocked());
    * @pre (forall int i; (i >= 0) && (i < components.length);
-   *        getElementType().getComponentType().
+   *        (components[i] != null) ? 
+   *          getElementType().getComponentType().
    *            isAssignableFrom(components[i].getElementType()));
    * @pre elementType.getComponentType() != null;
    * @post Collections.containsAll(components, new.getComponents());
@@ -57,9 +57,11 @@ COMPONENTS CAN BE NULL
                               new Assertion() {
 
                                     public boolean isTrueFor(Object o) {
-                                      return getElementType().getComponentType().
-                                              isAssignableFrom(((LockableBigSet)o).
-                                                                   getElementType());
+                                      return (o != null) ? 
+                                               getElementType().getComponentType().
+                                                  isAssignableFrom(((LockableBigSet)o).
+                                                                    getElementType()) :
+                                               true;
                                     }
 
                                   });
@@ -68,6 +70,9 @@ COMPONENTS CAN BE NULL
   private static BigInteger calculateSize(LockableBigSet[] components) {
     BigInteger result = BigInteger.ONE;
     for (int i = 0; i < components.length; i++) {
+      if (components[i] == null) {
+        return BigInteger.ZERO;
+      }
       result = result.multiply(components[i].getBigSize());
     }
     return result;
@@ -90,7 +95,7 @@ COMPONENTS CAN BE NULL
       return false;
     }
     for (int i = 0; i < array.length; i++) {
-      if (! components[i].contains(array[i])) {
+      if ((components[i] == null) || (! components[i].contains(array[i]))) {
         return false;
       }
     }
@@ -99,14 +104,15 @@ COMPONENTS CAN BE NULL
 
   /**
    * @return (exists int i; (i > 0) && (i < getComponents().length);
-   *            getComponents()[i].isEmpty());
+   *            (getComponents()[i] == null) || getComponents()[i].isEmpty());
    */
   public final boolean isEmpty() {
     return Collections.exists(getComponents(),
                               new Assertion() {
 
                                     public boolean isTrueFor(Object o) {
-                                      return ((LockableBigSet)o).isEmpty();
+                                      return (o == null) ||
+                                             ((LockableBigSet)o).isEmpty();
                                     }
 
                                   });
@@ -125,7 +131,9 @@ COMPONENTS CAN BE NULL
 
       {
         for (int i = 0; i < dim; i++) {
-          $iterators[i] = $components[i].iterator();
+          if ($components[i] != null) {
+            $iterators[i] = $components[i].iterator();
+          }
         }
       }
 
@@ -134,7 +142,7 @@ COMPONENTS CAN BE NULL
       {
         $next = (Object[])Array.newInstance(componentType, dim);
         for (int j = dim - 1; j >= 0; j--) {
-          if (! $iterators[j].hasNext()) {
+          if (($iterators[j] == null) || (! $iterators[j].hasNext())) {
             // we have an empty component
             $next = null;
             assert isEmpty();
@@ -146,6 +154,14 @@ COMPONENTS CAN BE NULL
       }
 
       private void prepareNext() {
+        assert Collections.forAll($components,
+                                  new Assertion() {
+
+                                    public boolean isTrueFor(Object o) {
+                                      return o != null;
+                                    }
+                                    
+                                  });
         int i = dim - 1;
         boolean canProceed = false;
         while ((! canProceed) && (i >= 0)) {

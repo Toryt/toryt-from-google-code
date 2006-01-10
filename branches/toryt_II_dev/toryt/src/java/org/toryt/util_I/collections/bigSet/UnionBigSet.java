@@ -68,9 +68,11 @@ public class UnionBigSet extends AbstractComponentBigSet {
                               new Assertion() {
 
                                     public boolean isTrueFor(Object o) {
-                                      return getElementType().
-                                              isAssignableFrom(((LockableBigSet)o).
-                                                               getElementType());
+                                      return (o != null) ?
+                                              getElementType().
+                                                isAssignableFrom(((LockableBigSet)o).
+                                                                 getElementType()) :
+                                              true;
                                     }
 
                                   });
