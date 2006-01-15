@@ -57,7 +57,10 @@ public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
    *          (components[i] != null) ? (! components[i].contains(null)));
    * @post Collections.containsAll(components, new.getComponents());
    */
-  public AbstractComponentBigSet(Class elementType, boolean nullAllowed, BigInteger bigSize, LockableBigSet[] components) {
+  public AbstractComponentBigSet(Class elementType,
+                                 boolean nullAllowed,
+                                 BigInteger bigSize,
+                                 LockableBigSet[] components) {
     super(elementType, nullAllowed, bigSize);
     assert components != null;
     assert Collections.forAll(components,
