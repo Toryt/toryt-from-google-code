@@ -36,13 +36,27 @@ public abstract class AbstractLockedBigSet extends AbstractLockedSet
    * @pre bigSize != null;
    * @pre bigSize >= 0;
    */
-  protected AbstractLockedBigSet(Class elementType, BigInteger bigSize) {
+  protected AbstractLockedBigSet(Class elementType, boolean nullAllowed, BigInteger bigSize) {
     assert elementType != null;
     assert bigSize != null;
     assert bigSize.compareTo(BigInteger.ZERO) >= 0;
+    $nullAllowed = nullAllowed;
     $elementType = elementType;
     $bigSize = bigSize;
   }
+
+
+
+  /* <property name="null allowed"> */
+  //------------------------------------------------------------------
+
+  public final boolean isNullAllowed() {
+    return $nullAllowed;
+  }
+
+  private boolean $nullAllowed;
+
+  /*</property>*/
 
 
 
@@ -102,6 +116,19 @@ public abstract class AbstractLockedBigSet extends AbstractLockedSet
     return false;
   }
   */
+
+  /**
+   * Overridden to use {@link #getBigSize()} instead of {@link #size()}.
+   */
+  public boolean equals(Object o) {
+    return (o != null) &&
+           (o instanceof BigSet) &&
+           getBigSize().equals(((BigSet)o).getBigSize()) &&
+           containsAll((BigSet)o) &&
+           ((BigSet)o).containsAll(this);
+  }
+
+  // no need to override hashCode()
 
   public final boolean containsAll(Collection c) {
     return Collections.forAll(c,

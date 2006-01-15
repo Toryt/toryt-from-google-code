@@ -1,6 +1,8 @@
 package org.toryt.util_I.collections;
 
 
+import java.util.Iterator;
+import java.util.Set;
 
 
 /**
@@ -26,5 +28,25 @@ public abstract class AbstractLockedSet
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /* </section> */
+
+
+
+  public boolean equals(Object o) {
+    return (o != null) &&
+           (o instanceof Set) &&
+           (size() == ((Set)o).size()) &&
+           containsAll((Set)o) &&
+           ((Set)o).containsAll(this);
+  }
+
+  public int hashCode() {
+    int acc = 0;
+    Iterator iter = iterator();
+    while (iter.hasNext()) {
+      Object o = iter.next();
+      acc += (o == null) ? 0 : o.hashCode();
+    }
+    return acc;
+  }
 
 }

@@ -3,9 +3,8 @@ package org.toryt.util_I.collections;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
-
-import org.toryt.patterns_I.Collections;
 
 
 /**
@@ -14,7 +13,8 @@ import org.toryt.patterns_I.Collections;
  *
  * @author Jan Dockx
  */
-public class SetBackedTypedSet extends SetBackedNoNullSet implements TypedSet {
+public class SetBackedTypedSet extends AbstractCollectionBackedTypedCollection
+    implements TypedSet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -33,10 +33,10 @@ public class SetBackedTypedSet extends SetBackedNoNullSet implements TypedSet {
    * @pre backingSet != null;
    * @pre elementType != null;
    */
-  public SetBackedTypedSet(Class elementType, Set backingSet) {
-    super(backingSet);
-    assert elementType != null;
-    $elementType = elementType;
+  public SetBackedTypedSet(Class elementType, Set backingSet, boolean nullAllowed) {
+    super(elementType, nullAllowed);
+    assert backingSet != null;
+    $backingSet = backingSet;
   }
 
   /**
@@ -44,49 +44,34 @@ public class SetBackedTypedSet extends SetBackedNoNullSet implements TypedSet {
    *
    * @pre elementType != null;
    */
-  public SetBackedTypedSet(Class elementType) {
-    this(elementType, new HashSet());
+  public SetBackedTypedSet(Class elementType, boolean nullAllowed) {
+    this(elementType, new HashSet(), nullAllowed);
   }
 
 
 
-  /* <property name="element type"> */
+  /* <property name="backing set"> */
   //------------------------------------------------------------------
 
-  public final Class getElementType() {
-    return $elementType;
+  protected final Set getBackingSet() {
+    return $backingSet;
+  }
+
+  protected final Collection getBackingCollection() {
+    return $backingSet;
   }
 
   /**
-   * @invar $elementType != null;
+   * @invar $backingSet != null;
    */
-  private Class $elementType;
+  private Set $backingSet;
 
   /*</property>*/
 
 
 
-  /* <section name="Modifying Operations"> */
-  //------------------------------------------------------------------
-
-  public boolean add(Object o) throws ClassCastException {
-    if (! getElementType().isInstance(o)) {
-      throw new ClassCastException("Only elements of type " +
-                                    getElementType() +
-                                    " allowed (" + o.getClass() + ").");
-    }
-    return super.add(o);
+  public final Iterator iterator() {
+    return getBackingCollection().iterator();
   }
-
-  public boolean addAll(Collection c) throws ClassCastException {
-    if ((c != null) && ! Collections.instanceOf(c, getElementType())) {
-      throw new ClassCastException("Only elements of type " +
-                                    getElementType() +
-                                    " allowed.");
-    }
-    return super.addAll(c);
-  }
-
-  /*</section>*/
 
 }

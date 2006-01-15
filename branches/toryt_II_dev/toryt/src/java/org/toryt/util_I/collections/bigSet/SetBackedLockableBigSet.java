@@ -19,7 +19,8 @@ import org.toryt.util_I.collections.TypedSet;
  *
  * @protected-invar TypedSet.isAssignableFrom(getBackingSet());
  */
-public class SetBackedLockableBigSet extends SetBackedLockableSet implements LockableBigSet {
+public class SetBackedLockableBigSet extends SetBackedLockableSet
+    implements LockableBigSet {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -47,16 +48,20 @@ public class SetBackedLockableBigSet extends SetBackedLockableSet implements Loc
    *
    * @pre elementType != null;
    */
-  public SetBackedLockableBigSet(Class elementType) {
-    super(new SetBackedTypedSet(elementType));
+  public SetBackedLockableBigSet(Class elementType, boolean nullAllowed) {
+    super(new SetBackedTypedSet(elementType, nullAllowed));
   }
 
   public final BigInteger getBigSize() {
     return BigInteger.valueOf(size());
   }
 
-  public Class getElementType() {
+  public final Class getElementType() {
     return ((TypedSet)getBackingSet()).getElementType();
+  }
+
+  public final boolean isNullAllowed() {
+    return ((TypedSet)getBackingSet()).isNullAllowed();
   }
 
 }

@@ -44,20 +44,23 @@ public class ProductBigSet extends AbstractComponentBigSet {
    * @pre (forall int i; (i >= 0) && (i < components.length);
    *        (components[i] != null) ? components[i].isLocked());
    * @pre (forall int i; (i >= 0) && (i < components.length);
-   *        (components[i] != null) ? 
+   *        (components[i] != null) ?
    *          getElementType().getComponentType().
    *            isAssignableFrom(components[i].getElementType()));
+   * @pre (! nullAllowed) ?
+   *        (forall int i; (i >= 0) && (i < components.length);
+   *          (components[i] != null) ? (! components[i].contains(null)));
    * @pre elementType.getComponentType() != null;
    * @post Collections.containsAll(components, new.getComponents());
    */
-  public ProductBigSet(Class elementType, LockableBigSet[] components) {
-    super(elementType, calculateSize(components), components);
+  public ProductBigSet(Class elementType, boolean nullAllowed, LockableBigSet[] components) {
+    super(elementType, nullAllowed, calculateSize(components), components);
     assert elementType.getComponentType() != null;
     assert Collections.forAll(components,
                               new Assertion() {
 
                                     public boolean isTrueFor(Object o) {
-                                      return (o != null) ? 
+                                      return (o != null) ?
                                                getElementType().getComponentType().
                                                   isAssignableFrom(((LockableBigSet)o).
                                                                     getElementType()) :
@@ -85,11 +88,11 @@ public class ProductBigSet extends AbstractComponentBigSet {
   public final BigInteger getBigSize();
    */
 
-  public final boolean contains(final Object o) {
+  public final boolean contains(final Object o) throws ClassCastException {
     if (o == null) {
       return false;
     }
-    Object[] array = (Object[])o;
+    Object[] array = (Object[])o; // ClassCastException
     LockableBigSet[] components = getComponents();
     if (array.length != components.length) {
       return false;
@@ -160,7 +163,7 @@ public class ProductBigSet extends AbstractComponentBigSet {
                                     public boolean isTrueFor(Object o) {
                                       return o != null;
                                     }
-                                    
+
                                   });
         int i = dim - 1;
         boolean canProceed = false;
@@ -192,6 +195,7 @@ public class ProductBigSet extends AbstractComponentBigSet {
 
       public final boolean hasNext() {
         return $next != null;
+WRONG: NEXT CAN BE NULL
       }
 
       public final Object next() {

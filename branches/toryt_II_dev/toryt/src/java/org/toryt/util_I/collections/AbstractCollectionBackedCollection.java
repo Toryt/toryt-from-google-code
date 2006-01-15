@@ -56,6 +56,14 @@ public abstract class AbstractCollectionBackedCollection
     return getBackingCollection().toArray(a);
   }
 
+  public final boolean equals(Object o) {
+    return getBackingCollection().equals(o);
+  }
+
+  public final int hashCode() {
+    return getBackingCollection().hashCode();
+  }
+
   /*</section>*/
 
 }

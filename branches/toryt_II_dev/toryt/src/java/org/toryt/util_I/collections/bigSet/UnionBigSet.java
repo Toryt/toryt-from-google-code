@@ -53,6 +53,9 @@ public class UnionBigSet extends AbstractComponentBigSet {
    *        (components[i] != null) ? components[i].isLocked());
    * @pre (forall int i; (i >= 0) && (i < components.length);
    *        (components[i] != null) ? getElementType().isAssignableFrom(components[i].getElementType()));
+   * @pre (! nullAllowed) ?
+   *        (forall int i; (i >= 0) && (i < components.length);
+   *          (components[i] != null) ? (! components[i].contains(null)));
    * @pre (forall int i; (i >= 0) && (i < components.length);
    *        (forall int j; (j >= 0) && (j < components.length) && (j != i);
    *          (components[i] != null) && (components[j] != null) ?
@@ -62,8 +65,8 @@ public class UnionBigSet extends AbstractComponentBigSet {
    *      because too expensive)
    * @post Collections.containsAll(components, new.getComponents());
    */
-  public UnionBigSet(Class elementType, LockableBigSet[] components) {
-    super(elementType, calculateSize(components), components);
+  public UnionBigSet(Class elementType, boolean nullAllowed, LockableBigSet[] components) {
+    super(elementType, nullAllowed, calculateSize(components), components);
     assert Collections.forAll(components,
                               new Assertion() {
 

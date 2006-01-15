@@ -2,6 +2,8 @@ package org.toryt.util_I.collections;
 
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 
 
@@ -50,6 +52,24 @@ public abstract class AbstractLockedList extends AbstractLockedCollection
 
   /*</section>*/
 
+
+  public boolean equals(Object o) {
+    return (o != null) &&
+           (o instanceof List) &&
+           (size() == ((List)o).size()) &&
+           containsAll((List)o) &&
+           ((List)o).containsAll(this);
+  }
+
+  public int hashCode() {
+    int hashCode = 1;
+    Iterator i = iterator();
+    while (i.hasNext()) {
+        Object obj = i.next();
+        hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
+    }
+    return hashCode;
+  }
 
   public abstract class AbstractLockedListIterator
       extends AbstractLockedCollectionIterator

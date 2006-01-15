@@ -6,7 +6,8 @@ import java.util.Collection;
 
 /**
  * <p>Collection that only allows elements of type
- *   {@link #getElementType()}.</p>
+ *   {@link #getElementType()}, and nothing else. Can
+ *   be configured to allow <code>null</code> or not.</p>
  *
  * @author Jan Dockx
  *
@@ -16,7 +17,7 @@ import java.util.Collection;
  *
  * @note When moving to Java 5, replace this with a generics.
  */
-public interface TypedCollection extends NoNullCollection {
+public interface TypedCollection {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -40,17 +41,30 @@ public interface TypedCollection extends NoNullCollection {
   Class getElementType();
 
   /**
+   * Is <code>null</code> allowed as element in this collection?
+   *
+   * @basic
+   */
+  boolean isNullAllowed();
+
+  /**
+   * @post   ((! isNullAllowed()) && (o == null)) ? false;
    * @post   ! getElementType().isInstance(o) ? false;
+   * @throws NullPointerException
+   *         (! isNullAllowed()) && (o == null);
    * @throws ClassCastException
    *         ! getElementType().isInstance(o);
    */
-  boolean add(Object o) throws ClassCastException;
+  boolean add(Object o) throws NullPointerException, ClassCastException;
 
   /**
+   * @post   ((! isNullAllowed()) && c.contains(null)) ? false;
    * @post   ((c != null) && ! cC:instanceOf(c, getElementType())) ? false;
+   * @throws NullPointerException
+   *         (! isNullAllowed()) && c.contains(null);
    * @throws ClassCastException
    *         (c != null) && ! cC:instanceOf(this, getElementType());
    */
-  boolean addAll(Collection c) throws ClassCastException;
+  boolean addAll(Collection c) throws NullPointerException, ClassCastException;
 
 }
