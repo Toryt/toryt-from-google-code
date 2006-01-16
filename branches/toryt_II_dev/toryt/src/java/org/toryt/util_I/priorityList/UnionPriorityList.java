@@ -67,13 +67,11 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
     super(priorityElementType, calculateCardinality(components), components);
     assert Collections.forAll(components,
                               new Assertion() {
-
                                     public boolean isTrueFor(Object o) {
                                       return getPriorityElementType().
                                               isAssignableFrom(((PriorityList)o).
                                                                getPriorityElementType());
                                     }
-
                                   });
     $size = calculateSize(components);
   }
@@ -95,8 +93,6 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
     return result;
   }
 
-
-
   /**
    * @return (sum int i; (i >=0 ) && (i < getComponents().length);
    *            getComponents()[i].getCardinality());
@@ -107,22 +103,18 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
   public final boolean contains(final Object o) {
     return Collections.exists(getComponents(),
                               new Assertion() {
-
                                     public boolean isTrueFor(Object s) {
                                       return ((PriorityList)s).contains(o);
                                     }
-
                                   });
   }
 
   public final boolean containsPriorityElement(final Object o) {
     return Collections.exists(getComponents(),
                               new Assertion() {
-
                                     public boolean isTrueFor(Object s) {
                                       return ((PriorityList)s).containsPriorityElement(o);
                                     }
-
                                   });
   }
 
@@ -133,14 +125,12 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
   public final boolean isEmpty() {
     return Collections.forAll(getComponents(),
                               new Assertion() {
-
                                     public boolean isTrueFor(Object o) {
                                       return ((PriorityList)o).isEmpty();
                                     }
-
                                   });
   }
-  
+
   public final int size() {
     return $size;
   }
@@ -149,17 +139,17 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
    * @invar $size >= 0;
    */
   private final int $size;
-  
+
   private class UnionListIterator extends AbstractLockedListIterator {
 
     public UnionListIterator(int index) {
       initIterators(index);
     }
-    
+
     private final PriorityList[] $components = getComponents();
 
     private final ListIterator[] $iterators = new ListIterator[$components.length];
-    
+
     private void initIterators(int index) {
       for (int i = 0; i < $components.length; i++) {
         $iterators[i] = $components[i].listIterator(index);
@@ -205,14 +195,14 @@ CHANGE UnionBigSet to accept nulls in components !!!
 
     public void set(Object o) {
       // TODO Auto-generated method stub
-      
+
     }
 
     public void add(Object o) {
       // TODO Auto-generated method stub
-      
+
     }
-    
+
   }
 
   public List subList(int fromIndex, int toIndex) {

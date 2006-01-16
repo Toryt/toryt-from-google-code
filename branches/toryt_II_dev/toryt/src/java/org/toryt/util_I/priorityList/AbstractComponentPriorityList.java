@@ -1,9 +1,7 @@
 package org.toryt.util_I.priorityList;
 
 
-import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.Iterator;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.toryt.patterns_I.Assertion;
@@ -86,34 +84,5 @@ public abstract class AbstractComponentPriorityList extends AbstractLockedPriori
   private final PriorityList[] $components;
 
   /*</property>*/
-
-  /**
-   * @deprecated
-   */
-  public final Object[] toArray() {
-    return toArray(new Object[size()]);
-  }
-
-  /**
-   * @deprecated
-   */
-  public final Object[] toArray(Object[] a) {
-    int size = size();
-    Object[] result;
-    if (a.length >= size) {
-      result = a;
-      result[size] = null;
-    }
-    else {
-      result = (Object[])Array.newInstance(a.getClass().getComponentType(), size);
-    }
-    Iterator iter = iterator();
-    int i = 0;
-    while (iter.hasNext()) {
-      result[i] = iter.next();
-      i++;
-    }
-    return result;
-  }
 
 }
