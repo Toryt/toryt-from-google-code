@@ -1,0 +1,1569 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Java</title>
+<meta name="generator" content="BBEdit 7.1.1" />
+<!-- PeopleWare kleuren
+#1A6038
+#6A9379
+#CAD7CD
+-->
+<style type="text/css">
+body {
+	font-size: 11px;
+	text-align: justify;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+div.betreft {
+	background-color: #1A6038;
+	color: #FFFFFF;
+	font-size: 1.25em;
+	font-style: italic;
+	text-align: right;
+	margin-right: 3em;
+	margin-left: 3em;
+	padding-left: 5em;
+}
+span.inlineTitle {
+	font-weight: bold;
+	margin-right: 1em;
+}
+h1 {
+	font-size: 2em;
+	font-weight: bold;
+	background-color: #6A9379;
+	color: #FFFFFF;
+	padding: 0.25em;
+	margin-top: 2em;
+	margin-right: 0em;
+	margin-bottom: 0.5em;
+	margin-left: 0em;
+}
+h2 {
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #6A9379;
+	padding-top: 0.5em;
+	padding-right: 0em;
+	padding-bottom: 0em;
+	padding-left: 0em;
+	margin-top: 1.2em;
+	margin-bottom: 0.2em;
+}
+span.peopleware {
+	color: #6A9379;
+	font-weight: bold;
+}
+span.peopleware span.people {
+	color: #1A6038;
+}
+p {
+	padding: 0px;
+	margin-top: 0.5px;
+	margin-right: 0px;
+	margin-bottom: 0.75em;
+	margin-left: 0px;
+}
+.left, .right {
+	margin-bottom: 0.5em;
+	margin-top: 0.3em;
+	border: none;
+	display: block;
+	padding: 0px;
+}
+.left {
+	margin-left: 0em;
+	margin-right: 1em;
+	float: left;
+}
+.right {
+	margin-right: 0em;
+	margin-left: 1em;
+	float: right;
+}
+dfn, acronym {
+	font-variant: normal;
+	color: #0D321D;
+	background-color: #D8E6DB;
+}
+dfn {
+	font-style: italic;
+	padding-right: 0.5em;
+	padding-left: 0.5em;
+	margin-left: 0.5 em;
+	margin-right: 0.5 em;
+}
+acronym {
+	font-weight: bold;
+}
+.NOTE {
+	color: #FF0000;
+	background-color: #FFFF00;
+}
+</style>
+<style type="text/css">
+<!--
+table td.exampleCell {
+	font-family: "Courier New", Courier, mono;
+	font-size: 10px;
+	background-color: #FFFF00;
+	text-align: center;
+	vertical-align: middle;
+	width: 2em;
+}
+-->
+</style>
+</head>
+<body>
+<div class="betreft"><span class="inlineTitle">Concerning:</span> Algorithm for combination of priority lists</div>
+<h1>Problem Statement</h1>
+<p>Given are a number of lists (<code>n</code>) that contain objects in descending order of priority. The lists not necessarily
+  have the same lenght. The lenght of list <code>i</code> (<code>i = 0..n-1</code>) is called <code>l<sub>i</sub></code>. The actual contents of the cells is not important, we will talk about the cells
+  as their position. In a priority list <code>i</code>, cell <code>i[0]</code> has the highest priority, and cell <code>i[l<sub>i</sub>&nbsp;-&nbsp;1] </code>has the lowest priority.</p>
+<p>In this text, we will use an example with <code>n = 4</code>. </p>
+<table>
+  <tr>
+    <th>i</th>
+    <th>0</th>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+  </tr>
+  <tr>
+    <th>l<sub>i</sub></th>
+    <td>4</td>
+    <td>2</td>
+    <td>8</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">0</td>
+    <td class="exampleCell">0</td>
+    <td class="exampleCell">0</td>
+    <td class="exampleCell">0</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">1</td>
+    <td class="exampleCell">1</td>
+    <td class="exampleCell">1</td>
+    <td class="exampleCell">1</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">2</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">2</td>
+    <td class="exampleCell">2</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">3</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">3</td>
+    <td class="exampleCell">3</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">4</td>
+    <td class="exampleCell">4</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">5</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">6</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">7</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<p><strong>The task at hand is to create a list of combinations of entries of every of the <code>n</code> lists which itself is a priority list.</strong></p>
+<h1>Combination Priority List</h1>
+<p>The entries in the resulting combination
+  priority list <code>r(i)<sub>i=0..n-1</sub></code> are <code>n</code>-tuples, <code>r(i)<sub>i=0..n-1</sub>[j] = (i[k<sub>i</sub><sup>j</sup>])<sub>i=0..n-1</sub></code>, where <code>k<sub>i</sub></code> is an index in list <code>i</code>, so that <code>0 &le; k<sub>i</sub> &lt; l<sub>i</sub></code>. Since the precise contents of the cells is not important, we will talk about
+  the tuples as the combinations of indices <code>k<sub>i</sub></code>, thus we will say that  <code>r(i)<sub>i=0..n-1</sub>[j] = (k<sub>i</sub><sup>j</sup>)<sub>i=0..n-1</sub></code>.</p>
+<p>E.g., <code>(2, 0, 5, 2)</code> is a tuple from the combination list of our example,
+    combining the third element of the first list, with the first element of
+  the second list, with the sixth element of the third list and the third element
+    of the fourth list.</p>
+<h2>Length of the Combination Priority List</h2>
+<p>The combination priority list contains all possible combinations of the <code>n</code> priority lists, thus the length of the combination priority list is the product
+  of the length of the priority lists <code>&Pi;<sub>i = 0..n-1</sub>l<sub>i</sub></code>. In our example, the length of the resulting priority list is <code>4.2.8.5 = 320</code>. Thus the index <code>j</code> above is j = 0..<code>&Pi;<sub>i 0..&nbsp;n-1</sub>l<sub>i</sub></code>.</p>
+<p>The reader should be aware of the fact that the length of the resulting combination
+  priority lists can grow large very quickly. E.g., if we combine 10 priority
+  lists with 80 entries each, the length of the resulting combination priority
+  list is 10<sup>80</sup>, or 100&nbsp;000 000&nbsp;000&nbsp;000 000&nbsp;000&nbsp;000 000&nbsp;000&nbsp;000 000&nbsp;000&nbsp;000 000&nbsp;000&nbsp;000 000&nbsp;000&nbsp;000 000&nbsp;000&nbsp;000 000&nbsp;000&nbsp;000&nbsp;000. The total number of atoms in the universe is <a href="http://www.sunspot.noao.edu/sunspot/pr/answerbook/universe.html" target="extern">estimated</a> to be between 4.10<sup>78</sup> and 6.10<sup>79</sup>. This means that for such numbers a brute-force attack, that generates all comninations
+  and then sorts them, is not feasible. We need an algorithm that either calculates <code>(k<sub>i</sub><sup>j</sup>)<sub>i=0..n-1</sub></code>given <code>j</code>, or an algorithm that can generate the next and previous entry in the resulting
+  combination priority list using next and previous functionality to traverse
+  through the original priority lists.</p>
+<h1>Combination Priority List Order &amp; Priority Buckets</h1>
+<p>The combination priority list needs to be ordered by descending priority too,
+  just like the original priority lists. The priority (i.e., the position, <code>j</code>)
+  of a tuple in the combination priority list obviously is a combination of the
+  priorities
+  (i.e., their positions, <code>k<sub>i</sub><sup>j</sup></code>) of the elements gathered in the tuple in their original
+  list. E.g., it should be clear that the tuple <code>(0,&nbsp;0,&nbsp;0,&nbsp;0)</code> has the highest priority in our example,
+  and that the tuple <code>(3,&nbsp;1,&nbsp;7,&nbsp;4)</code> has the lowest priority.</p>
+<p>The priority of <code>(1,&nbsp;0,&nbsp;0,&nbsp;0)</code> is lower than the priority of <code>(0,&nbsp;0,&nbsp;0,&nbsp;0)</code>, and higher than the priority of <code>(2,&nbsp;0,&nbsp;0,&nbsp;0)</code>  or <code>(1,&nbsp;0,&nbsp;1,&nbsp;0)</code>. But it is not immediately clear what the order is between <code>(2,&nbsp;1,&nbsp;4,&nbsp;2)</code>  and <code>(3,&nbsp;1,&nbsp;1,&nbsp;4)</code>. There
+  is no reason to consider the priority of <code>(1,&nbsp;0,&nbsp;0,&nbsp;0)</code> higher or lower than the priority of
+	<code>(0,&nbsp;1,&nbsp;0,&nbsp;0)</code>, <code>(0,&nbsp;0,&nbsp;1,&nbsp;0)</code> or <code>(0,&nbsp;0,&nbsp;0,&nbsp;1)</code>. How these 4 tuples are ordered in the resulting combination priority list is
+	of no importance (although a definite order is needed for the resulting combination
+	to be a list). This means that we see some kind of <em>partial order</em>, but not immediately a <em>total order</em>, what is what we need for the position in a priority list.<br />
+	To make abstraction
+of this indefiniteness, we will talk about <dfn>priority buckets</dfn> for the resulting combination priority list. <code>(1,&nbsp;0,&nbsp;0,&nbsp;0)</code>, <code>(0,&nbsp;1,&nbsp;0,&nbsp;0)</code>, <code>(0,&nbsp;0,&nbsp;1,&nbsp;0)</code> and <code>(0,&nbsp;0,&nbsp;0,&nbsp;1)</code> are all in the same priority bucket, although they are in different positions <code>j</code> in the final resulting combination priority list. All the elements in a bucket
+will come before or after the elements of other buckets in the final list. This
+should present a total order. We present as definition of this <dfn>combined priority</dfn> the sum of the elements gathered in the tuple.</p>
+<p><code>P(r(i)<sub>i=0..n-1</sub>[j])</code> = &Sigma;<sub>i=0..n-1</sub>k<sub>i</sub><sup>j</sup></code></p>
+<p>A priority bucket is the set of all tuples that share the same combined priority.
+  A priority bucket cannot be empty.</p>
+<p><code>B<sub>P</sub> = {r(i)<sub>i=0..n-1</sub>[j] | P(r(i)<sub>i=0..n-1</sub>[j]) = P(B)}</code></p>
+<p>A priority bucket thus contains all permutations of all its elements (all permutations
+  of tuples have the same sum, the same combined priority) that are possible
+  with the given priority lists. A tuple with <code>n</code> elements has <code>n!</code> permutations, but not all permutations are possible. But there can be different
+  combinations of elements of the original lists that have the same combined
+  priority.<br />
+  E.g.,  <code>(1,&nbsp;1,&nbsp;1,&nbsp;1)</code>,  <code>(2,&nbsp;0,&nbsp;2,&nbsp;0)</code>,  <code>(1,&nbsp;0,&nbsp;3,&nbsp;0)</code>,  <code>(1,&nbsp;1,&nbsp;2,&nbsp;0)</code> and  <code>(0,&nbsp;0,&nbsp;0,&nbsp;4)</code> and their permutations all have combined priority <code>4</code>. Note that the second list has only 2 entries, and thus that permutations like <code>(2,&nbsp;2,&nbsp;0,&nbsp;0)</code> , <code>(0,&nbsp;3,&nbsp;1,&nbsp;0)</code> , <code>(0,&nbsp;2,&nbsp;2,&nbsp;0)</code> and <code>(0,&nbsp;4,&nbsp;0,&nbsp;0)</code> are impossible. Note also that finding all possible combinations of integers
+  that have a given sum, even without these limitations, is considered a very
+  hard problem [<span class="NOTE">ADD REFERENCE TO KNUTH</span>].</p>
+<h2>Number of Priority Buckets in a Combination Priority List</h2>
+<p>We can however find out easily how many buckets there are in the combination
+  priority list.</p>
+<p>A priority bucket is identified by the combined priority of
+  its elements, i.e., the sum of the elements of the tuples.</p>
+<p>The bucket with
+  the highest priority contains tuple <code>(0<sub>i</sub>)<sub>i=0..n-1</sub></code>, and <code>P((0<sub>i</sub>)<sub>i=0..n-1</sub>) = 0</code>; this is bucket  <code>B<sub>0</sub></code>. The bucket with the lowest priority contains  tuple <code>((l<sub>i</sub>-1)<sub>i</sub>)<sub>i=0..n-1</sub></code>, and <code>P(((l<sub>i</sub>-1)<sub>i</sub>)<sub>i=0..n-1</sub>)
+  = &Sigma;<sub>i=0..n-1</sub>(l<sub>i</sub>-1); this is bucket B<sub>&Sigma;<sub>i=0..n-1</sub>(l<sub>i</sub>-1)</sub>. In the rest of the text we will refer to this sum as <code>S - 1</code>.</p>
+<p><code>S = (&Sigma;<sub>i=0..n-1</sub>(l<sub>i</sub>-1)) + 1</code></p>
+<p>Furthermore, if there is a bucket <code>B<sub>P</sub></code>, there is also a bucket <code>B<sub>P+1</sub></code>, if
+  <code>P&nbsp;&lt;&nbsp;S&nbsp;-&nbsp;1</code>: a bucket <code>B<sub>P</sub></code> contains at least 1 tuple
+  <code>(k<sub>i</sub><sup>a</sup>)<sub>i=0..n-1</sub></code>, with
+  <code>P((k<sub>i</sub><sup>a</sup>)<sub>i=0..n-1</sub>) = P</code>.
+Then <code>&exist; u &isin; 0..n-1</sub>, (k<sub>u</sub><sup>b</sup> = k<sub>u</sub><sup>a</sup> + 1) &and;
+(&forall; v &isin; 0..n-1, v &ne; u: k<sub>u</sub><sup>b</sup> = k<sub>u</sub><sup>a</sup>): (k<sub>i</sub><sup>b</sup>)<sub>i=0..n-1</sub>= (k<sub>i</sub><sup>a</sup>)<sub>i=0..n-1</sub> + 1 = P + 1, since P&nbsp;&lt;&nbsp;S&nbsp;-&nbsp;1</code>, which means there is at least 1 list that has one more element
+<code>k<sub>u</sub><sup>b</sup> = k<sub>u</sub><sup>a</sup> + 1</code>.</p>
+<p>Thus, the number of buckets in a combination priority list is <code>S</code>. The bucket with the lowest priority is <code>B<sub>S-1</sub></code>. In the example, <code>S&nbsp;=&nbsp;16</code>.</p>
+<h2>Example Priority Buckets</h2>
+<p>Below are the priority buckets generated by the example lists.</p>
+<table>
+  <tr>
+    <th><code>P</code></th>
+    <th>0</th>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+    <th>7</th>
+    <th>8</th>
+    <th>9</th>
+    <th>10</th>
+    <th>11</th>
+    <th>12</th>
+    <th>13</th>
+    <th>14</th>
+    <th>15</th>
+  </tr>
+  <tr>
+    <th><code>#B<sub>P</sub></code></th>
+    <td>1</td>
+    <td>4</td>
+    <td>9</td>
+    <td>16</td>
+    <td>24</td>
+    <td>31</td>
+    <td>36</td>
+    <td>39</td>
+    <td>39</td>
+    <td>36</td>
+    <td>31</td>
+    <td>24</td>
+    <td>16</td>
+    <td>9</td>
+    <td>4</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <th><code>&Sigma;#B<sub>P</sub></code></th>
+    <td>1</td>
+    <td>5</td>
+    <td>14</td>
+    <td>30</td>
+    <td>54</td>
+    <td>85</td>
+    <td>121</td>
+    <td>160</td>
+    <td>199</td>
+    <td>235</td>
+    <td>266</td>
+    <td>290</td>
+    <td>306</td>
+    <td>315</td>
+    <td>319</td>
+    <td>320</td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td class="exampleCell">(0,0,0,0)</td>
+    <td class="exampleCell">(0,0,0,1)</td>
+    <td class="exampleCell">(0,0,1,1)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(3,1,6,3)</td>
+    <td class="exampleCell">(2,1,7,4)</td>
+    <td class="exampleCell">(3,1,7,4)</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(0,0,1,0)</td>
+    <td class="exampleCell">(0,1,0,1)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(3,0,7,3)</td>
+    <td class="exampleCell">(3,0,7,4)</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(0,1,0,0)</td>
+    <td class="exampleCell">(0,1,1,0)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(3,0,6,4)</td>
+    <td class="exampleCell">(3,1,6,4)</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(1,0,0,0)</td>
+    <td class="exampleCell">(0,0,0,2)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(3,1,7,2)</td>
+    <td class="exampleCell">(3,1,7,3)</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(0,0,2,0)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(3,1,5,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(1,0,0,1)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(2,1,7,3)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(1,0,1,0)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(2,1,6,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(1,1,0,0)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(2,0,7,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(2,0,0,0)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(1,1,7,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>11</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>12</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>13</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>14</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>15</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(3,0,0,0)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(0,1,7,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>16</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>17</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>18</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>19</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>20</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>21</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(3,0,0,1)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(0,1,7,3)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>22</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(3,0,1,0)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(0,1,6,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>23</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(3,1,0,0)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(0,0,7,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>24</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>26</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>27</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>28</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>29</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>30</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(3,1,1,0)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(0,0,6,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>31</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>32</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>33</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>34</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>35</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(3,1,2,0)</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">(0,0,5,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>36</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>37</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td class="exampleCell">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>38</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(3,1,3,0)</td>
+    <td class="exampleCell">(0,0,4,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>Note that the size of the buckets is symmetric. <span class="NOTE">This is not yet proven, but hypothesized.</span></p>
+<h1>Currying</h1>
+<p>To make this problem tractable, we will position that combining priority lists
+  is an operation that can be curryed, meaning that we can combine first 2 of
+  the original priority lists, and than combine that result with the next priority
+  list, and so on, and that the result is the same as combining all original
+  priority lists at once.</p>
+<p><code>r(i)<sub>i=0..n-1</sub>  = r(0,1,&hellip;,n-1) = r(0,r(i)<sub>i=1..n-1</sub>)  = r(0,r(1,r(i)<sub>i=2..n-1</sub>)) = &hellip; = r(0,r(1,&hellip;,r(n-2,n-1)&hellip;))</code></p>
+<p>For the example, this means that <code>r(0,1,2,3) = r(0,r(1,r(2,3)))</code>.</p>
+<p>This is cannot be proven here, since we have not yet defined the resulting combination
+  priority list completely. We state this, and then we will try do define what
+  it means to make the combination priority list of 2 priority lists. We define
+  the combination of more than 2 priority lists according to the currying definition
+  above.</p>
+<h1>Combination of 2 Priority Lists</h1>
+<p>To combine 2 priority lists, we will use an example &alpha; that is slightly different (l<sub>0</sub> &gt; l<sub>1</sub>):</p>
+<table>
+  <tr>
+    <th>i</th>
+    <th>0</th>
+    <th>1</th>
+  </tr>
+  <tr>
+    <th>l<sub>i</sub></th>
+    <td>8</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">0</td>
+    <td class="exampleCell">0</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">1</td>
+    <td class="exampleCell">1</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">2</td>
+    <td class="exampleCell">2</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">3</td>
+    <td class="exampleCell">3</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">4</td>
+    <td class="exampleCell">4</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">5</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">6</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">7</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<p>The number of elements in the resulting combination priority list is <code>40</code> and <code>S&nbsp;=&nbsp;12</code>. </p>
+<p>The resulting buckets are:</p>
+<table>
+  <tr>
+    <th><code>P</code></th>
+    <th>0</th>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+    <th>7</th>
+    <th>8</th>
+    <th>9</th>
+    <th>10</th>
+    <th>11</th>
+  </tr>
+  <tr>
+    <th><code>#B<sub>P</sub></code></th>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>4</td>
+    <td>3</td>
+    <td>2</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <th><code>&Sigma;#B<sub>P</sub></code></th>
+    <td>1</td>
+    <td>3</td>
+    <td>6</td>
+    <td>10</td>
+    <td>15</td>
+    <td>20</td>
+    <td>25</td>
+    <td>30</td>
+    <td>34</td>
+    <td>37</td>
+    <td>39</td>
+    <td>40</td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td class="exampleCell">(0,0)</td>
+    <td class="exampleCell">(0,1)</td>
+    <td class="exampleCell">(0,2)</td>
+    <td class="exampleCell">(0,3)</td>
+    <td class="exampleCell">(0,4)</td>
+    <td class="exampleCell">(1,4)</td>
+    <td class="exampleCell">(2,4)</td>
+    <td class="exampleCell">(3,4)</td>
+    <td class="exampleCell">(4,4)</td>
+    <td class="exampleCell">(5,4)</td>
+    <td class="exampleCell">(6,4)</td>
+    <td class="exampleCell">(7,4)</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(1,0)</td>
+    <td class="exampleCell">(1,1)</td>
+    <td class="exampleCell">(1,2)</td>
+    <td class="exampleCell">(1,3)</td>
+    <td class="exampleCell">(2,3)</td>
+    <td class="exampleCell">(3,3)</td>
+    <td class="exampleCell">(4,3)</td>
+    <td class="exampleCell">(5,3)</td>
+    <td class="exampleCell">(6,3)</td>
+    <td class="exampleCell">(7,3)</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(2,0)</td>
+    <td class="exampleCell">(2,1)</td>
+    <td class="exampleCell">(2,2)</td>
+    <td class="exampleCell">(3,2)</td>
+    <td class="exampleCell">(4,2)</td>
+    <td class="exampleCell">(5,2)</td>
+    <td class="exampleCell">(6,2)</td>
+    <td class="exampleCell">(7,2)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(3,0)</td>
+    <td class="exampleCell">(3,1)</td>
+    <td class="exampleCell">(4,1)</td>
+    <td class="exampleCell">(5,1)</td>
+    <td class="exampleCell">(6,1)</td>
+    <td class="exampleCell">(7,1)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(4,0)</td>
+    <td class="exampleCell">(5,0)</td>
+    <td class="exampleCell">(6,0)</td>
+    <td class="exampleCell">(7,0)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<p>The example &beta; is the same, we just put list <code>0</code> at position <code>1</code>, and vice versa (l<sub>0</sub> &lt; l<sub>1</sub>).</p>
+<table>
+  <tr>
+    <th>i</th>
+    <th>0</th>
+    <th>1</th>
+  </tr>
+  <tr>
+    <th>l<sub>i</sub></th>
+    <td>5</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">0</td>
+    <td class="exampleCell">0</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">1</td>
+    <td class="exampleCell">1</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">2</td>
+    <td class="exampleCell">2</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">3</td>
+    <td class="exampleCell">3</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">4</td>
+    <td class="exampleCell">4</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">5</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">6</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">7</td>
+  </tr>
+</table>
+<p>Now, the resulting buckets are:</p>
+<table>
+  <tr>
+    <th><code>P</code></th>
+    <th>0</th>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+    <th>7</th>
+    <th>8</th>
+    <th>9</th>
+    <th>10</th>
+    <th>11</th>
+  </tr>
+  <tr>
+    <th><code>#B<sub>P</sub></code></th>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>4</td>
+    <td>3</td>
+    <td>2</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <th><code>&Sigma;#B<sub>P</sub></code></th>
+    <td>1</td>
+    <td>3</td>
+    <td>6</td>
+    <td>10</td>
+    <td>15</td>
+    <td>20</td>
+    <td>25</td>
+    <td>30</td>
+    <td>34</td>
+    <td>37</td>
+    <td>39</td>
+    <td>40</td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td class="exampleCell">(0,0)</td>
+    <td class="exampleCell">(0,1)</td>
+    <td class="exampleCell">(0,2)</td>
+    <td class="exampleCell">(0,3)</td>
+    <td class="exampleCell">(0,4)</td>
+    <td class="exampleCell">(0,5)</td>
+    <td class="exampleCell">(0,6)</td>
+    <td class="exampleCell">(0,7)</td>
+    <td class="exampleCell">(1,7)</td>
+    <td class="exampleCell">(2,7)</td>
+    <td class="exampleCell">(3,7)</td>
+    <td class="exampleCell">(4,7)</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(1,0)</td>
+    <td class="exampleCell">(1,1)</td>
+    <td class="exampleCell">(1,2)</td>
+    <td class="exampleCell">(1,3)</td>
+    <td class="exampleCell">(1,4)</td>
+    <td class="exampleCell">(1,5)</td>
+    <td class="exampleCell">(1,6)</td>
+    <td class="exampleCell">(2,6)</td>
+    <td class="exampleCell">(3,6)</td>
+    <td class="exampleCell">(4,6)</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(2,0)</td>
+    <td class="exampleCell">(2,1)</td>
+    <td class="exampleCell">(2,2)</td>
+    <td class="exampleCell">(2,3)</td>
+    <td class="exampleCell">(2,4)</td>
+    <td class="exampleCell">(2,5)</td>
+    <td class="exampleCell">(3,5)</td>
+    <td class="exampleCell">(4,5)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(3,0)</td>
+    <td class="exampleCell">(3,1)</td>
+    <td class="exampleCell">(3,2)</td>
+    <td class="exampleCell">(3,3)</td>
+    <td class="exampleCell">(3,4)</td>
+    <td class="exampleCell">(4,4)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(4,0)</td>
+    <td class="exampleCell">(4,1)</td>
+    <td class="exampleCell">(4,2)</td>
+    <td class="exampleCell">(4,3)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<p>In example &gamma;,  l<sub>0</sub> = l<sub>1</sub>:</p>
+<p>&nbsp;</p>
+<table>
+  <tr>
+    <th>i</th>
+    <th>0</th>
+    <th>1</th>
+  </tr>
+  <tr>
+    <th>l<sub>i</sub></th>
+    <td>5</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">0</td>
+    <td class="exampleCell">0</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">1</td>
+    <td class="exampleCell">1</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">2</td>
+    <td class="exampleCell">2</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">3</td>
+    <td class="exampleCell">3</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exampleCell">4</td>
+    <td class="exampleCell">4</td>
+  </tr>
+</table>
+<p>The total number of elements in the resulting combination priority list is <code>25</code>  and<code> S&nbsp;= </code>9. The resulting buckets are:</p>
+<table>
+  <tr>
+    <th><code>P</code></th>
+    <th>0</th>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+    <th>7</th>
+    <th>8</th>
+  </tr>
+  <tr>
+    <th><code>#B<sub>P</sub></code></th>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <th><code>&Sigma;#B<sub>P</sub></code></th>
+    <td>1</td>
+    <td>3</td>
+    <td>6</td>
+    <td>10</td>
+    <td>15</td>
+    <td>20</td>
+    <td>25</td>
+    <td>30</td>
+    <td>34</td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td class="exampleCell">(0,0)</td>
+    <td class="exampleCell">(0,1)</td>
+    <td class="exampleCell">(0,2)</td>
+    <td class="exampleCell">(0,3)</td>
+    <td class="exampleCell">(0,4)</td>
+    <td class="exampleCell">(1,4)</td>
+    <td class="exampleCell">(2,4)</td>
+    <td class="exampleCell">(3,4)</td>
+    <td class="exampleCell">(4,4)</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(1,0)</td>
+    <td class="exampleCell">(1,1)</td>
+    <td class="exampleCell">(1,2)</td>
+    <td class="exampleCell">(1,3)</td>
+    <td class="exampleCell">(2,3)</td>
+    <td class="exampleCell">(3,3)</td>
+    <td class="exampleCell">(4,3)</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(2,0)</td>
+    <td class="exampleCell">(2,1)</td>
+    <td class="exampleCell">(2,2)</td>
+    <td class="exampleCell">(3,2)</td>
+    <td class="exampleCell">(4,2)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(3,0)</td>
+    <td class="exampleCell">(3,1)</td>
+    <td class="exampleCell">(4,1)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="exampleCell">(4,0)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<h2>Conclusions</h2>
+<p>Note that, because we only combine 2 lists, if the bucket priority and 1 component
+  is given, the other component of the tuple is completely determined: <code>P = i<sub>0</sub>  + i<sub>1</sub></code>, and thus <code>i<sub>1</sub> = P - i<sub>0</sub></code> and <code>i<sub>0</sub> = P - i<sub>1</sub></code>.</p>
+<p>It should be clear from the examples that there are 3 different parts in the bucket
+  structure: on the left hand side, there is a part where <code>#B<sub>P</sub></code> grows by <code>1</code> each
+  step. This continues until as long as <code>P &lt; min(l<sub>0</sub>, l<sub>1</sub>)</code>. In this part, <code>#B<sub>P</sub> = P + 1</code>, with <code>t &isin 0..min(l<sub>0</sub>, l<sub>1</sub>)-1</code>, because:</p>
+<ul>
+  <li>the largest <code>i<sub>0</sub></code> possible in any of these buckets is <code>P</code>, since the smallest possible <code>i<sub>1</sub> = 0</code>., and there is an <code>i<sub>0</sub> = P</code>, because <code>P &lt; min(l<sub>0</sub>, l<sub>1</sub>)</code>;</li>
+  <li>the elements in the bucket are exactly <code>&forall; t &isin; 0..P: (t, P -t)</code>.</li>
+</ul>
+<p>Thus, in this part, <code>&Sigma;#B<sub>P</sub> = &Sigma;<sub>p=0..P</sub>(p + 1)</code>. Or still, <code>&Sigma;#B<sub>P</sub> = ((P + 1) + 1).((P + 1) / 2)</code>  (Gau&szlig;). Or better:</p>
+<p><code>&Sigma;#B<sub>P</sub> = (P + 2) (P + 1) / 2</code></p>
+<p>Thus, with the order proposed in the example, with j &lt; <code>&Sigma;#B<sub>min(l<sub>0</sub>, l<sub>1</sub>)-1</sub> = (min(l<sub>0</sub>, l<sub>1</sub>)+1) min(l<sub>0</sub>, l<sub>1</sub>) / 2</code>, we can easily find out in which bucket j must be sougth. It
+  is the bucket <code>P</code> for which <code>&Sigma;#B<sub>P-1</sub></code> &lt; j &lt; <code>&Sigma;#B<sub>P</sub></code> (where  <code>&Sigma;#B<sub>-1</sub> = 0</code> by definition). r[j] then is <code>(j - &Sigma;#B<sub>P-1</sub>, P - (j - &Sigma;#B<sub>P-1</sub>))</code>.</p>
+</body>
+</html>
