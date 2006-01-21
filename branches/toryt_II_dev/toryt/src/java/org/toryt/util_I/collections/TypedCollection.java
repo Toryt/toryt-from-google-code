@@ -17,7 +17,7 @@ import java.util.Collection;
  *
  * @note When moving to Java 5, replace this with a generics.
  */
-public interface TypedCollection {
+public interface TypedCollection extends Collection {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
