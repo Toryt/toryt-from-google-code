@@ -4,7 +4,7 @@ package org.toryt.util_I.collections.bigSet;
 import java.math.BigInteger;
 import java.util.Set;
 
-import org.toryt.util_I.collections.TypedSet;
+import org.toryt.util_I.collections.typed.TypedSet;
 
 
 /**

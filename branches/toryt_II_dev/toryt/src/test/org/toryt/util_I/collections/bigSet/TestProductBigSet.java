@@ -3,6 +3,9 @@ package org.toryt.util_I.collections.bigSet;
 import java.math.BigInteger;
 import java.util.Iterator;
 
+import org.toryt.util_I.collections.bigSet.algebra.ProductBigSet;
+import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
+
 import junit.framework.TestCase;
 
 
