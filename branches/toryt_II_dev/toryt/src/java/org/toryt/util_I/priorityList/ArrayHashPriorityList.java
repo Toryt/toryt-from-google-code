@@ -345,6 +345,14 @@ public class ArrayHashPriorityList implements PriorityList {
     return result;
   }
 
+  public final boolean equals(Object o) {
+    return $backingList.equals(o);
+  }
+
+  public final int hashCode() {
+    return $backingList.hashCode();
+  }
+
   /*</section>*/
 
 

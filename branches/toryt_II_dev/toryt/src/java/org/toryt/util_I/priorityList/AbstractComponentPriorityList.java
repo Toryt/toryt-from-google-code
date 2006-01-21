@@ -47,9 +47,9 @@ public abstract class AbstractComponentPriorityList extends AbstractLockedPriori
    *        components[i].isLocked());
    * @post Collections.containsAll(components, new.getComponents());
    */
-  public AbstractComponentPriorityList(Class priorityElementType, BigInteger bigSize,
+  public AbstractComponentPriorityList(Class priorityElementType, BigInteger cardinality,
                                        PriorityList[] components) {
-    super(priorityElementType, bigSize);
+    super(priorityElementType, cardinality);
     assert components != null;
     assert Collections.noNull(components);
     assert Collections.forAll(components,
