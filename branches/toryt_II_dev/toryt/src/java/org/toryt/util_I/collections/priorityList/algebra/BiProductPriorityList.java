@@ -278,18 +278,10 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
 
   /**
    * Find an equal <code>Object[]</code>.
-   * 
-   * @deprecated This method is very costly, as it
-   *             effectively creates buckets one after the
-   *             other
    */
   public final boolean containsPriorityElement(final Object o) {
-    return Collections.exists(this, new Assertion() {
-                                          public boolean isTrueFor(Object lbs) {
-                                            assert lbs != null;
-                                            return ((LockableBigSet)lbs).contains(o);
-                                          }
-                                        });
+    Object[] element = (Object[])o;
+    return $leftFactor.contains(element[0]) && $rightFactor.contains(element[1]);
   }
 
 }
