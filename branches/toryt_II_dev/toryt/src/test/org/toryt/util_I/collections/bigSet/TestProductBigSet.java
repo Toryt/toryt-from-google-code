@@ -15,7 +15,7 @@ public class TestProductBigSet extends TestCase {
   public void setUp() {
     SetBackedLockableBigSet[] components = new SetBackedLockableBigSet[3];
     for (int i = 0; i < 3; i++) {
-      components[i] = new SetBackedLockableBigSet(Integer.class);
+      components[i] = new SetBackedLockableBigSet(Integer.class, false);
       fillSet(components[i], (int)Math.pow(10, i));
     }
     $subject = new ProductBigSet(Integer[].class, components);
