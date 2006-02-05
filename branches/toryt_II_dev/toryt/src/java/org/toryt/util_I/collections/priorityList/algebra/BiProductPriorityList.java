@@ -2,6 +2,7 @@ package org.toryt.util_I.collections.priorityList.algebra;
 
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -115,7 +116,7 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
   public final int getBaseSize() {
     return $baseSize;
   }
-  
+
   private int $baseSize;
 
   public final boolean isEmpty() {
@@ -127,7 +128,7 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
       throw new IndexOutOfBoundsException();
     }
     int priority = index + $fromIndex;
-    int leftStartPriority = Math.min(0, priority - $rightFactor.size() + 1);
+    int leftStartPriority = Math.max(0, priority - $rightFactor.size() + 1);
     int nrOfCombinationsInBucket = getNrOfCombinationsInBucket(priority);
     LockableBigSet[] components = new LockableBigSet[nrOfCombinationsInBucket];
     for (int i = 0; i < nrOfCombinationsInBucket; i++) {
@@ -189,18 +190,18 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
 
   public Iterator priorityElementIterator() {
     return new AbstractLockedCollectionIterator() {
-            
+
                   Iterator $listIterator = iterator();
-      
+
                   /**
                    * @invar ($lbsIterator == null) || ($lbsIterator.hasNext());
                    */
                   Iterator $lbsIterator;
-                  
+
                   {
                     prepareNextLbsIterator();
                   }
-                  
+
                   private void prepareNextLbsIterator() {
                     $lbsIterator = null;
                     while (($lbsIterator == null) && $listIterator.hasNext()) {
@@ -210,11 +211,11 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
                       }
                     }
                   }
-      
+
                   public final boolean hasNext() {
                     return ($lbsIterator != null);
                   }
-            
+
                   public final Object next() {
                     Object result = $lbsIterator.next();
                     if (! $lbsIterator.hasNext()) {
@@ -222,13 +223,13 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
                     }
                     return result;
                   }
-            
+
                 };
   }
 
   /**
    * Contains an equal {@link LockableBigSet}.
-   * 
+   *
    * @deprecated This method is very costly, as it
    *             effectively creates buckets one after the
    *             other
@@ -244,7 +245,7 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
 
   /**
    * Find an equal {@link LockableBigSet}.
-   * 
+   *
    * @deprecated This method is very costly, as it
    *             effectively creates buckets one after the
    *             other
@@ -261,7 +262,7 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
 
   /**
    * Find an equal {@link LockableBigSet}.
-   * 
+   *
    * @deprecated This method is very costly, as it
    *             effectively creates buckets one after the
    *             other
@@ -282,6 +283,37 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
   public final boolean containsPriorityElement(final Object o) {
     Object[] element = (Object[])o;
     return $leftFactor.contains(element[0]) && $rightFactor.contains(element[1]);
+  }
+
+  public String priorityElementToString(Object element) {
+    Object[] e = (Object[])element;
+    // MUDO remove after development is finished
+    e = flatten(e).toArray();
+    // MUDO remove after development is finished
+    StringBuffer result = new StringBuffer("[");
+    for (int i = 0; i < e.length; i++) {
+      result.append(e[i]);
+      if (i < e.length - 1) {
+        result.append(", ");
+      }
+    }
+    result.append("]");
+    return result.toString();
+  }
+
+  // MUDO remove after development is finished
+  private List flatten(Object e) {
+    ArrayList result = new ArrayList();
+    if ((e == null) || (! e.getClass().isArray())) {
+      result.add(e);
+    }
+    else {
+      Object array[] = (Object[])e;
+      for (int i = 0; i < array.length; i++) {
+        result.addAll(flatten(array[i]));
+      }
+    }
+    return result;
   }
 
 }

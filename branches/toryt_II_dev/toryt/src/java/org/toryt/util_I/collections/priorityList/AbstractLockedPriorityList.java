@@ -164,4 +164,29 @@ public abstract class AbstractLockedPriorityList extends AbstractLockedList
     return result;
   }
 
+  public String toString() {
+    StringBuffer result = new StringBuffer();
+    ListIterator iter = listIterator();
+    while (iter.hasNext()) {
+      LockableBigSet lbs = (LockableBigSet)iter.next();
+      result.append(iter.previousIndex());
+      result.append(" (");
+      result.append(lbs.getBigSize());
+      result.append("): ");
+      Iterator lbsIter = lbs.iterator();
+      while (lbsIter.hasNext()) {
+        result.append(priorityElementToString(lbsIter.next()));
+        if (lbsIter.hasNext()) {
+          result.append(", ");
+        }
+      }
+      result.append("\n");
+    }
+    return result.toString();
+  }
+
+  public String priorityElementToString(Object element) {
+    return (element == null) ? "null" : element.toString();
+  }
+
 }

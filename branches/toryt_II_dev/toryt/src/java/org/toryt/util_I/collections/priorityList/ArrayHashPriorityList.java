@@ -26,7 +26,7 @@ import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
  *   elements directly.</p>
  * <p>Instances are intended to be used in the following way:</p>
  * <pre>
- *   ArrayHashPriorityList pl = new ArrayHashPriorityList();
+ *   ArrayHashPriorityList pl = new ArrayHashPriorityList(ElementType.class);
  *   pl.addPriorityElement(0, element1);
  *   pl.addPriorityElement(0, element2);
  *   pl.addPriorityElement(1, element3);
@@ -122,12 +122,13 @@ public class ArrayHashPriorityList implements PriorityList {
   }
 
   public final void lock() {
-    $locked = true;
     Iterator iter = iterator();
     while (iter.hasNext()) {
       SetBackedLockableBigSet sblbs = (SetBackedLockableBigSet)iter.next();
       sblbs.lock();
     }
+    getCardinality();
+    $locked = true;
   }
 
   private boolean $locked;
@@ -252,8 +253,13 @@ public class ArrayHashPriorityList implements PriorityList {
   }
 
   private SetBackedLockableBigSet createFreshBucket(int priority) {
-    SetBackedLockableBigSet lbsP = createFreshBucket();
-    set(priority, lbsP);
+    assert priority >= $backingList.size();
+    assert ! isLocked();
+    SetBackedLockableBigSet lbsP = null;
+    while (priority >= $backingList.size()) {
+      lbsP = createFreshBucket();
+      $backingList.add(lbsP);
+    }
     return lbsP;
   }
 
@@ -452,5 +458,26 @@ public class ArrayHashPriorityList implements PriorityList {
   }
 
   /*</section>*/
+
+  public String toString() {
+    StringBuffer result = new StringBuffer();
+    ListIterator iter = listIterator();
+    while (iter.hasNext()) {
+      LockableBigSet lbs = (LockableBigSet)iter.next();
+      result.append(iter.previousIndex());
+      result.append(" (");
+      result.append(lbs.getBigSize());
+      result.append("): ");
+      Iterator lbsIter = lbs.iterator();
+      while (lbsIter.hasNext()) {
+        result.append(lbsIter.next());
+        if (lbsIter.hasNext()) {
+          result.append(", ");
+        }
+      }
+      result.append("\n");
+    }
+    return result.toString();
+  }
 
 }

@@ -105,7 +105,7 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
     return Collections.exists(getComponents(),
                               new Assertion() {
                                     public boolean isTrueFor(Object s) {
-                                      return ((PriorityList)s).contains(o);
+                                      return (s == null) && ((PriorityList)s).contains(o);
                                     }
                                   });
   }
@@ -114,7 +114,7 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
     return Collections.exists(getComponents(),
                               new Assertion() {
                                     public boolean isTrueFor(Object s) {
-                                      return ((PriorityList)s).containsPriorityElement(o);
+                                      return (s == null) && ((PriorityList)s).containsPriorityElement(o);
                                     }
                                   });
   }
@@ -127,7 +127,7 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
     return Collections.forAll(getComponents(),
                               new Assertion() {
                                     public boolean isTrueFor(Object o) {
-                                      return ((PriorityList)o).isEmpty();
+                                      return (o == null) || ((PriorityList)o).isEmpty();
                                     }
                                   });
   }

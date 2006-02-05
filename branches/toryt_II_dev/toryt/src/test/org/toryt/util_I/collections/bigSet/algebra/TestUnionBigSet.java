@@ -1,16 +1,16 @@
-package org.toryt.util_I.collections.bigSet;
+package org.toryt.util_I.collections.bigSet.algebra;
 
 import java.math.BigInteger;
 import java.util.Iterator;
 
-import org.toryt.util_I.collections.bigSet.algebra.ProductBigSet;
+import org.toryt.util_I.collections.bigSet.algebra.UnionBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
 
 import junit.framework.TestCase;
 
 
 
-public class TestProductBigSet extends TestCase {
+public class TestUnionBigSet extends TestCase {
 
   public void setUp() {
     SetBackedLockableBigSet[] components = new SetBackedLockableBigSet[3];
@@ -18,7 +18,7 @@ public class TestProductBigSet extends TestCase {
       components[i] = new SetBackedLockableBigSet(Integer.class, false);
       fillSet(components[i], (int)Math.pow(10, i));
     }
-    $subject = new ProductBigSet(Integer[].class, components);
+    $subject = new UnionBigSet(Integer.class, false, components);
   }
 
   public void tearDown() {
@@ -32,22 +32,20 @@ public class TestProductBigSet extends TestCase {
     lbs.lock();
   }
 
-  private ProductBigSet $subject;
+  private UnionBigSet $subject;
 
   public void testEmpty() {
     assertTrue(! ($subject.isEmpty()));
   }
 
   public void testBigSize() {
-    assertEquals(BigInteger.valueOf(27), $subject.getBigSize());
+    assertEquals(BigInteger.valueOf(9), $subject.getBigSize());
   }
 
   public void testIterator() {
     Iterator iter = $subject.iterator();
     while (iter.hasNext()) {
-      Integer[] e = (Integer[])iter.next();
-      String s = "[" + e[0] + ", " + e[1] + ", " + e[2] + "]";
-      System.out.println(s);
+      System.out.println(iter.next());
     }
   }
 
