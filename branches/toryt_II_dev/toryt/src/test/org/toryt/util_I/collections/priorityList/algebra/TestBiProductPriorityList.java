@@ -1,13 +1,17 @@
 package org.toryt.util_I.collections.priorityList.algebra;
 
+
 import java.util.Iterator;
 import java.util.ListIterator;
 
 import junit.framework.TestCase;
 
+import org.toryt.patterns_I.Assertion;
+import org.toryt.patterns_I.Collections;
+import org.toryt.util_I.collections.ArrayUtils;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
-
+import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 public class TestBiProductPriorityList extends TestCase {
@@ -153,13 +157,61 @@ public class TestBiProductPriorityList extends TestCase {
     }
   }
 
-//  public void testAssociativity() {
-//    ArrayHashPriorityList[] components = buildComponents(3);
-//    BiProductPriorityList subject1 = new BiProductPriorityList(components[0], new BiProductPriorityList(components[1], components[2]));
-//    BiProductPriorityList subject2 = new BiProductPriorityList(new BiProductPriorityList(components[0], components[1]), components[2]);
-//NEEDS FLATTEN
-//    assertEquals(subject1, subject2);
-//  }
+  public void testAssociativity() {
+    ArrayHashPriorityList[] components = buildComponents(3);
+    BiProductPriorityList subject1 = new BiProductPriorityList(components[0], new BiProductPriorityList(components[1], components[2]));
+    BiProductPriorityList subject2 = new BiProductPriorityList(new BiProductPriorityList(components[0], components[1]), components[2]);
+System.out.println("Size: " + subject1.size());
+System.out.println("Cardinality: " + subject1.getCardinality());
+    assertTrue(equalsFlattened(subject1, subject2));
+  }
+
+  private static boolean equalsFlattened(PriorityList pl1, PriorityList pl2) {
+    assert pl1 != null;
+    assert pl2 != null;
+    return (pl1.size() == pl2.size()) &&
+           containsAllFlattened(pl1, pl2) &&
+           containsAllFlattened(pl2, pl1);
+  }
+
+  private static boolean containsAllFlattened(PriorityList pl1, final PriorityList pl2) {
+    assert pl1 != null;
+    assert pl2 != null;
+    return (pl1.size() <= pl2.size()) &&
+            Collections.forAll(pl1, new Assertion() {
+
+              private int index = -1;
+
+              public boolean isTrueFor(Object o) {
+                LockableBigSet bucket = (LockableBigSet)o;
+                index++;
+                final LockableBigSet b2 = (LockableBigSet)pl2.get(index);
+System.out.println(index + "(" + bucket.getBigSize() + "): Comparing " + bucket + " to " + b2);
+                return ((o == null) || bucket.isEmpty()) ?
+                         ((b2 == null) || b2.isEmpty()) :
+                         ((bucket.getBigSize().compareTo(b2.getBigSize()) <= 0) &&
+                          Collections.forAll(bucket, new Assertion() {
+
+                            public boolean isTrueFor(Object o1) {
+                              assert o1 != null;
+                              final Object[] flattened = ArrayUtils.flatten((Object[])o1);
+//System.out.println("    Looking for " + Arrays.asList(flattened).toString());
+                              return Collections.exists(b2, new Assertion() {
+
+                                       public boolean isTrueFor(Object o2) {
+                                         assert o2 != null;
+                                         Object[] f2 = ArrayUtils.flatten((Object[])o2);
+                                         return org.apache.commons.lang.ArrayUtils.isEquals(flattened, f2);
+                                       }
+
+                              });
+                            }
+
+                          }));
+              }
+
+            });
+  }
 
 }
 

@@ -231,11 +231,6 @@ CHANGE UnionBigSet to accept nulls in components !!!
     return 0;
   }
 
-  public ListIterator listIterator() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
   public ListIterator listIterator(int index) {
     // TODO Auto-generated method stub
     return null;

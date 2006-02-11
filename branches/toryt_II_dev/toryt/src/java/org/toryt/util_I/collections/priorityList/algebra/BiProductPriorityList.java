@@ -2,13 +2,13 @@ package org.toryt.util_I.collections.priorityList.algebra;
 
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
+import org.toryt.util_I.collections.ArrayUtils;
 import org.toryt.util_I.collections.bigSet.algebra.ProductBigSet;
 import org.toryt.util_I.collections.bigSet.algebra.UnionBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
@@ -288,7 +288,7 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
   public String priorityElementToString(Object element) {
     Object[] e = (Object[])element;
     // MUDO remove after development is finished
-    e = flatten(e).toArray();
+    e = ArrayUtils.flatten(e);
     // MUDO remove after development is finished
     StringBuffer result = new StringBuffer("[");
     for (int i = 0; i < e.length; i++) {
@@ -299,21 +299,6 @@ public class BiProductPriorityList extends AbstractLockedPriorityList
     }
     result.append("]");
     return result.toString();
-  }
-
-  // MUDO remove after development is finished
-  private List flatten(Object e) {
-    ArrayList result = new ArrayList();
-    if ((e == null) || (! e.getClass().isArray())) {
-      result.add(e);
-    }
-    else {
-      Object array[] = (Object[])e;
-      for (int i = 0; i < array.length; i++) {
-        result.addAll(flatten(array[i]));
-      }
-    }
-    return result;
   }
 
 }
