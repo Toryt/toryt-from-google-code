@@ -10,6 +10,7 @@ import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.collections.ArrayUtils;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
+import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
 import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
@@ -157,13 +158,44 @@ public class TestBiProductPriorityList extends TestCase {
     }
   }
 
-  public void testAssociativity() {
-    ArrayHashPriorityList[] components = buildComponents(3);
-    BiProductPriorityList subject1 = new BiProductPriorityList(components[0], new BiProductPriorityList(components[1], components[2]));
-    BiProductPriorityList subject2 = new BiProductPriorityList(new BiProductPriorityList(components[0], components[1]), components[2]);
+  public void testAssociativity2() {
+    helperTestAssociativity(2);
+  }
+
+  public void testAssociativity3() {
+    helperTestAssociativity(3);
+  }
+
+  public void testAssociativity4() {
+    helperTestAssociativity(4);
+  }
+
+  private void helperTestAssociativity(int size) {
+    assert size >= 2;
+    ArrayHashPriorityList[] components = buildComponents(size);
+    BiProductPriorityList subject1 = buildRightCurry(components);
+    BiProductPriorityList subject2 = buildLeftCurry(components);
 System.out.println("Size: " + subject1.size());
 System.out.println("Cardinality: " + subject1.getCardinality());
     assertTrue(equalsFlattened(subject1, subject2));
+  }
+
+  private static BiProductPriorityList buildRightCurry(PriorityList[] components) {
+    assert components.length >= 2;
+    PriorityList acc = components[components.length - 1];
+    for (int i = components.length - 2; i >= 0; i--) {
+      acc = new BiProductPriorityList(components[i], acc);
+    }
+    return (BiProductPriorityList)acc;
+  }
+
+  private static BiProductPriorityList buildLeftCurry(PriorityList[] components) {
+    assert components.length >= 2;
+    PriorityList acc = components[0];
+    for (int i = 1; i < components.length; i++) {
+      acc = new BiProductPriorityList(acc, components[i]);
+    }
+    return (BiProductPriorityList)acc;
   }
 
   private static boolean equalsFlattened(PriorityList pl1, PriorityList pl2) {
@@ -183,9 +215,9 @@ System.out.println("Cardinality: " + subject1.getCardinality());
               private int index = -1;
 
               public boolean isTrueFor(Object o) {
-                LockableBigSet bucket = (LockableBigSet)o;
+                LockableBigSet bucket = flatten((LockableBigSet)o);
                 index++;
-                final LockableBigSet b2 = (LockableBigSet)pl2.get(index);
+                final LockableBigSet b2 = flatten((LockableBigSet)pl2.get(index));
 System.out.println(index + "(" + bucket.getBigSize() + "): Comparing " + bucket + " to " + b2);
                 return ((o == null) || bucket.isEmpty()) ?
                          ((b2 == null) || b2.isEmpty()) :
@@ -194,13 +226,13 @@ System.out.println(index + "(" + bucket.getBigSize() + "): Comparing " + bucket 
 
                             public boolean isTrueFor(Object o1) {
                               assert o1 != null;
-                              final Object[] flattened = ArrayUtils.flatten((Object[])o1);
+                              final Object[] flattened = (Object[])o1;
 //System.out.println("    Looking for " + Arrays.asList(flattened).toString());
                               return Collections.exists(b2, new Assertion() {
 
                                        public boolean isTrueFor(Object o2) {
                                          assert o2 != null;
-                                         Object[] f2 = ArrayUtils.flatten((Object[])o2);
+                                         Object[] f2 = (Object[])o2;
                                          return org.apache.commons.lang.ArrayUtils.isEquals(flattened, f2);
                                        }
 
@@ -211,6 +243,17 @@ System.out.println(index + "(" + bucket.getBigSize() + "): Comparing " + bucket 
               }
 
             });
+  }
+
+  private static LockableBigSet flatten(LockableBigSet lbs) {
+    SetBackedLockableBigSet result = new SetBackedLockableBigSet(Object[].class, false);
+    Iterator iter = lbs.iterator();
+    while (iter.hasNext()) {
+      Object[] e = (Object[])iter.next();
+      result.add(ArrayUtils.flatten(e));
+    }
+    result.lock();
+    return result;
   }
 
 }
