@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Toryt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+<table>
+  <tr>
+    <td>$Revision$</td>
+  </tr>
+  <tr>
+    <td>$Date$</td>
+  </tr>
+  <tr>
+    <td>$State$</td>
+  </tr>
+  <tr>
+    <td>$Name$</td>
+  </tr>
+</table>
+<p>The final goal of Toryt is to run a {@link org.toryt_II.Test}. A {@link
+  org.toryt_II.Test Tests} can be compound or simple. Toryts main feature
+  are {@link org.toryt_II.ContractTest ContractTests}, which separate the
+  test description from the test execution.</p>
+<p>&nbsp;</p>
+<p>Contracts are a test factory AND a declarative description of the contract
+  of units.</p>
+<h1>Tests</h1>
+<p>isolated; </p>
+<p>term: atomic</p>
+<p>In Toryt, it is important that {@link org.toryt_II.Test Test} instances
+  are normally generated on-demand by an instance of {@link org.toryt_II.TestFactory
+  TestFactory}. </p>
+<h1>Turning Contracts and Cases into Tests</h1>
+<ul>
+  <li>The contract of a <dfn>project</dfn> is the union of the contracts
+    of all <strong>packages</strong> in the project.</li>
+  <li>The contract of a <dfn>package</dfn> is the union of the contracts
+    of all <strong>classes</strong> in the package and the contracts of
+    all <strong>subpackages</strong>.</li>
+  <li>The contract of a class is the collection of the <strong>type invariants</strong> of
+    the class and all its supertypes, and the union of the contracts of
+    all <strong>constructors</strong>, <strong>mutators</strong> and <strong>non-basic
+    inspectors</strong> of the class (instance <em>and</em> class mutators
+    and non-basic inspectors).</li>
+  <li>The contract of a method is the aggregate of the methods <strong>preconditions</strong>,
+    <strong>postconditions</strong> and <strong>exception-conditions</strong> of
+    the method and all its super-specifications, plus the type invariants
+    of the class the method is implemented in and all its supertypes.</li>
+</ul>
+<p>Testing a <dfn>project</dfn> means testing all of its <strong>packages</strong>,
+  and possibly more. Testing a <dfn>package</dfn> means testing all of
+  its <strong>classes</strong> and all of its <strong>subpackages</strong>,
+  and possibly more. Testing a <dfn>class</dfn> means testing all of its <strong>constructors</strong>, <strong>mutators</strong> and <strong>non-basic
+  inspectors</strong>, and possibly more. Testing a <dfn>method</dfn> means
+  calling the method in a number of relevant <strong>cases</strong> that
+  are allowed by the <dfn>preconditions</dfn>, and veryfing that the <dfn>postconditions</dfn> are
+  met afterwards, or, alternatively, if an exception occurs, that it fullfils
+  the appropriate <dfn>exception-conditions</dfn>, and possibly more. Verifying
+  a method's contract in a particular case we call a <dfn>case contract
+  method test</dfn> ({@link org.toryt_II.CaseContractMethodTest}).<br />
+  So, testing a <dfn>project</dfn> means <strong>testing all of the methods
+  in the project</strong> (that are not basic inspectors) <strong>with
+  appropriate cases</strong>, and possibly more at the level of the project,
+  its packages, classes or methods. It is important to see that, from a
+  contract point-of-view, and apart from the &quot;possibly more&quot;,
+  there is no such thing as a project test, a package test, a class test
+  or a bare method test. From a contract point-of-view, there are only <dfn>tests
+  of methods applied to a cases</dfn>. On all higher levels, there are
+  only <dfn>collections </dfn>of <dfn>case contract method tests</dfn>.</p>
+<ul>
+  <li>A <dfn>project test collection</dfn> gathers <dfn>case contract method
+      tests</dfn> for all methods in the project with appropriate cases,
+      and possibly some more tests on the level of the project, its packages,
+      classes or methods.<br />
+    A <dfn>contract project test collection</dfn> ({@link org.toryt_II.ContractProjectTestList})
+    gathers case contract method tests for all methods in the project with
+    appropriate cases.</li>
+  <li>A <dfn>package test collection</dfn> gathers <dfn>case contract
+      method tests</dfn> for all methods in the package with appropriate
+      cases, and possibly some more tests on the level of the package,
+      its subpackages, classes or methods.<br />
+    A <dfn>contract package test collection</dfn> ({@link org.toryt_II.ContractPackageTestList})
+    gathers <dfn>case contract method tests</dfn> for all methods in the
+    package with appropriate cases.</li>
+  <li>A <dfn>class test collection </dfn>gathers <dfn>case contract method
+      tests</dfn> for all methods in the class with appropriate cases,
+      and possibly some more tests on the level of the class or its methods.<br />
+    A contract class test collection ({@link org.toryt_II.ContractClassTestList})
+    gathers <dfn>case contract method tests</dfn> for all method in the
+    class with appropriate cases.</li>
+  <li>A <dfn>method test collection</dfn> gathers <dfn>case contract method
+      tests</dfn> for the method for appropriate cases, and possibly some
+      more tests on the level of the method.<br />
+    A <dfn>contract method test collection</dfn> ({@link org.toryt_II.ContractMethodTestList})
+    gathers <dfn>case contract method tests</dfn> for the method for appropriate
+    cases.</li>
+</ul>
+<p>A <dfn>case contract method test</dfn> is the combination of the <dfn>contract</dfn> of
+  the method with a <dfn>test case</dfn>.<br />
+  A <dfn>method test factory</dfn> will combine the <dfn>test cases</dfn> of
+  a method with the <dfn>contract </dfn>of the method to generate a number
+  of <dfn>contract method tests</dfn>., and possibly will generate some
+  more method tests.</p>
+<p>&nbsp;</p>
+</body>
+</html>
