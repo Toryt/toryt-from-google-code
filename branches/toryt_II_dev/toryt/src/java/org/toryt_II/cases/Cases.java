@@ -18,6 +18,8 @@ import org.toryt_II.TorytException;
  *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
+ *
+ * @deprecated
  */
 public final class Cases {
 

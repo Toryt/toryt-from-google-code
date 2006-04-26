@@ -15,6 +15,8 @@ import java.util.List;
  * Implementations provide sets of test cases.
  *
  * @author    Jan Dockx
+ *
+ * @deprecated
  */
 public abstract class AbstractCaseProvider {
 
