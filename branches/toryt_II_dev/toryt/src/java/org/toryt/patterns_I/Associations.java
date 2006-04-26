@@ -14,8 +14,8 @@ import org.toryt.util_I.Reflection;
  * Often used contracts for unidirectional and bidirectional associations.
  *
  * @author    Jan Dockx
- * 
- * @toryt:cC Collections;
+ *
+ * @toryt.import cC Collections;
  */
 public class Associations {
 
@@ -38,7 +38,7 @@ public class Associations {
   private Associations() {
     // NOP
   }
-  
+
   /**
    * This method gathers the type invariants for a reference that implements
    * the to-one part of a bidirectional one-to-many association. The reference
