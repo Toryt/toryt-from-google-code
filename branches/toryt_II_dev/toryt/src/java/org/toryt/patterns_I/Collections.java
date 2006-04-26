@@ -152,6 +152,24 @@ public class Collections {
   }
 
   /**
+   * @pre map != null;
+   * @pre a != null;
+   * @return (forall Object o; map.values().contains(o);
+   *            a.isTrueFor(o));
+   */
+  public static boolean forAllValues(Map map, Assertion a) {
+    assert map != null;
+    assert a != null;
+    Iterator iter = map.values().iterator();
+    while (iter.hasNext()) {
+      if (! a.isTrueFor(iter.next())) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
    * @pre array != null;
    * @pre a != null;
    * @return (exists int i; (i >= 0) && (i < array.length);
