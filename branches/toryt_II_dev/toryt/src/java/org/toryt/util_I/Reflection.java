@@ -17,7 +17,7 @@ import org.toryt_II.TorytException;
 
 /**
  * @mudo (jand) most methods are also in ppw-bean; consolidate
- * 
+ *
  * @author    Jan Dockx
  */
 public class Reflection {
@@ -33,9 +33,9 @@ public class Reflection {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
-  
 
-  
+
+
   public static Method findMethod(Class type, String signature, Contract excSource)
       throws TorytException {
     assert type != null;
@@ -49,7 +49,7 @@ public class Reflection {
     }
     throw new TorytException(excSource, null);
   }
-  
+
   public static Constructor findConstructor(Class type, String signature, Contract excSource)
   throws TorytException {
     assert type != null;
@@ -76,9 +76,9 @@ public class Reflection {
   /**
    * Instantiate an object of a type
    * <code>prefixedFqcn(prefix, fqcn)</code>.
-   * 
+   *
    * @param cl
-   *        The class-loader from which we should create 
+   *        The class-loader from which we should create
    *        the bean. If this is null, then the system class-loader
    *        is used.
    * @param prefix
@@ -99,14 +99,14 @@ public class Reflection {
   private final static String PREFIXED_FQCN_PATTERN = "\\.";
 
   private final static String EMPTY = "";
-  
+
   private final static String DOT = ".";
-  
+
   /**
    * Return a fully qualified class name that is in the same package
    * as <code>fqcn</code>, and has as class name
    * <code>prefix + <var>ClassName</var></code>.
-   * 
+   *
    * @param prefix
    *        The prefix to add before the class name.
    * @param fqcn
@@ -165,8 +165,44 @@ public class Reflection {
              SecurityException,
              IllegalAccessException,
              IllegalArgumentException {
-    Class clazz = Class.forName(fqClassName); // LinkageError,
-                                              // ClassNotFoundException
+    Class clazz = Class.forName(fqClassName); // LinkageError, ClassNotFoundException
+    return constant(clazz, constantName);
+  }
+
+  /**
+   * Returns the constant(public final static) with the given fully qualified
+   * name.
+   *
+   * @param     clazz
+   *            The type to look in for the constant.
+   * @param     constantName
+   *            The name of the constant whose value to return.
+   * @return    Object
+   *            The value of the field named <code>constantName</code>
+   *            in class <code>clazz</code>.
+   * @throws    NoSuchFieldException
+   *            Could not find a field named <code>constantName</code>
+   *            in class <code>fqClassName</code>.
+   * @throws    NullPointerException
+   *            Error retrieving value.
+   * @throws    SecurityException
+   *            Not allowed to read the value of the field named
+   *            <code>constantName</code>
+   *            in class <code>fqClassName</code>.
+   * @throws    IllegalAccessException
+   *            The field named
+   *            <code>constantName</code>
+   *            in class <code>fqClassName</code> is not public.
+   * @throws    IllegalArgumentException
+   *            Error retrieving value.
+   */
+  public static Object constant(final Class clazz,
+                                final String constantName)
+      throws NoSuchFieldException,
+             NullPointerException,
+             SecurityException,
+             IllegalAccessException,
+             IllegalArgumentException {
     Field field = clazz.getField(constantName); // NoSuchFieldException
                                                 // NullPointerException
                                                 // SecurityException
@@ -180,10 +216,10 @@ public class Reflection {
    * Check whether <code>beanClass</code> has a no-arguments getter for
    * <code>propertyName</code>. This method only finds implemented methods,
    * thus not methods in interfaces or abstract methods.
-   * 
+   *
    * @todo check that This method only finds implemented methods,
    * thus not methods in interfaces or abstract methods, and fix.
-   * 
+   *
    * @param     beanClass
    *            The bean class to get the property read method of
    * @param     propertyName
@@ -294,7 +330,7 @@ public class Reflection {
    * property or such an inspector does not exist, an exception is thrown.
    * This method only finds implemented methods,
    * thus not methods in interfaces or abstract methods.
-   * 
+   *
    * @todo check that This method only finds implemented methods,
    * thus not methods in interfaces or abstract methods, and fix.
    *
