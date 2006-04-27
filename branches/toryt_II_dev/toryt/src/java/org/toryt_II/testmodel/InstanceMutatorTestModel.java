@@ -1,10 +1,9 @@
 package org.toryt_II.testmodel;
 
+
 import java.lang.reflect.Method;
 
-import org.toryt.util_I.collections.priorityList.PriorityList;
-
-
+import org.toryt.util_I.Reflection.MethodKind;
 
 
 /**
@@ -12,9 +11,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  *
  * @author Jan Dockx
  *
- * @invar toryt:cC org.toryt.patterns_I.Collections;
- * @invar getTestFactoryList() != null;
- * @invar getTestFactoryList().getElementType() == TestFactory.class;
+ * @invar getMethodKind() == MethodKind.INSTANCE_MUTATOR;
  */
 public class InstanceMutatorTestModel extends NonConstructorMethodTestModel {
 
@@ -32,6 +29,11 @@ public class InstanceMutatorTestModel extends NonConstructorMethodTestModel {
 
 
 
+  public InstanceMutatorTestModel() {
+    super(MethodKind.INSTANCE_MUTATOR);
+  }
+
+
   /*<property name="instance mutator">*/
   //------------------------------------------------------------------
 
@@ -44,6 +46,8 @@ public class InstanceMutatorTestModel extends NonConstructorMethodTestModel {
   }
 
   /**
+   * @pre (instanceMutator != null) ?
+   *        Reflection.methodKind(instanceMutator) == getMethodKind();
    * @post new.getMethod() == method;
    */
   public final void setInstanceMutator(Method instanceMutator) {
@@ -51,12 +55,5 @@ public class InstanceMutatorTestModel extends NonConstructorMethodTestModel {
   }
 
   /*</property>*/
-
-
-
-  public PriorityList getTestFactoryList() {
-    // TODO Auto-generated method stub
-    return null;
-  }
 
 }

@@ -1,13 +1,10 @@
 package org.toryt_II.testmodel;
 
 
-import java.util.Set;
-
-
 /**
  * Instances represent a project to test. Projects have
  * a {@link #getProjectName() name}, and are an aggregate
- * of {@link #getPackageTestModels() PackageTestModels}.
+ * of {@link PackageTestModel PackageTestModels}.
  *
  * @author Jan Dockx
  */
@@ -51,29 +48,8 @@ public class ProjectTestModel extends AbstractPackageTestModelContainer {
 
 
 
-  /*<property name="child test models">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @return getPackageTestModels();
-   */
-  public Set getChildTestModels() {
-    return getPackageTestModels();
-  }
-
-  /*</property>*/
-
-
-
   public String toString() {
     return getClass().getName() + "[" + getProjectName() + "]";
-  }
-
-  void printStructure(IndentPrinter out) {
-    assert out != null;
-    out.println(getProjectName());
-    IndentPrinter sections = new IndentPrinter(out, 1);
-    sections.printChildren("packages:", getPackageTestModels());
   }
 
 }

@@ -5,6 +5,10 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import org.toryt.util_I.Reflection;
+import org.toryt.util_I.Reflection.MethodKind;
+import org.toryt.util_I.Reflection.TypeKind;
+
 
 
 /**
@@ -40,6 +44,7 @@ public interface TestModelFactory {
    * Create an {@link InstanceMutatorTestModel} for <code>instanceMutator</code>.
    *
    * @pre instanceMutator != null;
+   * @pre Reflection.methodKind(instanceMutator) == MethodKind.INSTANCE_MUTATOR;
    */
   InstanceMutatorTestModel createInstanceMutatorTestModel(Method instanceMutator);
 
@@ -47,6 +52,7 @@ public interface TestModelFactory {
    * Create an {@link InstanceInspectorTestModel} for <code>instanceInspector</code>.
    *
    * @pre instanceInspector != null;
+   * @pre Reflection.methodKind(instanceInspector) == MethodKind.INSTANCE_INSPECTOR;
    */
   InstanceInspectorTestModel createInstanceInspectorTestModel(Method instanceInspector);
 
@@ -54,6 +60,7 @@ public interface TestModelFactory {
    * Create an {@link ClassMutatorTestModel} for <code>classMutator</code>.
    *
    * @pre classMutator != null;
+   * @pre Reflection.methodKind(classMutator) == MethodKind.CLASS_MUTATOR;
    */
   ClassMutatorTestModel createClassMutatorTestModel(Method classMutator);
 
@@ -61,22 +68,23 @@ public interface TestModelFactory {
    * Create an {@link ClassInspectorTestModel} for <code>classInspector</code>.
    *
    * @pre classInspector != null;
+   * @pre Reflection.methodKind(classInspector) == MethodKind.CLASS_INSPECTOR;
    */
   ClassInspectorTestModel createClassInspectorTestModel(Method classInspector);
 
-  /**
-   * Create a {@link MethodTestModel} for <code>method</code>, of the appropriate
-   * subtype ({@link InstanceMutatorTestModel}, {@link InstanceInspectorTestModel},
-   * {@link ClassMutatorTestModel} or {@link ClassInspectorTestModel}). This method
-   * delegates to {@link #createInstanceMutatorTestModel(Method)},
-   * {@link #createInstanceInspectorTestModel(Method)},
-   * {@link #createClassMutatorTestModel(Method)} and
-   * {@link #createClassInspectorTestModel(Method)} respectively.
-   *
-   * @pre method != null;
-   * @pre assert (method instanceof Constructor) || (method instanceof Method);
-   */
-  MethodTestModel createMethodTestModel(Method method);
+//  /**
+//   * Create a {@link MethodTestModel} for <code>method</code>, of the appropriate
+//   * subtype ({@link InstanceMutatorTestModel}, {@link InstanceInspectorTestModel},
+//   * {@link ClassMutatorTestModel} or {@link ClassInspectorTestModel}). This method
+//   * delegates to {@link #createInstanceMutatorTestModel(Method)},
+//   * {@link #createInstanceInspectorTestModel(Method)},
+//   * {@link #createClassMutatorTestModel(Method)} and
+//   * {@link #createClassInspectorTestModel(Method)} respectively.
+//   *
+//   * @pre method != null;
+//   * @pre assert (method instanceof Constructor) || (method instanceof Method);
+//   */
+//  MethodTestModel createMethodTestModel(Method method);
 
   /**
    * Create an {@link InnerClassTestModel} for <code>innerClazz</code>.
@@ -85,6 +93,7 @@ public interface TestModelFactory {
    * inner classes and static nested classes.
    *
    * @pre innerClazz != null;
+   * @pre Reflection.typeKind(innerClazz) == TypeKind.INNER;
    * @throws SecurityException
    *         Access to the reflection information was denied.
    *
@@ -95,18 +104,19 @@ public interface TestModelFactory {
   InnerClassTestModel createInnerClassTestModel(Class innerClazz) throws SecurityException;
 
   /**
-   * Create a {@link ClassTestModel} for <code>clazz</code>.
+   * Create a {@link StaticClassTestModel} for <code>clazz</code>.
    * Using reflection, test models are added for all
    * <code><b>public</b></code> methods (that are not basic inspectors),
    * inner classes and static nested classes.
    *
    * @pre clazz != null;
+   * @pre Reflection.typeKind(innerClazz) == TypeKind.STATIC;
    * @throws SecurityException
    *         Access to the reflection information was denied.
    *
    * @idea This should be extended to include non-public members.
    */
-  ClassTestModel createClassTestModel(Class clazz) throws SecurityException;
+  StaticClassTestModel createStaticClassTestModel(Class clazz) throws SecurityException;
 
   /**
    * Create a {@link PackageTestModel} for <code>clazz</code>.

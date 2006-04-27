@@ -1,25 +1,19 @@
 package org.toryt_II.testmodel;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
-
+import org.toryt.util_I.Reflection.TypeKind;
 
 
 /**
  * Test model for top level and static nested classes.
  * Apart from the child test models offered by
  * {@link ClassTestModel}, static classes also can have
- * static nested classes
- * ({@link #getStaticNestedClassTestModels()}).
+ * {@link StaticClassTestModel static nested classes}.
  *
  * @author Jan Dockx
  *
- * @invar toryt:cC org.toryt.patterns_I.Collections;
- * @invar getStaticNestedClassTestModels() != null;
- * @invar cC:noNull(getStaticNestedClassTestModels());
- * @invar cC:instanceOf(getStaticNestedClassTestModels(), StaticClassTestModel.class);
+ * @invar getTypeKind() == TypeKind.STATIC;
+ * @invar staticNestedClassTestModels != null;
  */
 public class StaticClassTestModel extends ClassTestModel {
 
@@ -35,52 +29,17 @@ public class StaticClassTestModel extends ClassTestModel {
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
 
-  /*<property name="class test models">*/
-  //------------------------------------------------------------------
 
-  /**
-   * @basic
-   * @init new.getStaticNestedClassTestModels().isEmpty();
-   */
-  public Set getStaticNestedClassTestModels() {
-    return Collections.unmodifiableSet($staticNestedClassTestModels);
+
+  public StaticClassTestModel() {
+    super(TypeKind.STATIC);
   }
 
-  /**
-   * @pre classTestModel != null;
-   * @post new.getStaticNestedClassTestModels().contains(classTestModel);
-   */
-  public void addClassTestModel(ClassTestModel classTestModel) {
-    assert classTestModel != null;
-    $staticNestedClassTestModels.add(classTestModel);
-    resetCachedTestFactoryList();
-    // TODO events
+  public final TestModelCollectionDelegate<StaticClassTestModel> staticNestedClassTestModels =
+    new TestModelCollectionDelegate<StaticClassTestModel>(this);
+
+  {
+    addTestModelCollectionDelegate("static nested classes", staticNestedClassTestModels);
   }
-
-  /**
-   * @post ! new.getStaticNestedClassTestModels().contains(classTestModel);
-   */
-  public void removeClassTestModel(ClassTestModel classTestModel) {
-    $staticNestedClassTestModels.remove(classTestModel);
-    resetCachedTestFactoryList();
-    // TODO events
-  }
-
-  /**
-   * @post new.getStaticNestedClassTestModels().isEmpty();
-   */
-  public void removeAllStaticNestedClassTestModels() {
-    $staticNestedClassTestModels = new HashSet();
-    resetCachedTestFactoryList();
-    // TODO events
-  }
-
-  /**
-   * @invar cC:noNull($staticNestedClassTestModels);
-   * @invar cC:instanceOf($staticNestedClassTestModels, StaticClassTestModel.class);
-   */
-  private Set $staticNestedClassTestModels = new HashSet();
-
-  /*</property>*/
 
 }

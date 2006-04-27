@@ -3,6 +3,8 @@ package org.toryt_II.testmodel;
 
 import java.lang.reflect.Method;
 
+import org.toryt.util_I.Reflection;
+import org.toryt.util_I.Reflection.MethodKind;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
@@ -18,6 +20,8 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getTestFactoryList() != null;
  * @invar getTestFactoryList().getElementType() == TestFactory.class;
+ * @invar (getNonConstructorMethod() != null) ?
+ *          Reflection.methodKind(getNonConstructorMethod()) == getMethodKind();
  */
 public abstract class NonConstructorMethodTestModel extends MethodTestModel {
 
@@ -32,6 +36,24 @@ public abstract class NonConstructorMethodTestModel extends MethodTestModel {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
+
+
+  protected NonConstructorMethodTestModel(MethodKind methodKind) {
+    $methodKind = methodKind;
+  }
+
+
+
+  /*<property name="methodKind">*/
+  //------------------------------------------------------------------
+
+  public final MethodKind getMethodKind() {
+    return $methodKind;
+  }
+
+  private final MethodKind $methodKind;
+
+  /*</property>*/
 
 
 
@@ -56,15 +78,29 @@ public abstract class NonConstructorMethodTestModel extends MethodTestModel {
   }
 
   /**
+   * @pre Reflection.methodKind(nonConstructorMethod) == getMethodKind();
    * @post new.getNonConstructorMethod() == nonConstructorMethod;
    */
   protected final void setNonConstructorMethod(Method nonConstructorMethod) {
+    assert (nonConstructorMethod != null) ?
+             (Reflection.methodKind(nonConstructorMethod) == $methodKind) :
+             true;
     $nonConstructorMethod = nonConstructorMethod;
     // TODO events
   }
 
+  /**
+   * @invar Reflection.methodKind($nonConstructorMethod) == $methodKind;
+   */
   private Method $nonConstructorMethod;
 
   /*</property>*/
+
+
+
+  public PriorityList getTestFactoryList() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 }

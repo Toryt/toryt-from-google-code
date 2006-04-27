@@ -1,11 +1,16 @@
 package org.toryt_II.testmodel;
 
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.toryt.util_I.collections.priorityList.PriorityList;
 import org.toryt.util_I.collections.priorityList.algebra.UnionPriorityList;
+import org.toryt_II.testmodel.AbstractTestModel.IndentPrinter;
 
 
 /**
@@ -14,13 +19,11 @@ import org.toryt.util_I.collections.priorityList.algebra.UnionPriorityList;
  *   The {@link #getTestFactoryList()}
  *   is the union of the test factory lists of the children, and
  *   possibly extra test factories added here.</p>
- * <p>Subclasses should introduce methods to add and remove
- *   test models for different kinds of child test models. For each
- *   kind, there should be a basic inspector to return the set of
- *   test models of that kind, and a mutator to add and remove
- *   a test model of that kind, and a method to remave all
- *   test models of that kind. After construction, the set of child
- *   test models of any kind should be empty.</p>
+ * <p>Subclasses should define a {@link TestModelCollectionDelegate}
+ *   for each kind of child test model, using public delegation.
+ *   Each of these delegates should be added
+ *   using {@link #addTestModelCollectionDelegate(String, TestModelCollectionDelegate)}.</p>
+ *
  * @note This is not an interface, but an abstract
  *   class, because we can implement {@link #getTestFactoryList()}
  *   once and for all here. If it turns out that this is a limitation,
@@ -33,6 +36,8 @@ import org.toryt.util_I.collections.priorityList.algebra.UnionPriorityList;
  * @invar getChildTestModels() != null;
  * @invar cC:noNull(getChildTestModels());
  * @invar cC:instanceOf(getChildTestModels(), TestModel);
+ * @invar getTestModelCollectionDelegates() != null;
+ * @invar Collections.noNull(getTestModelCollectionDelegates());
  */
 public abstract class CompoundTestModel extends AbstractTestModel {
 
@@ -54,9 +59,27 @@ public abstract class CompoundTestModel extends AbstractTestModel {
   //------------------------------------------------------------------
 
   /**
-   * @basic
+   * @return Collections.union([$testModelCollectionDelegates.values()].getTestModels());
    */
-  public abstract Set getChildTestModels();
+  public final Set<TestModel> getChildTestModels() {
+    Set<TestModel> result = new HashSet<TestModel>();
+    for (TestModelCollectionDelegate<? extends TestModel> delegate : $testModelCollectionDelegates.values()) {
+      result.addAll(delegate.getSet());
+    }
+    return Collections.unmodifiableSet(result);
+  }
+
+
+  protected final void addTestModelCollectionDelegate(String kind, TestModelCollectionDelegate<? extends TestModel> delegate) {
+    $testModelCollectionDelegates.put(kind, delegate);
+  }
+
+  /**
+   * @invar $testModelCollectionDelegates != null;
+   * @invar Collections.noNull($testModelCollectionDelegates);
+   */
+  private Map<String, TestModelCollectionDelegate<? extends TestModel>> $testModelCollectionDelegates =
+      new HashMap<String, TestModelCollectionDelegate<? extends TestModel>>();
 
   /*</property>*/
 
@@ -91,7 +114,7 @@ public abstract class CompoundTestModel extends AbstractTestModel {
   /**
    * @post new.getCachedTestFactoryList() == null;
    */
-  protected final void resetCachedTestFactoryList() {
+  final void resetCachedTestFactoryList() {
     $union = null;
     // TODO events
   }
@@ -114,5 +137,16 @@ public abstract class CompoundTestModel extends AbstractTestModel {
   private UnionPriorityList $union;
 
   /*</property>*/
+
+
+  final void printStructure(IndentPrinter out) {
+    assert out != null;
+    out.println(this);
+    IndentPrinter sections = new IndentPrinter(out, 2);
+    for (Map.Entry<String, TestModelCollectionDelegate<? extends TestModel>> entry:
+          $testModelCollectionDelegates.entrySet()) {
+      sections.printChildren(entry.getKey() + ": ", entry.getValue().getSet());
+    }
+  }
 
 }

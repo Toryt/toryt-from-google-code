@@ -1,12 +1,14 @@
 package org.toryt_II.testmodel;
 
-
+import org.toryt.util_I.Reflection.TypeKind;
 
 
 /**
  * Instances represent an inner class to test.
  *
  * @author Jan Dockx
+ *
+ * @invar getTypeKind() == TypeKind.INNER;
  */
 public class InnerClassTestModel extends ClassTestModel {
 
@@ -21,5 +23,10 @@ public class InnerClassTestModel extends ClassTestModel {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
+
+
+  public InnerClassTestModel() {
+    super(TypeKind.INNER);
+  }
 
 }

@@ -1,10 +1,9 @@
 package org.toryt_II.testmodel;
 
+
 import java.lang.reflect.Method;
 
-import org.toryt.util_I.collections.priorityList.PriorityList;
-
-
+import org.toryt.util_I.Reflection.MethodKind;
 
 
 /**
@@ -12,9 +11,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  *
  * @author Jan Dockx
  *
- * @invar toryt:cC org.toryt.patterns_I.Collections;
- * @invar getTestFactoryList() != null;
- * @invar getTestFactoryList().getElementType() == TestFactory.class;
+ * @invar getMethodKind() == MethodKind.CLASS_INSPECTOR;
  */
 public class ClassInspectorTestModel extends NonConstructorMethodTestModel {
 
@@ -31,6 +28,11 @@ public class ClassInspectorTestModel extends NonConstructorMethodTestModel {
   /*</section>*/
 
 
+  public ClassInspectorTestModel() {
+    super(MethodKind.CLASS_INSPECTOR);
+  }
+
+
 
   /*<property name="class inspector">*/
   //------------------------------------------------------------------
@@ -44,6 +46,8 @@ public class ClassInspectorTestModel extends NonConstructorMethodTestModel {
   }
 
   /**
+   * @pre (classInspector != null) ?
+   *        Reflection.methodKind(classInspector) == getMethodKind();
    * @post new.getMethod() == method;
    */
   public final void setClassInspector(Method classInspector) {
@@ -51,12 +55,5 @@ public class ClassInspectorTestModel extends NonConstructorMethodTestModel {
   }
 
   /*</property>*/
-
-
-
-  public PriorityList getTestFactoryList() {
-    // TODO Auto-generated method stub
-    return null;
-  }
 
 }
