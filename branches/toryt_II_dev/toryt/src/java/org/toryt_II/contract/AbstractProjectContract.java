@@ -13,6 +13,8 @@ import org.toryt_II.TorytException;
 
 /**
  * @author Jan Dockx
+ * 
+ * @deprecated
  */
 public abstract class AbstractProjectContract
     extends AbstractContract

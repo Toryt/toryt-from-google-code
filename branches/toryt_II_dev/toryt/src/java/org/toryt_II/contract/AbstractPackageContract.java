@@ -16,6 +16,8 @@ import org.toryt_II.TorytException;
 
 /**
  * @author Jan Dockx
+ * 
+ * @deprecated
  */
 public abstract class AbstractPackageContract
     extends AbstractContract

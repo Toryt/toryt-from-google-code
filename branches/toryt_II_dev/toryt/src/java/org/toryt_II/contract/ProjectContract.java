@@ -19,6 +19,8 @@ import org.toryt_II.TorytException;
  * @invar ! getPackageContracts().contains(null);
  * @invar (forall Object o; getPackageContracts().contains(o);
  *            o instanceof HardPackageContract);
+ *            
+ * @deprecated
  */
 public interface ProjectContract extends Contract {
 

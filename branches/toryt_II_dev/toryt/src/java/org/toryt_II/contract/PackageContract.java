@@ -24,6 +24,7 @@ import org.toryt_II.TorytException;
  * 
  * 
  * MUDO getPackage = getPackage
+ * @deprecated
  * 
  */
 public interface PackageContract extends Contract {

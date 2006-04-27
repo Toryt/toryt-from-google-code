@@ -113,6 +113,8 @@ public interface TypeContract extends Contract {
   /**
    * The union of the method tests of all instance method contracts,
    * all class method contracts and all nested classes contracts.
+   * 
+   * @deprecated
    */
   StraightList getMethodTests() throws TorytException;
 
