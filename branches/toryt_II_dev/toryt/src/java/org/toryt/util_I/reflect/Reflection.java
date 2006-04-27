@@ -1,4 +1,4 @@
-package org.toryt.util_I;
+package org.toryt.util_I.reflect;
 
 
 import java.beans.BeanInfo;
@@ -12,12 +12,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import org.toryt_II.TorytException;
-import org.toryt_II.contract.Contract;
-
 
 /**
  * @mudo (jand) most methods are also in ppw-bean; consolidate
+ * @mudo all methods should have easy 1 or 2 {@link ReflectionException}s
  *
  * @author    Jan Dockx
  */
@@ -37,8 +35,7 @@ public class Reflection {
 
 
 
-  public static Method findMethod(Class type, String signature, Contract excSource)
-      throws TorytException {
+  public static Method findMethod(Class type, String signature) throws NoSuchMethodException {
     assert type != null;
     assert signature != null;
     String search = type.getName() + "." + signature;
@@ -48,11 +45,10 @@ public class Reflection {
         return methods[i];
       }
     }
-    throw new TorytException(excSource, null);
+    throw new NoSuchMethodException(type.getName() + "." + signature);
   }
 
-  public static Constructor findConstructor(Class type, String signature, Contract excSource)
-  throws TorytException {
+  public static Constructor findConstructor(Class type, String signature) throws NoSuchMethodException {
     assert type != null;
     assert signature != null;
     Constructor[] constructors = type.getConstructors();
@@ -61,16 +57,20 @@ public class Reflection {
         return constructors[i];
       }
     }
-    throw new TorytException(excSource, null);
+    throw new NoSuchMethodException(type.getName() + "." + signature);
   }
 
-  public static Class loadForName(String fqn) throws TorytException {
+  public static Class loadForName(String fqn) throws CouldNotLoadClassException {
     assert fqn != null;
     try {
       return Class.forName(fqn);
     }
-    catch (ClassNotFoundException e) {
-      throw new TorytException(null, e);
+    catch (ClassNotFoundException cnfExc) {
+      throw new CouldNotLoadClassException(fqn, cnfExc);
+    }
+    catch (LinkageError lErr) {
+      // also catches ExceptionInInitializerError
+      throw new CouldNotLoadClassException(fqn, lErr);
     }
   }
 
@@ -87,14 +87,22 @@ public class Reflection {
    * @param fqcn
    *        The original fully qualified class name to derive
    *        the prefixed class name from.
-   * @throws ClassNotFoundException
-   * @throws IOException
+   * @throws CouldNotInstantiateBeanException
    */
   public static Object instantiatePrefixed(ClassLoader cl,
                                            final String prefix,
                                            final String fqcn)
-      throws IOException, ClassNotFoundException {
-    return java.beans.Beans.instantiate(cl, prefixedFqcn(prefix, fqcn));
+      throws CouldNotInstantiateBeanException {
+    String prefixedFqcn = prefixedFqcn(prefix, fqcn);
+    try {
+      return java.beans.Beans.instantiate(cl, prefixedFqcn);
+    }
+    catch (ClassNotFoundException cnfExc) {
+      throw new CouldNotInstantiateBeanException(prefixedFqcn, cnfExc);
+    }
+    catch (IOException ioExc) {
+      throw new CouldNotInstantiateBeanException(prefixedFqcn, ioExc);
+    }
   }
 
   private final static String PREFIXED_FQCN_PATTERN = "\\.";
@@ -137,36 +145,15 @@ public class Reflection {
    * @return    Object
    *            The value of the field named <code>constantName</code>
    *            in class <code>fqClassName</code>.
-   * @throws    LinkageError
-   *            Error retrieving value.
-   * @throws    ClassNotFoundException
-   *            Could not find class <code>fqClassName</code>.
-   * @throws    NoSuchFieldException
-   *            Could not find a field named <code>constantName</code>
-   *            in class <code>fqClassName</code>.
-   * @throws    NullPointerException
-   *            Error retrieving value.
-   * @throws    SecurityException
-   *            Not allowed to read the value of the field named
-   *            <code>constantName</code>
-   *            in class <code>fqClassName</code>.
-   * @throws    IllegalAccessException
-   *            The field named
-   *            <code>constantName</code>
-   *            in class <code>fqClassName</code> is not public.
-   * @throws    IllegalArgumentException
+   * @throws    CouldNotLoadClassException
+   *            Could not load class <code>fqClassName</code>.
+   * @throws    CouldNotGetConstantException
    *            Error retrieving value.
    */
   public static Object constant(final String fqClassName,
                                 final String constantName)
-      throws LinkageError,
-             ClassNotFoundException,
-             NoSuchFieldException,
-             NullPointerException,
-             SecurityException,
-             IllegalAccessException,
-             IllegalArgumentException {
-    Class clazz = Class.forName(fqClassName); // LinkageError, ClassNotFoundException
+      throws CouldNotLoadClassException, CouldNotGetConstantException {
+    Class clazz = loadForName(fqClassName);
     return constant(clazz, constantName);
   }
 
@@ -181,36 +168,36 @@ public class Reflection {
    * @return    Object
    *            The value of the field named <code>constantName</code>
    *            in class <code>clazz</code>.
-   * @throws    NoSuchFieldException
-   *            Could not find a field named <code>constantName</code>
-   *            in class <code>fqClassName</code>.
-   * @throws    NullPointerException
-   *            Error retrieving value.
-   * @throws    SecurityException
-   *            Not allowed to read the value of the field named
-   *            <code>constantName</code>
-   *            in class <code>fqClassName</code>.
-   * @throws    IllegalAccessException
-   *            The field named
-   *            <code>constantName</code>
-   *            in class <code>fqClassName</code> is not public.
-   * @throws    IllegalArgumentException
+   * @throws    CouldNotGetConstantException
    *            Error retrieving value.
    */
   public static Object constant(final Class clazz,
                                 final String constantName)
-      throws NoSuchFieldException,
-             NullPointerException,
-             SecurityException,
-             IllegalAccessException,
-             IllegalArgumentException {
-    Field field = clazz.getField(constantName); // NoSuchFieldException
-                                                // NullPointerException
-                                                // SecurityException
-    return field.get(null); // IllegalAccessException
-                            // IllegalArgumentException
-                            // NullPointerException
-                            // ExceptionInInitializerError
+      throws CouldNotGetConstantException {
+    try {
+      Field field = clazz.getField(constantName); // NoSuchFieldException
+                                                  // NullPointerException
+                                                  // SecurityException
+      return field.get(null); // IllegalAccessException
+                              // IllegalArgumentException
+                              // NullPointerException
+                              // ExceptionInInitializerError
+    }
+    catch (NoSuchFieldException nsfExc) {
+      throw new CouldNotGetConstantException(clazz, constantName, nsfExc);
+    }
+    catch (NullPointerException npExc) {
+      throw new CouldNotGetConstantException(clazz, constantName, npExc);
+    }
+    catch (SecurityException sExc) {
+      throw new CouldNotGetConstantException(clazz, constantName, sExc);
+    }
+    catch (IllegalAccessException iaExc) {
+      throw new CouldNotGetConstantException(clazz, constantName, iaExc);
+    }
+    catch (IllegalArgumentException iaExc) {
+      throw new CouldNotGetConstantException(clazz, constantName, iaExc);
+    }
   }
 
   /**
@@ -272,10 +259,8 @@ public class Reflection {
       }
     }
     if (descriptor == null) {
-      throw new IntrospectionException("No property descriptor found for " //$NON-NLS-1$
-                                       + propertyName
-                                       + " in " //$NON-NLS-1$
-                                       + beanClass.getName());
+      throw new IntrospectionException("No property descriptor found for " +
+                                       propertyName + " in " + beanClass.getName());
     }
     return descriptor;
   }
@@ -316,9 +301,9 @@ public class Reflection {
       result = inspector.invoke(bean, (Object[])null);
     }
     catch (IllegalArgumentException iaExc) {
-      assert false : "Should not happen, since there are no " //$NON-NLS-1$
-                     + "arguments, and the implicit argument is " //$NON-NLS-1$
-                     + "not null and of the correct type"; //$NON-NLS-1$
+      assert false : "Should not happen, since there are no " +
+                     "arguments, and the implicit argument is " +
+                     "not null and of the correct type";
     }
     /* ExceptionInInitializerError can occur with invoke, but we do not
         take into account errors */
@@ -352,7 +337,7 @@ public class Reflection {
     assert beanClass != null;
     Method inspector
         = getPropertyDescriptor(beanClass, propertyName).getReadMethod();
-        // this can be null for an read-protected property
+        // this can be null for a read-protected property
     if (inspector == null) {
       throw new NoSuchMethodException("No read method for property " //$NON-NLS-1$
                                       + propertyName);

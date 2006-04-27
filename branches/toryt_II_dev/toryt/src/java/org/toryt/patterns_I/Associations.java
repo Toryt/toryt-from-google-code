@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.toryt.util_I.Reflection;
+import org.toryt.util_I.reflect.Reflection;
 
 
 /**
