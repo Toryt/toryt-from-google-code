@@ -9,7 +9,6 @@ import java.util.Set;
 import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.StraightList;
 import org.toryt.util_I.Reflection;
-import org.toryt_II.AbstractContract;
 import org.toryt_II.TorytException;
 import org.toryt_II.contract.TypeContract.AllMembersCoveredTest;
 import org.toryt_II.contract.condition.Condition;

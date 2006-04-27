@@ -13,7 +13,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.toryt_II.AbstractTest;
 import org.toryt_II.TorytException;
 import org.toryt_II.contract.MethodContract;
 import org.toryt_II.contract.TypeContract;

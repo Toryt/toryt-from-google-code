@@ -1,13 +1,11 @@
-package org.toryt_II;
+package org.toryt_II.contract;
 
 
 import java.util.Set;
 
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.contract.MethodContract;
-import org.toryt_II.contract.PackageContract;
-import org.toryt_II.contract.ProjectContract;
-import org.toryt_II.contract.TypeContract;
+import org.toryt_II.TorytException;
+import org.toryt_II.test.Test;
 
 
 
@@ -15,8 +13,7 @@ import org.toryt_II.contract.TypeContract;
  * A contract can be tested. The {@link #getTests() tests} of type {@link Test}
  * are run by a {@link Test} in order.
  * 
- * Contracts are gathered in a tree of {@link ProjectContract project contracts},
- * {@link PackageContract package contracts}, {@link TypeContract type contracts},
+ * Contracts are gathered in a tree of {@link TypeContract type contracts},
  * and {@link MethodContract method contracts}.
  * 
  * @author Jan Dockx
@@ -52,17 +49,21 @@ public interface Contract {
   /**
    * @return getExtraTests() + getMethodTests();
    * @throws TorytException
+   * 
+   * @deprecated
    */
   StraightList getTests() throws TorytException;
 
   /**
    * @throws TorytException
    * @basic
+   * @deprecated
    */
   StraightList getMethodTests() throws TorytException;
 
   /**
    * @basic
+   * @deprecated
    */
   StraightList getExtraTests();
 

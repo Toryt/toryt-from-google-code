@@ -12,6 +12,8 @@ import org.toryt_II.contract.PackageContract;
 
 /**
  * @author Jan Dockx
+ * 
+ * @deprecated
  */
 public class HardProjectContract
     extends AbstractProjectContract {

@@ -12,8 +12,8 @@ import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.NullFirstStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.CaseProvider;
 import org.toryt_II.TorytException;
+import org.toryt_II.cases.CaseProvider;
 import org.toryt_II.main.Contracts;
 
 

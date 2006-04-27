@@ -16,8 +16,8 @@ import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.Reflection;
 import org.toryt.util_I.collections.priorityList.PriorityList;
-import org.toryt_II.Contract;
 import org.toryt_II.contract.ClassContract;
+import org.toryt_II.contract.Contract;
 import org.toryt_II.main.Contracts;
 
 

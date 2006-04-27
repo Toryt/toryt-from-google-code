@@ -11,7 +11,6 @@ import java.util.Set;
 import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.AbstractContract;
 import org.toryt_II.TorytException;
 import org.toryt_II.contract.condition.Condition;
 import org.toryt_II.contract.condition.ExceptionCondition;

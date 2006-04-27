@@ -1,5 +1,7 @@
 package org.toryt_II;
 
+import org.toryt_II.contract.Contract;
+
 
 
 /**

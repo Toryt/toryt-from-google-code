@@ -10,9 +10,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.AbstractTest;
-import org.toryt_II.Contract;
 import org.toryt_II.TorytException;
+import org.toryt_II.test.AbstractTest;
 
 
 /**

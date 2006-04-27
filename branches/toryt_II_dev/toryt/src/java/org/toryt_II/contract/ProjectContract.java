@@ -4,7 +4,6 @@ package org.toryt_II.contract;
 import java.util.Set;
 
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.Contract;
 import org.toryt_II.TorytException;
 
 

@@ -21,10 +21,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.AbstractTest;
-import org.toryt_II.Contract;
-import org.toryt_II.Test;
 import org.toryt_II.TorytException;
+import org.toryt_II.contract.Contract;
+import org.toryt_II.test.AbstractTest;
+import org.toryt_II.test.Test;
 
 
 /**

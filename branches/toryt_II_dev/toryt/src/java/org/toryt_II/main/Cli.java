@@ -16,9 +16,9 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.toryt_II.TestModel;
-import org.toryt_II.TestModelFactory;
 import org.toryt_II.testmodel.DefaultTestModelFactory;
+import org.toryt_II.testmodel.TestModel;
+import org.toryt_II.testmodel.TestModelFactory;
 
 
 /**

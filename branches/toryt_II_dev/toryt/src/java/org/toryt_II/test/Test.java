@@ -1,6 +1,8 @@
-package org.toryt_II;
+package org.toryt_II.test;
 
 import java.io.PrintStream;
+
+import org.toryt_II.TorytException;
 
 
 

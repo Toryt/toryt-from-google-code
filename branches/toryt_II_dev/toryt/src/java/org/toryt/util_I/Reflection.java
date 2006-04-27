@@ -12,8 +12,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import org.toryt_II.Contract;
 import org.toryt_II.TorytException;
+import org.toryt_II.contract.Contract;
 
 
 /**
