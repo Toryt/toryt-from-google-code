@@ -3,7 +3,7 @@ package org.toryt_II.cases;
 
 import org.toryt.support.straightlist.NullFirstStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 
 
 /**
@@ -33,29 +33,29 @@ public interface CaseProvider {
   /**
    * All possible relevant cases for this type,
    * with <code>null</code>.
-   * @throws TorytException
+   * @throws OLDTorytException
    */
-  NullFirstStraightList getCasesWithNull() throws TorytException;
+  NullFirstStraightList getCasesWithNull() throws OLDTorytException;
 
   /**
    * All possible relevant cases for this type,
    * without <code>null</code>.
-   * @throws TorytException
+   * @throws OLDTorytException
    */
-  StraightList getCases() throws TorytException;
+  StraightList getCases() throws OLDTorytException;
 
   /**
    * A limited number of most important cases for this type,
    * without <code>null</code>.
-   * @throws TorytException
+   * @throws OLDTorytException
    */
-  NullFirstStraightList getSomeCasesWithNull() throws TorytException;
+  NullFirstStraightList getSomeCasesWithNull() throws OLDTorytException;
 
   /**
    * A limited number of most important cases for this type,
    * with <code>null</code>.
-   * @throws TorytException
+   * @throws OLDTorytException
    */
-  StraightList getSomeCases() throws TorytException;
+  StraightList getSomeCases() throws OLDTorytException;
 
 }

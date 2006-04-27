@@ -9,8 +9,8 @@ import java.util.Map;
 
 import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt.util_I.Reflection;
-import org.toryt_II.TorytException;
+import org.toryt.util_I.reflect.Reflection;
+import org.toryt_II.OLDTorytException;
 
 
 /**
@@ -253,7 +253,7 @@ public final class Cases {
    *        {@link TestObjectList} for.
    */
   public static StraightList findTestObjectList(String fqcn)
-      throws TorytException {
+      throws OLDTorytException {
     StraightList result = null;
     result = (StraightList)TEST_OBJECT_LISTS.get(fqcn);
     if (result != null) {
@@ -275,7 +275,7 @@ public final class Cases {
       return cached(fqcn, result);
     }
     // BeanTOL impossible; give up
-    throw new TorytException(null, null);
+    throw new OLDTorytException(null, null);
   }
 
   private static StraightList cached(String key, StraightList tol) {
@@ -294,13 +294,13 @@ public final class Cases {
   public static final String TEST_PREFIX = "_Test_";
 
   private static StraightList findTOLClass(String totn)
-      throws TorytException {
+      throws OLDTorytException {
     try {
       return (StraightList)Reflection.
                   instantiatePrefixed(null, TOL_PREFIX, totn);
     }
     catch (IOException e) {
-      throw new TorytException(null, null);
+      throw new OLDTorytException(null, null);
 //                               "class "
 //                          + Beans.prefixedFqcn(TOL_PREFIX, totn)
 //                          + " found, but failed to read",
@@ -317,23 +317,23 @@ public final class Cases {
   public static final String TOL_CONSTANT_NAME = "TEST_OBJECT_LIST";
 
   private static StraightList findTOLVariable(String totn)
-      throws TorytException {
+      throws OLDTorytException {
     try {
       return (StraightList)Reflection.constant(
                  Reflection.prefixedFqcn(TEST_PREFIX, TOL_CONSTANT_NAME),
                  totn);
     }
     catch (NullPointerException e) {
-      throw new TorytException(null, e);
+      throw new OLDTorytException(null, e);
     }
     catch (SecurityException e) {
-      throw new TorytException(null, e);
+      throw new OLDTorytException(null, e);
     }
     catch (IllegalArgumentException e) {
-      throw new TorytException(null, e);
+      throw new OLDTorytException(null, e);
     }
     catch (LinkageError e) {
-      throw new TorytException(null, e);
+      throw new OLDTorytException(null, e);
     }
     catch (ClassNotFoundException e) {
       return null;
@@ -342,12 +342,12 @@ public final class Cases {
       return null;
     }
     catch (IllegalAccessException e) {
-      throw new TorytException(null, e);
+      throw new OLDTorytException(null, e);
     }
   }
 
   private static /*Bean*/StraightList  createBTOL(String totn)
-      throws TorytException {
+      throws OLDTorytException {
     Object createAWarning;
     return null; // MUDO stub
   }
@@ -364,7 +364,7 @@ public final class Cases {
    * @throws TestFault
    */
   public static StraightList findTestObjectList(Class type)
-      throws TorytException {
+      throws OLDTorytException {
     assert type != null;
     return findTestObjectList(type.getName());
   }
