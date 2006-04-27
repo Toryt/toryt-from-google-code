@@ -1,6 +1,9 @@
 package org.toryt_II.testobject;
 
 
+import org.toryt_II.TorytException;
+
+
 /**
  * Signals that no <acronym title="Test Object Factory Priority List">TOF PL</acronym>
  * could be instantiated for class {@link #getForClass()}.
@@ -10,10 +13,8 @@ package org.toryt_II.testobject;
  * @invar getForClass() != null;
  * @invar getMessage().equals(forClass.getName());
  * @invar getCause() == null;
- *
- * @mudo extend general TorytException
  */
-public class NoTofPlException extends Exception {
+public class NoTofPlException extends TorytException {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

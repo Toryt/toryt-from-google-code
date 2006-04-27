@@ -1,12 +1,10 @@
 package org.toryt_II;
 
-import org.toryt_II.contract.Contract;
-
-
 
 /**
- * Exceptions thrown by Toryt code, or because of faulty test code.
- * <em>Not</em> exceptions thrown by the tested code.
+ * Toryt code can throw exceptions of any kind. When we need to communicate a
+ * Toryt-related issue, an instance of this class or a subclass is used.
+ * Normal execution of tests should never throw an exception.
  */
 public class TorytException extends Exception {
 
@@ -21,21 +19,38 @@ public class TorytException extends Exception {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
-  
+
 
   /**
-   * @post new.getTest() == test;
+   * @post new.getMessage() == null;
+   * @post new.getCause() == null;
+   */
+  public TorytException() {
+    super();
+  }
+
+  /**
+   * @post (message == null) ? new.getMessage() == null : message.equals(new.getMessage());
+   * @post new.getCause() == null;
+   */
+  public TorytException(String message) {
+    super(message);
+  }
+
+  /**
+   * @post new.getMessage() == null;
    * @post new.getCause() == cause;
    */
-  public TorytException(Contract test, Throwable cause) {
+  public TorytException(Throwable cause) {
     super(cause);
-    $test = test;
   }
-  
-  private Contract $test;
-  
-  public final Contract getTest() {
-    return $test;
+
+  /**
+   * @post (message == null) ? new.getMessage() == null : message.equals(new.getMessage());
+   * @post new.getCause() == cause;
+   */
+  public TorytException(String message, Throwable cause) {
+    super(message, cause);
   }
-  
+
 }
