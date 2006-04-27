@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.toryt.util_I.reflect.CouldNotInstantiateBeanException;
+import org.toryt.util_I.reflect.CouldNotLoadClassException;
 import org.toryt.util_I.reflect.Reflection;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.ClassContract;
@@ -69,9 +71,10 @@ public class Contracts {
    *
    * @throws ClassNotFoundException
    * @throws IOException
+   * @throws CouldNotInstantiateBeanException
    */
   public static TypeContract typeContractInstance(Class type)
-      throws IOException, ClassNotFoundException {
+      throws CouldNotInstantiateBeanException {
     assert type != null;
     TypeContract tc = (TypeContract)CONTRACT_CACHE.get(type);
     if (tc == null) {
@@ -100,11 +103,13 @@ public class Contracts {
    *
    * @throws ClassNotFoundException
    * @throws IOException
+   * @throws CouldNotInstantiateBeanException
+   * @throws CouldNotLoadClassException
    */
   public static ClassContract classContractInstance(String className)
-      throws LinkageError, ExceptionInInitializerError, IOException, ClassNotFoundException {
+      throws CouldNotInstantiateBeanException, CouldNotLoadClassException {
     assert className != null;
-    Class clazz = Class.forName(className);
+    Class clazz = Reflection.loadForName(className);
     return classContractInstance(clazz);
   }
 
@@ -125,9 +130,10 @@ public class Contracts {
    *
    * @throws ClassNotFoundException
    * @throws IOException
+   * @throws CouldNotInstantiateBeanException
    */
   public static ClassContract classContractInstance(Class clazz)
-      throws IOException, ClassNotFoundException {
+      throws CouldNotInstantiateBeanException {
     assert clazz != null;
     if (clazz.isInterface()) {
       return null;
@@ -198,22 +204,17 @@ public class Contracts {
           try {
             hPc.addClassContract(classContractInstance(fqcn));
           }
-          catch (ExceptionInInitializerError e) {
-            assert false : "ExceptionInInitializerErrorshould not happen: " + e;
-          }
-          catch (OLDTorytException e) {
-            // MUDO we need to huntFor this first, so catch Exception; it is deep!
-            assert false : "TorytExceptionshould not happen: " + e;
-          }
-          catch (LinkageError e) {
-            assert false : "LinkageErrorshould not happen: " + e;
-          }
-          catch (IOException e) {
-            assert false : "IOExceptionshould not happen: " + e;
-          }
-          catch (ClassNotFoundException e) {
+          catch (CouldNotInstantiateBeanException e) {
             // MUDO log this as a test failure or a warning or something
             System.out.println("No contract class found for class " + fqcn);
+          }
+          catch (CouldNotLoadClassException e) {
+            // MUDO log this as a test failure or a warning or something
+            System.out.println("No contract class found for class " + fqcn);
+          }
+          catch (OLDTorytException e) {
+            // TODO Auto-generated catch block
+            assert false : "OLDTorytExceptionshould not happen: " + e;
           }
         }
       }

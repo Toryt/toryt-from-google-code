@@ -14,8 +14,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
-import org.toryt.util_I.Reflection;
 import org.toryt.util_I.collections.priorityList.PriorityList;
+import org.toryt.util_I.reflect.CouldNotGetConstantException;
+import org.toryt.util_I.reflect.CouldNotInstantiateBeanException;
+import org.toryt.util_I.reflect.Reflection;
 import org.toryt_II.contract.ClassContract;
 import org.toryt_II.contract.Contract;
 import org.toryt_II.main.Contracts;
@@ -349,27 +351,15 @@ public class TofPlFactory {
         addCachedTofPl(forClass, result);
         break;
       }
-      catch (IOException ioExc) {
-        logTofPlFromBasePackageListInstantiationProblem(forClass, fqcnToPrefix, ioExc);
-      }
-      catch (ClassNotFoundException cnfExc) {
-        logTofPlFromBasePackageListInstantiationProblem(forClass, fqcnToPrefix, cnfExc);
-      }
-      catch (ClassCastException ccExc) {
-        logTofPlFromBasePackageListInstantiationProblem(forClass, fqcnToPrefix, ccExc);
+      catch (CouldNotInstantiateBeanException cnibExc) {
+        if (LOG.isDebugEnabled()) {
+          LOG.debug("Could not create TOF PL for class " + forClass +
+                    " using FQCN \"" + Reflection.prefixedFqcn(CLASS_NAME_PREFIX, fqcnToPrefix) +
+                    "\" (using base packages in base package list)", cnibExc);
+        }
       }
     }
     return result; // null if no TOF PL found this way
-  }
-
-  private static void logTofPlFromBasePackageListInstantiationProblem(Class forClass,
-                                                                      String fqcnToPrefix,
-                                                                      Exception exc) {
-    if (LOG.isDebugEnabled()) {
-      LOG.debug("Could not create TOF PL for class " + forClass +
-                " using FQCN \"" + Reflection.prefixedFqcn(CLASS_NAME_PREFIX, fqcnToPrefix) +
-                "\" (using base packages in base package list)", exc);
-    }
   }
 
   private static PriorityList getTofPlFromContractConstant(Class forClass) {
@@ -389,41 +379,21 @@ public class TofPlFactory {
         }
       }
     }
-    catch (IOException ioExc) {
-      logTofPlFromContractConstantInstantiationProblem(forClass, contract, ioExc);
+    catch (CouldNotGetConstantException cngcExc) {
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("Could not retrieve TOF PL for class " + forClass +
+                  "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +
+                  contract + ")", cngcExc);
+      }
     }
-    catch (ClassNotFoundException cnfExc) {
-      logTofPlFromContractConstantInstantiationProblem(forClass, contract, cnfExc);
-    }
-    catch (NullPointerException npExc) {
-      logTofPlFromContractConstantInstantiationProblem(forClass, contract, npExc);
-    }
-    catch (SecurityException sExc) {
-      logTofPlFromContractConstantInstantiationProblem(forClass, contract, sExc);
-    }
-    catch (IllegalArgumentException iaExc) {
-      logTofPlFromContractConstantInstantiationProblem(forClass, contract, iaExc);
-    }
-    catch (NoSuchFieldException nsfExc) {
-      logTofPlFromContractConstantInstantiationProblem(forClass, contract, nsfExc);
-    }
-    catch (IllegalAccessException iaExc) {
-      logTofPlFromContractConstantInstantiationProblem(forClass, contract, iaExc);
-    }
-    catch (ClassCastException ccExc) {
-      logTofPlFromContractConstantInstantiationProblem(forClass, contract, ccExc);
+    catch (CouldNotInstantiateBeanException cnibExc) {
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("Could not retrieve TOF PL for class " + forClass +
+                  "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +
+                  contract + ")", cnibExc);
+      }
     }
     return result;
-  }
-
-  private static void logTofPlFromContractConstantInstantiationProblem(Class forClass,
-                                                                       ClassContract contract,
-                                                                       Exception exc) {
-    if (LOG.isDebugEnabled()) {
-      LOG.debug("Could not retrieve TOF PL for class " + forClass +
-                "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +
-                contract + ")", exc);
-    }
   }
 
   /**
