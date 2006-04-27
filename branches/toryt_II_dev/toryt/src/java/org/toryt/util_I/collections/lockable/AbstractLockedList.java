@@ -58,10 +58,38 @@ public abstract class AbstractLockedList extends AbstractLockedCollection
     return (o != null) &&
            (o instanceof List) &&
            (size() == ((List)o).size()) &&
-           containsAll((List)o) &&
-           ((List)o).containsAll(this);
+           hasSameElementsOnSamePlace((List)o);
   }
 
+  /**
+   * @pre list != null;
+   * @pre list.size() == size();
+   */
+  protected final boolean hasSameElementsOnSamePlace(List other) {
+    assert other != null;
+    assert other.size() == size();
+    ListIterator thisLi = listIterator();
+    ListIterator otherLi = other.listIterator();
+    while (thisLi.hasNext()) {
+      Object thisInstance = thisLi.next();
+      Object otherInstance = otherLi.next();
+      if (((thisInstance == null) && (otherInstance != null)) ||
+          ((thisInstance != null) && (! thisInstance.equals(otherInstance)))) {
+        return false;
+      }
+    }
+    // if we get here, it is ok
+    return true;
+  }
+
+  /**
+   * This implementation is very expensive for lazy collections.
+   *
+   * @protected
+   * General implementation as high in the inheritance
+   * hierarchy as possible. Overwrite when a more performant
+   * implementation is possible.
+   */
   public int hashCode() {
     int hashCode = 1;
     Iterator i = iterator();
@@ -70,6 +98,14 @@ public abstract class AbstractLockedList extends AbstractLockedCollection
         hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
     }
     return hashCode;
+  }
+
+  public final Iterator iterator() {
+    return listIterator();
+  }
+
+  public final ListIterator listIterator() {
+    return listIterator(0);
   }
 
   public abstract class AbstractLockedListIterator

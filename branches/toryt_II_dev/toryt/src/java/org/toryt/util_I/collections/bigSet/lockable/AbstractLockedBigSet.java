@@ -2,10 +2,7 @@ package org.toryt.util_I.collections.bigSet.lockable;
 
 
 import java.math.BigInteger;
-import java.util.Collection;
 
-import org.toryt.patterns_I.Assertion;
-import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.collections.bigSet.BigSet;
 import org.toryt.util_I.collections.lockable.AbstractLockedSet;
 
@@ -130,16 +127,5 @@ public abstract class AbstractLockedBigSet extends AbstractLockedSet
   }
 
   // no need to override hashCode()
-
-  public final boolean containsAll(Collection c) {
-    return Collections.forAll(c,
-                              new Assertion() {
-
-                                    public boolean isTrueFor(Object o) {
-                                      return contains(o);
-                                    }
-
-                                  });
-  }
 
 }

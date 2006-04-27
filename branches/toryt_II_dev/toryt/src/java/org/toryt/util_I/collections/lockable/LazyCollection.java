@@ -26,7 +26,7 @@ import java.util.Collection;
  *
  * @invar isLocked();
  */
-public interface LazyCollection extends Collection, LockableCollection {
+public interface LazyCollection extends LockableCollection {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

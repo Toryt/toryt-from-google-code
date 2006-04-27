@@ -41,6 +41,7 @@ public abstract class AbstractComponentPriorityList extends AbstractLockedPriori
 
   /**
    * @pre priorityElementType != null;
+   * @pre size >= 0;
    * @pre bigSize != null;
    * @pre bigSize >= 0;
    * @pre components != null;
@@ -49,9 +50,11 @@ public abstract class AbstractComponentPriorityList extends AbstractLockedPriori
    *        components[i].isLocked());
    * @post Collections.containsAll(components, new.getComponents());
    */
-  public AbstractComponentPriorityList(Class priorityElementType, BigInteger cardinality,
+  public AbstractComponentPriorityList(Class priorityElementType,
+                                       int size,
                                        PriorityList[] components) {
-    super(priorityElementType, cardinality);
+    super(priorityElementType, calculateCardinality(components));
+    assert size >= 0;
     assert components != null;
     assert Collections.noNull(components);
     assert Collections.forAll(components,
@@ -62,7 +65,36 @@ public abstract class AbstractComponentPriorityList extends AbstractLockedPriori
                                     }
 
                                   });
+    $size = size;
     $components = (PriorityList[])ArrayUtils.clone(components);
+  }
+
+  private static BigInteger calculateCardinality(PriorityList[] components) {
+    BigInteger result = BigInteger.ZERO;
+    for (int i = 0; i < components.length; i++) {
+      result = result.add(components[i].getCardinality());
+    }
+    return result;
+  }
+
+  /**
+   * This method is very expensive, as it iterates over all buckets
+   * (and thus generates them).
+   *
+   * @deprecated
+   */
+  public final Object[] toArray() {
+    return super.toArray();
+  }
+
+  /**
+   * This method is very expensive, as it iterates over all buckets
+   * (and thus generates them).
+   *
+   * @deprecated
+   */
+  public final Object[] toArray(Object[] a) {
+    return super.toArray(a);
   }
 
 
@@ -86,5 +118,46 @@ public abstract class AbstractComponentPriorityList extends AbstractLockedPriori
   private final PriorityList[] $components;
 
   /*</property>*/
+
+  /**
+   * @return (forall int i; (i > 0) && (i < getComponents().length);
+   *            getComponents()[i].isEmpty());
+   */
+  public final boolean isEmpty() {
+    return $size == 0;
+  }
+
+  public final int hashCode() {
+    int acc = 0;
+    for (int i =0; i < $components.length; i++) {
+      acc += ($components[i] == null) ? 0 : $components[i].hashCode();
+    }
+    return acc;
+  }
+
+  public final boolean containsPriorityElement(final Object o) {
+    return Collections.exists(getComponents(),
+                              new Assertion() {
+                                    public boolean isTrueFor(Object s) {
+                                      return (s != null) && ((PriorityList)s).containsPriorityElement(o);
+                                    }
+                                  });
+  }
+
+  /**
+   * @return (sum int i; (i >=0 ) && (i < getComponents().length);
+   *            getComponents()[i].getCardinality());
+   *
+  public final BigInteger getCardinality();
+   */
+
+  public final int size() {
+    return $size;
+  }
+
+  /**
+   * @invar $size >= 0;
+   */
+  private final int $size;
 
 }

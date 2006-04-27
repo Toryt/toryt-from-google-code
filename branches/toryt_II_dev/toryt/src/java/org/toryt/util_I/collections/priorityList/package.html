@@ -1554,16 +1554,46 @@ Then <code>&exist; u &isin; 0..n-1</sub>, (k<sub>u</sub><sup>b</sup> = k<sub>u</
 <h2>Conclusions</h2>
 <p>Note that, because we only combine 2 lists, if the bucket priority and 1 component
   is given, the other component of the tuple is completely determined: <code>P = i<sub>0</sub>  + i<sub>1</sub></code>, and thus <code>i<sub>1</sub> = P - i<sub>0</sub></code> and <code>i<sub>0</sub> = P - i<sub>1</sub></code>.</p>
-<p>It should be clear from the examples that there are 3 different parts in the bucket
-  structure: on the left hand side, there is a part where <code>#B<sub>P</sub></code> grows by <code>1</code> each
-  step. This continues until as long as <code>P &lt; min(l<sub>0</sub>, l<sub>1</sub>)</code>. In this part, <code>#B<sub>P</sub> = P + 1</code>, with <code>t &isin 0..min(l<sub>0</sub>, l<sub>1</sub>)-1</code>, because:</p>
+<p>It should be clear from the examples that there are 3 different parts
+  in the bucket structure: on the left hand side, there is a part where <code>#B<sub>P</sub></code> grows
+  by <code>1</code> each
+  step. This continues until as long as <code>P &lt; min(l<sub>0</sub>,
+  l<sub>1</sub>)</code>. In this part, <code>#B<sub>P</sub> = P + 1</code>,
+  with <code>t &isin; 0..min(l<sub>0</sub>, l<sub>1</sub>) - 1</code>,
+  because:</p>
 <ul>
   <li>the largest <code>i<sub>0</sub></code> possible in any of these buckets is <code>P</code>, since the smallest possible <code>i<sub>1</sub> = 0</code>., and there is an <code>i<sub>0</sub> = P</code>, because <code>P &lt; min(l<sub>0</sub>, l<sub>1</sub>)</code>;</li>
-  <li>the elements in the bucket are exactly <code>&forall; t &isin; 0..P: (t, P -t)</code>.</li>
+  <li>the elements in the bucket are exactly <code>&forall; t &isin; 0..P:
+      (t, P - t)</code>.</li>
 </ul>
 <p>Thus, in this part, <code>&Sigma;#B<sub>P</sub> = &Sigma;<sub>p=0..P</sub>(p + 1)</code>. Or still, <code>&Sigma;#B<sub>P</sub> = ((P + 1) + 1).((P + 1) / 2)</code>  (Gau&szlig;). Or better:</p>
 <p><code>&Sigma;#B<sub>P</sub> = (P + 2) (P + 1) / 2</code></p>
-<p>Thus, with the order proposed in the example, with j &lt; <code>&Sigma;#B<sub>min(l<sub>0</sub>, l<sub>1</sub>)-1</sub> = (min(l<sub>0</sub>, l<sub>1</sub>)+1) min(l<sub>0</sub>, l<sub>1</sub>) / 2</code>, we can easily find out in which bucket j must be sougth. It
-  is the bucket <code>P</code> for which <code>&Sigma;#B<sub>P-1</sub></code> &lt; j &lt; <code>&Sigma;#B<sub>P</sub></code> (where  <code>&Sigma;#B<sub>-1</sub> = 0</code> by definition). r[j] then is <code>(j - &Sigma;#B<sub>P-1</sub>, P - (j - &Sigma;#B<sub>P-1</sub>))</code>.</p>
+<p>Thus, with the order proposed in the example, with j &lt; <code>&Sigma;#B<sub>min(l<sub>0</sub>,
+      l<sub>1</sub>)-1</sub> = (min(l<sub>0</sub>, l<sub>1</sub>) + 1)
+      min(l<sub>0</sub>,
+      l<sub>1</sub>) / 2</code>, we can easily find out in which bucket
+      j must be sougth. It is the bucket <code>P</code> for which <code>&Sigma;#B<sub>P-1</sub></code> &lt; j &lt; <code>&Sigma;#B<sub>P</sub></code> (where  <code>&Sigma;#B<sub>-1</sub> =
+      0</code> by definition). r[j] then is <code>(j - &Sigma;#B<sub>P-1</sub>,
+      P - (j - &Sigma;#B<sub>P-1</sub>))</code>.</p>
+<h1>Minimal Processing</h1>
+<p>Since priority list combinations can grow extremely large, in some circumstances
+  we are interested to now whether we have dealt with combinations   that
+  contain at least elements of a certain priority. We would like to know,
+  e.g., which combination bucket priority guarantees that elements of a
+  certain priority level of all components are in that bucket or buckets
+  of higher priority.</p>
+<p>Suppose this demanded priority level is <code>p</code>. A bucket that
+  contains the combinations <code>(p, 0, 0, 0, …)</code>, <code>(0, p,
+  0, 0, …)</code>, <code>(0, 0, p, 0, …), (0, 0, 0, p, …)</code>, etcetera
+  fullfils the condition. For all these combinations, the priority is <code>p</code>,
+  so they are elements of the combination bucket with priority <code>p</code>.</p>
+<p>We might also be interested to know which combination bucket priority
+  guarantees that elements of a certain priority level of all components
+  are combined with other elements of that same priority level of all components.
+  The combination element that guarantees that is <code>(p, p, p, p, …)</code>,
+  if <code>p</code> is not larger than the number of buckets in that component.
+  That commbination element is in the combination bucket with priority <code>np</code>.
+  When we take into account the lenght of the component lists, the formula
+  is <code>&Sigma;<sub>i &isin; 0..n-1</sub>min(p, l<sub>i</sub>)</code>.</p>
 </body>
 </html>

@@ -18,7 +18,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  * @author Jan Dockx
  *
  */
-public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityList {
+public class ProductPriorityList extends AbstractLazyLockedComponentPriorityList {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -34,7 +34,7 @@ public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityLi
 
 
 
-  private BiProductPriorityList(PriorityList leftFactor, PriorityList rightFactor, int fromIndex, int toIndex) {
+  private ProductPriorityList(PriorityList leftFactor, PriorityList rightFactor, int fromIndex, int toIndex) {
     super(buildPriorityElementType(leftFactor, rightFactor),
           calculateCardinality(leftFactor, rightFactor));
     $leftFactor = leftFactor;
@@ -44,7 +44,7 @@ public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityLi
     $baseSize = calculateBaseSize(leftFactor, rightFactor);
   }
 
-  public BiProductPriorityList(PriorityList leftFactor, PriorityList rightFactor) {
+  public ProductPriorityList(PriorityList leftFactor, PriorityList rightFactor) {
     this(leftFactor, rightFactor, 0, calculateBaseSize(leftFactor, rightFactor));
   }
 
@@ -145,7 +145,7 @@ public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityLi
   }
 
   public final List subList(int fromIndex, int toIndex) {
-    return new BiProductPriorityList($leftFactor, $rightFactor, fromIndex, toIndex);
+    return new ProductPriorityList($leftFactor, $rightFactor, fromIndex, toIndex);
   }
 
   public final ListIterator listIterator(final int index) {
@@ -222,10 +222,6 @@ public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityLi
                 };
   }
 
-  public final int hashCode() {
-    return $leftFactor.hashCode() + $rightFactor.hashCode();
-  }
-
   /**
    * Find an equal <code>Object[]</code>.
    */
@@ -234,11 +230,11 @@ public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityLi
     return $leftFactor.contains(element[0]) && $rightFactor.contains(element[1]);
   }
 
-  protected String priorityElementToString(Object element) {
+  public String priorityElementToString(Object element) {
     Object[] e = (Object[])element;
-    // MUDO remove after development is finished
-    e = ArrayUtils.flatten(e);
-    // MUDO remove after development is finished
+// MUDO remove after development is finished
+e = ArrayUtils.flatten(e);
+// MUDO remove after development is finished
     StringBuffer result = new StringBuffer("[");
     for (int i = 0; i < e.length; i++) {
       result.append(e[i]);

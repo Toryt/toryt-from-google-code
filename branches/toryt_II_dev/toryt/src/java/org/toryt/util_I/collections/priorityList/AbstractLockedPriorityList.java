@@ -1,14 +1,10 @@
 package org.toryt.util_I.collections.priorityList;
 
 
-import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import org.toryt.patterns_I.Assertion;
-import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.lockable.AbstractLockedList;
 
@@ -99,71 +95,6 @@ public abstract class AbstractLockedPriorityList extends AbstractLockedList
     return false;
   }
 
-  public boolean equals(Object o) {
-    return (o != null) &&
-           (o instanceof PriorityList) &&
-           containsAll((PriorityList)o) &&
-           ((PriorityList)o).containsAll(this);
-  }
-
-  /* this implementation is too expensive
-  public boolean contains(final Object o) {
-    Iterator iter = iterator();
-    while (iter.hasNext()) {
-      if (iter.next().equals(o)) {
-        return true;
-      }
-    }
-    return false;
-  }
-  */
-
-  public final boolean containsAll(Collection c) {
-    return Collections.forAll(c,
-                              new Assertion() {
-                                    public boolean isTrueFor(Object o) {
-                                      return contains(o);
-                                    }
-                                  });
-  }
-
-  public final Iterator iterator() {
-    return listIterator();
-  }
-
-  public final ListIterator listIterator() {
-    return listIterator(0);
-  }
-
-  /**
-   * @deprecated
-   */
-  public final Object[] toArray() {
-    return toArray(new Object[size()]);
-  }
-
-  /**
-   * @deprecated
-   */
-  public final Object[] toArray(Object[] a) {
-    int size = size();
-    Object[] result;
-    if (a.length >= size) {
-      result = a;
-      result[size] = null;
-    }
-    else {
-      result = (Object[])Array.newInstance(a.getClass().getComponentType(), size);
-    }
-    Iterator iter = iterator();
-    int i = 0;
-    while (iter.hasNext()) {
-      result[i] = iter.next();
-      i++;
-    }
-    return result;
-  }
-
   public String toString() {
     StringBuffer result = new StringBuffer();
     ListIterator iter = listIterator();
@@ -185,7 +116,7 @@ public abstract class AbstractLockedPriorityList extends AbstractLockedList
     return result.toString();
   }
 
-  public String priorityElementToString(Object element) {
+  protected String priorityElementToString(Object element) {
     return (element == null) ? "null" : element.toString();
   }
 

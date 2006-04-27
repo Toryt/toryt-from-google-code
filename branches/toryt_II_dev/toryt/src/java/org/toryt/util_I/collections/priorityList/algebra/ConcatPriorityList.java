@@ -1,7 +1,6 @@
 package org.toryt.util_I.collections.priorityList.algebra;
 
 
-import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -50,7 +49,9 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
    *      elements (not checked with an assertion because too expensive)
    */
   public ConcatPriorityList(Class priorityElementType, PriorityList[] components) {
-    super(priorityElementType, calculateCardinality(components), components);
+    super(priorityElementType,
+          calculateSize(components),
+          components);
     assert Collections.forAll(components,
                               new Assertion() {
                                     public boolean isTrueFor(Object o) {
@@ -59,32 +60,16 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
                                                                getPriorityElementType());
                                     }
                                   });
-    $size = calculateSize(components);
   }
 
   private static int calculateSize(PriorityList[] components) {
     assert components != null;
-    int max = 0;
+    int acc = 0;
     for (int i = 0; i < components.length; i++) {
-      max += (components[i] == null) ? 0 : components[i].size();
+      acc += (components[i] == null) ? 0 : components[i].size();
     }
-    return max;
+    return acc;
   }
-
-  private static BigInteger calculateCardinality(PriorityList[] components) {
-    BigInteger result = BigInteger.ZERO;
-    for (int i = 0; i < components.length; i++) {
-      result = result.add(components[i].getCardinality());
-    }
-    return result;
-  }
-
-  /**
-   * @return (sum int i; (i >=0 ) && (i < getComponents().length);
-   *            getComponents()[i].getCardinality());
-   *
-  public final BigInteger getCardinality();
-   */
 
   public final boolean contains(final Object o) {
     return Collections.exists(getComponents(),
@@ -94,37 +79,6 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
                                     }
                                   });
   }
-
-  public final boolean containsPriorityElement(final Object o) {
-    return Collections.exists(getComponents(),
-                              new Assertion() {
-                                    public boolean isTrueFor(Object s) {
-                                      return (s == null) && ((PriorityList)s).containsPriorityElement(o);
-                                    }
-                                  });
-  }
-
-  /**
-   * @return (forall int i; (i > 0) && (i < getComponents().length);
-   *            getComponents()[i].isEmpty());
-   */
-  public final boolean isEmpty() {
-    return Collections.forAll(getComponents(),
-                              new Assertion() {
-                                    public boolean isTrueFor(Object o) {
-                                      return (o == null) || ((PriorityList)o).isEmpty();
-                                    }
-                                  });
-  }
-
-  public final int size() {
-    return $size;
-  }
-
-  /**
-   * @invar $size >= 0;
-   */
-  private final int $size;
 
   public final List subList(int fromIndex, int toIndex) {
     if ((fromIndex < 0) || (toIndex < 0) || (toIndex < fromIndex)) {
@@ -184,7 +138,7 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
   }
 
   private class RelativePosition {
-  
+
     public RelativePosition(int ai) throws IndexOutOfBoundsException {
       assert ai >= 0;
       this.absoluteIndex = ai;
@@ -203,15 +157,15 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
     }
 
     public final PriorityList[] components = getComponents();
-    
+
     public int absoluteIndex;
-    
+
     public int componentIndex = 0;
-    
+
     public int relativeIndex;
-    
+
   }
-  
+
   public final Object get(int index) {
     RelativePosition rp = new RelativePosition(index);
     return rp.components[rp.componentIndex].get(rp.relativeIndex);
@@ -258,11 +212,11 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
 
                   private ListIterator $componentIterator =
                     $rp.components[$rp.componentIndex].listIterator($rp.relativeIndex);
-      
+
                   public boolean hasNext() {
                     return ($componentIterator != null) && $componentIterator.hasNext();
                   }
-            
+
                   public Object next() {
                     Object result = $componentIterator.next();
                     if (! $componentIterator.hasNext()) {
@@ -282,11 +236,11 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
                     $rp.absoluteIndex--;
                     return result;
                   }
-            
+
                   public boolean hasPrevious() {
                     return ($componentIterator != null) && $componentIterator.hasPrevious();
                   }
-            
+
                   public Object previous() {
                     Object result = $componentIterator.previous();
                     if (! $componentIterator.hasPrevious()) {
@@ -307,29 +261,29 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
                     $rp.absoluteIndex--;
                     return result;
                   }
-            
+
                   public int nextIndex() {
                     return $rp.absoluteIndex;
                   }
-            
+
                   public int previousIndex() {
                     return $rp.absoluteIndex - 1;
                   }
-            
+
                 };
   }
 
   public Iterator priorityElementIterator() {
     return new AbstractLockedCollectionIterator() {
-      
+
                   private Iterator $listIter = iterator();
-                  
+
                   private Iterator $bucketIter;
-                  
+
                   {
                     nextBucketIterator();
                   }
-                  
+
                   private void nextBucketIterator() {
                     $bucketIter = null;
                     while ($listIter.hasNext() && ($bucketIter == null)) {
@@ -343,7 +297,7 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
                   public boolean hasNext() {
                     return $bucketIter != null;
                   }
-            
+
                   public Object next() {
                     Object result = $bucketIter.next();
                     if (! $bucketIter.hasNext()) {
@@ -351,7 +305,7 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
                     }
                     return result;
                   }
-                  
+
                 };
   }
 

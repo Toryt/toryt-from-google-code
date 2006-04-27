@@ -14,7 +14,11 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 /**
- * <p>A {@link PriorityList}, that is the union of all component PriorityLists.</p>
+ * <p>A {@link PriorityList}, that is the union of all component PriorityLists.
+ *   This is a {@link PriorityList} that contains buckets that are the unions
+ *   of the buckets with that priority in all component priority lists. If a
+ *   bucket in a component priority list is <code>null</code>, it is considered
+ *   the same as an empty component priority list.</p>
  * <p>Because big sets can be so large (and <code>contains(Object)</code>
  *   and <code>containsAll(Collection)</code> are deprecated to signal this),
  *   it is not sensible to try to avoid {@link Object#equals(Object) equal}
@@ -65,7 +69,9 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
    * @post Collections.containsAll($components, new.getComponents());
    */
   public UnionPriorityList(Class priorityElementType, PriorityList[] components) {
-    super(priorityElementType, calculateCardinality(components), components);
+    super(priorityElementType,
+          calculateSize(components),
+          components);
     assert Collections.forAll(components,
                               new Assertion() {
                                     public boolean isTrueFor(Object o) {
@@ -74,7 +80,6 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
                                                                getPriorityElementType());
                                     }
                                   });
-    $size = calculateSize(components);
   }
 
   private static int calculateSize(PriorityList[] components) {
@@ -85,61 +90,6 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
     }
     return max;
   }
-
-  private static BigInteger calculateCardinality(PriorityList[] components) {
-    BigInteger result = BigInteger.ZERO;
-    for (int i = 0; i < components.length; i++) {
-      result = result.add(components[i].getCardinality());
-    }
-    return result;
-  }
-
-  /**
-   * @return (sum int i; (i >=0 ) && (i < getComponents().length);
-   *            getComponents()[i].getCardinality());
-   *
-  public final BigInteger getCardinality();
-   */
-
-  public final boolean contains(final Object o) {
-    return Collections.exists(getComponents(),
-                              new Assertion() {
-                                    public boolean isTrueFor(Object s) {
-                                      return (s == null) && ((PriorityList)s).contains(o);
-                                    }
-                                  });
-  }
-
-  public final boolean containsPriorityElement(final Object o) {
-    return Collections.exists(getComponents(),
-                              new Assertion() {
-                                    public boolean isTrueFor(Object s) {
-                                      return (s == null) && ((PriorityList)s).containsPriorityElement(o);
-                                    }
-                                  });
-  }
-
-  /**
-   * @return (forall int i; (i > 0) && (i < getComponents().length);
-   *            getComponents()[i].isEmpty());
-   */
-  public final boolean isEmpty() {
-    return Collections.forAll(getComponents(),
-                              new Assertion() {
-                                    public boolean isTrueFor(Object o) {
-                                      return (o == null) || ((PriorityList)o).isEmpty();
-                                    }
-                                  });
-  }
-
-  public final int size() {
-    return $size;
-  }
-
-  /**
-   * @invar $size >= 0;
-   */
-  private final int $size;
 
   private class UnionListIterator extends AbstractLockedListIterator {
 
@@ -217,23 +167,18 @@ CHANGE UnionBigSet to accept nulls in components !!!
     for (int i = 0; i < components.length; i++) {
       result[i] = (LockableBigSet)components[i].get(index);
     }
-    return new UnionBigSet(getPriorityElementType(), result);
-    // MUDO either cache this, or override BigSet.equals()!!!!
+    return new UnionBigSet(getPriorityElementType(), true, result);
   }
-
-  public int indexOf(Object o) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  public int lastIndexOf(Object o) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  public ListIterator listIterator(int index) {
-    // TODO Auto-generated method stub
-    return null;
+  
+  /**
+   * Contains an equal {@link LockableBigSet}.
+   *
+   * @deprecated This method is very costly, as it
+   *             effectively creates buckets one after the
+   *             other
+   */
+  public final boolean contains(final Object o) {
+    return super.contains(o);
   }
 
 }
