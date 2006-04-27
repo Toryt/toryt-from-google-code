@@ -93,6 +93,12 @@
       <version>1.0</version>
       <type>jar</type>
     </dependency>
+    <dependency>
+      <groupId>swinglabs</groupId>
+      <artifactId>swingx</artifactId>
+      <version>20051112180732</version>
+      <type>jar</type>
+    </dependency>
   </dependencies>
   <properties />
 </project>
