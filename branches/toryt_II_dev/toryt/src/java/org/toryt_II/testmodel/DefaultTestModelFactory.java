@@ -6,6 +6,8 @@ import java.io.FileFilter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.toryt.util_I.Reflection;
 import org.toryt.util_I.Reflection.MethodKind;
 import org.toryt.util_I.Reflection.TypeKind;
@@ -30,6 +32,9 @@ public class DefaultTestModelFactory implements TestModelFactory {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
+
+
+  private final static Log LOG = LogFactory.getLog(DefaultTestModelFactory.class);
 
 
 
@@ -89,107 +94,145 @@ public class DefaultTestModelFactory implements TestModelFactory {
 //    }
 //  }
 
-  public InnerClassTestModel createInnerClassTestModel(Class innerClazz) throws SecurityException {
+  public InnerClassTestModel createInnerClassTestModel(Class innerClazz) throws TestModelFactoryException {
     assert innerClazz != null;
     assert Reflection.typeKind(innerClazz) == TypeKind.INNER;
+    LOG.debug("Creating InnerClassTestModel for class " + innerClazz);
     InnerClassTestModel result = new InnerClassTestModel();
     initClassTestModel(innerClazz, result);
     return result;
   }
 
-  public StaticClassTestModel createStaticClassTestModel(Class clazz) throws SecurityException {
+  public StaticClassTestModel createStaticClassTestModel(Class clazz) throws TestModelFactoryException {
     assert clazz != null;
     assert Reflection.typeKind(clazz) == TypeKind.STATIC;
+    LOG.debug("Creating StaticClassTestModel for class " + clazz);
     StaticClassTestModel result = new StaticClassTestModel();
     initClassTestModel(clazz, result);
     return result;
   }
 
-  private void initClassTestModel(Class clazz, ClassTestModel result) throws SecurityException {
+  private void initClassTestModel(Class clazz, ClassTestModel result) throws TestModelFactoryException {
     result.setClazz(clazz);
     addConstructors(clazz, result);
     addMethods(clazz, result);
     addNestedClasses(clazz, result);
   }
 
-  private void addConstructors(Class clazz, ClassTestModel result) throws SecurityException {
-    Constructor[] constructors = clazz.getConstructors();
-        // only public constructors
-    for (int i = 0; i < constructors.length; i++) {
-      result.constructorTestModels.add(createConstructorTestModel(constructors[i]));
-    }
-  }
-
-  private void addMethods(Class clazz, ClassTestModel result) throws SecurityException {
-    Method[] methods = clazz.getMethods();
-        // only public methods, but also inherited
-    for (int i = 0; i < methods.length; i++) {
-      switch (Reflection.methodKind(methods[i])) {
-        case INSTANCE_MUTATOR:
-          result.instanceMutatorTestModels.add(createInstanceMutatorTestModel(methods[i]));
-          break;
-        case INSTANCE_INSPECTOR:
-          // MUDO remove basic inspectors
-          result.instanceInspectorTestModels.add(createInstanceInspectorTestModel(methods[i]));
-          break;
-        case CLASS_MUTATOR:
-          result.classMutatorTestModels.add(createClassMutatorTestModel(methods[i]));
-          break;
-        case CLASS_INSPECTOR:
-          // MUDO remove basic inspectors
-          result.classInspectorTestModels.add(createClassInspectorTestModel(methods[i]));
-          break;
-        default:
-          assert false;
+  private void addConstructors(Class clazz, ClassTestModel result) throws TestModelFactoryException {
+    try {
+      LOG.debug("  adding ConstructorTestModels for class " + clazz);
+      Constructor[] constructors = clazz.getConstructors();
+          // only public constructors
+      LOG.debug("  there are " + constructors.length + " constructors");
+      for (int i = 0; i < constructors.length; i++) {
+        result.constructorTestModels.add(createConstructorTestModel(constructors[i]));
       }
     }
+    catch (SecurityException sExc) {
+      throw new TestModelFactoryException(result, null, sExc);
+    }
   }
 
-  private void addNestedClasses(Class clazz, ClassTestModel result) throws SecurityException {
-    Class[] clazzes = clazz.getClasses();
-        // only public nested types, but also inherited and interfaces
-    for (int i = 0; i < clazzes.length; i++) {
-      if (! clazzes[i].isInterface()) { // interfaces cannot be tested
-        switch (Reflection.typeKind(clazz)) {
-          case INNER:
-            result.innerClassTestModels.add(createInnerClassTestModel(clazzes[i]));
+  private void addMethods(Class clazz, ClassTestModel result)
+      throws TestModelFactoryException {
+    try {
+      LOG.debug("  adding MethodTestModels for class " + clazz);
+      Method[] methods = clazz.getMethods(); // SecurityException
+          // only public methods, but also inherited
+      LOG.debug("  there are " + methods.length + " methods");
+      for (int i = 0; i < methods.length; i++) {
+        switch (Reflection.methodKind(methods[i])) {
+          case INSTANCE_MUTATOR:
+            LOG.debug("    " + methods[i] + " is an instance mutator");
+            result.instanceMutatorTestModels.add(createInstanceMutatorTestModel(methods[i]));
             break;
-          case STATIC:
-            if (clazzes[i].getDeclaringClass() == clazz) {
-              // static nested classes only need to be added to the declaring class test model
-              try {
-                ((StaticClassTestModel)result).staticNestedClassTestModels.add(createStaticClassTestModel(clazzes[i]));
-              }
-              catch (ClassCastException ccExc) {
-                // static nested classses can only be nested in static classes
-                assert false : "static nested classses can only be nested in static classes";
-              }
-            }
+          case INSTANCE_INSPECTOR:
+            LOG.debug("    " + methods[i] + " is an instance inspector");
+            // MUDO remove basic inspectors
+            result.instanceInspectorTestModels.add(createInstanceInspectorTestModel(methods[i]));
+            break;
+          case CLASS_MUTATOR:
+            LOG.debug("    " + methods[i] + " is an class mutator");
+            result.classMutatorTestModels.add(createClassMutatorTestModel(methods[i]));
+            break;
+          case CLASS_INSPECTOR:
+            LOG.debug("    " + methods[i] + " is an class inspector");
+            // MUDO remove basic inspectors
+            result.classInspectorTestModels.add(createClassInspectorTestModel(methods[i]));
             break;
           default:
             assert false;
         }
       }
     }
+    catch (SecurityException sExc) {
+      throw new TestModelFactoryException(result, null, sExc);
+    }
   }
 
-  public PackageTestModel createPackageTestModel(File classDirectory, String packageName) {
+  private void addNestedClasses(Class clazz, ClassTestModel result)
+      throws TestModelFactoryException {
+    try {
+      LOG.debug("  adding TestModels for nested classes in class  " + clazz);
+      Class[] clazzes = clazz.getClasses(); // SecurityException
+          // only public nested types, but also inherited and interfaces
+      for (int i = 0; i < clazzes.length; i++) {
+        if (! clazzes[i].isInterface()) { // interfaces cannot be tested
+          switch (Reflection.typeKind(clazz)) {
+            case INNER:
+              LOG.debug("    " + clazzes[i] + " is an inner class");
+              result.innerClassTestModels.add(createInnerClassTestModel(clazzes[i]));
+              break;
+            case STATIC:
+              if (clazzes[i].getDeclaringClass() == clazz) {
+                // static nested classes only need to be added to the declaring class test model
+                LOG.debug("    " + clazzes[i] + " is an static nested class");
+                try {
+                  ((StaticClassTestModel)result).staticNestedClassTestModels.add(createStaticClassTestModel(clazzes[i]));
+                }
+                catch (ClassCastException ccExc) {
+                  // static nested classses can only be nested in static classes
+                  assert false : "static nested classses can only be nested in static classes";
+                }
+              }
+              break;
+            default:
+              assert false;
+          }
+        }
+      }
+    }
+    catch (SecurityException sExc) {
+      throw new TestModelFactoryException(result, null, sExc);
+    }
+  }
+
+  public PackageTestModel createPackageTestModel(File classDirectory, String packageName)
+      throws TestModelFactoryException {
     assert classDirectory != null;
     assert classDirectory.exists();
     assert classDirectory.isDirectory();
     assert packageName != null;
+    LOG.debug("Creating PackageTestModel for package " + packageName +
+              " from class directory " + classDirectory.getPath());
     PackageTestModel result = new PackageTestModel();
     result.setPackageName(packageName);
     File packageDirectory = new File(classDirectory, packageName.replace('.', '/'));
+    LOG.debug("  package directory should be " + packageDirectory.getPath());
     assert packageDirectory.exists();
     assert packageDirectory.isDirectory();
+    LOG.debug("  finding classes in package " + packageName);
     File[] packageContents = packageDirectory.listFiles(JAVA_CLASS_FILTER);
     for (int i = 0; i < packageContents.length; i++) {
       String fileName = packageContents[i].getName();
       String simpleClassName = fileName.substring(0, fileName.lastIndexOf(JAVA_CLASS_SUFFIX));
+      String fqcn = packageName + "." + simpleClassName;
+      LOG.debug("    " + fqcn + " should be an ok class");
       Class clazz;
       try {
-        clazz = Class.forName(packageName + "." + simpleClassName);
+        clazz = Class.forName(fqcn);
+        LOG.debug("    " + clazz + " loaded; creating StaticClassTestModel for this class");
         result.classTestModels.add(createStaticClassTestModel(clazz));
       }
       // MUDO more exceptions, and what to do??
@@ -197,38 +240,52 @@ public class DefaultTestModelFactory implements TestModelFactory {
         assert false : "ClassNotFoundExceptionshould not happen: " + e;
       }
     }
-    packageContents = packageDirectory.listFiles(JAVA_SUBPACKAGE_FILTER);
-    for (int i = 0; i < packageContents.length; i++) {
-      String subpackageName = packageName + "." + packageContents[i].getName();
-      result.packageTestModels.add(createPackageTestModel(classDirectory, subpackageName));
-    }
+    checkForCandidatePackageDirs(packageDirectory, packageName, classDirectory, result);
     return result;
   }
 
-  public ProjectTestModel createProjectTestModel(File classDirectory, String projectName) {
+  public ProjectTestModel createProjectTestModel(File classDirectory, String projectName)
+      throws TestModelFactoryException {
     assert classDirectory != null;
     assert classDirectory.exists();
     assert classDirectory.isDirectory();
+    LOG.debug("Creating ProjectTestModel for project \"" + projectName +
+              "\" from class directory " + classDirectory.getPath());
     ProjectTestModel result = new ProjectTestModel();
     result.setProjectName(projectName);
     checkForCandidatePackageDirs(classDirectory, "", classDirectory, result);
     return result;
   }
 
+  private final static String NO_PACKAGE_DIR_NAME = "doc-files";
+
   private void checkForCandidatePackageDirs(File directory,
                                             String parentPackageName,
                                             File classDirectory,
-                                            ProjectTestModel result) {
+                                            AbstractPackageTestModelContainer result)
+      throws TestModelFactoryException {
+    LOG.debug("Finding subpackages of package " + parentPackageName +
+              " in class directory " + classDirectory.getPath() +
+              " (parent package directory: " + directory.getPath() + ")");
     File[] directoryContents = directory.listFiles(JAVA_SUBPACKAGE_FILTER);
     for (int i = 0; i < directoryContents.length; i++) {
       File packageCandidate = directoryContents[i];
       String packageCandidateName = parentPackageName + packageCandidate.getName();
-      File[] packageCandidateContents = packageCandidate.listFiles(JAVA_CLASS_FILTER);
-      if (packageCandidateContents.length > 0) { // this is a package
-        result.packageTestModels.add(createPackageTestModel(classDirectory, packageCandidateName));
+      if (NO_PACKAGE_DIR_NAME.equals(packageCandidate.getName())) {
+        LOG.debug("  " + NO_PACKAGE_DIR_NAME + " is a reserved directory name, and not a package");
       }
-      else { // this is not a package; go deeper
-        checkForCandidatePackageDirs(packageCandidate, packageCandidateName + ".", classDirectory, result);
+      else {
+        LOG.debug("  candidate package: " + packageCandidateName);
+        File[] packageCandidateContents = packageCandidate.listFiles(JAVA_CLASS_FILTER);
+        LOG.debug("  only is a real package if it contains Java class files: " + packageCandidateContents.length);
+        if (packageCandidateContents.length > 0) { // this is a package
+          LOG.debug("  yes: create PackageTestModel for subpackage " + packageCandidateName);
+          result.packageTestModels.add(createPackageTestModel(classDirectory, packageCandidateName));
+        }
+        else { // this is not a package; go deeper
+          LOG.debug("  no, but there might be real packages deeper");
+          checkForCandidatePackageDirs(packageCandidate, packageCandidateName + ".", classDirectory, result);
+        }
       }
     }
   }
