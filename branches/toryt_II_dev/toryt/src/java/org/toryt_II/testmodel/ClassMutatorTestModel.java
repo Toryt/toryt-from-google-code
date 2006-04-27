@@ -3,7 +3,7 @@ package org.toryt_II.testmodel;
 
 import java.lang.reflect.Method;
 
-import org.toryt.util_I.Reflection.MethodKind;
+import org.toryt.util_I.reflect.Reflection.MethodKind;
 
 
 /**

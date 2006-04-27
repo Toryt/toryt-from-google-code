@@ -1,6 +1,6 @@
 package org.toryt_II.testmodel;
 
-import org.toryt.util_I.Reflection.TypeKind;
+import org.toryt.util_I.reflect.Reflection.TypeKind;
 
 
 /**

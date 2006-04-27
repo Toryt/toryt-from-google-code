@@ -8,9 +8,10 @@ import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.toryt.util_I.Reflection;
-import org.toryt.util_I.Reflection.MethodKind;
-import org.toryt.util_I.Reflection.TypeKind;
+import org.toryt.util_I.reflect.CouldNotLoadClassException;
+import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Reflection.MethodKind;
+import org.toryt.util_I.reflect.Reflection.TypeKind;
 
 
 /**
@@ -231,13 +232,15 @@ public class DefaultTestModelFactory implements TestModelFactory {
       LOG.debug("    " + fqcn + " should be an ok class");
       Class clazz;
       try {
-        clazz = Class.forName(fqcn);
+        clazz = Reflection.loadForName(fqcn);
         LOG.debug("    " + clazz + " loaded; creating StaticClassTestModel for this class");
         result.classTestModels.add(createStaticClassTestModel(clazz));
       }
-      // MUDO more exceptions, and what to do??
-      catch (ClassNotFoundException e) {
-        assert false : "ClassNotFoundExceptionshould not happen: " + e;
+      catch (CouldNotLoadClassException cnlcExc) {
+        LOG.warn("could not load class with fully qualified class name " + fqcn);
+        throw new TestModelCreationException(result,
+                                             "could not load class with fully qualified class name " + fqcn,
+                                             cnlcExc);
       }
     }
     checkForCandidatePackageDirs(packageDirectory, packageName, classDirectory, result);
