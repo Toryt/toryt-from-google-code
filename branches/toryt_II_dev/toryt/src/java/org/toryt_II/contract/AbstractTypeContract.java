@@ -8,8 +8,8 @@ import java.util.Set;
 
 import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt.util_I.Reflection;
-import org.toryt_II.TorytException;
+import org.toryt.util_I.reflect.Reflection;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.TypeContract.AllMembersCoveredTest;
 import org.toryt_II.contract.condition.Condition;
 
@@ -44,7 +44,7 @@ public abstract class AbstractTypeContract
     try {
       addExtraTests(new AllMembersCoveredTest(this));
     }
-    catch (TorytException e) {
+    catch (OLDTorytException e) {
       assert false : "we should not be closed";
     }
     assert type != null;
@@ -52,11 +52,11 @@ public abstract class AbstractTypeContract
   }
   
   /**
-   * @throws TorytException
+   * @throws OLDTorytException
    * @pre fqn != null;
    * @post new.getType().getName().equals(fqn);
    */
-  protected AbstractTypeContract(String fqn) throws TorytException {
+  protected AbstractTypeContract(String fqn) throws OLDTorytException {
     this(Reflection.loadForName(fqn));
   }
   
@@ -81,13 +81,13 @@ public abstract class AbstractTypeContract
   /**
    * @pre condition != null;
    * @post getTypeInvariantConditions().contains(condition);
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
    */
-  public void addTypeInvariantCondition(Condition condition) throws TorytException {
+  public void addTypeInvariantCondition(Condition condition) throws OLDTorytException {
     assert condition != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $typeInvariantConditions.add(condition);
   }
@@ -102,7 +102,7 @@ public abstract class AbstractTypeContract
   /*</property>*/
 
   
-  public StraightList getMethodTests() throws TorytException {
+  public StraightList getMethodTests() throws OLDTorytException {
     StraightList[] lists
         = new StraightList[getInstanceMethodContracts().size()
                            + getClassMethodContracts().size()

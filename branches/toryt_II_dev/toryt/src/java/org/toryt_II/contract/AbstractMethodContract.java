@@ -11,7 +11,7 @@ import java.util.Set;
 import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.condition.Condition;
 import org.toryt_II.contract.condition.ExceptionCondition;
 import org.toryt_II.test.MethodTest;
@@ -61,7 +61,7 @@ public abstract class AbstractMethodContract extends AbstractContract
    * INSTANCE METHODS ALWAYS HAVE AT LEAST 1 ARGUMENT (SUBJECT) THAT WILL
    * BE FOUND IN TESTCASES
    */
-  public final StraightList getMethodTests() throws TorytException {
+  public final StraightList getMethodTests() throws OLDTorytException {
     // MUDO this order must become priority order
     // MUDO this must become a list of method test factories
     StraightList testCases = getTestCases();
@@ -129,13 +129,13 @@ public abstract class AbstractMethodContract extends AbstractContract
   /**
    * @pre condition != null;
    * @post getPreconditions().contains(condition);
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
    */
-  public void addPrecondition(Condition condition) throws TorytException {
+  public void addPrecondition(Condition condition) throws OLDTorytException {
     assert condition != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $preconditions.add(condition);
   }
@@ -164,13 +164,13 @@ public abstract class AbstractMethodContract extends AbstractContract
   /**
    * @pre condition != null;
    * @post getPostconditions().contains(condition);
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
    */
-  public void addPostcondition(Condition condition) throws TorytException {
+  public void addPostcondition(Condition condition) throws OLDTorytException {
     assert condition != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $postconditions.add(condition);
   }
@@ -206,13 +206,13 @@ public abstract class AbstractMethodContract extends AbstractContract
   /**
    * @pre condition != null;
    * @post getExceptionConditions().contains(condition);
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
    */
-  public void addExceptionCondition(ExceptionCondition condition) throws TorytException {
+  public void addExceptionCondition(ExceptionCondition condition) throws OLDTorytException {
     assert condition != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     Set exceptionConditionSet = (Set)$exceptionConditions.get(condition.getExceptionType());
     if (exceptionConditionSet == null) {

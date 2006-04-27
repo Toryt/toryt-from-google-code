@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 
 
 /**
@@ -44,7 +44,7 @@ public abstract class AbstractPackageContract
   
   private Package $package;
   
-  public final StraightList getMethodTests() throws TorytException {
+  public final StraightList getMethodTests() throws OLDTorytException {
     StraightList[] lists
         = new StraightList[getClassContracts().size() + getSubPackageContracts().size()];
     Iterator iter = getClassContracts().iterator();

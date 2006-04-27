@@ -1,6 +1,6 @@
 package org.toryt_II.contract.hard;
 
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 
 
 
@@ -34,7 +34,7 @@ public class HardInterfaceContract
   /**
    * @pre type.isInterface();
    */
-  public HardInterfaceContract(String fqn) throws TorytException {
+  public HardInterfaceContract(String fqn) throws OLDTorytException {
     super(fqn);
   }
 

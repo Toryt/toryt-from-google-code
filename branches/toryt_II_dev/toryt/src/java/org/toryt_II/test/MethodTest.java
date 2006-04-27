@@ -13,7 +13,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.MethodContract;
 import org.toryt_II.contract.TypeContract;
 import org.toryt_II.contract.condition.Condition;
@@ -163,12 +163,12 @@ public abstract class MethodTest extends AbstractTest {
    * {@link MethodContract#getExceptionConditions() exception conditions}.
    *
    * @post new.hasRun();
-   * @throws TorytException
+   * @throws OLDTorytException
    *         hasRun();
    */
-  public final void test() throws TorytException {
+  public final void test() throws OLDTorytException {
     if (hasRun()) {
-      throw new TorytException(getMethodContract(), null);
+      throw new OLDTorytException(getMethodContract(), null);
     }
     try {
       getMethodContract().recordState(this);
@@ -184,33 +184,33 @@ public abstract class MethodTest extends AbstractTest {
     catch (IllegalArgumentException e) {
       System.out.println(this);
       System.out.println(e);
-      throw new TorytException(getMethodContract(), e);
+      throw new OLDTorytException(getMethodContract(), e);
     }
     catch (IllegalAccessException e) {
       System.out.println(this);
       System.out.println(e);
-      throw new TorytException(getMethodContract(), e);
+      throw new OLDTorytException(getMethodContract(), e);
     }
     catch (NullPointerException e) {
       System.out.println("This method was called in test on null. Check your cases (no null as subject allowed).");
       System.out.println(this);
       System.out.println(e);
-      throw new TorytException(getMethodContract(), e);
+      throw new OLDTorytException(getMethodContract(), e);
     }
     catch (ExceptionInInitializerError e) {
       System.out.println(this);
       System.out.println(e);
-      throw new TorytException(getMethodContract(), e);
+      throw new OLDTorytException(getMethodContract(), e);
     }
     catch (InstantiationException e) {
       System.out.println(this);
       System.out.println(e);
-      throw new TorytException(getMethodContract(), e);
+      throw new OLDTorytException(getMethodContract(), e);
     }
     catch (Throwable e) {
       System.out.println(this);
       System.out.println(e);
-      throw new TorytException(getMethodContract(), e);
+      throw new OLDTorytException(getMethodContract(), e);
     }
     setRun();
   }

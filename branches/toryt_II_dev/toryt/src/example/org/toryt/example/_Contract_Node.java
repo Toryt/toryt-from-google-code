@@ -6,7 +6,7 @@ import java.util.Map;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.cases.Cases;
 import org.toryt_II.contract.MethodContract;
 import org.toryt_II.contract.condition.Condition;
@@ -23,12 +23,12 @@ public class _Contract_Node extends HardClassContract {
     try {
       _C_G = new _Contract_Group();
     }
-    catch (TorytException e) {
+    catch (OLDTorytException e) {
       assert false;
     }
   }
 
-  public _Contract_Node() throws TorytException {
+  public _Contract_Node() throws OLDTorytException {
     super(Node.class);
 
     // basic inspectors
@@ -89,7 +89,7 @@ public class _Contract_Node extends HardClassContract {
         close();
       }
       
-      public StraightList getTestCases() throws TorytException {
+      public StraightList getTestCases() throws OLDTorytException {
         return new LazyCombinationStraightList(
              new String[] {SUBJECT_KEY, "description"},
              new StraightList[] {getCases(),
@@ -114,7 +114,7 @@ public class _Contract_Node extends HardClassContract {
         close();
       }
 
-      public StraightList getTestCases() throws TorytException {
+      public StraightList getTestCases() throws OLDTorytException {
         return new LazyCombinationStraightList(
              new String[] {SUBJECT_KEY, "title"},
              new StraightList[] {getCases(),
@@ -152,7 +152,7 @@ public class _Contract_Node extends HardClassContract {
         close();
       }
 
-      public StraightList getTestCases() throws TorytException {
+      public StraightList getTestCases() throws OLDTorytException {
         return new LazyCombinationStraightList(
               new String[] {SUBJECT_KEY, "group"},
               new StraightList[] {getCases(),
@@ -172,7 +172,7 @@ public class _Contract_Node extends HardClassContract {
     close();
   }
     
-  public StraightList getCasesMaps() throws TorytException {
+  public StraightList getCasesMaps() throws OLDTorytException {
     return new LazyCombinationStraightList(
                 new String[] {"description", "title", "group"},
                 new StraightList[] {Cases.findTestObjectList(String.class),

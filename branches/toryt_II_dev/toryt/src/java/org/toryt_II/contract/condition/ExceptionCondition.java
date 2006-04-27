@@ -2,7 +2,7 @@ package org.toryt_II.contract.condition;
 
 import java.util.Map;
 
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.test.MethodTest;
 
 
@@ -31,12 +31,12 @@ public abstract class ExceptionCondition implements Condition {
 
 
   /**
-   * @throws TorytException
+   * @throws OLDTorytException
    *         (exceptionType == null) || (
    */
-  public ExceptionCondition(Class exceptionType) throws TorytException {
+  public ExceptionCondition(Class exceptionType) throws OLDTorytException {
     if ((exceptionType == null) || (! Throwable.class.isAssignableFrom(exceptionType))) {
-      throw new TorytException(null, null);
+      throw new OLDTorytException(null, null);
     }
     $exceptionType = exceptionType;
   }

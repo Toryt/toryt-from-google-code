@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.condition.Condition;
 import org.toryt_II.contract.condition.ExceptionCondition;
 import org.toryt_II.test.MethodTest;
@@ -73,7 +73,7 @@ public interface MethodContract extends Contract {
   public final static String RESULT_KEY = MethodTest.RESULT_KEY;
   public final static String EXCEPTION_KEY = MethodTest.EXCEPTION_KEY;
   
-  public abstract StraightList getTestCases() throws TorytException;
+  public abstract StraightList getTestCases() throws OLDTorytException;
   
   public abstract String[] getFormalParameters();
 

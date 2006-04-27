@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.AbstractPackageContract;
 import org.toryt_II.contract.ClassContract;
 
@@ -43,19 +43,19 @@ public class HardPackageContract
   /**
    * 
    * @pre    pc != null;
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
-   * @throws TorytException
+   * @throws OLDTorytException
    *         ! pc.isClosed();
    */
   public final void addSubPackageContract(org.toryt_II.contract.PackageContract pc)
-      throws TorytException {
+      throws OLDTorytException {
     assert pc != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     if (! pc.isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $subPackageContracts.add(pc);
   }
@@ -69,18 +69,18 @@ public class HardPackageContract
   /**
    * 
    * @pre    cc != null;
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
-   * @throws TorytException
+   * @throws OLDTorytException
    *         ! cc.isClosed();
    */
-  public final void addClassContract(ClassContract cc) throws TorytException {
+  public final void addClassContract(ClassContract cc) throws OLDTorytException {
     assert cc != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     if (! cc.isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $classContracts.add(cc);
   }

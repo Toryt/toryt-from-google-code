@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 
 
 
@@ -42,7 +42,7 @@ public abstract class AbstractProjectContract
   
   private String $projectName;
   
-  public final StraightList getMethodTests() throws TorytException {
+  public final StraightList getMethodTests() throws OLDTorytException {
     StraightList[] lists = new StraightList[getPackageContracts().size()];
     Iterator iter = getPackageContracts().iterator();
     int i = 0;

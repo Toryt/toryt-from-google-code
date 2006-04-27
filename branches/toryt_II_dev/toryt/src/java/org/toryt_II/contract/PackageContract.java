@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.Set;
 
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 
 
 /**
@@ -58,7 +58,7 @@ public interface PackageContract extends Contract {
   /**
    * The union of the method tests of all subpackages and class contracts.
    */
-  StraightList getMethodTests() throws TorytException;
+  StraightList getMethodTests() throws OLDTorytException;
   
   /**
    * Print a report of the contract tree on <code>out</code>.

@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.toryt.util_I.Reflection;
-import org.toryt_II.TorytException;
+import org.toryt.util_I.reflect.Reflection;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.AbstractTypeContract;
 import org.toryt_II.contract.ClassMethodContract;
 import org.toryt_II.contract.InstanceMethodContract;
@@ -38,7 +38,7 @@ public class HardTypeContract
     super(type);
   }
 
-  public HardTypeContract(String fqn) throws TorytException {
+  public HardTypeContract(String fqn) throws OLDTorytException {
     super(fqn);
 
   }
@@ -51,18 +51,18 @@ public class HardTypeContract
   
   /**
    * @pre    ic != null;
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
-   * @throws TorytException
+   * @throws OLDTorytException
    *         ! ic.isClosed();
    */
-  public final void addDirectSuperInterfaceContract(InterfaceContract ic) throws TorytException {
+  public final void addDirectSuperInterfaceContract(InterfaceContract ic) throws OLDTorytException {
     assert ic != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     if (! ic.isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $directSuperInterfaceContracts.add(ic);
   }
@@ -70,7 +70,7 @@ public class HardTypeContract
   /**
    * @pre fqn != null;
    */
-  public final void addDirectSuperInterfaceContract(String fqn) throws TorytException {
+  public final void addDirectSuperInterfaceContract(String fqn) throws OLDTorytException {
     assert fqn != null;
 //    Class si = Class.forName(fqn with prefix contract; look in specific package);
     
@@ -84,18 +84,18 @@ public class HardTypeContract
   
   /**
    * @pre    imc != null;
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
-   * @throws TorytException
+   * @throws OLDTorytException
    *         ! imc.isClosed();
    */
-  public final void addInstanceMethodContract(InstanceMethodContract imc) throws TorytException {
+  public final void addInstanceMethodContract(InstanceMethodContract imc) throws OLDTorytException {
     assert imc != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     if (! imc.isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $instanceMethodContracts.add(imc);
   }
@@ -108,18 +108,18 @@ public class HardTypeContract
   
   /**
    * @pre    cmc != null;
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
-   * @throws TorytException
+   * @throws OLDTorytException
    *         ! cmc.isClosed();
    */
-  public final void addClassMethodContract(ClassMethodContract cmc) throws TorytException {
+  public final void addClassMethodContract(ClassMethodContract cmc) throws OLDTorytException {
     assert cmc != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     if (! cmc.isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $classMethodContracts.add(cmc);
   }
@@ -132,18 +132,18 @@ public class HardTypeContract
   
   /**
    * @pre    ncc != null;
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
-   * @throws TorytException
+   * @throws OLDTorytException
    *         ! ncc.isClosed();
    */
-  public final void addNestedClassContract(HardTypeContract ncc) throws TorytException {
+  public final void addNestedClassContract(HardTypeContract ncc) throws OLDTorytException {
     assert ncc != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     if (! ncc.isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $nestedClassContracts.add(ncc);
   }
@@ -156,18 +156,18 @@ public class HardTypeContract
   
   /**
    * @pre    m != null;
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
    */
-  public final void addBasicInspector(Method m) throws TorytException {
+  public final void addBasicInspector(Method m) throws OLDTorytException {
     assert m != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $basicInspectors.add(m);
   }
   
-  public final void addBasicInspector(String signature) throws TorytException {
+  public final void addBasicInspector(String signature) throws OLDTorytException {
     addBasicInspector(Reflection.findMethod(getType(), signature, this));
   }
   

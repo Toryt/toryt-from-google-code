@@ -9,7 +9,7 @@ import java.util.Set;
 import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.ListWrapperStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.test.Test;
 
 
@@ -53,20 +53,20 @@ public abstract class AbstractContract implements Contract {
   
   /**
    * @pre    t != null;
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
    */
-  public final void addExtraTests(Test t) throws TorytException {
+  public final void addExtraTests(Test t) throws OLDTorytException {
     assert t != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $extraTests.add(t);
   }
   
   private List $extraTests = new ArrayList();
 
-  public final StraightList getTests() throws TorytException {
+  public final StraightList getTests() throws OLDTorytException {
     return new ConcatStraightList(new StraightList[] {getExtraTests(), getMethodTests()});
   }
 

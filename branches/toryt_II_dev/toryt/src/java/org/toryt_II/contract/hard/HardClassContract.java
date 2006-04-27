@@ -12,7 +12,7 @@ import org.toryt.support.straightlist.ConcatStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.NullFirstStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.cases.CaseProvider;
 import org.toryt_II.main.Contracts;
 
@@ -47,7 +47,7 @@ public abstract class HardClassContract
   /**
    * @pre ! type.isInterface();
    */
-  public HardClassContract(String fqn) throws TorytException {
+  public HardClassContract(String fqn) throws OLDTorytException {
     super(fqn);
   }
 
@@ -94,18 +94,18 @@ public abstract class HardClassContract
   
   /**
    * @pre    cc != null;
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
-   * @throws TorytException
+   * @throws OLDTorytException
    *         ! cc.isClosed();
    */
-  public final void addConstructorContract(HardConstructorContract cc) throws TorytException {
+  public final void addConstructorContract(HardConstructorContract cc) throws OLDTorytException {
     assert cc != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     if (! cc.isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $constructorContracts.add(cc);
   }
@@ -116,7 +116,7 @@ public abstract class HardClassContract
    *
    */
 
-  public StraightList getMethodTests() throws TorytException {
+  public StraightList getMethodTests() throws OLDTorytException {
     StraightList[] lists = new StraightList[getConstructorContracts().size() + 1];
     Iterator iter = getConstructorContracts().iterator();
     int i = 0;
@@ -133,45 +133,45 @@ public abstract class HardClassContract
    * Return a list of {@link Map} instances, that contain
    * combinations with wich we can generate a test instance
    * with {@link #getCaseMapping()}.
-   * @throws TorytException
+   * @throws OLDTorytException
    */
-  public abstract StraightList getCasesMaps() throws TorytException;
+  public abstract StraightList getCasesMaps() throws OLDTorytException;
   
   public abstract LazyMappingStraightList.Mapping getCaseMapping();
   
   /**
    * All possible relevant cases for this type,
    * with <code>null</code>.
-   * @throws TorytException
+   * @throws OLDTorytException
    */
-  public final NullFirstStraightList getCasesWithNull() throws TorytException {
+  public final NullFirstStraightList getCasesWithNull() throws OLDTorytException {
     return new NullFirstStraightList(getCases());
   }
 
   /**
    * All possible relevant cases for this type,
    * without <code>null</code>.
-   * @throws TorytException
+   * @throws OLDTorytException
    */
-  public final StraightList getCases() throws TorytException {
+  public final StraightList getCases() throws OLDTorytException {
     return new LazyMappingStraightList(getCasesMaps(), getCaseMapping());
   }
 
   /**
    * A limited number of most important cases for this type,
    * without <code>null</code>.
-   * @throws TorytException
+   * @throws OLDTorytException
    */
-  public final NullFirstStraightList getSomeCasesWithNull() throws TorytException {
+  public final NullFirstStraightList getSomeCasesWithNull() throws OLDTorytException {
     return new NullFirstStraightList(getSomeCases());
   }
 
   /**
    * A limited number of most important cases for this type,
    * with <code>null</code>.
-   * @throws TorytException
+   * @throws OLDTorytException
    */
-  public StraightList getSomeCases() throws TorytException {
+  public StraightList getSomeCases() throws OLDTorytException {
     return getCases();
   }
 

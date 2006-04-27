@@ -5,8 +5,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.util.Map;
 
-import org.toryt.util_I.Reflection;
-import org.toryt_II.TorytException;
+import org.toryt.util_I.reflect.Reflection;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.AbstractMethodContract;
 import org.toryt_II.test.ConstructorTest;
 import org.toryt_II.test.MethodTest;
@@ -48,7 +48,7 @@ public abstract class HardConstructorContract
   /**
    * @pre typeContract != null;
    */
-  public HardConstructorContract(HardTypeContract typeContract, Class type, String signature) throws TorytException {
+  public HardConstructorContract(HardTypeContract typeContract, Class type, String signature) throws OLDTorytException {
     this(typeContract, Reflection.findConstructor(type, signature, null));
   }
 

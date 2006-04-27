@@ -4,6 +4,8 @@ package org.toryt_II.test;
 
 
 /**
+ * Implementation of common methods.
+ *
  * @author Jan Dockx
  */
 public abstract class AbstractTest implements Test {
@@ -20,18 +22,18 @@ public abstract class AbstractTest implements Test {
   public static final String CVS_TAG = "$Name$";
   /* </section> */
 
-  
+
   /**
    * @init true;
    */
   public final boolean hasRun() {
     return $run;
   }
-  
+
   protected final void setRun() {
     $run = true;
   }
-  
+
   private boolean $run;
-  
+
 }

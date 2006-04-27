@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.test.AbstractTest;
 
 
@@ -115,7 +115,7 @@ public interface TypeContract extends Contract {
    * 
    * @deprecated
    */
-  StraightList getMethodTests() throws TorytException;
+  StraightList getMethodTests() throws OLDTorytException;
 
 
   /*<property name="type invariant conditions">*/
@@ -143,7 +143,7 @@ public interface TypeContract extends Contract {
     
     private TypeContract $tc;
 
-    public final void test() throws TorytException {
+    public final void test() throws OLDTorytException {
       Set allMethodContracts = new HashSet();
       allMethodContracts.addAll($tc.getClassMethodContracts());
       allMethodContracts.addAll($tc.getInstanceMethodContracts());

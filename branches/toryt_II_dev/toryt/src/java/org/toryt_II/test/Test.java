@@ -2,7 +2,7 @@ package org.toryt_II.test;
 
 import java.io.PrintStream;
 
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 
 
 
@@ -10,7 +10,7 @@ import org.toryt_II.TorytException;
  * An actual instance of a test.
  * After {@link #test()} has been called, {@link #isSuccessful()}
  * is <code>true</true> when the text succeeded, and <code>false</code>
- * if it failed.
+ * if it failed. A test can only be run once.
  */
 public interface Test {
 
@@ -30,18 +30,18 @@ public interface Test {
   /**
    * @post   ! hasRun();
    * @post   new.hasRun();
-   * @throws TorytException
+   * @throws OLDTorytException
    *         hasRun();
    */
-  void test() throws TorytException;
+  void test() throws OLDTorytException;
 
   boolean hasRun();
 
   /**
-   * @throws TorytException
+   * @throws OLDTorytException
    *         ! hasRun();
    */
-  boolean isSuccessful() throws TorytException;
+  boolean isSuccessful() throws OLDTorytException;
 
   /**
    * Structured output on an output stream.

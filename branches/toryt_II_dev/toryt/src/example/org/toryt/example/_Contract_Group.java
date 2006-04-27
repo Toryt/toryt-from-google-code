@@ -11,7 +11,7 @@ import org.toryt.support.straightlist.EmptyStraightList;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.cases.Cases;
 import org.toryt_II.contract.MethodContract;
 import org.toryt_II.contract.condition.Condition;
@@ -21,7 +21,7 @@ import org.toryt_II.contract.hard.HardConstructorContract;
 
 public class _Contract_Group extends HardClassContract {
 
-  public _Contract_Group() throws TorytException {
+  public _Contract_Group() throws OLDTorytException {
     super(Group.class);
     
     // basic inspectors
@@ -75,7 +75,7 @@ public class _Contract_Group extends HardClassContract {
     // constructors
     addConstructorContract(new HardConstructorContract(this, Group.class, "Group()") {
 
-      public StraightList getTestCases() throws TorytException {
+      public StraightList getTestCases() throws OLDTorytException {
         return EmptyStraightList.INSTANCE;
       }
 
@@ -115,7 +115,7 @@ public class _Contract_Group extends HardClassContract {
         return new String[] {"title", "description", "parent"};
       }
       
-      public StraightList getTestCases() throws TorytException {
+      public StraightList getTestCases() throws OLDTorytException {
         return new LazyCombinationStraightList(
            new String[] {"title", "description", "parent"},
            new StraightList[] {Cases.findTestObjectList(String.class),
@@ -161,7 +161,7 @@ public class _Contract_Group extends HardClassContract {
     close();
   }
   
-  public StraightList getCasesMaps() throws TorytException {
+  public StraightList getCasesMaps() throws OLDTorytException {
     return _C_N.getCasesMaps();
   }
   
@@ -171,7 +171,7 @@ public class _Contract_Group extends HardClassContract {
     try {
       _C_N = new _Contract_Node();
     }
-    catch (TorytException e) {
+    catch (OLDTorytException e) {
       assert false;
     }
   }
@@ -192,7 +192,7 @@ public class _Contract_Group extends HardClassContract {
           }
         };
 
-  public StraightList getSomeCases() throws TorytException {
+  public StraightList getSomeCases() throws OLDTorytException {
     ArrayStraightList groups // this must become a factory, since now we share the groups
     = new ArrayStraightList(new Group[] {new Group(),
                                          new Group("title","description",null),

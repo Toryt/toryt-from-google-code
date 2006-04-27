@@ -21,7 +21,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.toryt.support.straightlist.StraightList;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.Contract;
 import org.toryt_II.test.AbstractTest;
 import org.toryt_II.test.Test;
@@ -80,9 +80,9 @@ public class SimpleCli extends AbstractTest {
              : false;
   }
   
-  public final void test() throws TorytException {
+  public final void test() throws OLDTorytException {
     if (hasRun()) {
-      throw new TorytException(null, null);
+      throw new OLDTorytException(null, null);
     }
     else {
       setRun();
@@ -169,7 +169,7 @@ public class SimpleCli extends AbstractTest {
     out.println(isSuccessful() ? "success" : "FAILURE");
   }
 
-  public static void main(String[] args) throws TorytException {
+  public static void main(String[] args) throws OLDTorytException {
     Option helpOption = new Option("h", "help", false, "print this message" );
     OptionBuilder.withLongOpt("maxFailures");
     OptionBuilder.withArgName("natural");

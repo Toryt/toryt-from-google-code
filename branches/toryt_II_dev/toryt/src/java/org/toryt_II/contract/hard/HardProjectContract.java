@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.AbstractProjectContract;
 import org.toryt_II.contract.PackageContract;
 
@@ -42,18 +42,18 @@ public class HardProjectContract
   
   /**
    * @pre    pc != null;
-   * @throws TorytException
+   * @throws OLDTorytException
    *         isClosed();
-   * @throws TorytException
+   * @throws OLDTorytException
    *         ! pc.isClosed();
    */
-  public final void addPackageContract(PackageContract pc) throws TorytException {
+  public final void addPackageContract(PackageContract pc) throws OLDTorytException {
     assert pc != null;
     if (isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     if (! pc.isClosed()) {
-      throw new TorytException(this, null);
+      throw new OLDTorytException(this, null);
     }
     $packageContracts.add(pc);
   }

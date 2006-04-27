@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.toryt.util_I.Reflection;
-import org.toryt_II.TorytException;
+import org.toryt.util_I.reflect.Reflection;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.ClassContract;
 import org.toryt_II.contract.PackageContract;
 import org.toryt_II.contract.ProjectContract;
@@ -186,7 +186,7 @@ public class Contracts {
           try {
             hPc.addSubPackageContract(packageContractInstance(subPackageName, sourcePath));
           }
-          catch (TorytException e) {
+          catch (OLDTorytException e) {
             assert false : "could not be closed";
           }
         }
@@ -201,7 +201,7 @@ public class Contracts {
           catch (ExceptionInInitializerError e) {
             assert false : "ExceptionInInitializerErrorshould not happen: " + e;
           }
-          catch (TorytException e) {
+          catch (OLDTorytException e) {
             // MUDO we need to huntFor this first, so catch Exception; it is deep!
             assert false : "TorytExceptionshould not happen: " + e;
           }

@@ -3,7 +3,7 @@ package org.toryt.example;
 
 import org.toryt.support.straightlist.StraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList.Mapping;
-import org.toryt_II.TorytException;
+import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.hard.HardClassContract;
 import org.toryt_II.contract.hard.HardConstructorContract;
 import org.toryt_II.contract.hard.HardMutatorContract;
@@ -11,11 +11,11 @@ import org.toryt_II.contract.hard.HardMutatorContract;
 
 public class _Contract_Bookmark extends HardClassContract {
 
-  public _Contract_Bookmark() throws TorytException {
+  public _Contract_Bookmark() throws OLDTorytException {
     super(Bookmark.class);
     addConstructorContract(new HardConstructorContract(this, Bookmark.class, "Bookmark()") {
 
-      public StraightList getTestCases() throws TorytException {
+      public StraightList getTestCases() throws OLDTorytException {
         // TODO Auto-generated method stub
         return null;
       }
@@ -24,7 +24,7 @@ public class _Contract_Bookmark extends HardClassContract {
 
     addConstructorContract(new HardConstructorContract(this, Bookmark.class, "Bookmark(String, String, String, int, Group)") {
 
-      public StraightList getTestCases() throws TorytException {
+      public StraightList getTestCases() throws OLDTorytException {
         // TODO Auto-generated method stub
         return null;
       }
@@ -32,7 +32,7 @@ public class _Contract_Bookmark extends HardClassContract {
                                 });
     addInstanceMethodContract(new HardMutatorContract(this, Bookmark.class, "setUrl(String)") {
 
-      public StraightList getTestCases() throws TorytException {
+      public StraightList getTestCases() throws OLDTorytException {
         // TODO Auto-generated method stub
         return null;
       }
@@ -40,7 +40,7 @@ public class _Contract_Bookmark extends HardClassContract {
                                   });
     addInstanceMethodContract(new HardMutatorContract(this, Bookmark.class, "clicked()") {
 
-      public StraightList getTestCases() throws TorytException {
+      public StraightList getTestCases() throws OLDTorytException {
         // TODO Auto-generated method stub
         return null;
       }
@@ -48,7 +48,7 @@ public class _Contract_Bookmark extends HardClassContract {
                                   });
     addInstanceMethodContract(new HardMutatorContract(this, Bookmark.class, "setRating(int)") {
 
-      public StraightList getTestCases() throws TorytException {
+      public StraightList getTestCases() throws OLDTorytException {
         // TODO Auto-generated method stub
         return null;
       }
@@ -60,7 +60,7 @@ public class _Contract_Bookmark extends HardClassContract {
     close();
   }
 
-  public StraightList getCasesMaps() throws TorytException {
+  public StraightList getCasesMaps() throws OLDTorytException {
     // TODO Auto-generated method stub
     return null;
   }
