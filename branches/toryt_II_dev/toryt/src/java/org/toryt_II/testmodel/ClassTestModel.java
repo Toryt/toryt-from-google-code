@@ -117,4 +117,8 @@ public abstract class ClassTestModel extends CompoundTestModel {
     return getClass().getName() + "[" + getClazz() + "]";
   }
 
+  public String getDisplayName() {
+    return getClazz().getName();
+  }
+
 }

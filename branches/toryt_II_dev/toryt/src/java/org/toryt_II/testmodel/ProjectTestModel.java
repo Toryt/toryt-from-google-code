@@ -52,4 +52,9 @@ public class ProjectTestModel extends AbstractPackageTestModelContainer {
     return getClass().getName() + "[" + getProjectName() + "]";
   }
 
+
+  public String getDisplayName() {
+    return getProjectName();
+  }
+
 }

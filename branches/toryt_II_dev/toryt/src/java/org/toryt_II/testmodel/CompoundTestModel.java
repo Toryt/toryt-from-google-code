@@ -2,15 +2,14 @@ package org.toryt_II.testmodel;
 
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.toryt.util_I.collections.priorityList.PriorityList;
 import org.toryt.util_I.collections.priorityList.algebra.UnionPriorityList;
-import org.toryt_II.testmodel.AbstractTestModel.IndentPrinter;
 
 
 /**
@@ -79,7 +78,7 @@ public abstract class CompoundTestModel extends AbstractTestModel {
    * @invar Collections.noNull($testModelCollectionDelegates);
    */
   private Map<String, TestModelCollectionDelegate<? extends TestModel>> $testModelCollectionDelegates =
-      new HashMap<String, TestModelCollectionDelegate<? extends TestModel>>();
+      new LinkedHashMap<String, TestModelCollectionDelegate<? extends TestModel>>();
 
   /*</property>*/
 
@@ -128,7 +127,7 @@ public abstract class CompoundTestModel extends AbstractTestModel {
       childTestFactoryLists[i] = childTestModel.getTestFactoryList();
       i++;
     }
-    return new UnionPriorityList(childTestFactoryLists);
+    return null; //new UnionPriorityList(childTestFactoryLists);
   }
 
   /**
@@ -139,10 +138,12 @@ public abstract class CompoundTestModel extends AbstractTestModel {
   /*</property>*/
 
 
+  protected abstract String getDisplayName();
+
   final void printStructure(IndentPrinter out) {
     assert out != null;
-    out.println(this);
-    IndentPrinter sections = new IndentPrinter(out, 2);
+    out.println(getDisplayName());
+    IndentPrinter sections = new IndentPrinter(out, $testModelCollectionDelegates.size());
     for (Map.Entry<String, TestModelCollectionDelegate<? extends TestModel>> entry:
           $testModelCollectionDelegates.entrySet()) {
       sections.printChildren(entry.getKey() + ": ", entry.getValue().getSet());

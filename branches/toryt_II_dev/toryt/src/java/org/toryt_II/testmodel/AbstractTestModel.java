@@ -34,7 +34,7 @@ public abstract class AbstractTestModel implements TestModel {
    */
   public void printStructure(PrintStream out) {
     assert out != null;
-    printStructure(new IndentPrinter(out, -1));
+    printStructure(new IndentPrinter(out, 0));
   }
 
   /**

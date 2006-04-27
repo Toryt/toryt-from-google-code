@@ -68,4 +68,8 @@ public class PackageTestModel extends AbstractPackageTestModelContainer {
     return getClass().getName() + "[" + getPackageName() + "]";
   }
 
+  public String getDisplayName() {
+    return getPackageName();
+  }
+
 }

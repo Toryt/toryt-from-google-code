@@ -138,6 +138,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
         case CLASS_INSPECTOR:
           // MUDO remove basic inspectors
           result.classInspectorTestModels.add(createClassInspectorTestModel(methods[i]));
+          break;
         default:
           assert false;
       }

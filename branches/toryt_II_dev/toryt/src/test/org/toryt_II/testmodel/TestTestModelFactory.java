@@ -2,10 +2,9 @@ package org.toryt_II.testmodel;
 
 import java.io.File;
 
-import org.toryt.example.Bookmark;
-import org.toryt_II.TestModelFactory;
-
 import junit.framework.TestCase;
+
+import org.toryt.example.Bookmark;
 
 
 
@@ -83,16 +82,16 @@ public class TestTestModelFactory extends TestCase {
    * Test method for 'org.toryt_II.testmodel.TestModelFactory.createClassTestModel(Class)'
    */
   public void testCreateClassTestModel() {
-    ClassTestModel result = $testModelFactory.createClassTestModel(CLASS_UNDER_TEST);
+    StaticClassTestModel result = $testModelFactory.createStaticClassTestModel(CLASS_UNDER_TEST);
     result.printStructure(System.out);
     assertEquals(CLASS_UNDER_TEST, result.getClazz());
-    assertTrue(result.getChildTestModels().containsAll(result.getConstructorTestModels()));
-    assertTrue(result.getChildTestModels().containsAll(result.getInstanceMutatorTestModels()));
-    assertTrue(result.getChildTestModels().containsAll(result.getInstanceInspectorTestModels()));
-    assertTrue(result.getChildTestModels().containsAll(result.getClassMutatorTestModels()));
-    assertTrue(result.getChildTestModels().containsAll(result.getClassInspectorTestModels()));
-    assertTrue(result.getChildTestModels().containsAll(result.getInnerClassTestModels()));
-    assertTrue(result.getChildTestModels().containsAll(result.getClassTestModels()));
+    assertTrue(result.getChildTestModels().containsAll(result.constructorTestModels.getSet()));
+    assertTrue(result.getChildTestModels().containsAll(result.instanceMutatorTestModels.getSet()));
+    assertTrue(result.getChildTestModels().containsAll(result.instanceInspectorTestModels.getSet()));
+    assertTrue(result.getChildTestModels().containsAll(result.classMutatorTestModels.getSet()));
+    assertTrue(result.getChildTestModels().containsAll(result.classInspectorTestModels.getSet()));
+    assertTrue(result.getChildTestModels().containsAll(result.innerClassTestModels.getSet()));
+    assertTrue(result.getChildTestModels().containsAll(result.staticNestedClassTestModels.getSet()));
   }
 
   /*
@@ -102,8 +101,8 @@ public class TestTestModelFactory extends TestCase {
     PackageTestModel result = $testModelFactory.createPackageTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PACKAGE_NAME_UNDER_TEST_1);
     result.printStructure(System.out);
     assertEquals(PACKAGE_NAME_UNDER_TEST_1, result.getPackageName());
-    assertTrue(result.getChildTestModels().containsAll(result.getPackageTestModels()));
-    assertTrue(result.getChildTestModels().containsAll(result.getClassTestModels()));
+    assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
+    assertTrue(result.getChildTestModels().containsAll(result.classTestModels.getSet()));
   }
 
   /*
@@ -113,8 +112,8 @@ public class TestTestModelFactory extends TestCase {
     PackageTestModel result = $testModelFactory.createPackageTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PACKAGE_NAME_UNDER_TEST_2);
     result.printStructure(System.out);
     assertEquals(PACKAGE_NAME_UNDER_TEST_2, result.getPackageName());
-    assertTrue(result.getChildTestModels().containsAll(result.getPackageTestModels()));
-    assertTrue(result.getChildTestModels().containsAll(result.getClassTestModels()));
+    assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
+    assertTrue(result.getChildTestModels().containsAll(result.classTestModels.getSet()));
   }
 
   /*
@@ -124,7 +123,7 @@ public class TestTestModelFactory extends TestCase {
     ProjectTestModel result = $testModelFactory.createProjectTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PROJECT_NAME_UNDER_TEST_1);
     result.printStructure(System.out);
     assertEquals(PROJECT_NAME_UNDER_TEST_1, result.getProjectName());
-    assertTrue(result.getChildTestModels().containsAll(result.getPackageTestModels()));
+    assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
   }
 
   /*
@@ -134,7 +133,7 @@ public class TestTestModelFactory extends TestCase {
     ProjectTestModel result = $testModelFactory.createProjectTestModel(SOURCE_DIRECTORY_UNDER_TEST_2, PROJECT_NAME_UNDER_TEST_2);
     result.printStructure(System.out);
     assertEquals(PROJECT_NAME_UNDER_TEST_2, result.getProjectName());
-    assertTrue(result.getChildTestModels().containsAll(result.getPackageTestModels()));
+    assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
   }
 
 }
