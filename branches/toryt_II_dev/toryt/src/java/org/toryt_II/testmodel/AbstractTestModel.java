@@ -5,7 +5,6 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.toryt_II.TestModel;
 
 
 
@@ -29,6 +28,10 @@ public abstract class AbstractTestModel implements TestModel {
   /*</section>*/
 
 
+  /**
+   * Implementation that uses package accessible code
+   * to write compound test model contents indented, recursively.
+   */
   public void printStructure(PrintStream out) {
     assert out != null;
     printStructure(new IndentPrinter(out, -1));
@@ -40,6 +43,23 @@ public abstract class AbstractTestModel implements TestModel {
    */
   abstract void printStructure(IndentPrinter indentPrinter);
 
+  /**
+   * Class of instances to ease printing structured textual
+   * representation of a tree. The implementation of
+   * {@link #printStructure(IndentPrinter)} should write
+   * information using the current test model node using
+   * <code>println</code>. After that, it should create a new
+   * <code>IndentPrinter</code>, with the current
+   * <code>IndentPrinter</code> as {@link #getPrevious()},
+   * and call {@link #printChildren(String, Set)} on that
+   * <code>IndentPrinter</code> for all its kinds of children,
+   * that will then be rendered in different sections.
+   *
+   * @todo This was created as needed, but looks interesting,
+   *       and should be generalized. This is a bad design
+   *       as it is, since IndentPrinter depends on AbstractTestModel,
+   *       and it should only depend on the TestModel interface.
+   */
   static class IndentPrinter {
 
     public IndentPrinter(PrintStream out, int nrOfEntries) {
@@ -58,11 +78,15 @@ public abstract class AbstractTestModel implements TestModel {
 
     private PrintStream $out;
 
+    public final IndentPrinter getPrevious() {
+      return $previous;
+    }
+
     private IndentPrinter $previous;
 
     private int $nrOfEntriesLeft;
 
-    void printIndentSameEntry() {
+    private void printIndentSameEntry() {
       if ($previous != null) {
         $previous.printIndentSameEntry();
       }

@@ -15,9 +15,9 @@ import java.util.Set;
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getPackageTestModels() != null;
  * @invar cC:noNull(getPackageTestModels());
- * @invar cC:instanceOf(getPackageTestModels(), PackageTestModel);
+ * @invar cC:instanceOf(getPackageTestModels(), PackageTestModel.class);
  */
-public abstract class PackageTestModelContainer extends ClassTestModelContainer {
+public abstract class AbstractPackageTestModelContainer extends CompoundTestModel {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -37,7 +37,8 @@ public abstract class PackageTestModelContainer extends ClassTestModelContainer 
   //------------------------------------------------------------------
 
   /**
-   * @return getChildTestModels();
+   * @basic
+   * @init new.getPackageTestModels().isEmpty();
    */
   public Set getPackageTestModels() {
     return Collections.unmodifiableSet($packageTestModels);
@@ -51,7 +52,7 @@ public abstract class PackageTestModelContainer extends ClassTestModelContainer 
     assert packageTestModel != null;
     $packageTestModels.add(packageTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
   }
 
   /**
@@ -60,12 +61,21 @@ public abstract class PackageTestModelContainer extends ClassTestModelContainer 
   public void removePackageTestModel(PackageTestModel packageTestModel) {
     $packageTestModels.remove(packageTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
+  }
+
+  /**
+   * @post new.getPackageTestModels().isEmpty();
+   */
+  public void removeAllPackageTestModels() {
+    $packageTestModels = new HashSet();
+    resetCachedTestFactoryList();
+    // TODO events
   }
 
   /**
    * @invar cC:noNull($packageTestModels);
-   * @invar cC:instanceOf($packageTestModels, TestModel.class);
+   * @invar cC:instanceOf($packageTestModels, PackageTestModel.class);
    */
   private Set $packageTestModels = new HashSet();
 

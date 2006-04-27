@@ -10,13 +10,8 @@ import java.util.Set;
  * of {@link #getPackageTestModels() PackageTestModels}.
  *
  * @author Jan Dockx
- *
- * @invar toryt:cC org.toryt.patterns_I.Collections;
- * @invar getPackageTestModels() != null;
- * @invar cC:noNull(getPackageTestModels());
- * @invar cC:instanceOf(getPackageTestModels(), PackageTestModel);
  */
-public class ProjectTestModel extends PackageTestModelContainer {
+public class ProjectTestModel extends AbstractPackageTestModelContainer {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -47,6 +42,7 @@ public class ProjectTestModel extends PackageTestModelContainer {
    */
   public final void setProjectName(String projectName) {
     $projectName = projectName;
+    // TODO events
   }
 
   private String $projectName;

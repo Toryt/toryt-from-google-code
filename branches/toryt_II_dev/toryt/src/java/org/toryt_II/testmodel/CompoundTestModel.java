@@ -4,17 +4,28 @@ package org.toryt_II.testmodel;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.toryt.util_I.priorityList.PriorityList;
-import org.toryt.util_I.priorityList.UnionPriorityList;
-import org.toryt_II.TestModel;
+import org.toryt.util_I.collections.priorityList.PriorityList;
+import org.toryt.util_I.collections.priorityList.algebra.UnionPriorityList;
 
 
 /**
- * {@link TestModel} that is a compound of
- * {@link #getChildTestModels child test models}.
- * The {@link #getTestFactoryList()}
- * is the union of the test factory lists of the children, and
- * possibly extra test factories added here.
+ * <p>{@link TestModel} that is a compound of
+ *   {@link #getChildTestModels child test models}.
+ *   The {@link #getTestFactoryList()}
+ *   is the union of the test factory lists of the children, and
+ *   possibly extra test factories added here.</p>
+ * <p>Subclasses should introduce methods to add and remove
+ *   test models for different kinds of child test models. For each
+ *   kind, there should be a basic inspector to return the set of
+ *   test models of that kind, and a mutator to add and remove
+ *   a test model of that kind, and a method to remave all
+ *   test models of that kind. After construction, the set of child
+ *   test models of any kind should be empty.</p>
+ * @note This is not an interface, but an abstract
+ *   class, because we can implement {@link #getTestFactoryList()}
+ *   once and for all here. If it turns out that this is a limitation,
+ *   e.g., because multiple polymorphism is needed at some point,
+ *   we might separate an interface from the implementation.
  *
  * @author Jan Dockx
  *
@@ -22,8 +33,6 @@ import org.toryt_II.TestModel;
  * @invar getChildTestModels() != null;
  * @invar cC:noNull(getChildTestModels());
  * @invar cC:instanceOf(getChildTestModels(), TestModel);
- * @invar cC:noNull(getPackageTestModels());
- * @invar cC:instanceOf(getPackageTestModels(), PackageTestModel);
  */
 public abstract class CompoundTestModel extends AbstractTestModel {
 
@@ -84,6 +93,7 @@ public abstract class CompoundTestModel extends AbstractTestModel {
    */
   protected final void resetCachedTestFactoryList() {
     $union = null;
+    // TODO events
   }
 
   private UnionPriorityList createUnion() {

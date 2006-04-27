@@ -17,7 +17,7 @@ import java.util.Set;
  * @invar cC:noNull(getClassTestModels());
  * @invar cC:instanceOf(getClassTestModels(), ClassTestModel);
  */
-public abstract class ClassTestModelContainer extends CompoundTestModel {
+public abstract class AbstractClassTestModelContainer extends CompoundTestModel {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -35,8 +35,13 @@ public abstract class ClassTestModelContainer extends CompoundTestModel {
   /*<property name="class test models">*/
   //------------------------------------------------------------------
 
+  /* duplicated code due to single inheritance
+   * used in StaticClassTestModel and PackageTestModel
+   */
+
   /**
-   *
+   * @basic
+   * @init new.getClassTestModels().isEmpty();
    */
   public Set getClassTestModels() {
     return Collections.unmodifiableSet($classTestModels);
@@ -44,22 +49,31 @@ public abstract class ClassTestModelContainer extends CompoundTestModel {
 
   /**
    * @pre packageTestModel != null;
-   * @post getPackageTestModels().contains(packageTestModel);
+   * @post new.getClassTestModels().contains(classTestModel);
    */
   public void addClassTestModel(ClassTestModel classTestModel) {
     assert classTestModel != null;
     $classTestModels.add(classTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
   }
 
   /**
-   * @post ! getPackageTestModels().contains(packageTestModel);
+   * @post ! new.getClassTestModels().contains(classTestModel);
    */
   public void removeClassTestModel(ClassTestModel classTestModel) {
     $classTestModels.remove(classTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
+  }
+
+  /**
+   * @post new.getClassTestModels().isEmpty();
+   */
+  public void removeAllClassTestModels() {
+    $classTestModels = new HashSet();
+    resetCachedTestFactoryList();
+    // TODO events
   }
 
   /**

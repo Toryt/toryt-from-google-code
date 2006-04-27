@@ -21,9 +21,9 @@ import java.util.Set;
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getClassTestModels() != null;
  * @invar cC:noNull(getClassTestModels());
- * @invar cC:instanceOf(getClassTestModels(), ClassTestModel);
+ * @invar cC:instanceOf(getClassTestModels(), StaticClassTestModel.class);
  */
-public class PackageTestModel extends PackageTestModelContainer {
+public class PackageTestModel extends AbstractPackageTestModelContainer {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -54,6 +54,7 @@ public class PackageTestModel extends PackageTestModelContainer {
    */
   public final void setPackageName(String packageName) {
     $packageName = packageName;
+    // TODO events
   }
 
   private String $packageName;
@@ -66,7 +67,7 @@ public class PackageTestModel extends PackageTestModelContainer {
   //------------------------------------------------------------------
 
   /**
-   * @return getPackageTestModels();
+   * @return Collections.union(getPackageTestModels(), getClassTestModels());
    */
   public Set getChildTestModels() {
     Set result = new HashSet();
@@ -74,6 +75,56 @@ public class PackageTestModel extends PackageTestModelContainer {
     result.addAll(getClassTestModels());
     return Collections.unmodifiableSet(result);
   }
+
+  /*</property>*/
+
+
+
+  /*<property name="class test models">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   * @init new.getClassTestModels().isEmpty();
+   */
+  public Set getClassTestModels() {
+    return Collections.unmodifiableSet($classTestModels);
+  }
+
+  /**
+   * @pre packageTestModel != null;
+   * @post new.getClassTestModels().contains(classTestModel);
+   */
+  public void addClassTestModel(ClassTestModel classTestModel) {
+    assert classTestModel != null;
+    $classTestModels.add(classTestModel);
+    resetCachedTestFactoryList();
+    // TODO events
+  }
+
+  /**
+   * @post ! new.getClassTestModels().contains(classTestModel);
+   */
+  public void removeClassTestModel(ClassTestModel classTestModel) {
+    $classTestModels.remove(classTestModel);
+    resetCachedTestFactoryList();
+    // TODO events
+  }
+
+  /**
+   * @post new.getClassTestModels().isEmpty();
+   */
+  public void removeAllClassTestModels() {
+    $classTestModels = new HashSet();
+    resetCachedTestFactoryList();
+    // TODO events
+  }
+
+  /**
+   * @invar cC:noNull($classTestModels);
+   * @invar cC:instanceOf($classTestModels, StaticClassTestModel.class);
+   */
+  private Set $classTestModels = new HashSet();
 
   /*</property>*/
 

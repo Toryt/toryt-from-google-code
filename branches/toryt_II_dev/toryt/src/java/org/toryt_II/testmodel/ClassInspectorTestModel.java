@@ -2,7 +2,7 @@ package org.toryt_II.testmodel;
 
 import java.lang.reflect.Method;
 
-import org.toryt.util_I.priorityList.PriorityList;
+import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 
@@ -47,7 +47,7 @@ public class ClassInspectorTestModel extends NonConstructorMethodTestModel {
    * @post new.getMethod() == method;
    */
   public final void setClassInspector(Method classInspector) {
-    setNonConstructorMethod(classInspector);
+    setNonConstructorMethod(classInspector); // events
   }
 
   /*</property>*/

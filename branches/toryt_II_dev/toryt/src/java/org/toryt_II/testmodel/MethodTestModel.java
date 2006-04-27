@@ -1,7 +1,7 @@
 package org.toryt_II.testmodel;
 
 
-import org.toryt.util_I.priorityList.PriorityList;
+import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 /**
@@ -38,6 +38,11 @@ public abstract class MethodTestModel extends AbstractTestModel {
   //------------------------------------------------------------------
 
   /**
+   * @note This method has a return type of {@link Object}, because in Java
+   *       reflection {@link java.lang.reflect.Method} and
+   *       {@link java.lang.reflect.Constructor} are unrelated
+   *       types.
+   *
    * @basic
    * @init null;
    */

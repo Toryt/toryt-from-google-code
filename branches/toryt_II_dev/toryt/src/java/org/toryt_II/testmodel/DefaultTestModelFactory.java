@@ -7,8 +7,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import org.toryt_II.TestModel;
-import org.toryt_II.TestModelFactory;
 
 
 /**
@@ -33,9 +31,6 @@ public class DefaultTestModelFactory implements TestModelFactory {
 
 
 
-  /**
-   * @pre constructor != null;
-   */
   public ConstructorTestModel createConstructorTestModel(Constructor constructor) {
     assert constructor != null;
     ConstructorTestModel result = new ConstructorTestModel();
@@ -43,9 +38,6 @@ public class DefaultTestModelFactory implements TestModelFactory {
     return result;
   }
 
-  /**
-   * @pre instanceMutator != null;
-   */
   public InstanceMutatorTestModel createInstanceMutatorTestModel(Method instanceMutator) {
     assert instanceMutator != null;
     InstanceMutatorTestModel result = new InstanceMutatorTestModel();
@@ -53,9 +45,6 @@ public class DefaultTestModelFactory implements TestModelFactory {
     return result;
   }
 
-  /**
-   * @pre instanceInspector != null;
-   */
   public InstanceInspectorTestModel createInstanceInspectorTestModel(Method instanceInspector) {
     assert instanceInspector != null;
     InstanceInspectorTestModel result = new InstanceInspectorTestModel();
@@ -63,9 +52,6 @@ public class DefaultTestModelFactory implements TestModelFactory {
     return result;
   }
 
-  /**
-   * @pre classMutator != null;
-   */
   public ClassMutatorTestModel createClassMutatorTestModel(Method classMutator) {
     assert classMutator != null;
     ClassMutatorTestModel result = new ClassMutatorTestModel();
@@ -73,9 +59,6 @@ public class DefaultTestModelFactory implements TestModelFactory {
     return result;
   }
 
-  /**
-   * @pre classInspector != null;
-   */
   public ClassInspectorTestModel createClassInspectorTestModel(Method classInspector) {
     assert classInspector != null;
     ClassInspectorTestModel result = new ClassInspectorTestModel();
@@ -83,62 +66,65 @@ public class DefaultTestModelFactory implements TestModelFactory {
     return result;
   }
 
-  public MethodTestModel createMethodTestModel(Object method) {
-    assert (method instanceof Constructor) || (method instanceof Method);
-    if (method instanceof Constructor) {
-      return createConstructorTestModel((Constructor)method);
-    }
-    else {
-      Method m = (Method)method;
-      if (Modifier.isStatic(m.getModifiers())) { // class
-        if (m.getReturnType().equals(Void.TYPE)) { // mutator
-          return createClassMutatorTestModel(m);
-        }
-        else { // inspector
-          return createClassInspectorTestModel(m);
-        }
+  public MethodTestModel createMethodTestModel(Method method) {
+    assert method != null;
+    if (Modifier.isStatic(method.getModifiers())) { // class
+      if (method.getReturnType().equals(Void.TYPE)) { // mutator
+        return createClassMutatorTestModel(method);
       }
-      else { // instance
-        if (m.getReturnType().equals(Void.TYPE)) { // mutator
-          return createInstanceMutatorTestModel(m);
-        }
-        else { // inspector
-          return createInstanceInspectorTestModel(m);
-        }
+      else { // inspector
+//      MUDO remove basic inspectors
+        return createClassInspectorTestModel(method);
+      }
+    }
+    else { // instance
+      if (method.getReturnType().equals(Void.TYPE)) { // mutator
+        return createInstanceMutatorTestModel(method);
+      }
+      else { // inspector
+//      MUDO remove basic inspectors
+        return createInstanceInspectorTestModel(method);
       }
     }
   }
 
   /**
-   * @pre innerClazz != null;
+   * If <code>false</code>, method is a class method.
+   *
+   * @return ! Modifier.isStatic(method.getModifiers());
    */
-  public InnerClassTestModel createInnerClassTestModel(Class innerClazz) {
+  public final boolean isInstanceMethod(Method method) {
+    return ! Modifier.isStatic(method.getModifiers());
+  }
+
+  /**
+   * If <code>false</code>, method is a class method.
+   *
+   * @return ! Modifier.isStatic(method.getModifiers());
+   */
+  public final boolean isInstanceIMutator(Method method) {
+    return isInstanceMethod(method) && method.getReturnType().equals(Void.TYPE)
+  }
+
+  public InnerClassTestModel createInnerClassTestModel(Class innerClazz) throws SecurityException {
     assert innerClazz != null;
     InnerClassTestModel result = new InnerClassTestModel();
-    result.setClazz(innerClazz);
+    initClassTestModel(innerClazz, result);
     return result;
   }
 
-  /**
-   * Create a {@link ClassTestModel} for <code>clazz</code>.
-   * Using reflection, method test models are added for all
-   * <code><b>public</b></code> methods (that are not basic inspectors),
-   * inner classes and static nested classes.
-   *
-   * @pre clazz != null;
-   * @throws SecurityException
-   *         Access to the reflection information was denied.
-   *
-   * @idea This should be extended to include non-public members.
-   */
   public ClassTestModel createClassTestModel(Class clazz) throws SecurityException {
     assert clazz != null;
     ClassTestModel result = new ClassTestModel();
+    initClassTestModel(clazz, result);
+    return result;
+  }
+
+  private void initClassTestModel(Class clazz, ClassTestModel result) throws SecurityException {
     result.setClazz(clazz);
     addConstructors(clazz, result);
     addMethods(clazz, result);
     addNestedClasses(clazz, result);
-    return result;
   }
 
   private void addConstructors(Class clazz, ClassTestModel result) throws SecurityException {
@@ -191,16 +177,6 @@ public class DefaultTestModelFactory implements TestModelFactory {
     }
   }
 
-  /**
-   * Create a {@link PackageTestModel} for <code>clazz</code>.
-   * Inspecting the class tree, test models are added for all
-   * <code><b>public</b></code> classes and subpackages.
-   *
-   * @pre clazz != null;
-   *
-   * @idea This should be extended to include non-public members.
-   * @todo use a classpath instead of single classDirectory
-   */
   public PackageTestModel createPackageTestModel(File classDirectory, String packageName) {
     assert classDirectory != null;
     assert classDirectory.exists();
@@ -233,14 +209,6 @@ public class DefaultTestModelFactory implements TestModelFactory {
     return result;
   }
 
-  /**
-   * Create a {@link ProjectTestModel} for <code>sourceDirectory</code>.
-   * Inspecting the class tree, test models are added for all
-   * packages, i.e., subdirectories with at least 1 type defined in them.
-   *
-   * @pre sourceDirectory != null;
-   * @todo use a classpath instead of single classDirectory
-   */
   public ProjectTestModel createProjectTestModel(File classDirectory, String projectName) {
     assert classDirectory != null;
     assert classDirectory.exists();

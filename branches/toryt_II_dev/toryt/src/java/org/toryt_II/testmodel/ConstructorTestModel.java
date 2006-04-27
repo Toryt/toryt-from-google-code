@@ -3,7 +3,7 @@ package org.toryt_II.testmodel;
 
 import java.lang.reflect.Constructor;
 
-import org.toryt.util_I.priorityList.PriorityList;
+import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 /**
@@ -56,6 +56,7 @@ public class ConstructorTestModel extends MethodTestModel {
    */
   public final void setConstructor(Constructor constructor) {
     $constructor = constructor;
+    // TODO events
   }
 
   private Constructor $constructor;

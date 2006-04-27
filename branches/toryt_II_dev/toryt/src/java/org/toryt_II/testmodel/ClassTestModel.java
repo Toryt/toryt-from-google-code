@@ -7,25 +7,26 @@ import java.util.Set;
 
 
 /**
- * Instances represent a class to test. A <code>ClassTestModel</code>
- * is an aggregate of
- * {@link #getConstructorTestModels() ConstructorTestModels},
- * {@link #getInstanceMutatorTestModels() InstanceMutatorTestModels},
- * {@link #getInstanceInspectorTestModels() InstanceInspectorTestModels},
- * and {@link #getClassMutatorTestModels() ClassMutatorTestModels}
- * and {@link #getClassInspectorTestModels() ClassInspectorTestModels},
- * and {@link #getInnerClassTestModels() InnerClassTestModels} for inner classes
- * and {@link #getClassTestModels() ClassTestModels}
- * for static nested classes.
+ * <p>Instances represent a class to test. A <code>ClassTestModel</code>
+ *   is an aggregate of
+ *   {@link #getConstructorTestModels() ConstructorTestModels},
+ *   {@link #getInstanceMutatorTestModels() InstanceMutatorTestModels},
+ *   {@link #getInstanceInspectorTestModels() InstanceInspectorTestModels},
+ *   and {@link #getClassMutatorTestModels() ClassMutatorTestModels}
+ *   and {@link #getClassInspectorTestModels() ClassInspectorTestModels},
+ *   and {@link #getInnerClassTestModels() InnerClassTestModels} for inner classes.</p>
  *
  * @author Jan Dockx
  *
  * @invar toryt:cC org.toryt.patterns_I.Collections;
- * @invar getClassTestModels() != null;
- * @invar cC:noNull(getClassTestModels());
- * @invar cC:instanceOf(getClassTestModels(), ClassTestModel);
+ * @invar getConstructorTestModels() != null;
+ * @invar cC:noNull(getConstructorTestModels());
+ * @invar cC:instanceOf(getConstructorTestModels(), ConstructorTestModel.class);
+ * @invar getInstanceMutatorTestModels() != null;
+ * @invar cC:noNull(getInstanceMutatorTestModels());
+ * @invar cC:instanceOf(getInstanceMutatorTestModels(), InstanceMutatorTestModel.class);
  */
-public class ClassTestModel extends ClassTestModelContainer {
+public abstract class ClassTestModel extends CompoundTestModel {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -56,6 +57,7 @@ public class ClassTestModel extends ClassTestModelContainer {
    */
   public final void setClazz(Class clazz) {
     $clazz = clazz;
+    // TODO events
   }
 
   private Class $clazz;
@@ -68,7 +70,13 @@ public class ClassTestModel extends ClassTestModelContainer {
   //------------------------------------------------------------------
 
   /**
-   * @return getPackageTestModels();
+   * @return Collections.union(getConstructorTestModels(),
+   *                           getInstanceMutatorTestModels(),
+   *                           getInstanceInspectorTestModels(),
+   *                           getClassMutatorTestModels(),
+   *                           getClassInspectorTestModels(),
+   *                           getClassTestModels(), // nested inner classes
+   *                           getInnerClassTestModels());
    */
   public Set getChildTestModels() {
     Set result = new HashSet();
@@ -76,6 +84,7 @@ public class ClassTestModel extends ClassTestModelContainer {
     result.addAll($instanceMutatorTestModels);
     result.addAll($instanceInspectorTestModels);
     result.addAll($classMutatorTestModels);
+    result.addAll($classInspectorTestModels);
     result.addAll(getClassTestModels());
     result.addAll($innerClassTestModels);
     return Collections.unmodifiableSet(result);
@@ -89,7 +98,8 @@ public class ClassTestModel extends ClassTestModelContainer {
   //------------------------------------------------------------------
 
   /**
-   *
+   * @basic
+   * @init new.getConstructorTestModels().isEmpty();
    */
   public Set getConstructorTestModels() {
     return Collections.unmodifiableSet($constructorTestModels);
@@ -103,7 +113,7 @@ public class ClassTestModel extends ClassTestModelContainer {
     assert constructorTestModel != null;
     $constructorTestModels.add(constructorTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
   }
 
   /**
@@ -112,7 +122,16 @@ public class ClassTestModel extends ClassTestModelContainer {
   public void removeConstructorTestModel(ConstructorTestModel constructorTestModel) {
     $constructorTestModels.remove(constructorTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
+  }
+
+  /**
+   * @post new.getConstructorTestModels().isEmpty();
+   */
+  public void removeAllConstructorTestModels() {
+    $constructorTestModels = new HashSet();
+    resetCachedTestFactoryList();
+    // TODO events
   }
 
   /**
@@ -129,7 +148,8 @@ public class ClassTestModel extends ClassTestModelContainer {
   //------------------------------------------------------------------
 
   /**
-   *
+   * @basic
+   * @init new.getInstanceMutatorTestModels().isEmpty();
    */
   public Set getInstanceMutatorTestModels() {
     return Collections.unmodifiableSet($instanceMutatorTestModels);
@@ -143,7 +163,7 @@ public class ClassTestModel extends ClassTestModelContainer {
     assert instanceMutatorTestModel != null;
     $instanceMutatorTestModels.add(instanceMutatorTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
   }
 
   /**
@@ -152,9 +172,17 @@ public class ClassTestModel extends ClassTestModelContainer {
   public void removeInstanceMutatorTestModel(InstanceMutatorTestModel instanceMutatorTestModel) {
     $instanceMutatorTestModels.remove(instanceMutatorTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
   }
 
+  /**
+   * @post new.getInstanceMutatorTestModels().isEmpty();
+   */
+  public void removeAllInstanceMutatorTestModels() {
+    $instanceMutatorTestModels = new HashSet();
+    resetCachedTestFactoryList();
+    // TODO events
+  }
   /**
    * @invar cC:noNull($instanceMutatorTestModels);
    * @invar cC:instanceOf($instanceMutatorTestModels, TestModel.class);
@@ -169,7 +197,8 @@ public class ClassTestModel extends ClassTestModelContainer {
   //------------------------------------------------------------------
 
   /**
-   *
+   * @basic
+   * @init new.getInstanceInspectorTestModels().isEmpty();
    */
   public Set getInstanceInspectorTestModels() {
     return Collections.unmodifiableSet($instanceInspectorTestModels);
@@ -183,7 +212,7 @@ public class ClassTestModel extends ClassTestModelContainer {
     assert instanceInspectorTestModel != null;
     $instanceInspectorTestModels.add(instanceInspectorTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
   }
 
   /**
@@ -192,7 +221,16 @@ public class ClassTestModel extends ClassTestModelContainer {
   public void removeInstanceInspectorTestModel(InstanceInspectorTestModel instanceInspectorTestModel) {
     $instanceInspectorTestModels.remove(instanceInspectorTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
+  }
+
+  /**
+   * @post new.getInstanceInspectorTestModels().isEmpty();
+   */
+  public void removeAllInstanceInspectorTestModels() {
+    $instanceInspectorTestModels = new HashSet();
+    resetCachedTestFactoryList();
+    // TODO events
   }
 
   /**
@@ -209,7 +247,8 @@ public class ClassTestModel extends ClassTestModelContainer {
   //------------------------------------------------------------------
 
   /**
-   *
+   * @basic
+   * @init new.getClassMutatorTestModels().isEmpty();
    */
   public Set getClassMutatorTestModels() {
     return Collections.unmodifiableSet($classMutatorTestModels);
@@ -223,7 +262,7 @@ public class ClassTestModel extends ClassTestModelContainer {
     assert classMutatorTestModel != null;
     $classMutatorTestModels.add(classMutatorTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
   }
 
   /**
@@ -232,7 +271,16 @@ public class ClassTestModel extends ClassTestModelContainer {
   public void removeClassMutatorTestModel(ClassMutatorTestModel classMutatorTestModel) {
     $classMutatorTestModels.remove(classMutatorTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
+  }
+
+  /**
+   * @post new.getClassTestModels().isEmpty();
+   */
+  public void removeAllClassMutatorTestModels() {
+    $classMutatorTestModels = new HashSet();
+    resetCachedTestFactoryList();
+    // TODO events
   }
 
   /**
@@ -249,7 +297,8 @@ public class ClassTestModel extends ClassTestModelContainer {
   //------------------------------------------------------------------
 
   /**
-   *
+   * @basic
+   * @init new.getClassInspectorTestModels().isEmpty();
    */
   public Set getClassInspectorTestModels() {
     return Collections.unmodifiableSet($classInspectorTestModels);
@@ -263,7 +312,7 @@ public class ClassTestModel extends ClassTestModelContainer {
     assert classInspectorTestModel != null;
     $classInspectorTestModels.add(classInspectorTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
   }
 
   /**
@@ -272,7 +321,16 @@ public class ClassTestModel extends ClassTestModelContainer {
   public void removeClassInspectorTestModel(ClassInspectorTestModel classInspectorTestModel) {
     $classInspectorTestModels.remove(classInspectorTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
+  }
+
+  /**
+   * @post new.getClassInspectorTestModels().isEmpty();
+   */
+  public void removeAllClassInspectorTestModels() {
+    $classInspectorTestModels = new HashSet();
+    resetCachedTestFactoryList();
+    // TODO events
   }
 
   /**
@@ -289,7 +347,8 @@ public class ClassTestModel extends ClassTestModelContainer {
   //------------------------------------------------------------------
 
   /**
-   *
+   * @basic
+   * @init new.getInnerClassTestModels().isEmpty();
    */
   public Set getInnerClassTestModels() {
     return Collections.unmodifiableSet($innerClassTestModels);
@@ -303,7 +362,7 @@ public class ClassTestModel extends ClassTestModelContainer {
     assert innerClassTestModel != null;
     $innerClassTestModels.add(innerClassTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
   }
 
   /**
@@ -312,7 +371,16 @@ public class ClassTestModel extends ClassTestModelContainer {
   public void removeInnerClassTestModel(InnerClassTestModel innerClassTestModel) {
     $innerClassTestModels.remove(innerClassTestModel);
     resetCachedTestFactoryList();
-    // MUDO events
+    // TODO events
+  }
+
+  /**
+   * @post new.getInnerClassTestModels().isEmpty();
+   */
+  public void removeAllClassTestModels() {
+    $innerClassTestModels = new HashSet();
+    resetCachedTestFactoryList();
+    // TODO events
   }
 
   /**

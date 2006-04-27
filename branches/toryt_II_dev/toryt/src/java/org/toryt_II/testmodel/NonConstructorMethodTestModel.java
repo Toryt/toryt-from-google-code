@@ -3,7 +3,7 @@ package org.toryt_II.testmodel;
 
 import java.lang.reflect.Method;
 
-import org.toryt.util_I.priorityList.PriorityList;
+import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 /**
@@ -60,6 +60,7 @@ public abstract class NonConstructorMethodTestModel extends MethodTestModel {
    */
   protected final void setNonConstructorMethod(Method nonConstructorMethod) {
     $nonConstructorMethod = nonConstructorMethod;
+    // TODO events
   }
 
   private Method $nonConstructorMethod;
