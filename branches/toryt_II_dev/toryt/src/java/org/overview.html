@@ -104,6 +104,46 @@
   a method with the <dfn>contract </dfn>of the method to generate a number
   of <dfn>contract method tests</dfn>., and possibly will generate some
   more method tests.</p>
+<h1>Colors</h1>
+<table border="1">
+  <tr>
+    <td colspan="3" bgcolor="#333333">no tests run yet </td>
+  </tr>
+  <tr>
+    <td bgcolor="#999999"><dfn>grey</dfn>: tests running, not yet reached blue level,
+      and there are contracts for all methods </td>
+    <td bgcolor="#999999"><dfn>pale grey</dfn>: tests running, not yet reached blue
+      level, but there are methods for which there is no contract </td>
+    <td rowspan="6" bgcolor="#FF0000">errors detected </td>
+  </tr>
+  <tr>
+    <td bgcolor="#0000FF"><dfn>blue</dfn>: all tests up until priority level 1 have
+      tested successfully, and there are contracts for all methods </td>
+    <td bgcolor="#7E81FF"><dfn>pale blue</dfn>: all tests up until priority level
+      1 have tested successfully, but there are methods for which there
+      is no contract </td>
+  </tr>
+  <tr>
+    <td bgcolor="#00FF00"><dfn>green</dfn>: all tests up until priority level 2 have
+      tested successfully, and there are contracts for all methods </td>
+    <td rowspan="4" bgcolor="#CDFF82"><dfn>pale green</dfn>: all tests up until priority
+      level 2 have tested successfully, but there are methods for which
+      there is no contract </td>
+  </tr>
+  <tr>
+    <td bgcolor="#CCCCCC"><dfn>silver</dfn>: all tests up until mean - 2&sigma; have
+      tested successfully, and there are contracts for all methods  </td>
+  </tr>
+  <tr>
+    <td bgcolor="#DFE30C"><dfn>gold</dfn>:  all tests up until mean -  2&sigma; have
+    tested successfully, and there are contracts for all methods </td>
+  </tr>
+  <tr>
+    <td bgcolor="#666666">gold: all tests have run, and there are contracts
+    for all methods </td>
+  </tr>
+</table>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 </body>
 </html>
