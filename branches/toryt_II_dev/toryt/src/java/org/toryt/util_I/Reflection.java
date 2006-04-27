@@ -10,6 +10,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import org.toryt_II.Contract;
 import org.toryt_II.TorytException;
@@ -312,7 +313,7 @@ public class Reflection {
     // != null; throws loads of exceptions
     Object result = null;
     try {
-      result = inspector.invoke(bean, null);
+      result = inspector.invoke(bean, (Object[])null);
     }
     catch (IllegalArgumentException iaExc) {
       assert false : "Should not happen, since there are no " //$NON-NLS-1$
@@ -357,6 +358,63 @@ public class Reflection {
                                       + propertyName);
     }
     return inspector;
+  }
+
+  /**
+   * The different kinds of methods that can be instances of
+   * {@link Method}.
+   */
+  public static enum MethodKind {
+    INSTANCE_MUTATOR,
+    INSTANCE_INSPECTOR,
+    CLASS_MUTATOR,
+    CLASS_INSPECTOR
+  }
+
+  /**
+   * @pre method != null;
+   */
+  public static MethodKind methodKind(Method method) {
+    assert method != null;
+    if (Modifier.isStatic(method.getModifiers())) { // class
+      if (method.getReturnType().equals(Void.TYPE)) { // mutator
+        return MethodKind.CLASS_MUTATOR;
+      }
+      else { // inspector
+        return MethodKind.CLASS_INSPECTOR;
+      }
+    }
+    else { // instance
+      if (method.getReturnType().equals(Void.TYPE)) { // mutator
+        return MethodKind.INSTANCE_MUTATOR;
+      }
+      else { // inspector
+        return MethodKind.INSTANCE_INSPECTOR;
+      }
+    }
+  }
+
+  /**
+   * The different kinds of nested types, inner or static.
+   * Static types can be top level types or nested.
+   * Inner types are always nested.
+   */
+  public static enum TypeKind {
+    INNER,
+    STATIC
+  }
+
+  /**
+   * @pre clazz != null;
+   */
+  public static TypeKind typeKind(Class clazz) {
+    assert clazz != null;
+    if ((! clazz.isLocalClass()) || (Modifier.isStatic(clazz.getModifiers()))) {
+      return TypeKind.STATIC;
+    }
+    else {
+      return TypeKind.INNER;
+    }
   }
 
 }
