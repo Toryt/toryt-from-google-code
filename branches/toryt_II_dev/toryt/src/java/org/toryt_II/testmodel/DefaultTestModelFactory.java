@@ -94,7 +94,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
 //    }
 //  }
 
-  public InnerClassTestModel createInnerClassTestModel(Class innerClazz) throws TestModelFactoryException {
+  public InnerClassTestModel createInnerClassTestModel(Class innerClazz) throws TestModelCreationException {
     assert innerClazz != null;
     assert Reflection.typeKind(innerClazz) == TypeKind.INNER;
     LOG.debug("Creating InnerClassTestModel for class " + innerClazz);
@@ -103,7 +103,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
     return result;
   }
 
-  public StaticClassTestModel createStaticClassTestModel(Class clazz) throws TestModelFactoryException {
+  public StaticClassTestModel createStaticClassTestModel(Class clazz) throws TestModelCreationException {
     assert clazz != null;
     assert Reflection.typeKind(clazz) == TypeKind.STATIC;
     LOG.debug("Creating StaticClassTestModel for class " + clazz);
@@ -112,14 +112,14 @@ public class DefaultTestModelFactory implements TestModelFactory {
     return result;
   }
 
-  private void initClassTestModel(Class clazz, ClassTestModel result) throws TestModelFactoryException {
+  private void initClassTestModel(Class clazz, ClassTestModel result) throws TestModelCreationException {
     result.setClazz(clazz);
     addConstructors(clazz, result);
     addMethods(clazz, result);
     addNestedClasses(clazz, result);
   }
 
-  private void addConstructors(Class clazz, ClassTestModel result) throws TestModelFactoryException {
+  private void addConstructors(Class clazz, ClassTestModel result) throws TestModelCreationException {
     try {
       LOG.debug("  adding ConstructorTestModels for class " + clazz);
       Constructor[] constructors = clazz.getConstructors();
@@ -130,12 +130,12 @@ public class DefaultTestModelFactory implements TestModelFactory {
       }
     }
     catch (SecurityException sExc) {
-      throw new TestModelFactoryException(result, null, sExc);
+      throw new TestModelCreationException(result, null, sExc);
     }
   }
 
   private void addMethods(Class clazz, ClassTestModel result)
-      throws TestModelFactoryException {
+      throws TestModelCreationException {
     try {
       LOG.debug("  adding MethodTestModels for class " + clazz);
       Method[] methods = clazz.getMethods(); // SecurityException
@@ -167,12 +167,12 @@ public class DefaultTestModelFactory implements TestModelFactory {
       }
     }
     catch (SecurityException sExc) {
-      throw new TestModelFactoryException(result, null, sExc);
+      throw new TestModelCreationException(result, null, sExc);
     }
   }
 
   private void addNestedClasses(Class clazz, ClassTestModel result)
-      throws TestModelFactoryException {
+      throws TestModelCreationException {
     try {
       LOG.debug("  adding TestModels for nested classes in class  " + clazz);
       Class[] clazzes = clazz.getClasses(); // SecurityException
@@ -204,12 +204,12 @@ public class DefaultTestModelFactory implements TestModelFactory {
       }
     }
     catch (SecurityException sExc) {
-      throw new TestModelFactoryException(result, null, sExc);
+      throw new TestModelCreationException(result, null, sExc);
     }
   }
 
   public PackageTestModel createPackageTestModel(File classDirectory, String packageName)
-      throws TestModelFactoryException {
+      throws TestModelCreationException {
     assert classDirectory != null;
     assert classDirectory.exists();
     assert classDirectory.isDirectory();
@@ -245,7 +245,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
   }
 
   public ProjectTestModel createProjectTestModel(File classDirectory, String projectName)
-      throws TestModelFactoryException {
+      throws TestModelCreationException {
     assert classDirectory != null;
     assert classDirectory.exists();
     assert classDirectory.isDirectory();
@@ -263,7 +263,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
                                             String parentPackageName,
                                             File classDirectory,
                                             AbstractPackageTestModelContainer result)
-      throws TestModelFactoryException {
+      throws TestModelCreationException {
     LOG.debug("Finding subpackages of package " + parentPackageName +
               " in class directory " + classDirectory.getPath() +
               " (parent package directory: " + directory.getPath() + ")");

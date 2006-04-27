@@ -14,7 +14,7 @@ import org.toryt_II.TorytException;
  *
  * @invar getSubject() != null;
  */
-public class TestModelFactoryException/*<SubjectType>*/ extends TorytException {
+public class TestModelCreationException extends TorytException {
 
   // TODO why can't we not make this class generic?
 
@@ -37,7 +37,7 @@ public class TestModelFactoryException/*<SubjectType>*/ extends TorytException {
    * @post (message == null) ? new.getMessage() == null : message.equals(new.getMessage());
    * @post new.getCause() == cause;
    */
-  public TestModelFactoryException(Object /*SubjectType*/ subject, String message, Throwable cause) {
+  public TestModelCreationException(Object /*SubjectType*/ subject, String message, Throwable cause) {
     super(message, cause);
     assert subject != null;
     $subject = subject;
