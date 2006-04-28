@@ -1,5 +1,7 @@
 package org.toryt.util_I.reflect;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 /**
  * Signals that we could not get the value of a constant with name
@@ -10,20 +12,11 @@ package org.toryt.util_I.reflect;
  *
  * @invar getConstantName() != null;
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class CouldNotGetConstantException extends ReflectionException {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
 
   /**
    * @pre clazz != null;

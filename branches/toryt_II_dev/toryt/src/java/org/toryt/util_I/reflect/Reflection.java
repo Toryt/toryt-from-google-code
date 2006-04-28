@@ -12,6 +12,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 /**
  * @mudo (jand) most methods are also in ppw-bean; consolidate
@@ -19,21 +21,11 @@ import java.lang.reflect.Modifier;
  *
  * @author    Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class Reflection {
-
-  /*<section name="Meta Information">*/
-  //  ------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /*</section>*/
-
-
 
   public static Method findMethod(Class type, String signature) throws NoSuchMethodException {
     assert type != null;
