@@ -1,6 +1,7 @@
 package org.toryt_II.testobject.java.lang;
 
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.testobject.ConstantTofPl;
 
 
@@ -10,20 +11,11 @@ import org.toryt_II.testobject.ConstantTofPl;
  *
  * @author Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class _TOF_PL_Double extends ConstantTofPl {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
 
   {
     addDouble(0, -7.0E-2d);

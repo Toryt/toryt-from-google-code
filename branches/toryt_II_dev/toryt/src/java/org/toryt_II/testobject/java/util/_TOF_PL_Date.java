@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.testobject.AbstractTestObjectFactory;
 import org.toryt_II.testobject.ArrayHashTofPl;
 
@@ -15,19 +16,11 @@ import org.toryt_II.testobject.ArrayHashTofPl;
  *
  * @author Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class _TOF_PL_Date extends ArrayHashTofPl {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
 
   {
     addPriorityElement(0, new AbstractTestObjectFactory(Date.class) {
