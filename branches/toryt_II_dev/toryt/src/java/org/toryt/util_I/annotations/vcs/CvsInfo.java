@@ -12,6 +12,17 @@ import java.lang.annotation.Target;
  * the CVS data about the source revision the compiled code is based on,
  * is available in the code.
  *
+ * Usage pattern:
+ * <pre>
+ * ATCvsInfo(revision = &quot;$Revision$&quot;,
+ *           date     = &quot;$Date$&quot;,
+ *           state    = &quot;$State$&quot;,
+ *           tag      = &quot;$Name$&quot;)
+ * public class ... {
+ *  ...
+ *  }
+ * </pre>
+ *
  * @author    Jan Dockx
  */
 @CvsInfo(revision = "$Revision$",
