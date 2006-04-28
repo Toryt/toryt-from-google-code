@@ -3,12 +3,17 @@ package org.toryt.example;
 
 import org.toryt.support.straightlist.StraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList.Mapping;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.hard.HardClassContract;
 import org.toryt_II.contract.hard.HardConstructorContract;
 import org.toryt_II.contract.hard.HardMutatorContract;
 
 
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class _Contract_Bookmark extends HardClassContract {
 
   public _Contract_Bookmark() throws OLDTorytException {
@@ -19,7 +24,7 @@ public class _Contract_Bookmark extends HardClassContract {
         // TODO Auto-generated method stub
         return null;
       }
-      
+
     });
 
     addConstructorContract(new HardConstructorContract(this, Bookmark.class, "Bookmark(String, String, String, int, Group)") {
@@ -28,7 +33,7 @@ public class _Contract_Bookmark extends HardClassContract {
         // TODO Auto-generated method stub
         return null;
       }
-      
+
                                 });
     addInstanceMethodContract(new HardMutatorContract(this, Bookmark.class, "setUrl(String)") {
 
@@ -36,7 +41,7 @@ public class _Contract_Bookmark extends HardClassContract {
         // TODO Auto-generated method stub
         return null;
       }
-      
+
                                   });
     addInstanceMethodContract(new HardMutatorContract(this, Bookmark.class, "clicked()") {
 
@@ -44,7 +49,7 @@ public class _Contract_Bookmark extends HardClassContract {
         // TODO Auto-generated method stub
         return null;
       }
-      
+
                                   });
     addInstanceMethodContract(new HardMutatorContract(this, Bookmark.class, "setRating(int)") {
 
@@ -52,7 +57,7 @@ public class _Contract_Bookmark extends HardClassContract {
         // TODO Auto-generated method stub
         return null;
       }
-      
+
                                   });
     addBasicInspector("getUrl()");
     addBasicInspector("getNumberOfClicks()");
@@ -69,5 +74,5 @@ public class _Contract_Bookmark extends HardClassContract {
     // TODO Auto-generated method stub
     return null;
   }
-  
+
 }

@@ -4,6 +4,8 @@ package org.toryt.util_I.collections.lockable;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 /**
  * <p>{@link Collection} that becomes unmodifiable once it is
@@ -16,20 +18,11 @@ import java.util.Iterator;
  * @invar cC:noNull(this);
  * @invar cC:instanceOf(this, getElementType());
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public interface LockableCollection extends Collection {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
 
   /**
    * @basic

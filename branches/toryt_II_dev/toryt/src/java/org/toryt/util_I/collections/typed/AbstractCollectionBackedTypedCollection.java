@@ -4,6 +4,7 @@ package org.toryt.util_I.collections.typed;
 import java.util.Collection;
 
 import org.toryt.patterns_I.Collections;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.AbstractCollectionBackedCollection;
 
 
@@ -13,22 +14,13 @@ import org.toryt.util_I.collections.AbstractCollectionBackedCollection;
  *
  * @author Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public abstract class AbstractCollectionBackedTypedCollection
     extends AbstractCollectionBackedCollection
     implements TypedCollection {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
 
   public AbstractCollectionBackedTypedCollection(Class elementType, boolean nullAllowed) {
     assert elementType != null;

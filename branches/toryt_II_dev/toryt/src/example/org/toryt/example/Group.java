@@ -1,22 +1,24 @@
 package org.toryt.example;
- 
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 /**
  * A collection of bookmark tree nodes.
- * 
+ *
  * @author    Bart Van Den Poel
  * @author    Jan Dockx
  * @author    Ren&eacute; Clerckx
  * @author    Wim Lambrechts
  * @author    Abdul Shoudouev
  * @author    Peopleware n.v.
- * 
+ *
  * @toryt:cC toryt.contract.Collections;
- * 
+ *
  * @invar getNodes() != null;
  * @invar cC:noNull(getNodes().values());
  * @invar cC:noNull(getNodes().keySet());
@@ -25,24 +27,12 @@ import java.util.Map;
  * @invar (foreach Node n; getNodes().values().contains(n);
  *            n.getGroup() == this);
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class Group extends Node {
 
-  /*<section name="Meta Information">*/
-  //------------------------------------------------------------------
-
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$"; //$NON-NLS-1$
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$"; //$NON-NLS-1$
-  /** {@value} */
-  public static final String CVS_STATE = "$State$"; //$NON-NLS-1$
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
-
-  /*</section>*/
-
-  
-  
   /*<constructors>*/
   //------------------------------------------------------------------
 
@@ -54,9 +44,9 @@ public class Group extends Node {
    * @post new.getNodes().isEmpty();
    */
   public Group() {
-    //NOP    
+    //NOP
   }
-  
+
   /**
    * @post new.getDescription()
    *        .equals(description == null ? EMPTY : description);
@@ -70,10 +60,10 @@ public class Group extends Node {
     setDescription(description);
     setGroup(parent);
   }
-  
+
   /*<constructors>*/
 
-  
+
 
   /*<property name="nodes">*/
   //------------------------------------------------------------------
@@ -86,14 +76,14 @@ public class Group extends Node {
   }
 
   /**
-   * @post getNodes().get(node.getTitle()) == node; 
+   * @post getNodes().get(node.getTitle()) == node;
    */
   void addNode(Node node) {
     $nodes.put(node.getTitle(), node);
   }
 
   /**
-   * @post getNodes().get(node.getTitle()) == null; 
+   * @post getNodes().get(node.getTitle()) == null;
    */
   void removeNode(Node node) {
     $nodes.remove(node.getTitle());
@@ -142,5 +132,5 @@ public class Group extends Node {
   }
 
   /* </property> */
-  
+
 }

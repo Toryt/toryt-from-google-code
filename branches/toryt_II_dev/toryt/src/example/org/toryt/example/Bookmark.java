@@ -2,6 +2,8 @@ package org.toryt.example;
 
 import java.util.Date;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 /**
  * Bookmarks have a URL, the date they were added, and the number of times
  * they were clicked, and a rating.
@@ -12,34 +14,22 @@ import java.util.Date;
  * @author    Wim Lambrechts
  * @author    Abdul Shoudouev
  * @author    Peopleware n.v.
- * 
+ *
  * @invar getUrl() != null;
  * @invar getDateAdded() != null;
  * @invar ! getDateAdded().after(new Date());
  * @invar getNumberOfClicks() >= 0;
  * @invar new.getDateAdded().equals(getDateAdded());
- * 
+ *
  * @protected
  * @invar getNumberOfBookmarks() == 1;
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class Bookmark extends Node {
-    
-  /*<section name="Meta Information">*/
-  //------------------------------------------------------------------
 
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$"; //$NON-NLS-1$
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$"; //$NON-NLS-1$
-  /** {@value} */
-  public static final String CVS_STATE = "$State$"; //$NON-NLS-1$
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
-
-  /*</section>*/
-
-
-  
   /*<constructors>*/
   //------------------------------------------------------------------
 
@@ -55,7 +45,7 @@ public class Bookmark extends Node {
   public Bookmark() {
     // NOP
   }
-  
+
   /**
    * @post new.getUrl().equals(url == null ? EMPTY : url);
    * @post new.getTitle().equals(title == null ? EMPTY : title);
@@ -78,7 +68,7 @@ public class Bookmark extends Node {
   /*</constructors>*/
 
 
-  
+
   /*<property name="url">*/
   //------------------------------------------------------------------
 
@@ -103,8 +93,8 @@ public class Bookmark extends Node {
 
   /*</property> */
 
-  
-  
+
+
   /*<property name="numberOfClicks">*/
   //------------------------------------------------------------------
 
@@ -114,7 +104,7 @@ public class Bookmark extends Node {
   public int getNumberOfClicks() {
     return $numberOfClicks;
   }
-  
+
   /**
    * @post new.getNumberOfClicks() == getNumberOfClicks() + 1;
    * @throws ArithmeticException
@@ -143,8 +133,8 @@ public class Bookmark extends Node {
 
   /*</property> */
 
-  
-  
+
+
   /*<property name="dateAdded">*/
   //------------------------------------------------------------------
 
@@ -163,7 +153,7 @@ public class Bookmark extends Node {
   /*</property> */
 
 
-  
+
   /*<property name="rating">*/
   //------------------------------------------------------------------
 
@@ -195,10 +185,10 @@ public class Bookmark extends Node {
    * @invar $rating >= 0;
    */
   private int $rating;
-  
+
   /*</property> */
 
 }
-    
-    
- 
+
+
+

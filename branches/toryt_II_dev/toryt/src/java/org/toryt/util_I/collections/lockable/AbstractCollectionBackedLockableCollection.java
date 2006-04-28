@@ -4,6 +4,7 @@ package org.toryt.util_I.collections.lockable;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.AbstractCollectionBackedCollection;
 
 
@@ -13,22 +14,13 @@ import org.toryt.util_I.collections.AbstractCollectionBackedCollection;
  *
  * @author Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public abstract class AbstractCollectionBackedLockableCollection
     extends AbstractCollectionBackedCollection
     implements LockableCollection {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
 
   /* <property name="locked"> */
   //------------------------------------------------------------------
@@ -53,7 +45,7 @@ public abstract class AbstractCollectionBackedLockableCollection
   public abstract class CollectionBackedLockIterator implements LockIterator {
 
     protected abstract Iterator getIterator();
-    
+
     public final boolean hasNext() {
       return getIterator().hasNext();
     }

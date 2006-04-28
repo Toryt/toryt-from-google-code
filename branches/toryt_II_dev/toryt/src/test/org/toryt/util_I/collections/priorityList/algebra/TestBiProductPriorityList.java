@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.ArrayUtils;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
@@ -15,6 +16,10 @@ import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class TestBiProductPriorityList extends TestCase {
 
   private ArrayHashPriorityList[] buildComponents(int nr) {

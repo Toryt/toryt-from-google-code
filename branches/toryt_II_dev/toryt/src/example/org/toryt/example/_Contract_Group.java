@@ -11,6 +11,7 @@ import org.toryt.support.straightlist.EmptyStraightList;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.cases.Cases;
 import org.toryt_II.contract.MethodContract;
@@ -19,11 +20,15 @@ import org.toryt_II.contract.hard.HardClassContract;
 import org.toryt_II.contract.hard.HardConstructorContract;
 
 
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class _Contract_Group extends HardClassContract {
 
   public _Contract_Group() throws OLDTorytException {
     super(Group.class);
-    
+
     // basic inspectors
     addBasicInspector("getNodes()");
 
@@ -32,31 +37,31 @@ public class _Contract_Group extends HardClassContract {
       public boolean validate(Map context) {
         Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
         return subject.getNodes() != null;
-      }      
+      }
     });
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
         Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
         return Collections.noNull(subject.getNodes().values());
-      }      
+      }
     });
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
         Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
         return Collections.noNull(subject.getNodes().keySet());
-      }      
+      }
     });
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
         Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
         return Collections.instanceOf(subject.getNodes().values(), Node.class);
-      }      
+      }
     });
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
         Group subject = (Group)context.get(MethodContract.SUBJECT_KEY);
         return Collections.instanceOf(subject.getNodes().keySet(), String.class);
-      }      
+      }
     });
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
@@ -69,9 +74,9 @@ public class _Contract_Group extends HardClassContract {
           }
         }
         return true;
-      }      
+      }
     });
-    
+
     // constructors
     addConstructorContract(new HardConstructorContract(this, Group.class, "Group()") {
 
@@ -114,7 +119,7 @@ public class _Contract_Group extends HardClassContract {
       public String[] getFormalParameters() {
         return new String[] {"title", "description", "parent"};
       }
-      
+
       public StraightList getTestCases() throws OLDTorytException {
         return new LazyCombinationStraightList(
            new String[] {"title", "description", "parent"},
@@ -160,13 +165,13 @@ public class _Contract_Group extends HardClassContract {
     });
     close();
   }
-  
+
   public StraightList getCasesMaps() throws OLDTorytException {
     return _C_N.getCasesMaps();
   }
-  
+
   public static _Contract_Node _C_N;
-  
+
   static {
     try {
       _C_N = new _Contract_Node();
@@ -175,11 +180,11 @@ public class _Contract_Group extends HardClassContract {
       assert false;
     }
   }
-  
+
   public LazyMappingStraightList.Mapping getCaseMapping() {
     return CASE_MAPPING;
   }
-  
+
   public final static LazyMappingStraightList.Mapping CASE_MAPPING
       = new LazyMappingStraightList.AllValidMapping() {
           public Object map(Object o) {

@@ -3,6 +3,8 @@ package org.toryt.util_I.collections.lockable;
 
 import java.util.Set;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 
 /**
@@ -10,21 +12,13 @@ import java.util.Set;
  *   iterating over them.</p>
  *
  * @see LazyCollection
-
+ *
  * @author Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public interface LazySet extends LazyCollection, LockableSet {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
 
 }

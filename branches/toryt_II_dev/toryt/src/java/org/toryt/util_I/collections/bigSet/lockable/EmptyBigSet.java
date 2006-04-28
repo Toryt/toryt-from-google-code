@@ -5,42 +5,34 @@ import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.Iterator;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.BigSet;
 
 
 /**
  * <p>An empty {@link BigSet}.</p>
  * <p>We need to provide a
- *   {@link #getElementType() element type} at construction. 
+ *   {@link #getElementType() element type} at construction.
  *
  * @invar getBigSize() == 1;
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class EmptyBigSet extends AbstractLockedBigSet {
 
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
+
+  public static final EmptyBigSet OBJECT_INSTANCE = new EmptyBigSet(Object.class);
 
 
-  
-  public static final EmptyBigSet OBJECT_INSTANCE = new EmptyBigSet(Object.class); 
-  
-  
   /**
    * @pre backingSet != null;
    */
   public EmptyBigSet(Class elementType) {
     super(elementType, true, BigInteger.ZERO);
   }
-  
+
   public final boolean isEmpty() {
     return true;
   }
@@ -48,18 +40,18 @@ public class EmptyBigSet extends AbstractLockedBigSet {
   public final boolean contains(Object o) {
     return false;
   }
-  
+
   public final Iterator iterator() {
     return new AbstractLockedCollectionIterator() {
 
                   public final boolean hasNext() {
                     return false;
                   }
-            
+
                   public Object next() {
                     throw new IndexOutOfBoundsException();
                   }
-            
+
                 };
   }
 

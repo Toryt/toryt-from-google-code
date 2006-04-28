@@ -1,9 +1,15 @@
 package org.toryt_II.main;
 
+
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 import junit.framework.TestCase;
 
 
-
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class TestCli extends TestCase {
 
 //  public final void testMain1() {

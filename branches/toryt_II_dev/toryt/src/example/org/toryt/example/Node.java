@@ -1,19 +1,23 @@
 package org.toryt.example;
 
+
 import java.text.NumberFormat;
+
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 /**
  * Elements in a tree of bookmarks. All elements in this tree have
  * a {@link #getTitle() title}, a {@link #getDescription() description},
  * and a {@link #getRating() rating}.
- * 
+ *
  * @author    Bart Van Den Poel
  * @author    Jan Dockx
  * @author    Ren&eacute; Clerckx
  * @author    Wim Lambrechts
  * @author    Abdul Shoudouev
  * @author    Peopleware n.v.
- * 
+ *
  * @invar getTitle() != null;
  * @invar getDescription() != null;
  * @invar (! Double.isNanN(getRating()) ==> (getRating() >= 0);
@@ -21,34 +25,23 @@ import java.text.NumberFormat;
  * @invar (getGroup() != null)
  *          ? getGroup().getNodes().get(getTitle()) == this
  *          : true;
- * 
+ *
  * @protected
  * @invar getTotalOfRatings() >= 0;
  * @invar getNumberOfBookmarks() > 0;
  * @invar getTotalOfRatings() <= 10 * getNumberOfBookmarks();
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public abstract class Node implements java.io.Serializable {
 
-  /*<section name="Meta Information">*/
-  //------------------------------------------------------------------
 
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$"; //$NON-NLS-1$
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$"; //$NON-NLS-1$
-  /** {@value} */
-  public static final String CVS_STATE = "$State$"; //$NON-NLS-1$
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
-
-  /*</section>*/
-
-  
-  
   public static final String EMPTY = ""; //$NON-NLS-1$
 
-  
-  
+
+
   /*<constructors>*/
   //------------------------------------------------------------------
 
@@ -61,10 +54,10 @@ public abstract class Node implements java.io.Serializable {
   protected Node() {
     // NOP
   }
-  
+
   /*<constructors>*/
 
-  
+
 
   /*<property name="description">*/
   //------------------------------------------------------------------
@@ -107,7 +100,7 @@ public abstract class Node implements java.io.Serializable {
   /**
    * Since the title is used as the key in the group we are in, we also
    * need to change that entry to keep type invariants!
-   * 
+   *
    * @param title
    *        The title to set.
    * @post new.getTitle().equals(title == null ? EMPTY : title);
@@ -126,8 +119,8 @@ public abstract class Node implements java.io.Serializable {
 
   /*</property> */
 
-  
-  
+
+
   /*<property name="rating">*/
   //------------------------------------------------------------------
 
@@ -143,16 +136,16 @@ public abstract class Node implements java.io.Serializable {
    * @basic
    */
   protected abstract int getTotalOfRatings();
-  
+
   /**
    * @basic
    */
   protected abstract int getNumberOfBookmarks();
-  
+
   /*</property> */
 
-  
-  
+
+
   /*<property name="group">*/
   //------------------------------------------------------------------
 
@@ -162,7 +155,7 @@ public abstract class Node implements java.io.Serializable {
   public Group getGroup() {
     return $group;
   }
-  
+
   /**
    * @post new.getGroup() == group;
    * @post (getGroup() != null)
@@ -178,19 +171,19 @@ public abstract class Node implements java.io.Serializable {
       $group.addNode(this);
     }
   }
-  
+
   private Group $group;
-  
+
   /*</property> */
 
-  
+
   private static int NF_DIGITS = 3;
-  
+
   private static NumberFormat NF = NumberFormat.getNumberInstance();
-  
+
   static {
     NF.setMinimumFractionDigits(NF_DIGITS);
     NF.setMaximumFractionDigits(NF_DIGITS);
   }
-  
+
 }

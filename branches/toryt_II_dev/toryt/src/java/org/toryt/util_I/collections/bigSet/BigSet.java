@@ -4,6 +4,7 @@ package org.toryt.util_I.collections.bigSet;
 import java.math.BigInteger;
 import java.util.Set;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.typed.TypedSet;
 
 
@@ -21,19 +22,11 @@ import org.toryt.util_I.collections.typed.TypedSet;
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getBigSize() >= 0;
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public interface BigSet extends TypedSet {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
 
   /**
    * The number of elements as a {@link BigInteger}.

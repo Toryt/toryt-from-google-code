@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.algebra.AggregatorFactory;
 import org.toryt.util_I.collections.algebra.ObjectArrayAggregatorFactory;
 import org.toryt.util_I.collections.algebra.AggregatorFactory.Aggregator;
@@ -33,19 +34,11 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
  * @invar getAggregatorFactory() != null;
  * @invar getElementType() == getAggregatorFactory().getElementType();
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class ProductBigSet extends AbstractComponentBigSet {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
 
   /**
    * @pre elementType != null;

@@ -4,6 +4,8 @@ package org.toryt.util_I.collections.lockable;
 import java.util.Collection;
 import java.util.List;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 /**
  * <p>{@link List} that becomes unmodifiable once it is
@@ -13,22 +15,12 @@ import java.util.List;
  *
  * @author Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public interface LockableList extends LockableCollection, List {
 
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
-  
-  
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
 
@@ -62,7 +54,7 @@ public interface LockableList extends LockableCollection, List {
 
   /*</section>*/
 
-  
+
   /**
    * @result result instanceof LockableList;
    * @result result.isLocked() == isLocked();

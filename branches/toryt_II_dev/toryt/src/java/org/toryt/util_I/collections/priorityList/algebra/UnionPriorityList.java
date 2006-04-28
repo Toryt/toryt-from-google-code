@@ -8,6 +8,7 @@ import java.util.ListIterator;
 
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.algebra.UnionBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.priorityList.PriorityList;
@@ -37,20 +38,11 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  *              ! getComponents()[j].containsPriorityElement(o)));
  *        component priority lists are disjunct on the level of the priority elements
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class UnionPriorityList extends AbstractComponentPriorityList {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
 
   /**
    * @pre priorityElementType != null;
@@ -169,7 +161,7 @@ CHANGE UnionBigSet to accept nulls in components !!!
     }
     return new UnionBigSet(getPriorityElementType(), true, result);
   }
-  
+
   /**
    * Contains an equal {@link LockableBigSet}.
    *

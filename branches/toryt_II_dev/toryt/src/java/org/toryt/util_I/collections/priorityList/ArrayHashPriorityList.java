@@ -12,6 +12,7 @@ import java.util.ListIterator;
 
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
 
@@ -36,24 +37,15 @@ import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
  *   pl.addPriorityElement(2, element7);
  *   ...
  *   pl.lock();
+ * </pre>
  *
  * @author Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class ArrayHashPriorityList implements PriorityList {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
-
 
   /**
    * This method is introduced for use in {@link #subList(int, int)}.

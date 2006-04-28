@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.lockable.LockableList;
 import org.toryt.util_I.collections.typed.TypedList;
@@ -33,19 +34,11 @@ import org.toryt.util_I.collections.typed.TypedList;
  * @invar (forall LockableBigSet lbs; contains(lbs);
  *          lbs.isLocked() == isLocked());
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public interface PriorityList extends TypedList, LockableList {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
 
   /**
    * The type of the elements of the priority buckets.

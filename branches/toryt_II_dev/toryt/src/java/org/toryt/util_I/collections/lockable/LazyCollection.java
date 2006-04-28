@@ -3,6 +3,8 @@ package org.toryt.util_I.collections.lockable;
 
 import java.util.Collection;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 
 /**
@@ -26,20 +28,11 @@ import java.util.Collection;
  *
  * @invar isLocked();
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public interface LazyCollection extends LockableCollection {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
 
   /**
    * This operation is very expensive. Don't call this method.

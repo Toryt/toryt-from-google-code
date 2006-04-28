@@ -4,6 +4,7 @@ package org.toryt.util_I.collections.bigSet.lockable;
 import java.math.BigInteger;
 import java.util.HashSet;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.BigSet;
 import org.toryt.util_I.collections.lockable.SetBackedLockableSet;
 import org.toryt.util_I.collections.typed.SetBackedTypedSet;
@@ -20,21 +21,12 @@ import org.toryt.util_I.collections.typed.TypedSet;
  *
  * @protected-invar TypedSet.isAssignableFrom(getBackingSet());
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class SetBackedLockableBigSet extends SetBackedLockableSet
     implements LockableBigSet {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
 
   /**
    * @pre backingSet != null;

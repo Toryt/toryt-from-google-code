@@ -3,6 +3,8 @@ package org.toryt.util_I.collections.typed;
 
 import java.util.Collection;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 /**
  * <p>Collection that only allows elements of type
@@ -17,19 +19,11 @@ import java.util.Collection;
  *
  * @note When moving to Java 5, replace this with a generics.
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public interface TypedCollection extends Collection {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
 
   /**
    * The type of the elements in the set.

@@ -3,6 +3,7 @@ package org.toryt.util_I.collections.bigSet.algebra;
 import java.math.BigInteger;
 import java.util.Iterator;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.algebra.UnionBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
 
@@ -10,6 +11,10 @@ import junit.framework.TestCase;
 
 
 
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class TestUnionBigSet extends TestCase {
 
   public void setUp() {

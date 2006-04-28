@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 
 /**
@@ -15,21 +17,12 @@ import java.util.ListIterator;
  *
  * @author Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class ListBackedLockableList extends AbstractCollectionBackedLockableCollection
     implements LockableList {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
 
   /**
    * @pre backingList != null;
@@ -67,31 +60,31 @@ public class ListBackedLockableList extends AbstractCollectionBackedLockableColl
   public final List subList(int fromIndex, int toIndex) {
     return getBackingList().subList(fromIndex, toIndex);
   }
-  
+
   public final Object get(int index) {
     return getBackingList().get(index);
   }
-  
+
   public final int indexOf(Object o) {
     return getBackingList().indexOf(o);
   }
-  
+
   public final int lastIndexOf(Object o) {
     return getBackingList().lastIndexOf(o);
   }
-  
+
   public class ListBackedLockListIterator extends CollectionBackedLockIterator
       implements ListIterator {
 
     private ListBackedLockListIterator(int index) {
       $iterator = $backingList.listIterator(index);
     }
-    
+
     /**
      * @invar $backingIterator != null;
      */
     private ListIterator $iterator;
-    
+
     protected final Iterator getIterator() {
       return $iterator;
     }
@@ -137,7 +130,7 @@ public class ListBackedLockableList extends AbstractCollectionBackedLockableColl
     }
 
   }
-  
+
   public final Iterator iterator() {
     return listIterator();
   }
@@ -145,7 +138,7 @@ public class ListBackedLockableList extends AbstractCollectionBackedLockableColl
   public final ListIterator listIterator() {
     return new ListBackedLockListIterator(0);
   }
-  
+
   public final ListIterator listIterator(int index) {
     return new ListBackedLockListIterator(index);
   }

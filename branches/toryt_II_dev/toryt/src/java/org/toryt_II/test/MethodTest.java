@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.MethodContract;
 import org.toryt_II.contract.TypeContract;
@@ -28,21 +29,11 @@ import org.toryt_II.contract.hard.HardTypeContract;
  * @invar getContract() != null;
  * @invar getContext() != null;
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public abstract class MethodTest extends AbstractTest {
-
-  /*<section name="Meta Information">*/
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /*</section>*/
-
-
 
   /*<construction>*/
   //------------------------------------------------------------------

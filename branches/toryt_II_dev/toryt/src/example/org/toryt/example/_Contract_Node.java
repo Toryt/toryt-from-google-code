@@ -6,6 +6,7 @@ import java.util.Map;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.cases.Cases;
 import org.toryt_II.contract.MethodContract;
@@ -15,10 +16,14 @@ import org.toryt_II.contract.hard.HardMutatorContract;
 import org.toryt_II.test.MethodTest;
 
 
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class _Contract_Node extends HardClassContract {
 
   private static _Contract_Group _C_G;
-  
+
   static {
     try {
       _C_G = new _Contract_Group();
@@ -36,7 +41,7 @@ public class _Contract_Node extends HardClassContract {
     addBasicInspector("getTitle()");
     addBasicInspector("getRating()");
     addBasicInspector("getGroup()");
-    
+
     // type invariants
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
@@ -70,7 +75,7 @@ public class _Contract_Node extends HardClassContract {
                 : true;
       }
     });
-    
+
     // instance methods
     addInstanceMethodContract(new HardMutatorContract(this, Node.class, "setDescription(java.lang.String)") {
 
@@ -81,14 +86,14 @@ public class _Contract_Node extends HardClassContract {
       {
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Node subject = (Node)context.get(SUBJECT_KEY); 
+            Node subject = (Node)context.get(SUBJECT_KEY);
             String description = (String)context.get("description");
             boolean result = subject.getDescription().equals(description == null ? "" : description);
             return result;
           }});
         close();
       }
-      
+
       public StraightList getTestCases() throws OLDTorytException {
         return new LazyCombinationStraightList(
              new String[] {SUBJECT_KEY, "description"},
@@ -103,11 +108,11 @@ public class _Contract_Node extends HardClassContract {
       public String[] getFormalParameters() {
         return new String[] {"title"};
       }
-      
+
       {
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Node subject = (Node)context.get(SUBJECT_KEY); 
+            Node subject = (Node)context.get(SUBJECT_KEY);
             String title = (String)context.get("title");
             return subject.getTitle().equals(title == null ? "" : title);
           }});
@@ -120,31 +125,31 @@ public class _Contract_Node extends HardClassContract {
              new StraightList[] {getCases(),
                                  Cases.findTestObjectList(String.class)});
       }
-      
+
     });
     addInstanceMethodContract(new HardMutatorContract(this, Node.class, "setGroup(org.toryt_II.example.Group)") {
 
       public String[] getFormalParameters() {
         return new String[] {"group"};
       }
-      
+
       {
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Node subject = (Node)context.get(SUBJECT_KEY); 
+            Node subject = (Node)context.get(SUBJECT_KEY);
             Group group = (Group)context.get("group");
             return subject.getGroup() == group;
           }});
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Node subject = (Node)context.get(SUBJECT_KEY); 
-            Group oldGroup = (Group)context.get("getGroup()"); 
-            Group oldGroupATpost = (Group)context.get("getGroup()@post"); 
+            Node subject = (Node)context.get(SUBJECT_KEY);
+            Group oldGroup = (Group)context.get("getGroup()");
+            Group oldGroupATpost = (Group)context.get("getGroup()@post");
             return oldGroup != null ? ! oldGroupATpost.getNodes().values().contains(subject) : true;
           }});
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Node subject = (Node)context.get(SUBJECT_KEY); 
+            Node subject = (Node)context.get(SUBJECT_KEY);
             Group group = (Group)context.get("group");
             Group groupATpost = (Group)context.get("group@post");
             return group != null ? groupATpost.getNodes().values().contains(subject) : true;
@@ -158,7 +163,7 @@ public class _Contract_Node extends HardClassContract {
               new StraightList[] {getCases(),
                                   _C_G.getCasesWithNull()});
       }
-      
+
       public void recordState(MethodTest test) {
         Map state = test.getContext();
         Node subject = (Node)state.get(SUBJECT_KEY);
@@ -166,12 +171,12 @@ public class _Contract_Node extends HardClassContract {
         state.put("getGroup()", subject.getGroup());
         state.put("getGroup()@post", subject.getGroup());
       }
-      
+
     });
 
     close();
   }
-    
+
   public StraightList getCasesMaps() throws OLDTorytException {
     return new LazyCombinationStraightList(
                 new String[] {"description", "title", "group"},
@@ -183,7 +188,7 @@ public class _Contract_Node extends HardClassContract {
   public LazyMappingStraightList.Mapping getCaseMapping() {
     return CASE_MAPPING;
   }
-  
+
   public final static LazyMappingStraightList.Mapping CASE_MAPPING
       = new LazyMappingStraightList.AllValidMapping() {
           public Object map(Object o) {
@@ -195,7 +200,7 @@ public class _Contract_Node extends HardClassContract {
             return subject;
           }
         };
-  
+
 
   public static class NodeStub extends Node {
 
@@ -206,7 +211,7 @@ public class _Contract_Node extends HardClassContract {
     protected int getNumberOfBookmarks() {
       return 0;
     }
-    
+
   }
 
 }

@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.BigSet;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 
@@ -32,21 +33,11 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
  *              ! getComponents()[j].contains(o)));
  *        component sets are disjunct
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class UnionBigSet extends AbstractComponentBigSet {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
-
 
   /**
    * @pre elementType != null;

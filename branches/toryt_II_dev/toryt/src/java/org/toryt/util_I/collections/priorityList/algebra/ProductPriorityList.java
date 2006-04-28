@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.ArrayUtils;
 import org.toryt.util_I.collections.bigSet.algebra.ProductBigSet;
 import org.toryt.util_I.collections.bigSet.algebra.UnionBigSet;
@@ -14,24 +15,13 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 /**
- *
  * @author Jan Dockx
- *
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class ProductPriorityList extends AbstractLazyLockedComponentPriorityList {
-
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
 
 
   private ProductPriorityList(PriorityList leftFactor, PriorityList rightFactor, int fromIndex, int toIndex) {
