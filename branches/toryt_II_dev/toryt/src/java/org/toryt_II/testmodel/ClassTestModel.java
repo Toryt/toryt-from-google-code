@@ -1,5 +1,6 @@
 package org.toryt_II.testmodel;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.reflect.Reflection;
 import org.toryt.util_I.reflect.Reflection.TypeKind;
 
@@ -25,19 +26,12 @@ import org.toryt.util_I.reflect.Reflection.TypeKind;
  * @invar (getClazz() != null) ?
  *          Reflection.typeKind(getClazz()) == getTypeKind();
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public abstract class ClassTestModel extends CompoundTestModel {
 
-  /*<section name="Meta Information">*/
-  //  ------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /*</section>*/
 
 
   protected ClassTestModel(TypeKind typeKind) {

@@ -1,6 +1,7 @@
 package org.toryt_II.testmodel;
 
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
@@ -18,21 +19,11 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  * @invar getTestFactoryList().getElementType() == TestFactory.class;
  * @invar (getMethod() instanceof Method) || (getMethod() instanceof Constructor);
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public abstract class MethodTestModel extends AbstractTestModel {
-
-  /*<section name="Meta Information">*/
-  //  ------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /*</section>*/
-
-
 
   /*<property name="method">*/
   //------------------------------------------------------------------

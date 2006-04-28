@@ -1,5 +1,7 @@
 package org.toryt_II.testmodel;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 /**
  * Instances represent a project to test. Projects have
@@ -8,20 +10,11 @@ package org.toryt_II.testmodel;
  *
  * @author Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class ProjectTestModel extends AbstractPackageTestModelContainer {
-
-  /*<section name="Meta Information">*/
-  //  ------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /*</section>*/
-
 
   /*<property name="projectName">*/
   //------------------------------------------------------------------

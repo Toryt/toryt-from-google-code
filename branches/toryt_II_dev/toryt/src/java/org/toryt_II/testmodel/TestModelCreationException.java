@@ -1,6 +1,7 @@
 package org.toryt_II.testmodel;
 
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.TorytException;
 
 
@@ -14,6 +15,10 @@ import org.toryt_II.TorytException;
  *
  * @invar getSubject() != null;
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class TestModelCreationException extends TorytException {
 
   // TODO why can't we not make this class generic?

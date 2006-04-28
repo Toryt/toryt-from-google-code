@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.reflect.CouldNotLoadClassException;
 import org.toryt.util_I.reflect.Reflection;
 import org.toryt.util_I.reflect.Reflection.MethodKind;
@@ -20,19 +21,12 @@ import org.toryt.util_I.reflect.Reflection.TypeKind;
  *
  * @author Jan Dockx
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class DefaultTestModelFactory implements TestModelFactory {
 
-  /*<section name="Meta Information">*/
-  //  ------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /*</section>*/
 
 
   private final static Log LOG = LogFactory.getLog(DefaultTestModelFactory.class);

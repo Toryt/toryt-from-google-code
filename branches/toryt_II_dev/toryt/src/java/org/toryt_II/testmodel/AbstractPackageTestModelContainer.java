@@ -1,5 +1,7 @@
 package org.toryt_II.testmodel;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 
 /**
  * A model of a project entity that contains packages. This is an
@@ -9,21 +11,11 @@ package org.toryt_II.testmodel;
  *
  * @invar packageTestModels != null;
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public abstract class AbstractPackageTestModelContainer extends CompoundTestModel {
-
-  /*<section name="Meta Information">*/
-  //  ------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /*</section>*/
-
-
 
   public final TestModelCollectionDelegate<PackageTestModel> packageTestModels =
       new TestModelCollectionDelegate<PackageTestModel>(this);

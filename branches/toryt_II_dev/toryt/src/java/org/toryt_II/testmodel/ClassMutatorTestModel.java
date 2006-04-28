@@ -3,6 +3,7 @@ package org.toryt_II.testmodel;
 
 import java.lang.reflect.Method;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.reflect.Reflection.MethodKind;
 
 
@@ -13,21 +14,11 @@ import org.toryt.util_I.reflect.Reflection.MethodKind;
  *
  * @invar getMethodKind() == MethodKind.CLASS_MUTATOR;
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class ClassMutatorTestModel extends NonConstructorMethodTestModel {
-
-  /*<section name="Meta Information">*/
-  //  ------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /*</section>*/
-
-
 
   public ClassMutatorTestModel() {
     super(MethodKind.CLASS_MUTATOR);
