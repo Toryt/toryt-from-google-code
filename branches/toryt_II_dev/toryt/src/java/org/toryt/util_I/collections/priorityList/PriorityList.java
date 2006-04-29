@@ -38,7 +38,7 @@ import org.toryt.util_I.collections.typed.TypedList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface PriorityList extends TypedList, LockableList {
+public interface PriorityList<_PriorityElementType_> extends TypedList, LockableList {
 
   /**
    * The type of the elements of the priority buckets.

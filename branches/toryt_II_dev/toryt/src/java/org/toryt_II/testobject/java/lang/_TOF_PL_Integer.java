@@ -15,7 +15,7 @@ import org.toryt_II.testobject.ConstantTofPl;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class _TOF_PL_Integer extends ConstantTofPl {
+public class _TOF_PL_Integer extends ConstantTofPl<Integer> {
 
   {
     addInteger(0, 5);

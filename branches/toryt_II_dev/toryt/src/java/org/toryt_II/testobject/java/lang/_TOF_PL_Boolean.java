@@ -15,7 +15,7 @@ import org.toryt_II.testobject.ConstantTofPl;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class _TOF_PL_Boolean extends ConstantTofPl {
+public class _TOF_PL_Boolean extends ConstantTofPl<Boolean> {
 
   {
     addImmutableTestObject(0, Boolean.TRUE);

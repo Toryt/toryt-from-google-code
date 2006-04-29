@@ -1,5 +1,6 @@
 package org.toryt_II.testobject;
 
+
 import java.beans.Beans;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,8 +13,6 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.toryt.patterns_I.Assertion;
-import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 import org.toryt.util_I.reflect.CouldNotGetConstantException;
@@ -52,7 +51,7 @@ import org.toryt_II.main.Contracts;
 public class TofPlFactory {
 
 
-  private final static Log LOG = LogFactory.getLog(TofPlFactory.class);
+  private final static Log _LOG = LogFactory.getLog(TofPlFactory.class);
 
 
   /**
@@ -65,14 +64,17 @@ public class TofPlFactory {
 
   /**
    * @invar Collections.noNull(TOF_PL_MAP);
-   * @invar Collections.instanceOf(TOF_PL_MAP, Class.class, PriorityList.class);
-   * @invar (forall PriorityList pl; TOF_PL_MAP.contains(pl);
+   * @invar (forall PriorityList<TestObjectFactory<_TestObjectType_>> pl;
+   *            TOF_PL_MAP.contains(pl);
    *            pl.getPriorityElementType() == TestObjectFactory.class);
+   * @invar (forall Class c; TOF_PL_MAP.containsKey(c);
+   *            TOF_PL_MAP.get(c) instanceof PriorityList<TestObjectFactory<c>>);
    * @invar (forall Map.Entry e; TOF_PL_MAP.entrySet().contains(e);
    *            (forall TestObjectFactory tof; e.getValue().contains(tof);
    *                e.getKey() == tof.getTestObjectClass()));
    */
-  private final static Map TOF_PL_MAP = new HashMap();
+  private final static Map<Class, PriorityList<TestObjectFactory<?>>> TOF_PL_MAP =
+      new HashMap<Class, PriorityList<TestObjectFactory<?>>>();
 
   /**
    * <p>The prefix for system properties that have the FQCN of a
@@ -141,18 +143,17 @@ public class TofPlFactory {
    * @pre forClass != null;
    * @result result != null;
    * @result Collections.noNull(result);
-   * @result Collections.isInstance(result, String.class);
    * @result result.get(0).equals(forClass.getPackage().getName());
    * @result (forall int i; (i >= 0) && (i < getBasePackageNamesList().size());
    *              result.get(i + 1).equals(getBasePackageNamesList().get(i)));
    */
-  public final static List getBasePackageNamesList(Class forClass) {
+  public final static List<String> getBasePackageNamesList(Class forClass) {
     assert forClass != null;
-    List result = new ArrayList(getBasePackageNamesList().size() + 1);
+    List<String> result = new ArrayList<String>(getBasePackageNamesList().size() + 1);
     result.add(forClass.getPackage().getName());
-    result.add(getBasePackageNamesList());
-    if (LOG.isDebugEnabled()) {
-      LOG.debug("base package name class for class " + forClass + " is " + result);
+    result.addAll(getBasePackageNamesList());
+    if (_LOG.isDebugEnabled()) {
+      _LOG.debug("base package name class for class " + forClass + " is " + result);
     }
     return java.util.Collections.unmodifiableList(result);
   }
@@ -173,46 +174,44 @@ public class TofPlFactory {
    *
    * @result result != null;
    * @result Collections.noNull(result);
-   * @result Collections.isInstance(result, String.class);
    * @result result.get(result.size() - 1).equals(DEFAULT_BASE_PACKAGE);
    * @result Arrays.equals(System.getProperty(BASE_PACKAGE_LIST_SYSTEM_PROPERTY_KEY).
    *                           split(BASE_PACKAGE_LIST_SYSTEM_PROPERTY_SEPARATOR_PATTERN),
    *                       result.subList(0, result.size() - 1).toArray());
    */
-  public final static List getBasePackageNamesList() {
+  public final static List<String> getBasePackageNamesList() {
     return BASE_PACKAGE_NAMES_LIST;
   }
 
   /**
    * @invar BASE_PACKAGE_NAMES_LIST != null;
    * @invar Collections.noNull(BASE_PACKAGE_NAMES_LIST);
-   * @invar Collections.isInstance(BASE_PACKAGE_NAMES_LIST, String.class);
    */
-  private final static List BASE_PACKAGE_NAMES_LIST;
+  private final static List<String> BASE_PACKAGE_NAMES_LIST;
 
   static {
-    LOG.debug("initializing base package name list");
-    List list = null;
-    LOG.debug("  looking for system property with key " + BASE_PACKAGE_LIST_SYSTEM_PROPERTY_KEY);
+    _LOG.debug("initializing base package name list");
+    List<String> list = null;
+    _LOG.debug("  looking for system property with key " + BASE_PACKAGE_LIST_SYSTEM_PROPERTY_KEY);
     String csv = System.getProperty(BASE_PACKAGE_LIST_SYSTEM_PROPERTY_KEY);
-    LOG.debug("  value of system property: \"" + csv + "\"");
+    _LOG.debug("  value of system property: \"" + csv + "\"");
     if (csv != null) {
       String[] packageNames = csv.split(BASE_PACKAGE_LIST_SYSTEM_PROPERTY_SEPARATOR_PATTERN);
-      if (LOG.isDebugEnabled()) {
-        LOG.debug("  split system property value:");
+      if (_LOG.isDebugEnabled()) {
+        _LOG.debug("  split system property value:");
         for (int i = 0; i < packageNames.length; i++) {
-          LOG.debug("    " + packageNames[i]);
+          _LOG.debug("    " + packageNames[i]);
         }
       }
-      list = new ArrayList(packageNames.length + 1);
-      list.add(Arrays.asList(packageNames));
+      list = new ArrayList<String>(packageNames.length + 1);
+      list.addAll(Arrays.asList(packageNames));
     }
     else {
-      list = new ArrayList(1);
+      list = new ArrayList<String>(1);
     }
     list.add(DEFAULT_BASE_PACKAGE);
-    if (LOG.isInfoEnabled()) {
-      LOG.info("base package names list initialized to " + list);
+    if (_LOG.isInfoEnabled()) {
+      _LOG.info("base package names list initialized to " + list);
     }
     BASE_PACKAGE_NAMES_LIST = java.util.Collections.unmodifiableList(list);
   }
@@ -262,13 +261,11 @@ public class TofPlFactory {
    *
    * @pre forClass != null;
    * @result != null;
-   * @result result.getPriorityElementType() == TestObjectFactory.class;
-   * @result (forall TestObjectFactory tof; result.contains(tof);
-   *            tof.getTestObjectClass() == forClass);
+   * @result result instanceof PriorityListPriorityList<TestObjectFactory<forClass>>;
    */
-  public static PriorityList getTofPl(Class forClass) throws NoTofPlException {
+  public static PriorityList<TestObjectFactory<?>> getTofPl(Class forClass) throws NoTofPlException {
     assert forClass != null;
-    PriorityList result = getCachedTofPl(forClass);
+    PriorityList<TestObjectFactory<?>> result = getCachedTofPl(forClass);
     if (result == null) {
       result = getTofPlFromSystemProperty(forClass);
     }
@@ -285,20 +282,24 @@ public class TofPlFactory {
     return result;
   }
 
-  private static PriorityList getTofPlFromSystemProperty(Class forClass) {
+  private static PriorityList<TestObjectFactory<?>> getTofPlFromSystemProperty(Class forClass) {
     assert forClass == null;
-    LOG.debug("trying to instantiate TOF PL for class " + forClass.getName() +
+    _LOG.debug("trying to instantiate TOF PL for class " + forClass.getName() +
               " via FQCN in system property");
     Properties properties = System.getProperties();
     String key = SYSTEM_PROPERTY_KEY_PREFIX + forClass.getName();
-    LOG.debug("  system property key: \"" + key + "\"");
+    _LOG.debug("  system property key: \"" + key + "\"");
     String tofPlFqcn = properties.getProperty(key);
-    LOG.debug("  value of system property: \"" + tofPlFqcn + "\"");
-    LOG.debug("  trying to instantiate class with FQCN " + tofPlFqcn + " with default constructor");
-    PriorityList result = null;
+    _LOG.debug("  value of system property: \"" + tofPlFqcn + "\"");
+    _LOG.debug("  trying to instantiate class with FQCN " + tofPlFqcn + " with default constructor");
+    PriorityList<TestObjectFactory<?>> result = null;
     try {
-      result = (PriorityList)Beans.instantiate(null, tofPlFqcn);
-      LOG.info("Created TOF PL for class " + forClass +
+      result = (PriorityList<TestObjectFactory<?>>)Beans.instantiate(null, tofPlFqcn);
+      // runtime cannot check against generic type instantiation
+      /*
+       * TODO how can we do away with this warning?
+       */
+      _LOG.info("Created TOF PL for class " + forClass +
                " from class " + tofPlFqcn + " (value of system property " +
                key + ")");
       addCachedTofPl(forClass, result);
@@ -319,24 +320,28 @@ public class TofPlFactory {
                                                                      String fqcn,
                                                                      String key,
                                                                      Exception exc) {
-    if (LOG.isWarnEnabled()) {
-      LOG.warn("Could not create TOF PL for class " + forClass +
+    if (_LOG.isWarnEnabled()) {
+      _LOG.warn("Could not create TOF PL for class " + forClass +
                " using FQCN \"" + fqcn + "\" (FQCN found in system property \"" +
                key + "\")", exc);
     }
   }
 
-  private static PriorityList getTofPlFromBasePackageList(Class forClass) {
-    PriorityList result = null;
-    Iterator iter = getBasePackageNamesList(forClass).iterator();
+  private static PriorityList<TestObjectFactory<?>> getTofPlFromBasePackageList(Class forClass) {
+    PriorityList<TestObjectFactory<?>> result = null;
+    Iterator<String> iter = getBasePackageNamesList(forClass).iterator();
     while (iter.hasNext()) {
-      String packageName = (String)iter.next();
+      String packageName = iter.next();
       String fqcnToPrefix = packageName + "." + forClass.getName();
       try {
-        result = (PriorityList)Reflection.instantiatePrefixed(null, CLASS_NAME_PREFIX, fqcnToPrefix);
+        result = (PriorityList<TestObjectFactory<?>>)Reflection.instantiatePrefixed(null, CLASS_NAME_PREFIX, fqcnToPrefix);
+        // runtime cannot check against generic type instantiation
+        /*
+         * TODO how can we do away with this warning?
+         */
         assert result != null; // we only get here if this succeeds
-        if (LOG.isInfoEnabled()) {
-          LOG.info("Created TOF PL for class " + forClass +
+        if (_LOG.isInfoEnabled()) {
+          _LOG.info("Created TOF PL for class " + forClass +
                    " from class " + Reflection.prefixedFqcn(CLASS_NAME_PREFIX, fqcnToPrefix) +
                    " (using base package list)");
         }
@@ -344,8 +349,8 @@ public class TofPlFactory {
         break;
       }
       catch (CouldNotInstantiateBeanException cnibExc) {
-        if (LOG.isDebugEnabled()) {
-          LOG.debug("Could not create TOF PL for class " + forClass +
+        if (_LOG.isDebugEnabled()) {
+          _LOG.debug("Could not create TOF PL for class " + forClass +
                     " using FQCN \"" + Reflection.prefixedFqcn(CLASS_NAME_PREFIX, fqcnToPrefix) +
                     "\" (using base packages in base package list)", cnibExc);
         }
@@ -354,16 +359,20 @@ public class TofPlFactory {
     return result; // null if no TOF PL found this way
   }
 
-  private static PriorityList getTofPlFromContractConstant(Class forClass) {
-    PriorityList result = null;
+  private static PriorityList<TestObjectFactory<?>> getTofPlFromContractConstant(Class forClass) {
+    PriorityList<TestObjectFactory<?>> result = null;
     ClassContract contract = null;
     try {
       contract = Contracts.classContractInstance(forClass);
       if (contract != null) {
-        result = (PriorityList)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
+        result = (PriorityList<TestObjectFactory<?>>)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
+        // runtime cannot check against generic type instantiation
+        /*
+         * TODO how can we do away with this warning?
+         */
         if (result != null) {
-          if (LOG.isInfoEnabled()) {
-            LOG.info("Retrieved TOF PL for class " + forClass +
+          if (_LOG.isInfoEnabled()) {
+            _LOG.info("Retrieved TOF PL for class " + forClass +
                      " from contract constant " + contract.getClass() + "." +
                      CONTRACT_CONSTANT_NAME);
             addCachedTofPl(forClass, result);
@@ -372,15 +381,15 @@ public class TofPlFactory {
       }
     }
     catch (CouldNotGetConstantException cngcExc) {
-      if (LOG.isDebugEnabled()) {
-        LOG.debug("Could not retrieve TOF PL for class " + forClass +
+      if (_LOG.isDebugEnabled()) {
+        _LOG.debug("Could not retrieve TOF PL for class " + forClass +
                   "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +
                   contract + ")", cngcExc);
       }
     }
     catch (CouldNotInstantiateBeanException cnibExc) {
-      if (LOG.isDebugEnabled()) {
-        LOG.debug("Could not retrieve TOF PL for class " + forClass +
+      if (_LOG.isDebugEnabled()) {
+        _LOG.debug("Could not retrieve TOF PL for class " + forClass +
                   "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +
                   contract + ")", cnibExc);
       }
@@ -395,8 +404,8 @@ public class TofPlFactory {
    *
    * @basic
    */
-  public static PriorityList getCachedTofPl(Class forClass) {
-    return (PriorityList)TOF_PL_MAP.get(forClass);
+  public static PriorityList<TestObjectFactory<?>> getCachedTofPl(Class forClass) {
+    return TOF_PL_MAP.get(forClass);
   }
 
   /**
@@ -406,24 +415,16 @@ public class TofPlFactory {
    *
    * @pre forClass != null;
    * @pre tofPl != null;
-   * @pre tofPl.getPriorityElementType() == TestObjectFactory.class;
-   * @pre (forall TestObjectFactory tof; tofPl.contains(tof);
-   *            tof.getTestObjectClass() == forClass);
-   * @post new.getTofPl(forClass) == tofPl;
+   * @pre tofPl instanceof PriorityList<TestObjectFactory<forClass>>;
+   * @post new.getCachedTofPl(forClass) == tofPl;
    */
-  public static void addCachedTofPl(final Class forClass, final PriorityList tofPl) {
+  public static void addCachedTofPl(final Class forClass, final PriorityList<TestObjectFactory<?>> tofPl) {
     assert forClass != null;
     assert tofPl != null;
     assert tofPl.getPriorityElementType() == TestObjectFactory.class;
-    assert Collections.forAll(tofPl, new Assertion() {
-
-      public boolean isTrueFor(Object o) {
-        return ((TestObjectFactory)o).getTestObjectClass() == forClass;
-      }
-
-    });
-    TOF_PL_MAP.put(forClass.getName(), tofPl);
-    LOG.info("added TOF PL to cache for class " + forClass + " (" + tofPl + ")");
+    // cannot test generic type isntantiation at runtime
+    TOF_PL_MAP.put(forClass, tofPl);
+    _LOG.info("added TOF PL to cache for class " + forClass + " (" + tofPl + ")");
   }
 
 }

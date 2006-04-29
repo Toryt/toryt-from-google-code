@@ -15,7 +15,7 @@ import org.toryt_II.testobject.ConstantTofPl;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class _TOF_PL_Float extends ConstantTofPl {
+public class _TOF_PL_Float extends ConstantTofPl<Float> {
 
   {
     addFloat(0, -3.4E-4d);

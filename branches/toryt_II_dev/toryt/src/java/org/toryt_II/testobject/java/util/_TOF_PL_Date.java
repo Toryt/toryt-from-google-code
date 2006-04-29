@@ -20,11 +20,11 @@ import org.toryt_II.testobject.ArrayHashTofPl;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class _TOF_PL_Date extends ArrayHashTofPl {
+public class _TOF_PL_Date extends ArrayHashTofPl<Date> {
 
   {
-    addPriorityElement(0, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(0, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.DATE, 1444);
         gc.add(Calendar.HOUR_OF_DAY, -8);
@@ -34,8 +34,8 @@ public class _TOF_PL_Date extends ArrayHashTofPl {
         return gc.getTime();
       }
     });
-    addPriorityElement(0, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(0, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.DATE, -234);
         gc.add(Calendar.HOUR_OF_DAY, 4);
@@ -45,28 +45,28 @@ public class _TOF_PL_Date extends ArrayHashTofPl {
         return gc.getTime();
       }
     });
-    addPriorityElement(1, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(1, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         return new Date(); // now
       }
     });
-    addPriorityElement(1, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(1, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         return new Date(0); // epoch
       }
     });
-    addPriorityElement(1, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(1, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         return new Date(Long.MAX_VALUE);
       }
     });
-    addPriorityElement(1, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(1, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         return new Date(Long.MIN_VALUE);
       }
     });
-    addPriorityElement(2, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(2, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.set(Calendar.HOUR_OF_DAY, 0);
         gc.set(Calendar.MINUTE, 0);
@@ -75,8 +75,8 @@ public class _TOF_PL_Date extends ArrayHashTofPl {
         return gc.getTime(); // today
       }
     });
-    addPriorityElement(2, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(2, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.DATE, 1);
         gc.set(Calendar.HOUR_OF_DAY, 0);
@@ -86,8 +86,8 @@ public class _TOF_PL_Date extends ArrayHashTofPl {
         return gc.getTime(); // tomorrow
       }
     });
-    addPriorityElement(2, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(2, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.DATE, -1);
         gc.set(Calendar.HOUR_OF_DAY, 0);
@@ -97,50 +97,50 @@ public class _TOF_PL_Date extends ArrayHashTofPl {
         return gc.getTime(); // yesterday
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(3, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.DATE, -1);
         return gc.getTime(); // yesterday
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(3, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.DATE, 1);
         return gc.getTime(); // tomorrow
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(3, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.MONTH, -1);
         return gc.getTime(); // last month
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(3, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.MONTH, 1);
         return gc.getTime(); // next month
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(3, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.YEAR, -1);
         return gc.getTime(); // last year
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(3, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.YEAR, 1);
         return gc.getTime(); // next year
       }
     });
-    addPriorityElement(4, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(4, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.WEEK_OF_YEAR, -1);
         gc.set(Calendar.HOUR_OF_DAY, 0);
@@ -150,8 +150,8 @@ public class _TOF_PL_Date extends ArrayHashTofPl {
         return gc.getTime(); // last week
       }
     });
-    addPriorityElement(4, new AbstractTestObjectFactory(Date.class) {
-      public Object generate() {
+    addPriorityElement(4, new AbstractTestObjectFactory<Date>() {
+      public Date generate() {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.WEEK_OF_YEAR, 1);
         gc.set(Calendar.HOUR_OF_DAY, 0);

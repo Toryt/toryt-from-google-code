@@ -8,19 +8,21 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
 
 /**
  * A {@link PriorityList} that has {@link TestObjectFactory TestObjectFactories}
+ * for <code>_TestObjectType_</code>
  * as priority elements.
  *
  * @author Jan Dockx
  *
  * @invar getPriorityElementType() == TestObjectFactory.class;
  *
- * @mudo we should be able to define the type of generated test objects
+ * @mudo this class makes no sense anymore with generics
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ArrayHashTofPl extends ArrayHashPriorityList {
+public class ArrayHashTofPl<_TestObjectType_>
+    extends ArrayHashPriorityList<TestObjectFactory<_TestObjectType_>> {
 
   /**
    * @post new.getPriorityElementType() == TestObjectFactory.class;

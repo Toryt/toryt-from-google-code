@@ -20,20 +20,13 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *
  * @author Jan Dockx
  *
- * @invar getTestObjectClass() != null;
  * @invar generate() != null;
- * @invar getTestObjectClass().isInstance(generate());
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface TestObjectFactory {
-
-  /**
-   * @basic
-   */
-  Class getTestObjectClass();
+public interface TestObjectFactory<_TestObjectType_> {
 
   /**
    * @basic
@@ -41,6 +34,6 @@ public interface TestObjectFactory {
    * @throws Throwable
    *         true;
    */
-  Object generate() throws Throwable;
+  _TestObjectType_ generate() throws Throwable;
 
 }

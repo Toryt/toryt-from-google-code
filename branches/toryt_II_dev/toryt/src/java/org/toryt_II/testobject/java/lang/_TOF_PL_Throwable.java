@@ -16,37 +16,37 @@ import org.toryt_II.testobject.ArrayHashTofPl;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class _TOF_PL_Throwable extends ArrayHashTofPl {
+public class _TOF_PL_Throwable extends ArrayHashTofPl<Throwable> {
 
   public final static String MESSAGE_1 = "dummy message 1";
 
   public final static String MESSAGE_2 = "dummy message 2";
 
   {
-    addPriorityElement(0, new AbstractTestObjectFactory(Throwable.class) {
-      public Object generate() {
+    addPriorityElement(0, new AbstractTestObjectFactory<Throwable>() {
+      public Throwable generate() {
         return new Throwable(MESSAGE_1,
                              new Throwable(MESSAGE_2));
       }
     });
     // no true border test objects: no level 1 test object factories
-    addPriorityElement(2, new AbstractTestObjectFactory(Throwable.class) {
-      public Object generate() {
+    addPriorityElement(2, new AbstractTestObjectFactory<Throwable>() {
+      public Throwable generate() {
         return new Throwable(MESSAGE_1);
       }
     });
-    addPriorityElement(2, new AbstractTestObjectFactory(Throwable.class) {
-      public Object generate() {
+    addPriorityElement(2, new AbstractTestObjectFactory<Throwable>() {
+      public Throwable generate() {
         return new Throwable(new Throwable(MESSAGE_2));
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory(Throwable.class) {
-      public Object generate() {
+    addPriorityElement(3, new AbstractTestObjectFactory<Throwable>() {
+      public Throwable generate() {
         return new Throwable(new Error(MESSAGE_2));
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory(Throwable.class) {
-      public Object generate() {
+    addPriorityElement(3, new AbstractTestObjectFactory<Throwable>() {
+      public Throwable generate() {
         return new Throwable(new Exception(MESSAGE_2));
       }
     });

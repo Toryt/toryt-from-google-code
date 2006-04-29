@@ -1,5 +1,6 @@
 package org.toryt_II.testobject;
 
+
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -12,25 +13,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractTestObjectFactory implements TestObjectFactory {
+public abstract class AbstractTestObjectFactory<_TestObjectType_>
+    implements TestObjectFactory<_TestObjectType_> {
 
-  /**
-   * @pre testObjectClass != null;
-   * @post new.getTestObjectClass() == testObjectClass;
-   */
-  protected AbstractTestObjectFactory(Class testObjectClass) {
-    assert testObjectClass != null;
-    $testObjectClass = testObjectClass;
-  }
-
-
-  public final Class getTestObjectClass() {
-    return $testObjectClass;
-  }
-
-  /**
-   * @invar $testObjectClass != null;
-   */
-  private final Class $testObjectClass;
+  // MUDO LEGACY; there was something here before generics
 
 }

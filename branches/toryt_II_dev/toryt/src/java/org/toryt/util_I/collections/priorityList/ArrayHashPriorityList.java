@@ -45,7 +45,7 @@ import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ArrayHashPriorityList implements PriorityList {
+public class ArrayHashPriorityList<_PriorityElementType_> implements PriorityList<_PriorityElementType_> {
 
   /**
    * This method is introduced for use in {@link #subList(int, int)}.

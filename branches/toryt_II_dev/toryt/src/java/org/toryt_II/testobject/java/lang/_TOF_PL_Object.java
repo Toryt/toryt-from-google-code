@@ -16,10 +16,10 @@ import org.toryt_II.testobject.ArrayHashTofPl;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class _TOF_PL_Object extends ArrayHashTofPl {
+public class _TOF_PL_Object extends ArrayHashTofPl<Object> {
 
   {
-    addPriorityElement(0, new AbstractTestObjectFactory(Object.class) {
+    addPriorityElement(0, new AbstractTestObjectFactory<Object>() {
                                 public Object generate() {
                                   return new Object();
                                 }
