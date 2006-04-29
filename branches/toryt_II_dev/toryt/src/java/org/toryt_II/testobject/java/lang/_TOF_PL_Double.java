@@ -2,7 +2,7 @@ package org.toryt_II.testobject.java.lang;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt_II.testobject.ConstantTofPl;
+import org.toryt_II.testobject.ConstantTestObjectFactoryPriorityList;
 
 
 /**
@@ -15,7 +15,7 @@ import org.toryt_II.testobject.ConstantTofPl;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class _TOF_PL_Double extends ConstantTofPl<Double> {
+public class _TOF_PL_Double extends ConstantTestObjectFactoryPriorityList<Double> {
 
   {
     addDouble(0, -7.0E-2d);

@@ -37,6 +37,7 @@ public interface TestModel {
    * The union of the method tests of all packages.
    *
    * @basic
+   * @mudo five
    */
   PriorityList getTestFactoryList();
 

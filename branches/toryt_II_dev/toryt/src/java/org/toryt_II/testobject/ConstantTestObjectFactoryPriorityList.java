@@ -2,6 +2,7 @@ package org.toryt_II.testobject;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
@@ -20,7 +21,14 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ConstantTofPl<_TestObjectType_> extends ArrayHashTofPl<_TestObjectType_> {
+public class ConstantTestObjectFactoryPriorityList<_TestObjectType_>
+    extends ArrayHashPriorityList<TestObjectFactory<_TestObjectType_>>
+    implements TestObjectFactoryPriorityList<_TestObjectType_> {
+
+  public ConstantTestObjectFactoryPriorityList() {
+    super(TestObjectFactory.class);
+  }
+
 
   /**
    * @pre priority >= 0;

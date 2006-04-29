@@ -2,8 +2,9 @@ package org.toryt_II.testobject.java.lang;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt_II.testobject.AbstractTestObjectFactory;
-import org.toryt_II.testobject.ArrayHashTofPl;
+import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
+import org.toryt_II.testobject.TestObjectFactory;
+import org.toryt_II.testobject.TestObjectFactoryPriorityList;
 
 
 /**
@@ -16,36 +17,43 @@ import org.toryt_II.testobject.ArrayHashTofPl;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class _TOF_PL_Throwable extends ArrayHashTofPl<Throwable> {
+public class _TOF_PL_Throwable
+    extends ArrayHashPriorityList<TestObjectFactory<Throwable>>
+    implements TestObjectFactoryPriorityList<Throwable> {
+
+  public _TOF_PL_Throwable() {
+    super(TestObjectFactory.class);
+  }
+
 
   public final static String MESSAGE_1 = "dummy message 1";
 
   public final static String MESSAGE_2 = "dummy message 2";
 
   {
-    addPriorityElement(0, new AbstractTestObjectFactory<Throwable>() {
+    addPriorityElement(0, new TestObjectFactory<Throwable>() {
       public Throwable generate() {
         return new Throwable(MESSAGE_1,
                              new Throwable(MESSAGE_2));
       }
     });
     // no true border test objects: no level 1 test object factories
-    addPriorityElement(2, new AbstractTestObjectFactory<Throwable>() {
+    addPriorityElement(2, new TestObjectFactory<Throwable>() {
       public Throwable generate() {
         return new Throwable(MESSAGE_1);
       }
     });
-    addPriorityElement(2, new AbstractTestObjectFactory<Throwable>() {
+    addPriorityElement(2, new TestObjectFactory<Throwable>() {
       public Throwable generate() {
         return new Throwable(new Throwable(MESSAGE_2));
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory<Throwable>() {
+    addPriorityElement(3, new TestObjectFactory<Throwable>() {
       public Throwable generate() {
         return new Throwable(new Error(MESSAGE_2));
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory<Throwable>() {
+    addPriorityElement(3, new TestObjectFactory<Throwable>() {
       public Throwable generate() {
         return new Throwable(new Exception(MESSAGE_2));
       }

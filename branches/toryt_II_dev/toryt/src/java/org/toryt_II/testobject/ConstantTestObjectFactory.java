@@ -15,7 +15,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class ConstantTestObjectFactory<_TestObjectType_>
-    extends AbstractTestObjectFactory<_TestObjectType_> {
+    implements TestObjectFactory<_TestObjectType_> {
 
   /**
    * @pre immutableInstance != null;

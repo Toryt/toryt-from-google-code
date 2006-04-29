@@ -2,8 +2,9 @@ package org.toryt_II.testobject.java.lang;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt_II.testobject.AbstractTestObjectFactory;
-import org.toryt_II.testobject.ArrayHashTofPl;
+import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
+import org.toryt_II.testobject.TestObjectFactory;
+import org.toryt_II.testobject.TestObjectFactoryPriorityList;
 
 
 /**
@@ -16,36 +17,42 @@ import org.toryt_II.testobject.ArrayHashTofPl;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class _TOF_PL_Error extends ArrayHashTofPl<Error> {
+public class _TOF_PL_Error
+    extends ArrayHashPriorityList<TestObjectFactory<Error>>
+    implements TestObjectFactoryPriorityList<Error> {
+
+  public _TOF_PL_Error() {
+    super(TestObjectFactory.class);
+  }
 
   public final static String MESSAGE_1 = "dummy message 1";
 
   public final static String MESSAGE_2 = "dummy message 2";
 
   {
-    addPriorityElement(0, new AbstractTestObjectFactory<Error>() {
+    addPriorityElement(0, new TestObjectFactory<Error>() {
       public Error generate() {
         return new Error(MESSAGE_1,
                              new Error(MESSAGE_2));
       }
     });
     // no true border test objects: no level 1 test object factories
-    addPriorityElement(2, new AbstractTestObjectFactory<Error>() {
+    addPriorityElement(2, new TestObjectFactory<Error>() {
       public Error generate() {
         return new Error(MESSAGE_1);
       }
     });
-    addPriorityElement(2, new AbstractTestObjectFactory<Error>() {
+    addPriorityElement(2, new TestObjectFactory<Error>() {
       public Error generate() {
         return new Error(new Error(MESSAGE_2));
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory<Error>() {
+    addPriorityElement(3, new TestObjectFactory<Error>() {
       public Error generate() {
         return new Error(new Exception(MESSAGE_2));
       }
     });
-    addPriorityElement(3, new AbstractTestObjectFactory<Error>() {
+    addPriorityElement(3, new TestObjectFactory<Error>() {
       public Error generate() {
         return new Error(new Throwable(MESSAGE_2));
       }
