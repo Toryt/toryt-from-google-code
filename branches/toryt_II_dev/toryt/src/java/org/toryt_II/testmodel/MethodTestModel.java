@@ -1,6 +1,8 @@
 package org.toryt_II.testmodel;
 
 
+import java.lang.reflect.Member;
+
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
@@ -11,7 +13,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  *   for {@link #getSubject()}.</p>
  * <p>This class is abstract: you should use
  *   one of the more specific subclasses for different kinds of methods
- *   instead.<code>_SubjectType_</code> is still unbound, because in Java
+ *   instead. <code>_SubjectType_</code> is still unbound, because in Java
  *   reflection {@link java.lang.reflect.Method} and
  *   {@link java.lang.reflect.Constructor} are unrelated types.</p>
  *
@@ -26,7 +28,8 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class MethodTestModel<_SubjectType_> extends AbstractTestModel<_SubjectType_> {
+public abstract class MethodTestModel<_SubjectType_ extends Member>
+    extends AbstractTestModel<_SubjectType_> {
 
   protected final void printStructure(IndentPrinter out) {
     assert out != null;
