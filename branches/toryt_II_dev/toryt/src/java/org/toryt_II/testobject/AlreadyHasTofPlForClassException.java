@@ -2,7 +2,6 @@ package org.toryt_II.testobject;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 /**
@@ -29,7 +28,7 @@ public class AlreadyHasTofPlForClassException extends TofPlFactoryException {
    * @post new.getTofPl() == tofPl;
    */
   public AlreadyHasTofPlForClassException(TofPlFactory tofPlFactory, Class forClass,
-                                          PriorityList<TestObjectFactory<?>> tofPl) {
+                                          TestObjectFactoryPriorityList<?> tofPl) {
     super(tofPlFactory, forClass);
     assert tofPl != null;
     $tofPl = tofPl;
@@ -38,13 +37,13 @@ public class AlreadyHasTofPlForClassException extends TofPlFactoryException {
   /**
    * @basic
    */
-  public PriorityList<TestObjectFactory<?>> getTofPl() {
+  public TestObjectFactoryPriorityList<?> getTofPl() {
     return $tofPl;
   }
 
   /**
    * @invar $tofPl != null;
    */
-  private final PriorityList<TestObjectFactory<?>> $tofPl;
+  private final TestObjectFactoryPriorityList<?> $tofPl;
 
 }

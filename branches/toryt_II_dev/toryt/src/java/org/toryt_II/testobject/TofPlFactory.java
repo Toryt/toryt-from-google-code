@@ -2,7 +2,6 @@ package org.toryt_II.testobject;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 /**
@@ -33,13 +32,13 @@ public interface TofPlFactory {
    *
    * @pre forClass != null;
    * @result result != null;
-   * @result result instanceof PriorityListPriorityList<TestObjectFactory<forClass>>;
+   * @result result instanceof PriorityListTestObjectFactoryPriorityList<forClass>;
    * @return (getCachedTofPl(Class forClass) != null) ? getCachedTofPl(Class forClass);
    * @throws NoTofPlFoundException
    *         No <acronym title="Test Object Generator Priority List">TOGPL</acronym>
    *         could be retrieved or created for <code>forClass</code>.
    */
-  PriorityList<TestObjectFactory<?>> getTofPl(Class forClass) throws NoTofPlFoundException;
+  TestObjectFactoryPriorityList<?> getTofPl(Class forClass) throws NoTofPlFoundException;
 
   /**
    * Return the cached <acronym title="Test Object Factory Priority List">TOF PL</acronym>
@@ -48,7 +47,7 @@ public interface TofPlFactory {
    *
    * @basic
    */
-  PriorityList<TestObjectFactory<?>> getCachedTofPl(Class forClass);
+  TestObjectFactoryPriorityList<?> getCachedTofPl(Class forClass);
 
   /**
    * Add a <acronym title="Test Object Factory Priority List">TOF PL</acronym>
@@ -57,13 +56,13 @@ public interface TofPlFactory {
    *
    * @pre forClass != null;
    * @pre tofPl != null;
-   * @pre tofPl instanceof PriorityList<TestObjectFactory<forClass>>;
+   * @pre tofPl instanceof TestObjectFactoryPriorityList<forClass>;
    * @post getCachedTofPl(forClass) == null;
    * @post new.getCachedTofPl(forClass) == tofPl;
    * @throws AlreadyHasTofPlForClassException
    *         getCachedTofPl(forClass) != null;
    */
-  void addCachedTofPl(final Class forClass, final PriorityList<TestObjectFactory<?>> tofPl)
+  void addCachedTofPl(final Class forClass, final TestObjectFactoryPriorityList<?> tofPl)
       throws AlreadyHasTofPlForClassException;
 
 }

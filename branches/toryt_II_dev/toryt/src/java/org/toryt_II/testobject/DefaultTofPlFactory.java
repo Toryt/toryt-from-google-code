@@ -14,7 +14,6 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.priorityList.PriorityList;
 import org.toryt.util_I.reflect.CouldNotGetConstantException;
 import org.toryt.util_I.reflect.CouldNotInstantiateBeanException;
 import org.toryt.util_I.reflect.Reflection;
@@ -40,17 +39,17 @@ public class DefaultTofPlFactory implements TofPlFactory {
 
   /**
    * @invar Collections.noNull(TOF_PL_MAP);
-   * @invar (forall PriorityList<TestObjectFactory<_TestObjectType_>> pl;
+   * @invar (forall TestObjectFactoryPriorityList<_TestObjectType_> pl;
    *            TOF_PL_MAP.contains(pl);
    *            pl.getPriorityElementType() == TestObjectFactory.class);
    * @invar (forall Class c; TOF_PL_MAP.containsKey(c);
-   *            TOF_PL_MAP.get(c) instanceof PriorityList<TestObjectFactory<c>>);
+   *            TOF_PL_MAP.get(c) instanceof TestObjectFactoryPriorityList<c>);
    * @invar (forall Map.Entry e; TOF_PL_MAP.entrySet().contains(e);
    *            (forall TestObjectFactory tof; e.getValue().contains(tof);
    *                e.getKey() == tof.getTestObjectClass()));
    */
-  private final Map<Class, PriorityList<TestObjectFactory<?>>> TOF_PL_MAP =
-      new HashMap<Class, PriorityList<TestObjectFactory<?>>>();
+  private final Map<Class, TestObjectFactoryPriorityList<?>> TOF_PL_MAP =
+      new HashMap<Class, TestObjectFactoryPriorityList<?>>();
 
   /**
    * <p>The prefix for system properties that have the FQCN of a
@@ -237,11 +236,11 @@ public class DefaultTofPlFactory implements TofPlFactory {
    *
    * @pre forClass != null;
    * @result != null;
-   * @result result instanceof PriorityListPriorityList<TestObjectFactory<forClass>>;
+   * @result result instanceof PriorityListTestObjectFactoryPriorityList<forClass>;
    */
-  public PriorityList<TestObjectFactory<?>> getTofPl(Class forClass) throws NoTofPlFoundException {
+  public TestObjectFactoryPriorityList<?> getTofPl(Class forClass) throws NoTofPlFoundException {
     assert forClass != null;
-    PriorityList<TestObjectFactory<?>> result = getCachedTofPl(forClass);
+    TestObjectFactoryPriorityList<?> result = getCachedTofPl(forClass);
     if (result == null) {
       result = getTofPlFromSystemProperty(forClass);
     }
@@ -262,7 +261,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private PriorityList<TestObjectFactory<?>> getTofPlFromSystemProperty(Class forClass) {
+  private TestObjectFactoryPriorityList<?> getTofPlFromSystemProperty(Class forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
     assert forClass == null;
@@ -274,9 +273,9 @@ public class DefaultTofPlFactory implements TofPlFactory {
     String tofPlFqcn = properties.getProperty(key);
     _LOG.debug("  value of system property: \"" + tofPlFqcn + "\"");
     _LOG.debug("  trying to instantiate class with FQCN " + tofPlFqcn + " with default constructor");
-    PriorityList<TestObjectFactory<?>> result = null;
+    TestObjectFactoryPriorityList<?> result = null;
     try {
-      result = (PriorityList<TestObjectFactory<?>>)Beans.instantiate(null, tofPlFqcn);
+      result = (TestObjectFactoryPriorityList<?>)Beans.instantiate(null, tofPlFqcn);
       // runtime cannot check against generic type instantiation
       /*
        * TODO how can we do away with this warning?
@@ -316,16 +315,16 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private PriorityList<TestObjectFactory<?>> getTofPlFromBasePackageList(Class forClass) {
+  private TestObjectFactoryPriorityList<?> getTofPlFromBasePackageList(Class forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
-    PriorityList<TestObjectFactory<?>> result = null;
+    TestObjectFactoryPriorityList<?> result = null;
     Iterator<String> iter = getBasePackageNamesList(forClass).iterator();
     while (iter.hasNext()) {
       String packageName = iter.next();
       String fqcnToPrefix = packageName + "." + forClass.getName();
       try {
-        result = (PriorityList<TestObjectFactory<?>>)Reflection.instantiatePrefixed(null, CLASS_NAME_PREFIX, fqcnToPrefix);
+        result = (TestObjectFactoryPriorityList<?>)Reflection.instantiatePrefixed(null, CLASS_NAME_PREFIX, fqcnToPrefix);
         // runtime cannot check against generic type instantiation
         /*
          * TODO how can we do away with this warning?
@@ -357,15 +356,15 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private PriorityList<TestObjectFactory<?>> getTofPlFromContractConstant(Class forClass) {
+  private TestObjectFactoryPriorityList<?> getTofPlFromContractConstant(Class forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
-    PriorityList<TestObjectFactory<?>> result = null;
+    TestObjectFactoryPriorityList<?> result = null;
     ClassContract contract = null;
     try {
       contract = Contracts.classContractInstance(forClass);
       if (contract != null) {
-        result = (PriorityList<TestObjectFactory<?>>)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
+        result = (TestObjectFactoryPriorityList<?>)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
         // runtime cannot check against generic type instantiation
         /*
          * TODO how can we do away with this warning?
@@ -407,7 +406,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    *
    * @basic
    */
-  public PriorityList<TestObjectFactory<?>> getCachedTofPl(Class forClass) {
+  public TestObjectFactoryPriorityList<?> getCachedTofPl(Class forClass) {
     return TOF_PL_MAP.get(forClass);
   }
 
@@ -418,10 +417,10 @@ public class DefaultTofPlFactory implements TofPlFactory {
    *
    * @pre forClass != null;
    * @pre tofPl != null;
-   * @pre tofPl instanceof PriorityList<TestObjectFactory<forClass>>;
+   * @pre tofPl instanceof TestObjectFactoryPriorityList<forClass>;
    * @post new.getCachedTofPl(forClass) == tofPl;
    */
-  public void addCachedTofPl(final Class forClass, final PriorityList<TestObjectFactory<?>> tofPl)
+  public void addCachedTofPl(final Class forClass, final TestObjectFactoryPriorityList<?> tofPl)
       throws AlreadyHasTofPlForClassException {
     assert forClass != null;
     assert tofPl != null;
