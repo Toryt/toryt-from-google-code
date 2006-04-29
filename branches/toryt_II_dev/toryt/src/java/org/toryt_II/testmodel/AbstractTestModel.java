@@ -8,8 +8,6 @@ import java.util.Set;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
-
-
 /**
  * Implementation of a number of methods of {@link TestModel}.
  *
@@ -20,6 +18,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractTestModel<_SubjectType_> implements TestModel<_SubjectType_> {
+
+  /*<property name="typeKind">*/
+  //------------------------------------------------------------------
 
   public final _SubjectType_ getSubject() {
     return $subject;
@@ -37,8 +38,12 @@ public abstract class AbstractTestModel<_SubjectType_> implements TestModel<_Sub
    */
   private _SubjectType_ $subject;
 
+  /*</property>*/
+
+
+
   public final String toString() {
-    return getClass().getName() + "[" + getSubject() + "]";
+    return getClass().getName() + "[" + getSubjectDisplayName() + "]";
   }
 
   /**
