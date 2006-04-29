@@ -23,19 +23,6 @@ public class TestModelCreationException extends TorytException {
 
   // TODO why can't we not make this class generic?
 
-  /* <section name="Meta Information"> */
-  //------------------------------------------------------------------
-  /** {@value} */
-  public static final String CVS_REVISION = "$Revision$";
-  /** {@value} */
-  public static final String CVS_DATE = "$Date$";
-  /** {@value} */
-  public static final String CVS_STATE = "$State$";
-  /** {@value} */
-  public static final String CVS_TAG = "$Name$";
-  /* </section> */
-
-
   /**
    * @pre subject != null;
    * @post new.getSubject() == subject;
