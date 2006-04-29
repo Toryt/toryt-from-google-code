@@ -9,7 +9,8 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
 
 /**
  * <p>A model of a project entity. Instances of this type deliver
- *   a {@link PriorityList} of {@link TestFactory TestFactories}.</p>
+ *   a {@link PriorityList} of {@link TestFactory TestFactories}
+ *   for {@link #getSubject()}.</p>
  * <p>Implementations should be developed with the IoC-pattern:
  *   test models should not setup their children themselves on
  *   construction. This allows the use of test models in interactive
@@ -31,7 +32,13 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface TestModel {
+public interface TestModel<_SubjectType_> {
+
+  /**
+   * The subject of the tests this instance models.
+   * @basic
+   */
+  _SubjectType_ getSubject();
 
   /**
    * The union of the method tests of all packages.

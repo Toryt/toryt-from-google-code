@@ -36,7 +36,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
   public ConstructorTestModel createConstructorTestModel(Constructor constructor) {
     assert constructor != null;
     ConstructorTestModel result = new ConstructorTestModel();
-    result.setConstructor(constructor);
+    result.setSubject(constructor);
     return result;
   }
 
@@ -44,7 +44,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
     assert instanceMutator != null;
     assert Reflection.methodKind(instanceMutator) == MethodKind.INSTANCE_MUTATOR;
     InstanceMutatorTestModel result = new InstanceMutatorTestModel();
-    result.setInstanceMutator(instanceMutator);
+    result.setSubject(instanceMutator);
     return result;
   }
 
@@ -52,7 +52,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
     assert instanceInspector != null;
     assert Reflection.methodKind(instanceInspector) == MethodKind.INSTANCE_INSPECTOR;
     InstanceInspectorTestModel result = new InstanceInspectorTestModel();
-    result.setInstanceInspector(instanceInspector);
+    result.setSubject(instanceInspector);
     return result;
   }
 
@@ -60,7 +60,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
     assert classMutator != null;
     assert Reflection.methodKind(classMutator) == MethodKind.CLASS_MUTATOR;
     ClassMutatorTestModel result = new ClassMutatorTestModel();
-    result.setClassMutator(classMutator);
+    result.setSubject(classMutator);
     return result;
   }
 
@@ -68,26 +68,9 @@ public class DefaultTestModelFactory implements TestModelFactory {
     assert classInspector != null;
     assert Reflection.methodKind(classInspector) == MethodKind.CLASS_INSPECTOR;
     ClassInspectorTestModel result = new ClassInspectorTestModel();
-    result.setClassInspector(classInspector);
+    result.setSubject(classInspector);
     return result;
   }
-
-// public MethodTestModel createMethodTestModel(Method method) {
-//    assert method != null;
-//    switch (Reflection.methodKind(method)) {
-//      case CLASS_MUTATOR:
-//        return createClassMutatorTestModel(method);
-//      case CLASS_INSPECTOR:
-//        return createClassInspectorTestModel(method);
-//      case INSTANCE_MUTATOR:
-//        return createInstanceMutatorTestModel(method);
-//      case INSTANCE_INSPECTOR:
-//        return createInstanceInspectorTestModel(method);
-//      default:
-//        assert false;
-//        return null; // keep compiler happy
-//    }
-//  }
 
   public InnerClassTestModel createInnerClassTestModel(Class innerClazz) throws TestModelCreationException {
     assert innerClazz != null;
@@ -108,7 +91,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
   }
 
   private void initClassTestModel(Class clazz, ClassTestModel result) throws TestModelCreationException {
-    result.setClazz(clazz);
+    result.setSubject(clazz);
     addConstructors(clazz, result);
     addMethods(clazz, result);
     addNestedClasses(clazz, result);
@@ -212,11 +195,19 @@ public class DefaultTestModelFactory implements TestModelFactory {
     LOG.debug("Creating PackageTestModel for package " + packageName +
               " from class directory " + classDirectory.getPath());
     PackageTestModel result = new PackageTestModel();
-    result.setPackageName(packageName);
+    result.setSubject(packageName);
     File packageDirectory = new File(classDirectory, packageName.replace('.', '/'));
     LOG.debug("  package directory should be " + packageDirectory.getPath());
     assert packageDirectory.exists();
     assert packageDirectory.isDirectory();
+    addClasses(packageDirectory, packageName, result);
+    addPackages(packageDirectory, packageName, classDirectory, result);
+    return result;
+  }
+
+  private void addClasses(File packageDirectory, String packageName,
+                          PackageTestModel result)
+      throws TestModelCreationException {
     LOG.debug("  finding classes in package " + packageName);
     File[] packageContents = packageDirectory.listFiles(JAVA_CLASS_FILTER);
     for (int i = 0; i < packageContents.length; i++) {
@@ -237,8 +228,6 @@ public class DefaultTestModelFactory implements TestModelFactory {
                                              cnlcExc);
       }
     }
-    checkForCandidatePackageDirs(packageDirectory, packageName, classDirectory, result);
-    return result;
   }
 
   public ProjectTestModel createProjectTestModel(File classDirectory, String projectName)
@@ -249,17 +238,15 @@ public class DefaultTestModelFactory implements TestModelFactory {
     LOG.debug("Creating ProjectTestModel for project \"" + projectName +
               "\" from class directory " + classDirectory.getPath());
     ProjectTestModel result = new ProjectTestModel();
-    result.setProjectName(projectName);
-    checkForCandidatePackageDirs(classDirectory, "", classDirectory, result);
+    result.setSubject(projectName);
+    addPackages(classDirectory, "", classDirectory, result);
     return result;
   }
 
   private final static String NO_PACKAGE_DIR_NAME = "doc-files";
 
-  private void checkForCandidatePackageDirs(File directory,
-                                            String parentPackageName,
-                                            File classDirectory,
-                                            AbstractPackageTestModelContainer result)
+  private void addPackages(File directory, String parentPackageName, File classDirectory,
+                           AbstractPackageTestModelContainer<?> result)
       throws TestModelCreationException {
     LOG.debug("Finding subpackages of package " + parentPackageName +
               " in class directory " + classDirectory.getPath() +
@@ -281,7 +268,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
         }
         else { // this is not a package; go deeper
           LOG.debug("  no, but there might be real packages deeper");
-          checkForCandidatePackageDirs(packageCandidate, packageCandidateName + ".", classDirectory, result);
+          addPackages(packageCandidate, packageCandidateName + ".", classDirectory, result);
         }
       }
     }

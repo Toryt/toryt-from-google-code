@@ -11,7 +11,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   packages, since this class doesn't help us for modelling the software.
  *   Instances only exist when at least one class of the package has been
  *   loaded (and even then), and you cannot get a list of types in the package
- *   from such instances. We refer to a package just by its name.</p>
+ *   from such instances. We refer to a package just by its name (String).</p>
  *
  * @author Jan Dockx
  *
@@ -21,32 +21,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class PackageTestModel extends AbstractPackageTestModelContainer {
-
-  /*<property name="packageName">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @basic
-   * @init null;
-   */
-  public final String getPackageName() {
-    return $packageName;
-  }
-
-  /**
-   * @post new.getPackageName() == packageName;
-   */
-  public final void setPackageName(String packageName) {
-    $packageName = packageName;
-    // TODO events
-  }
-
-  private String $packageName;
-
-  /*</property>*/
-
-
+public class PackageTestModel extends AbstractPackageTestModelContainer<String> {
 
   public final TestModelCollectionDelegate<StaticClassTestModel> classTestModels =
       new TestModelCollectionDelegate<StaticClassTestModel>(this);
@@ -55,14 +30,8 @@ public class PackageTestModel extends AbstractPackageTestModelContainer {
     addTestModelCollectionDelegate("classes", classTestModels);
   }
 
-
-
-  public String toString() {
-    return getClass().getName() + "[" + getPackageName() + "]";
-  }
-
-  public String getDisplayName() {
-    return getPackageName();
+  protected String getSubjectDisplayNameSave() {
+    return getSubject();
   }
 
 }

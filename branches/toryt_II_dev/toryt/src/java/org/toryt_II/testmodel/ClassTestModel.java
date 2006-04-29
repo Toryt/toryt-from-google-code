@@ -1,5 +1,6 @@
 package org.toryt_II.testmodel;
 
+
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.reflect.Reflection;
 import org.toryt.util_I.reflect.Reflection.TypeKind;
@@ -30,7 +31,7 @@ import org.toryt.util_I.reflect.Reflection.TypeKind;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class ClassTestModel extends CompoundTestModel {
+public abstract class ClassTestModel extends CompoundTestModel<Class> {
 
 
 
@@ -53,30 +54,12 @@ public abstract class ClassTestModel extends CompoundTestModel {
 
 
 
-  /*<property name="clazz">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @basic
-   * @init null;
-   */
-  public final Class getClazz() {
-    return $clazz;
+  public void setSubject(Class subject) {
+    assert (subject != null) ?
+             (Reflection.typeKind(subject) == $typeKind) :
+             true;
+    super.setSubject(subject);
   }
-
-  /**
-   * @pre (clazz != null) ? Reflection.typeKind(clazz) == getTypeKind();
-   * @post new.getClass() == clazz;
-   */
-  public final void setClazz(Class clazz) {
-    assert (clazz != null) ? (Reflection.typeKind(clazz) == getTypeKind()) : true;
-    $clazz = clazz;
-    // TODO events
-  }
-
-  private Class $clazz;
-
-  /*</property>*/
 
 
 
@@ -107,12 +90,8 @@ public abstract class ClassTestModel extends CompoundTestModel {
     addTestModelCollectionDelegate("inner classes", innerClassTestModels);
   }
 
-  public String toString() {
-    return getClass().getName() + "[" + getClazz() + "]";
-  }
-
-  public String getDisplayName() {
-    return getClazz().getName();
+  protected String getSubjectDisplayNameSave() {
+    return getSubject().getName();
   }
 
 }

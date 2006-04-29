@@ -19,7 +19,44 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractTestModel implements TestModel {
+public abstract class AbstractTestModel<_SubjectType_> implements TestModel<_SubjectType_> {
+
+  public final _SubjectType_ getSubject() {
+    return $subject;
+  }
+
+  /**
+   * @post new.getSubject() == subject;
+   */
+  public void setSubject(_SubjectType_ subject) {
+    $subject = subject;
+  }
+
+  /**
+   * @invar $subject != null;
+   */
+  private _SubjectType_ $subject;
+
+  public final String toString() {
+    return getClass().getName() + "[" + getSubject() + "]";
+  }
+
+  /**
+   * Human-readable name for the {@link #getSubject()}.
+   *
+   * @basic
+   */
+  protected final String getSubjectDisplayName() {
+    return (getSubject() == null) ? "null" : getSubjectDisplayNameSave();
+  }
+
+  /**
+   * Human-readable name for the {@link #getSubject()}.
+   *
+   * @basic
+   * @pre getSubject() != null;
+   */
+  protected abstract String getSubjectDisplayNameSave();
 
   /**
    * Implementation that uses package accessible code

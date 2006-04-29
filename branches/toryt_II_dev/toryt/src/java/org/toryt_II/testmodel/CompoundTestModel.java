@@ -35,7 +35,6 @@ import org.toryt.util_I.collections.priorityList.algebra.UnionPriorityList;
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getChildTestModels() != null;
  * @invar cC:noNull(getChildTestModels());
- * @invar cC:instanceOf(getChildTestModels(), TestModel);
  * @invar getTestModelCollectionDelegates() != null;
  * @invar Collections.noNull(getTestModelCollectionDelegates());
  */
@@ -43,7 +42,7 @@ import org.toryt.util_I.collections.priorityList.algebra.UnionPriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class CompoundTestModel extends AbstractTestModel {
+public abstract class CompoundTestModel<_SubjectType_> extends AbstractTestModel<_SubjectType_> {
 
   /*<property name="child test models">*/
   //------------------------------------------------------------------
@@ -51,8 +50,8 @@ public abstract class CompoundTestModel extends AbstractTestModel {
   /**
    * @return Collections.union([$testModelCollectionDelegates.values()].getTestModels());
    */
-  public final Set<TestModel> getChildTestModels() {
-    Set<TestModel> result = new HashSet<TestModel>();
+  public final Set<TestModel<?>> getChildTestModels() {
+    Set<TestModel<?>> result = new HashSet<TestModel<?>>();
     for (TestModelCollectionDelegate<? extends TestModel> delegate : $testModelCollectionDelegates.values()) {
       result.addAll(delegate.getSet());
     }
@@ -129,11 +128,9 @@ public abstract class CompoundTestModel extends AbstractTestModel {
   /*</property>*/
 
 
-  protected abstract String getDisplayName();
-
   final void printStructure(IndentPrinter out) {
     assert out != null;
-    out.println(getDisplayName());
+    out.println(getSubjectDisplayName());
     IndentPrinter sections = new IndentPrinter(out, $testModelCollectionDelegates.size());
     for (Map.Entry<String, TestModelCollectionDelegate<? extends TestModel>> entry:
           $testModelCollectionDelegates.entrySet()) {

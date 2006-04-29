@@ -20,57 +20,15 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ConstructorTestModel extends MethodTestModel {
-
-
-
-  /**
-   * @return getConstructor();
-   */
-  public final Object getMethod() {
-    return getConstructor();
-  }
-
-
-
-  /*<property name="constructor">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @basic
-   * @init null;
-   */
-  public final Constructor getConstructor() {
-    return $constructor;
-  }
-
-  /**
-   * @post new.getConstructor() == method;
-   */
-  public final void setConstructor(Constructor constructor) {
-    $constructor = constructor;
-    // TODO events
-  }
-
-  private Constructor $constructor;
-
-  /*</property>*/
-
-
+public class ConstructorTestModel extends MethodTestModel<Constructor> {
 
   public PriorityList getTestFactoryList() {
     // TODO Auto-generated method stub
     return null;
   }
 
-
-  public String toString() {
-    return getClass().getName() + "[" + getConstructor() + "]";
-  }
-
-  void printStructure(IndentPrinter out) {
-    assert out != null;
-    out.println(getConstructor());
+  protected final String getSubjectDisplayNameSave() {
+    return getSubject().toGenericString();
   }
 
 }

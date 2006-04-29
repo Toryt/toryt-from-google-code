@@ -12,7 +12,7 @@ import org.toryt.util_I.reflect.Reflection.MethodKind;
 /**
  * A model of a method to test. Instances of this type deliver
  * a {@link PriorityList} of {@link TestFactory TestFactories}
- * for {@link #getMethod()}. This class is abstract: you should use
+ * for {@link #getSubject()}. This class is abstract: you should use
  * one of the more specific subclasses for different kinds of methods
  * instead.
  *
@@ -28,7 +28,7 @@ import org.toryt.util_I.reflect.Reflection.MethodKind;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class NonConstructorMethodTestModel extends MethodTestModel {
+public abstract class NonConstructorMethodTestModel extends MethodTestModel<Method> {
 
 
 
@@ -51,50 +51,20 @@ public abstract class NonConstructorMethodTestModel extends MethodTestModel {
 
 
 
-  /**
-   * @return getNonConstructorMethod();
-   */
-  public final Object getMethod() {
-    return getNonConstructorMethod();
-  }
-
-
-
-  /*<property name="nonConstructorMethod">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @basic
-   * @init null;
-   */
-  public final Method getNonConstructorMethod() {
-    return $nonConstructorMethod;
-  }
-
-  /**
-   * @pre Reflection.methodKind(nonConstructorMethod) == getMethodKind();
-   * @post new.getNonConstructorMethod() == nonConstructorMethod;
-   */
-  protected final void setNonConstructorMethod(Method nonConstructorMethod) {
-    assert (nonConstructorMethod != null) ?
-             (Reflection.methodKind(nonConstructorMethod) == $methodKind) :
+  public void setSubject(Method subject) {
+    assert (subject != null) ?
+             (Reflection.methodKind(subject) == $methodKind) :
              true;
-    $nonConstructorMethod = nonConstructorMethod;
-    // TODO events
+    super.setSubject(subject);
   }
-
-  /**
-   * @invar Reflection.methodKind($nonConstructorMethod) == $methodKind;
-   */
-  private Method $nonConstructorMethod;
-
-  /*</property>*/
-
-
 
   public PriorityList getTestFactoryList() {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  protected final String getSubjectDisplayNameSave() {
+    return getSubject().toGenericString();
   }
 
 }

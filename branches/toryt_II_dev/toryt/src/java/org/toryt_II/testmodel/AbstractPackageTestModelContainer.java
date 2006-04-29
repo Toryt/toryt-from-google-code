@@ -1,5 +1,6 @@
 package org.toryt_II.testmodel;
 
+
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -15,7 +16,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractPackageTestModelContainer extends CompoundTestModel {
+public abstract class AbstractPackageTestModelContainer<_SubjectType_>
+    extends CompoundTestModel<_SubjectType_> {
 
   public final TestModelCollectionDelegate<PackageTestModel> packageTestModels =
       new TestModelCollectionDelegate<PackageTestModel>(this);

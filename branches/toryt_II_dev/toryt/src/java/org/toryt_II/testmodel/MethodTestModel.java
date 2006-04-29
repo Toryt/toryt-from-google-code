@@ -6,11 +6,14 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 /**
- * A model of a method to test. Instances of this type deliver
- * a {@link PriorityList} of {@link TestFactory TestFactories}
- * for {@link #getMethod()}. This class is abstract: you should use
- * one of the more specific subclasses for different kinds of methods
- * instead.
+ * <p>A model of a method to test. Instances of this type deliver
+ *   a {@link PriorityList} of {@link TestFactory TestFactories}
+ *   for {@link #getSubject()}.</p>
+ * <p>This class is abstract: you should use
+ *   one of the more specific subclasses for different kinds of methods
+ *   instead.<code>_SubjectType_</code> is still unbound, because in Java
+ *   reflection {@link java.lang.reflect.Method} and
+ *   {@link java.lang.reflect.Constructor} are unrelated types.</p>
  *
  * @author Jan Dockx
  *
@@ -23,34 +26,11 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class MethodTestModel extends AbstractTestModel {
+public abstract class MethodTestModel<_SubjectType_> extends AbstractTestModel<_SubjectType_> {
 
-  /*<property name="method">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @note This method has a return type of {@link Object}, because in Java
-   *       reflection {@link java.lang.reflect.Method} and
-   *       {@link java.lang.reflect.Constructor} are unrelated
-   *       types.
-   *
-   * @basic
-   * @init null;
-   */
-  public abstract Object getMethod();
-
-  /*</property>*/
-
-
-
-
-  public String toString() {
-    return getClass().getName() + "[" + getMethod() + "]";
-  }
-
-  void printStructure(IndentPrinter out) {
+  protected final void printStructure(IndentPrinter out) {
     assert out != null;
-    out.println(getMethod());
+    out.println(getSubjectDisplayName());
   }
 
 }

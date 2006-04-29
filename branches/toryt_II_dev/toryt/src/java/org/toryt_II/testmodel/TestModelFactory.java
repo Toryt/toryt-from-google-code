@@ -75,20 +75,6 @@ public interface TestModelFactory {
   ClassInspectorTestModel createClassInspectorTestModel(Method classInspector)
       throws TestModelCreationException;
 
-//  /**
-//   * Create a {@link MethodTestModel} for <code>method</code>, of the appropriate
-//   * subtype ({@link InstanceMutatorTestModel}, {@link InstanceInspectorTestModel},
-//   * {@link ClassMutatorTestModel} or {@link ClassInspectorTestModel}). This method
-//   * delegates to {@link #createInstanceMutatorTestModel(Method)},
-//   * {@link #createInstanceInspectorTestModel(Method)},
-//   * {@link #createClassMutatorTestModel(Method)} and
-//   * {@link #createClassInspectorTestModel(Method)} respectively.
-//   *
-//   * @pre method != null;
-//   * @pre assert (method instanceof Constructor) || (method instanceof Method);
-//   */
-//  MethodTestModel createMethodTestModel(Method method);
-
   /**
    * Create an {@link InnerClassTestModel} for <code>innerClazz</code>.
    * Using reflection, test models are added for all

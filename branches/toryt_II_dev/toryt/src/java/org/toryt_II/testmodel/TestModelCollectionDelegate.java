@@ -1,12 +1,11 @@
 package org.toryt_II.testmodel;
 
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-
-
 
 
 /**
@@ -23,12 +22,12 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TestModelCollectionDelegate<TestModelType extends TestModel> {
+public class TestModelCollectionDelegate<_TestModelType_ extends TestModel> {
 
   /**
    * @pre compoundTestModel != null;
    */
-  public TestModelCollectionDelegate(CompoundTestModel compoundTestModel) {
+  public TestModelCollectionDelegate(CompoundTestModel<?> compoundTestModel) {
     assert compoundTestModel != null;
     $compoundTestModel = compoundTestModel;
   }
@@ -41,7 +40,7 @@ public class TestModelCollectionDelegate<TestModelType extends TestModel> {
    * @basic
    * @init new.getTestModels().isEmpty();
    */
-  public Set<TestModelType> getSet() {
+  public Set<_TestModelType_> getSet() {
     return Collections.unmodifiableSet($testModels);
   }
 
@@ -52,13 +51,13 @@ public class TestModelCollectionDelegate<TestModelType extends TestModel> {
    *
    * @invar $compoundTestModel != null;
    */
-  private final CompoundTestModel $compoundTestModel;
+  private final CompoundTestModel<?> $compoundTestModel;
 
   /**
    * @pre testModel != null;
    * @post new.getTestModels().contains(testModel);
    */
-  public void add(TestModelType testModel) {
+  public void add(_TestModelType_ testModel) {
     assert testModel != null;
     $testModels.add(testModel);
     $compoundTestModel.resetCachedTestFactoryList();
@@ -68,7 +67,7 @@ public class TestModelCollectionDelegate<TestModelType extends TestModel> {
   /**
    * @post ! new.getTestModels().contains(testModel);
    */
-  public void remove(TestModelType testModel) {
+  public void remove(_TestModelType_ testModel) {
     $testModels.remove(testModel);
     $compoundTestModel.resetCachedTestFactoryList();
     // TODO events
@@ -78,7 +77,7 @@ public class TestModelCollectionDelegate<TestModelType extends TestModel> {
    * @post new.getTestModels().isEmpty();
    */
   public void removeAll() {
-    $testModels = new HashSet<TestModelType>();
+    $testModels = new HashSet<_TestModelType_>();
     $compoundTestModel.resetCachedTestFactoryList();
     // TODO events
   }
@@ -86,7 +85,7 @@ public class TestModelCollectionDelegate<TestModelType extends TestModel> {
   /**
    * @invar cC:noNull($testModels);
    */
-  private Set<TestModelType> $testModels = new HashSet<TestModelType>();
+  private Set<_TestModelType_> $testModels = new HashSet<_TestModelType_>();
 
   /*</property>*/
 
