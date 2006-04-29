@@ -1,6 +1,7 @@
 package org.toryt.util_I.annotations.vcs;
 
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -29,6 +30,7 @@ import java.lang.annotation.Target;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
+@Documented
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
 public @interface CvsInfo {
