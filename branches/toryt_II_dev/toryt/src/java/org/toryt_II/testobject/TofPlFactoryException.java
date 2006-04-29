@@ -6,30 +6,46 @@ import org.toryt_II.TorytException;
 
 
 /**
- * Signals that no <acronym title="Test Object Factory Priority List">TOF PL</acronym>
- * could be instantiated for class {@link #getForClass()}.
+ * Exceptions thrown by {@link TofPlFactory} instances.
  *
  * @author Jan Dockx
  *
+ * @invar getTofPlFactory() != null;
  * @invar getForClass() != null;
- * @invar getMessage().equals(forClass.getName());
+ * @invar getMessage() == null;
  * @invar getCause() == null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class NoTofPlException extends TorytException {
+public class TofPlFactoryException extends TorytException {
 
   /**
+   * @pre tofPlFactory != null;
    * @pre forClass != null;
+   * @post new.getTofPlFactory() == tofPlFactory;
    * @post new.getForClass() == forClass;
    */
-  public NoTofPlException(Class forClass) {
-    super(forClass.getName());
+  public TofPlFactoryException(TofPlFactory tofPlFactory, Class forClass) {
+    super();
+    assert tofPlFactory != null;
     assert forClass != null;
+    $tofPlFactory = tofPlFactory;
     $forClass = forClass;
   }
+
+  /**
+   * @basic
+   */
+  public TofPlFactory getTofPlFactory() {
+    return $tofPlFactory;
+  }
+
+  /**
+   * @invar $tofPlFactory != null;
+   */
+  private final TofPlFactory $tofPlFactory;
 
   /**
    * @basic
