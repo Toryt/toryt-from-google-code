@@ -31,7 +31,7 @@ import org.toryt.util_I.reflect.Reflection.TypeKind;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class ClassTestModel extends CompoundTestModel<Class> {
+public abstract class ClassTestModel<_TypeToTest_> extends CompoundTestModel<Class<_TypeToTest_>> {
 
 
 
@@ -54,7 +54,7 @@ public abstract class ClassTestModel extends CompoundTestModel<Class> {
 
 
 
-  public void setSubject(Class subject) {
+  public void setSubject(Class<_TypeToTest_> subject) {
     assert (subject != null) ?
              (Reflection.typeKind(subject) == $typeKind) :
              true;
@@ -63,8 +63,8 @@ public abstract class ClassTestModel extends CompoundTestModel<Class> {
 
 
 
-  public final TestModelCollectionDelegate<ConstructorTestModel> constructorTestModels =
-    new TestModelCollectionDelegate<ConstructorTestModel>(this);
+  public final TestModelCollectionDelegate<ConstructorTestModel<?>> constructorTestModels =
+    new TestModelCollectionDelegate<ConstructorTestModel<?>>(this);
 
   public final TestModelCollectionDelegate<InstanceMutatorTestModel> instanceMutatorTestModels =
     new TestModelCollectionDelegate<InstanceMutatorTestModel>(this);
@@ -78,8 +78,8 @@ public abstract class ClassTestModel extends CompoundTestModel<Class> {
   public final TestModelCollectionDelegate<ClassInspectorTestModel> classInspectorTestModels =
     new TestModelCollectionDelegate<ClassInspectorTestModel>(this);
 
-  public final TestModelCollectionDelegate<InnerClassTestModel> innerClassTestModels =
-    new TestModelCollectionDelegate<InnerClassTestModel>(this);
+  public final TestModelCollectionDelegate<InnerClassTestModel<?>> innerClassTestModels =
+    new TestModelCollectionDelegate<InnerClassTestModel<?>>(this);
 
   {
     addTestModelCollectionDelegate("constructors", constructorTestModels);

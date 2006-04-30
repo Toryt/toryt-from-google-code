@@ -42,14 +42,14 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @invar (forall TestObjectFactoryPriorityList<_TestObjectType_> pl;
    *            TOF_PL_MAP.contains(pl);
    *            pl.getPriorityElementType() == TestObjectFactory.class);
-   * @invar (forall Class c; TOF_PL_MAP.containsKey(c);
+   * @invar (forall Class<?> c; TOF_PL_MAP.containsKey(c);
    *            TOF_PL_MAP.get(c) instanceof TestObjectFactoryPriorityList<c>);
    * @invar (forall Map.Entry e; TOF_PL_MAP.entrySet().contains(e);
    *            (forall TestObjectFactory tof; e.getValue().contains(tof);
    *                e.getKey() == tof.getTestObjectClass()));
    */
-  private final Map<Class, TestObjectFactoryPriorityList<?>> TOF_PL_MAP =
-      new HashMap<Class, TestObjectFactoryPriorityList<?>>();
+  private final Map<Class<?>, TestObjectFactoryPriorityList<?>> TOF_PL_MAP =
+      new HashMap<Class<?>, TestObjectFactoryPriorityList<?>>();
 
   /**
    * <p>The prefix for system properties that have the FQCN of a
@@ -122,7 +122,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @result (forall int i; (i >= 0) && (i < getBasePackageNamesList().size());
    *              result.get(i + 1).equals(getBasePackageNamesList().get(i)));
    */
-  public final static List<String> getBasePackageNamesList(Class forClass) {
+  public final static List<String> getBasePackageNamesList(Class<?> forClass) {
     assert forClass != null;
     List<String> result = new ArrayList<String>(getBasePackageNamesList().size() + 1);
     result.add(forClass.getPackage().getName());
@@ -238,7 +238,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @result != null;
    * @result result instanceof PriorityListTestObjectFactoryPriorityList<forClass>;
    */
-  public TestObjectFactoryPriorityList<?> getTofPl(Class forClass) throws NoTofPlFoundException {
+  public TestObjectFactoryPriorityList<?> getTofPl(Class<?> forClass) throws NoTofPlFoundException {
     assert forClass != null;
     TestObjectFactoryPriorityList<?> result = getCachedTofPl(forClass);
     if (result == null) {
@@ -261,7 +261,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private TestObjectFactoryPriorityList<?> getTofPlFromSystemProperty(Class forClass) {
+  private TestObjectFactoryPriorityList<?> getTofPlFromSystemProperty(Class<?> forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
     assert forClass == null;
@@ -300,7 +300,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
     return result;
   }
 
-  private static void logTofPlFromSystemPropertyInstantiationProblem(Class forClass,
+  private static void logTofPlFromSystemPropertyInstantiationProblem(Class<?> forClass,
                                                                      String fqcn,
                                                                      String key,
                                                                      Exception exc) {
@@ -315,7 +315,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private TestObjectFactoryPriorityList<?> getTofPlFromBasePackageList(Class forClass) {
+  private TestObjectFactoryPriorityList<?> getTofPlFromBasePackageList(Class<?> forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
     TestObjectFactoryPriorityList<?> result = null;
@@ -356,7 +356,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private TestObjectFactoryPriorityList<?> getTofPlFromContractConstant(Class forClass) {
+  private TestObjectFactoryPriorityList<?> getTofPlFromContractConstant(Class<?> forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
     TestObjectFactoryPriorityList<?> result = null;
@@ -406,7 +406,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    *
    * @basic
    */
-  public TestObjectFactoryPriorityList<?> getCachedTofPl(Class forClass) {
+  public TestObjectFactoryPriorityList<?> getCachedTofPl(Class<?> forClass) {
     return TOF_PL_MAP.get(forClass);
   }
 
@@ -420,7 +420,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre tofPl instanceof TestObjectFactoryPriorityList<forClass>;
    * @post new.getCachedTofPl(forClass) == tofPl;
    */
-  public void addCachedTofPl(final Class forClass, final TestObjectFactoryPriorityList<?> tofPl)
+  public void addCachedTofPl(final Class<?> forClass, final TestObjectFactoryPriorityList<?> tofPl)
       throws AlreadyHasTofPlForClassException {
     assert forClass != null;
     assert tofPl != null;

@@ -1,8 +1,6 @@
 package org.toryt_II.testobject;
 
 
-import java.util.Date;
-
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
 import org.toryt.util_I.collections.priorityList.PriorityList;

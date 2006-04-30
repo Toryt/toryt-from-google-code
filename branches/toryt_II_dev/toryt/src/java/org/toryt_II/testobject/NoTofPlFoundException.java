@@ -22,7 +22,7 @@ public class NoTofPlFoundException extends TofPlFactoryException {
    * @post new.getTofPlFactory() == tofPlFactory;
    * @post new.getForClass() == forClass;
    */
-  public NoTofPlFoundException(TofPlFactory tofPlFactory, Class forClass) {
+  public NoTofPlFoundException(TofPlFactory tofPlFactory, Class<?> forClass) {
     super(tofPlFactory, forClass);
   }
 

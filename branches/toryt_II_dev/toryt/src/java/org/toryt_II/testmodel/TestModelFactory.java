@@ -24,11 +24,15 @@ public interface TestModelFactory {
   /**
    * Create a {@link ConstructorTestModel} for <code>constructor</code>.
    *
+   * The generic parameter <_TypeToTest_> ensures at <em>compile time</em> that
+   * the returned {@link ConstructorTestModel} is indeed for the same type
+   * as the <code>constructor</code>.
+   *
    * @pre constructor != null;
    * @throws TestModelCreationException
    *         Could not create the test model for some reason.
    */
-  ConstructorTestModel createConstructorTestModel(Constructor constructor)
+  <_TypeToTest_> ConstructorTestModel<_TypeToTest_> createConstructorTestModel(Constructor<_TypeToTest_> constructor)
       throws TestModelCreationException;
 
   /**
@@ -81,6 +85,10 @@ public interface TestModelFactory {
    * <code><b>public</b></code> methods (that are not basic inspectors),
    * inner classes and static nested classes.
    *
+   * The generic parameter <_TypeToTest_> ensures at <em>compile time</em> that
+   * the returned {@link InnerClassTestModel} is indeed for the type
+   * <code>innerClazz</code>.
+   *
    * @pre innerClazz != null;
    * @pre Reflection.typeKind(innerClazz) == TypeKind.INNER;
    * @throws TestModelCreationException
@@ -90,7 +98,7 @@ public interface TestModelFactory {
    *       otherwise, the {@link InnerClassTestModel} interface (and
    *       inheritance hierarchy) must change.
    */
-  InnerClassTestModel createInnerClassTestModel(Class innerClazz)
+  <_TypeToTest_> InnerClassTestModel<_TypeToTest_> createInnerClassTestModel(Class<_TypeToTest_>  innerClazz)
       throws TestModelCreationException;
 
   /**
@@ -99,6 +107,10 @@ public interface TestModelFactory {
    * <code><b>public</b></code> methods (that are not basic inspectors),
    * inner classes and static nested classes.
    *
+   * The generic parameter <_TypeToTest_> ensures at <em>compile time</em> that
+   * the returned {@link StaticClassTestModel} is indeed for the type
+   * <code>clazz</code>.
+   *
    * @pre clazz != null;
    * @pre Reflection.typeKind(innerClazz) == TypeKind.STATIC;
    * @throws TestModelCreationException
@@ -106,7 +118,7 @@ public interface TestModelFactory {
    *
    * @idea This should be extended to include non-public members.
    */
-  StaticClassTestModel createStaticClassTestModel(Class clazz)
+  <_TypeToTest_> StaticClassTestModel<_TypeToTest_> createStaticClassTestModel(Class<_TypeToTest_>  clazz)
       throws TestModelCreationException;
 
   /**

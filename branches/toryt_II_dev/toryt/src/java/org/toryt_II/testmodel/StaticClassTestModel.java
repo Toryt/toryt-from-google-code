@@ -20,14 +20,14 @@ import org.toryt.util_I.reflect.Reflection.TypeKind;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class StaticClassTestModel extends ClassTestModel {
+public class StaticClassTestModel<_TypeToTest_>  extends ClassTestModel<_TypeToTest_>  {
 
   public StaticClassTestModel() {
     super(TypeKind.STATIC);
   }
 
-  public final TestModelCollectionDelegate<StaticClassTestModel> staticNestedClassTestModels =
-    new TestModelCollectionDelegate<StaticClassTestModel>(this);
+  public final TestModelCollectionDelegate<StaticClassTestModel<?>> staticNestedClassTestModels =
+    new TestModelCollectionDelegate<StaticClassTestModel<?>>(this);
 
   {
     addTestModelCollectionDelegate("static nested classes", staticNestedClassTestModels);

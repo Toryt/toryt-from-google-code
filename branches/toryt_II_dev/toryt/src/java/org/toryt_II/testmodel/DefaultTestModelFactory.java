@@ -33,9 +33,9 @@ public class DefaultTestModelFactory implements TestModelFactory {
 
 
 
-  public ConstructorTestModel createConstructorTestModel(Constructor constructor) {
+  public <_TypeToTest_> ConstructorTestModel<_TypeToTest_> createConstructorTestModel(Constructor<_TypeToTest_> constructor) {
     assert constructor != null;
-    ConstructorTestModel result = new ConstructorTestModel();
+    ConstructorTestModel<_TypeToTest_> result = new ConstructorTestModel<_TypeToTest_>();
     result.setSubject(constructor);
     return result;
   }
@@ -72,36 +72,56 @@ public class DefaultTestModelFactory implements TestModelFactory {
     return result;
   }
 
-  public InnerClassTestModel createInnerClassTestModel(Class innerClazz) throws TestModelCreationException {
+  public <_TypeToTest_> InnerClassTestModel<_TypeToTest_> createInnerClassTestModel(Class<_TypeToTest_>  innerClazz)
+      throws TestModelCreationException {
     assert innerClazz != null;
     assert Reflection.typeKind(innerClazz) == TypeKind.INNER;
     LOG.debug("Creating InnerClassTestModel for class " + innerClazz);
-    InnerClassTestModel result = new InnerClassTestModel();
+    InnerClassTestModel<_TypeToTest_> result = new InnerClassTestModel<_TypeToTest_>();
     initClassTestModel(innerClazz, result);
     return result;
   }
 
-  public StaticClassTestModel createStaticClassTestModel(Class clazz) throws TestModelCreationException {
+  public <_TypeToTest_> StaticClassTestModel<_TypeToTest_> createStaticClassTestModel(Class<_TypeToTest_>  clazz)
+      throws TestModelCreationException {
     assert clazz != null;
     assert Reflection.typeKind(clazz) == TypeKind.STATIC;
     LOG.debug("Creating StaticClassTestModel for class " + clazz);
-    StaticClassTestModel result = new StaticClassTestModel();
+    StaticClassTestModel<_TypeToTest_> result = new StaticClassTestModel<_TypeToTest_>();
     initClassTestModel(clazz, result);
     return result;
   }
 
-  private void initClassTestModel(Class clazz, ClassTestModel result) throws TestModelCreationException {
+  /**
+   * The generic parameter <_TypeToTest_> ensures at <em>compile time</em> that
+   * the returned {@link ClassTestModel} <code>result</code> is indeed for the type
+   * <code>clazz</code>.
+   */
+  private <_TypeToTest_> void initClassTestModel(Class<_TypeToTest_> clazz, ClassTestModel<_TypeToTest_> result) throws TestModelCreationException {
     result.setSubject(clazz);
     addConstructors(clazz, result);
     addMethods(clazz, result);
     addNestedClasses(clazz, result);
   }
 
-  private void addConstructors(Class clazz, ClassTestModel result) throws TestModelCreationException {
+  /**
+   * The generic parameter <_TypeToTest_> ensures at <em>compile time</em> that
+   * the returned {@link ClassTestModel} <code>result</code> is indeed for the type
+   * <code>clazz</code>, and that constructors for which models are added are
+   * for that type.
+   */
+  private <_TypeToTest_> void addConstructors(Class<_TypeToTest_> clazz, ClassTestModel<_TypeToTest_> result) throws TestModelCreationException {
     try {
       LOG.debug("  adding ConstructorTestModels for class " + clazz);
-      Constructor[] constructors = clazz.getConstructors();
+      Constructor<_TypeToTest_>[] constructors = clazz.getConstructors();
           // only public constructors
+          /* warning because we cannot check type safety here (because the
+           * Class interface return Constructor[] and not Constructor<T>[];
+           * this seems a silly decision of the developers);
+           * this is ok, since we get the constructors from <code>clazz</code>,
+           * and <code>clazz</code> is of type <code>_TypeToTest</code>
+           * guaranteed */
+          // TODO how to do away with this warning
       LOG.debug("  there are " + constructors.length + " constructors");
       for (int i = 0; i < constructors.length; i++) {
         result.constructorTestModels.add(createConstructorTestModel(constructors[i]));
@@ -112,7 +132,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
     }
   }
 
-  private void addMethods(Class clazz, ClassTestModel result)
+  private <_TypeToTest_> void addMethods(Class<_TypeToTest_> clazz, ClassTestModel<_TypeToTest_> result)
       throws TestModelCreationException {
     try {
       LOG.debug("  adding MethodTestModels for class " + clazz);
@@ -149,11 +169,11 @@ public class DefaultTestModelFactory implements TestModelFactory {
     }
   }
 
-  private void addNestedClasses(Class clazz, ClassTestModel result)
+  private <_TypeToTest_> void addNestedClasses(Class<_TypeToTest_> clazz, ClassTestModel<_TypeToTest_> result)
       throws TestModelCreationException {
     try {
       LOG.debug("  adding TestModels for nested classes in class  " + clazz);
-      Class[] clazzes = clazz.getClasses(); // SecurityException
+      Class<?>[] clazzes = clazz.getClasses(); // SecurityException
           // only public nested types, but also inherited and interfaces
       for (int i = 0; i < clazzes.length; i++) {
         if (! clazzes[i].isInterface()) { // interfaces cannot be tested
@@ -167,7 +187,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
                 // static nested classes only need to be added to the declaring class test model
                 LOG.debug("    " + clazzes[i] + " is an static nested class");
                 try {
-                  ((StaticClassTestModel)result).staticNestedClassTestModels.add(createStaticClassTestModel(clazzes[i]));
+                  ((StaticClassTestModel<_TypeToTest_>)result).staticNestedClassTestModels.add(createStaticClassTestModel(clazzes[i]));
                 }
                 catch (ClassCastException ccExc) {
                   // static nested classses can only be nested in static classes
@@ -215,7 +235,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
       String simpleClassName = fileName.substring(0, fileName.lastIndexOf(JAVA_CLASS_SUFFIX));
       String fqcn = packageName + "." + simpleClassName;
       LOG.debug("    " + fqcn + " should be an ok class");
-      Class clazz;
+      Class<?> clazz;
       try {
         clazz = Reflection.loadForName(fqcn);
         LOG.debug("    " + clazz + " loaded; creating StaticClassTestModel for this class");

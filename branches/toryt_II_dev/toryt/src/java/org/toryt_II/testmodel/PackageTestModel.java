@@ -23,8 +23,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class PackageTestModel extends AbstractPackageTestModelContainer<String> {
 
-  public final TestModelCollectionDelegate<StaticClassTestModel> classTestModels =
-      new TestModelCollectionDelegate<StaticClassTestModel>(this);
+  public final TestModelCollectionDelegate<StaticClassTestModel<?>> classTestModels =
+      new TestModelCollectionDelegate<StaticClassTestModel<?>>(this);
 
   {
     addTestModelCollectionDelegate("classes", classTestModels);

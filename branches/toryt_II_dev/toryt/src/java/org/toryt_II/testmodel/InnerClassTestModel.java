@@ -15,7 +15,7 @@ import org.toryt.util_I.reflect.Reflection.TypeKind;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class InnerClassTestModel extends ClassTestModel {
+public class InnerClassTestModel<_TypeToTest_>  extends ClassTestModel<_TypeToTest_>  {
 
   public InnerClassTestModel() {
     super(TypeKind.INNER);

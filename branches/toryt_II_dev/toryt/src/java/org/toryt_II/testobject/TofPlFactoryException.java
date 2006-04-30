@@ -27,7 +27,7 @@ public class TofPlFactoryException extends TorytException {
    * @post new.getTofPlFactory() == tofPlFactory;
    * @post new.getForClass() == forClass;
    */
-  public TofPlFactoryException(TofPlFactory tofPlFactory, Class forClass) {
+  public TofPlFactoryException(TofPlFactory tofPlFactory, Class<?> forClass) {
     super();
     assert tofPlFactory != null;
     assert forClass != null;
@@ -50,13 +50,13 @@ public class TofPlFactoryException extends TorytException {
   /**
    * @basic
    */
-  public Class getForClass() {
+  public Class<?> getForClass() {
     return $forClass;
   }
 
   /**
    * @invar $forClass != null;
    */
-  private final Class $forClass;
+  private final Class<?> $forClass;
 
 }
