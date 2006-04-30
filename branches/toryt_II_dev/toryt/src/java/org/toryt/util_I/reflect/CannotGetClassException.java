@@ -13,7 +13,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class CouldNotLoadClassException extends AbstractFqcnException {
+public class CannotGetClassException extends AbstractFqcnException {
 
   /**
    * @pre fqcn != null;
@@ -21,7 +21,7 @@ public class CouldNotLoadClassException extends AbstractFqcnException {
    * @post new.getMessage() == null;
    * @post new.getCause() == cause;
    */
-  public CouldNotLoadClassException(String fqcn, Throwable cause) {
+  public CannotGetClassException(String fqcn, Throwable cause) {
     super(fqcn, cause);
   }
 

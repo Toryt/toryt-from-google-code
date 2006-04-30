@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.CouldNotLoadClassException;
+import org.toryt.util_I.reflect.CannotGetClassException;
 import org.toryt.util_I.reflect.Reflection;
 import org.toryt.util_I.reflect.Reflection.MethodKind;
 import org.toryt.util_I.reflect.Reflection.TypeKind;
@@ -241,7 +241,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
         LOG.debug("    " + clazz + " loaded; creating StaticClassTestModel for this class");
         result.classTestModels.add(createStaticClassTestModel(clazz));
       }
-      catch (CouldNotLoadClassException cnlcExc) {
+      catch (CannotGetClassException cnlcExc) {
         LOG.warn("could not load class with fully qualified class name " + fqcn);
         throw new TestModelCreationException(result,
                                              "could not load class with fully qualified class name " + fqcn,

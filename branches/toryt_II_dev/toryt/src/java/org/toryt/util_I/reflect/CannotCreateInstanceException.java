@@ -13,7 +13,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class CouldNotInstantiateBeanException extends AbstractFqcnException {
+public class CannotCreateInstanceException extends AbstractFqcnException {
 
   /**
    * @pre fqcn != null;
@@ -21,7 +21,7 @@ public class CouldNotInstantiateBeanException extends AbstractFqcnException {
    * @post new.getMessage() == null;
    * @post new.getCause() == cause;
    */
-  public CouldNotInstantiateBeanException(String fqcn, Throwable cause) {
+  public CannotCreateInstanceException(String fqcn, Throwable cause) {
     super(fqcn, cause);
   }
 

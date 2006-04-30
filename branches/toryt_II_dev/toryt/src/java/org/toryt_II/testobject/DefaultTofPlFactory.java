@@ -14,8 +14,8 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.CouldNotGetConstantException;
-import org.toryt.util_I.reflect.CouldNotInstantiateBeanException;
+import org.toryt.util_I.reflect.CannotGetValueException;
+import org.toryt.util_I.reflect.CannotCreateInstanceException;
 import org.toryt.util_I.reflect.Reflection;
 import org.toryt_II.contract.ClassContract;
 import org.toryt_II.contract.Contract;
@@ -341,7 +341,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
       catch (AlreadyHasTofPlForClassException e) {
         assert false : "AlreadyHasTofPlForClassException should not happen: " + e;
       }
-      catch (CouldNotInstantiateBeanException cnibExc) {
+      catch (CannotCreateInstanceException cnibExc) {
         if (_LOG.isDebugEnabled()) {
           _LOG.debug("Could not create TOF PL for class " + forClass +
                     " using FQCN \"" + Reflection.prefixedFqcn(CLASS_NAME_PREFIX, fqcnToPrefix) +
@@ -382,14 +382,14 @@ public class DefaultTofPlFactory implements TofPlFactory {
     catch (AlreadyHasTofPlForClassException e) {
       assert false : "AlreadyHasTofPlForClassException should not happen: " + e;
     }
-    catch (CouldNotGetConstantException cngcExc) {
+    catch (CannotGetValueException cngcExc) {
       if (_LOG.isDebugEnabled()) {
         _LOG.debug("Could not retrieve TOF PL for class " + forClass +
                   "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +
                   contract + ")", cngcExc);
       }
     }
-    catch (CouldNotInstantiateBeanException cnibExc) {
+    catch (CannotCreateInstanceException cnibExc) {
       if (_LOG.isDebugEnabled()) {
         _LOG.debug("Could not retrieve TOF PL for class " + forClass +
                   "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +

@@ -5,7 +5,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 /**
  * Signals that we could not get the value of a constant with name
- * {@link #getConstantName()} from class {@link #getClazz()}.
+ * {@link #getMemberName()} from class {@link #getClazz()}.
  * The {@link #getCause() cause} gives more detail.
  *
  * @author Jan Dockx
@@ -16,7 +16,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class CouldNotGetConstantException extends ReflectionException {
+public class CannotGetMethodException extends NamedMemberException {
+
+  // TODO why can't I have a generic paramter in an exception?
 
   /**
    * @pre clazz != null;
@@ -26,38 +28,8 @@ public class CouldNotGetConstantException extends ReflectionException {
    * @post new.getMessage() == null;
    * @post new.getCause() == cause;
    */
-  public CouldNotGetConstantException(Class clazz, String constantName, Throwable cause) {
-    super(cause);
-    $clazz = clazz;
-    $constantName = constantName;
+  public CannotGetMethodException(Class<?> clazz, String memberName, Throwable cause) {
+    super(clazz, memberName, cause);
   }
-
-
-
-  /**
-   * @basic
-   */
-  public Class getClazz() {
-    return $clazz;
-  }
-
-  /**
-   * @invar $clazz != null;
-   */
-  private final Class $clazz;
-
-
-
-  /**
-   * @basic
-   */
-  public String getConstantName() {
-    return $constantName;
-  }
-
-  /**
-   * @invar $constantName != null;
-   */
-  private final String $constantName;
 
 }

@@ -16,6 +16,10 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
+ * Utility methods for reflection. Use these methods if you are
+ * interested in the result of reflection, and not in a particular
+ * reason why some reflective inspection might have failed.
+ *
  * @mudo (jand) most methods are also in ppw-bean; consolidate
  * @mudo all methods should have easy 1 or 2 {@link ReflectionException}s
  *
@@ -27,44 +31,51 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class Reflection {
 
-  public static Method findMethod(Class type, String signature) throws NoSuchMethodException {
-    assert type != null;
-    assert signature != null;
-    String search = type.getName() + "." + signature;
-    Method[] methods = type.getDeclaredMethods();
-    for (int i = 0; i < methods.length; i++) {
-      if (methods[i].toString().indexOf(search) > -1) {
-        return methods[i];
+  public static Method findMethod(Class<?> type, String signature) throws CannotGetMethodException {
+    try {
+      String search = type.getName() + "." + signature;
+      Method[] methods = type.getDeclaredMethods();
+      for (int i = 0; i < methods.length; i++) {
+        if (methods[i].toString().indexOf(search) > -1) {
+          return methods[i];
+        }
       }
+      throw new CannotGetMethodException(type, signature, null);
     }
-    throw new NoSuchMethodException(type.getName() + "." + signature);
+    catch (NullPointerException npExc) {
+      throw new CannotGetMethodException(type, signature, npExc);
+    }
   }
 
-  public static Constructor findConstructor(Class type, String signature) throws NoSuchMethodException {
-    assert type != null;
-    assert signature != null;
-    Constructor[] constructors = type.getConstructors();
-    for (int i = 0; i < constructors.length; i++) {
-      if (constructors[i].toString().indexOf(signature) > -1) {
-        return constructors[i];
+  public static <T> Constructor<T> findConstructor(Class<T> type, String signature) throws CannotGetMethodException {
+    try {
+      Constructor<T>[] constructors = type.getConstructors();
+      // warning because Class.getConstructors return Constructor[] instead of Constructor<T>[]
+      for (int i = 0; i < constructors.length; i++) {
+        if (constructors[i].toString().indexOf(signature) > -1) {
+          return constructors[i];
+        }
       }
+      throw new CannotGetMethodException(type, signature, null);
     }
-    throw new NoSuchMethodException(type.getName() + "." + signature);
+    catch (NullPointerException npExc) {
+      throw new CannotGetMethodException(type, signature, npExc);
+    }
   }
 
-  public static Class loadForName(String fqn) throws CouldNotLoadClassException {
-    assert fqn != null;
+  public static Class<?> loadForName(String fqn) throws CannotGetClassException {
     try {
       return Class.forName(fqn);
     }
     catch (ClassNotFoundException cnfExc) {
-      throw new CouldNotLoadClassException(fqn, cnfExc);
+      throw new CannotGetClassException(fqn, cnfExc);
     }
     catch (LinkageError lErr) {
       // also catches ExceptionInInitializerError
-      throw new CouldNotLoadClassException(fqn, lErr);
+      throw new CannotGetClassException(fqn, lErr);
     }
   }
+
 
   /**
    * Instantiate an object of a type
@@ -79,21 +90,26 @@ public class Reflection {
    * @param fqcn
    *        The original fully qualified class name to derive
    *        the prefixed class name from.
-   * @throws CouldNotInstantiateBeanException
+   * @throws CannotCreateInstanceException
    */
   public static Object instantiatePrefixed(ClassLoader cl,
                                            final String prefix,
                                            final String fqcn)
-      throws CouldNotInstantiateBeanException {
-    String prefixedFqcn = prefixedFqcn(prefix, fqcn);
+      throws CannotCreateInstanceException {
     try {
-      return java.beans.Beans.instantiate(cl, prefixedFqcn);
+      String prefixedFqcn = prefixedFqcn(prefix, fqcn);
+      try {
+        return java.beans.Beans.instantiate(cl, prefixedFqcn);
+      }
+      catch (ClassNotFoundException cnfExc) {
+        throw new CannotCreateInstanceException(prefixedFqcn, cnfExc);
+      }
+      catch (IOException ioExc) {
+        throw new CannotCreateInstanceException(prefixedFqcn, ioExc);
+      }
     }
-    catch (ClassNotFoundException cnfExc) {
-      throw new CouldNotInstantiateBeanException(prefixedFqcn, cnfExc);
-    }
-    catch (IOException ioExc) {
-      throw new CouldNotInstantiateBeanException(prefixedFqcn, ioExc);
+    catch (NullPointerException npExc) {
+      throw new CannotCreateInstanceException(prefix + "/" + fqcn, npExc);
     }
   }
 
@@ -112,9 +128,12 @@ public class Reflection {
    *        The prefix to add before the class name.
    * @param fqcn
    *        The fully qualified class name to start from.
+   * @throws NullPointerException
+   *         (prefix == null) || (fqcn == null);
    */
   public static String prefixedFqcn(final String prefix,
-                                    final String fqcn) {
+                                    final String fqcn)
+      throws NullPointerException {
     String[] parts = fqcn.split(PREFIXED_FQCN_PATTERN);
     String prefixedName = prefix + parts[parts.length - 1];
     String result = EMPTY;
@@ -137,14 +156,14 @@ public class Reflection {
    * @return    Object
    *            The value of the field named <code>constantName</code>
    *            in class <code>fqClassName</code>.
-   * @throws    CouldNotLoadClassException
+   * @throws    CannotGetClassException
    *            Could not load class <code>fqClassName</code>.
-   * @throws    CouldNotGetConstantException
+   * @throws    CannotGetValueException
    *            Error retrieving value.
    */
   public static Object constant(final String fqClassName,
                                 final String constantName)
-      throws CouldNotLoadClassException, CouldNotGetConstantException {
+      throws CannotGetClassException, CannotGetValueException {
     Class clazz = loadForName(fqClassName);
     return constant(clazz, constantName);
   }
@@ -160,12 +179,12 @@ public class Reflection {
    * @return    Object
    *            The value of the field named <code>constantName</code>
    *            in class <code>clazz</code>.
-   * @throws    CouldNotGetConstantException
+   * @throws    CannotGetValueException
    *            Error retrieving value.
    */
-  public static Object constant(final Class clazz,
+  public static Object constant(final Class<?> clazz,
                                 final String constantName)
-      throws CouldNotGetConstantException {
+      throws CannotGetValueException {
     try {
       Field field = clazz.getField(constantName); // NoSuchFieldException
                                                   // NullPointerException
@@ -176,19 +195,19 @@ public class Reflection {
                               // ExceptionInInitializerError
     }
     catch (NoSuchFieldException nsfExc) {
-      throw new CouldNotGetConstantException(clazz, constantName, nsfExc);
+      throw new CannotGetValueException(clazz, constantName, nsfExc);
     }
     catch (NullPointerException npExc) {
-      throw new CouldNotGetConstantException(clazz, constantName, npExc);
+      throw new CannotGetValueException(clazz, constantName, npExc);
     }
     catch (SecurityException sExc) {
-      throw new CouldNotGetConstantException(clazz, constantName, sExc);
+      throw new CannotGetValueException(clazz, constantName, sExc);
     }
     catch (IllegalAccessException iaExc) {
-      throw new CouldNotGetConstantException(clazz, constantName, iaExc);
+      throw new CannotGetValueException(clazz, constantName, iaExc);
     }
     catch (IllegalArgumentException iaExc) {
-      throw new CouldNotGetConstantException(clazz, constantName, iaExc);
+      throw new CannotGetValueException(clazz, constantName, iaExc);
     }
   }
 
@@ -204,15 +223,13 @@ public class Reflection {
    *            The bean class to get the property read method of
    * @param     propertyName
    *            The programmatic name of the property we want to read
-   * @pre       beanClass != null;
-   * @throws    IntrospectionException
-   *            Cannot get the <code>BeanInfo</code> of <code>beanClass</code>,
-   *            cannot find a property descriptor.
+   * @throws CannotGetPropertyException
+   *         Cannot get the <code>BeanInfo</code> of <code>beanClass</code>,
+   *         cannot find a property descriptor.
    */
-  public static boolean hasPropertyReadMethod(final Class beanClass,
+  public static boolean hasPropertyReadMethod(final Class<?> beanClass,
                                               final String propertyName)
-      throws IntrospectionException {
-    assert beanClass != null;
+      throws CannotGetPropertyException {
     return getPropertyDescriptor(beanClass, propertyName).getReadMethod() != null;
   }
 
@@ -227,18 +244,19 @@ public class Reflection {
    *            The programmatic name of the property we want the descriptor for
    * @return    PropertyDescription
    *            result != null;
-   * @throws    IntrospectionException
-   *            Cannot get the <code>BeanInfo</code> of <code>beanClass</code>,
-   *            cannot find a property descriptor.
-   *
-   * @pre       beanClass != null;
+   * @throws CannotGetPropertyException
+   *         Cannot get the <code>BeanInfo</code> of <code>beanClass</code>,
+   *         cannot find a property descriptor.
    */
-  public static PropertyDescriptor
-      getPropertyDescriptor(final Class beanClass, final String propertyName)
-      throws IntrospectionException {
-    assert beanClass != null;
-    BeanInfo beanInfo = Introspector.getBeanInfo(beanClass);
-                                 // throws IntrospectionException
+  public static PropertyDescriptor getPropertyDescriptor(final Class<?> beanClass, final String propertyName)
+      throws CannotGetPropertyException {
+    BeanInfo beanInfo;
+    try {
+      beanInfo = Introspector.getBeanInfo(beanClass);
+    }
+    catch (IntrospectionException iExc) {
+      throw new CannotGetPropertyException(beanClass, propertyName, iExc);
+    }
     PropertyDescriptor[] propertyDescriptors =
         beanInfo.getPropertyDescriptors();
                                  // entries in the array are never null
@@ -251,8 +269,7 @@ public class Reflection {
       }
     }
     if (descriptor == null) {
-      throw new IntrospectionException("No property descriptor found for " +
-                                       propertyName + " in " + beanClass.getName());
+      throw new CannotGetPropertyException(beanClass, propertyName, null);
     }
     return descriptor;
   }
@@ -260,35 +277,22 @@ public class Reflection {
   /**
    * The value to be written to the text file, as String.
    *
-   * @param     bean
-   *            The bean to get the property value of
-   * @param     propertyName
-   *            The programmatic name of the property we want to read
-   * @return    Object
-   *            @todo (dvankeer): (JAVADOC) Write description.
-   * @throws    NullPointerException
-   *            bean == null;
-   * @throws    IntrospectionException
-   *            Cannot get the <code>BeanInfo</code> of <code>bean</code> class.
-   * @throws    NoSuchMethodException
-   *            There is no read method for this property in the bean.
-   * @throws    IllegalAccessException
-   *            This user is not allowed to access the read method of
-   *            the <code>propertyName()</code>-property of <code>bean</code>.
-   * @throws    InvocationTargetException
-   *            The read method of the property <code>propertyName</code>,
-   *            applied to <code>bean</code>, has thrown an exception.
+   * @throws    CannotGetValueException
+   *            Could not get the property read method or got the read method,
+   *            but something went wrong reading the value.
    */
   public static Object getPropertyValue(final Object bean,
                                         final String propertyName)
-      throws NullPointerException,
-             IntrospectionException,
-             NoSuchMethodException,
-             IllegalAccessException,
-             InvocationTargetException {
-    Method inspector = getPropertyReadMethod(bean.getClass(), propertyName);
-    // != null; throws loads of exceptions
+      throws CannotGetValueException {
+    Method inspector;
+    try {
+      inspector = getPropertyReadMethod(bean.getClass(), propertyName);
+    }
+    catch (CannotGetMethodException cgmExc) {
+      throw new CannotGetValueException(bean.getClass(), propertyName, cgmExc);
+    }
     Object result = null;
+    assert inspector != null;
     try {
       result = inspector.invoke(bean, (Object[])null);
     }
@@ -297,44 +301,54 @@ public class Reflection {
                      "arguments, and the implicit argument is " +
                      "not null and of the correct type";
     }
-    /* ExceptionInInitializerError can occur with invoke, but we do not
-        take into account errors */
+    catch (NullPointerException npExc) {
+      throw new CannotGetValueException(bean.getClass(), propertyName, npExc);
+    }
+    catch (IllegalAccessException iaExc) {
+      throw new CannotGetValueException(bean.getClass(), propertyName, iaExc);
+    }
+    catch (InvocationTargetException itExc) {
+      throw new CannotGetValueException(bean.getClass(), propertyName, itExc);
+    }
+    catch (ExceptionInInitializerError eiiErr) {
+      throw new CannotGetValueException(bean.getClass(), propertyName, eiiErr);
+    }
     return result;
   }
 
   /**
-   * Returns the method object of the inspector of the property with
-   * name <code>propertyName</code> of <code>beanClass</code>. If such a
-   * property or such an inspector does not exist, an exception is thrown.
-   * This method only finds implemented methods,
-   * thus not methods in interfaces or abstract methods.
+   * Returns the method object of the inspector of the property with name <code>propertyName</code>
+   * of <code>beanClass</code>. If such a property or such an inspector does not exist, an
+   * exception is thrown. This method only finds implemented methods, thus not methods in interfaces
+   * or abstract methods.
    *
-   * @todo check that This method only finds implemented methods,
-   * thus not methods in interfaces or abstract methods, and fix.
-   *
-   * @param     beanClass
-   *            The bean class to get the property read method of
-   * @param     propertyName
-   *            The programmatic name of the property we want to read
-   * @pre       beanClass != null;
-   * @return    result != null;
-   * @throws    IntrospectionException
-   *            Cannot get the <code>BeanInfo</code> of <code>beanClass</code>.
-   * @throws    NoSuchMethodException
-   *            There is no read method for this property.
+   * @todo check that This method only finds implemented methods, thus not methods in interfaces or
+   *       abstract methods, and fix.
+   * @param beanClass
+   *        The bean class to get the property read method of
+   * @param propertyName
+   *        The programmatic name of the property we want to read
+   * @pre beanClass != null;
+   * @return result != null;
+   * @throws CannotGetMethodException
+   *         Cannot get the <code>BeanInfo</code> of <code>beanClass</code> or
+   *         there is no read method for this property.
    */
-  public static Method getPropertyReadMethod(final Class beanClass,
+  public static Method getPropertyReadMethod(final Class<?> beanClass,
                                              final String propertyName)
-      throws IntrospectionException, NoSuchMethodException {
-    assert beanClass != null;
-    Method inspector
-        = getPropertyDescriptor(beanClass, propertyName).getReadMethod();
-        // this can be null for a read-protected property
-    if (inspector == null) {
-      throw new NoSuchMethodException("No read method for property " //$NON-NLS-1$
-                                      + propertyName);
+      throws CannotGetMethodException {
+    Method inspector;
+    try {
+      inspector = getPropertyDescriptor(beanClass, propertyName).getReadMethod();
+      // this can be null for a read-protected property
+      if (inspector == null) {
+        throw new CannotGetMethodException(beanClass, propertyName, null);
+      }
+      return inspector;
     }
-    return inspector;
+    catch (CannotGetPropertyException cgpExc) {
+      throw new CannotGetMethodException(beanClass, propertyName, cgpExc);
+    }
   }
 
   /**
@@ -384,7 +398,7 @@ public class Reflection {
   /**
    * @pre clazz != null;
    */
-  public static TypeKind typeKind(Class clazz) {
+  public static TypeKind typeKind(Class<?> clazz) {
     assert clazz != null;
     if ((! clazz.isLocalClass()) || (Modifier.isStatic(clazz.getModifiers()))) {
       return TypeKind.STATIC;
