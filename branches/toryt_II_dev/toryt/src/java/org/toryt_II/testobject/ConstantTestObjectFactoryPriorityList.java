@@ -10,7 +10,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  * A {@link PriorityList} that makes it easy to create a
  * <acronym title="Test Object Factory Priority List">TOF PL</acronym>
  * for classes of which the instances are guaranteed to be immutable.
- * Use the method {@link #addImmutableTestObject(int, _TestObjectType_)} instead of
+ * Use the method {@link #addImmutableTestObject(int, Object)} instead of
  * {@link #addPriorityElement(int, Object)}, and {@link #lock()} when ready.
  *
  * @author Jan Dockx
