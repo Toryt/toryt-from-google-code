@@ -16,6 +16,8 @@ import org.toryt.util_I.collections.lockable.LazySet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LazyBigSet extends LockableBigSet, LazySet {
+public interface LazyBigSet<_ElementType_> extends LockableBigSet<_ElementType_>, LazySet<_ElementType_> {
+
+  // NOP
 
 }

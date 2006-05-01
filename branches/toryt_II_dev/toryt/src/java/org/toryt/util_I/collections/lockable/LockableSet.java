@@ -18,6 +18,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LockableSet extends LockableCollection, Set {
+public interface LockableSet<_ElementType_>
+    extends LockableCollection<_ElementType_>, Set<_ElementType_> {
+
+  // NOP
 
 }

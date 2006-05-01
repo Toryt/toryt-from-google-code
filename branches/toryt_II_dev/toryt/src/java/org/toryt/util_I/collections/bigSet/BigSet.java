@@ -5,13 +5,12 @@ import java.math.BigInteger;
 import java.util.Set;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.typed.TypedSet;
 
 
 /**
  * <p>A {@link Set} of which the size might exceed
  *   {@link Integer#MAX_VALUE}. Therefor, {@link #getBigSize()}
- *   should be used instead of {@link #size()}.</p>
+ *   should be used instead of <code>size()</code>.</p>
  * <p><code>BigSets</code> are almost always lazy,
  *   and generative. Therefor, operations like {@link #toArray()}
  *   and {@link #toArray(Object[])}
@@ -26,7 +25,7 @@ import org.toryt.util_I.collections.typed.TypedSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface BigSet extends TypedSet {
+public interface BigSet<_ElementType_> extends Set<_ElementType_> {
 
   /**
    * The number of elements as a {@link BigInteger}.
@@ -47,6 +46,7 @@ public interface BigSet extends TypedSet {
    *
    *  @return (getBigSize() <= Integer.MAX_VALUE) ? getBigSize() : Integer.MAX_VALUE;
    */
+  @Deprecated
   int size();
 
 }

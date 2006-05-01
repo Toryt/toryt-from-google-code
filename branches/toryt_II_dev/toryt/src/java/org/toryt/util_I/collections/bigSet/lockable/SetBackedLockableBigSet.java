@@ -8,7 +8,6 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.BigSet;
 import org.toryt.util_I.collections.lockable.SetBackedLockableSet;
 import org.toryt.util_I.collections.typed.SetBackedTypedSet;
-import org.toryt.util_I.collections.typed.TypedSet;
 
 
 /**
@@ -25,36 +24,20 @@ import org.toryt.util_I.collections.typed.TypedSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class SetBackedLockableBigSet extends SetBackedLockableSet
-    implements LockableBigSet {
-
-  /**
-   * @pre backingSet != null;
-   */
-  public SetBackedLockableBigSet(TypedSet backingSet) {
-    super(backingSet);
-  }
+public class SetBackedLockableBigSet<_ElementType_>
+    extends SetBackedLockableSet<_ElementType_>
+    implements LockableBigSet<_ElementType_> {
 
   /**
    * Creates an instance backed by a {@link SetBackedTypedSet},
    * backed itself by a {@link HashSet}.
-   *
-   * @pre elementType != null;
    */
-  public SetBackedLockableBigSet(Class elementType, boolean nullAllowed) {
-    super(new SetBackedTypedSet(elementType, nullAllowed));
+  public SetBackedLockableBigSet(boolean nullAllowed) {
+    super(nullAllowed);
   }
 
   public final BigInteger getBigSize() {
     return BigInteger.valueOf(size());
-  }
-
-  public final Class getElementType() {
-    return ((TypedSet)getBackingSet()).getElementType();
-  }
-
-  public final boolean isNullAllowed() {
-    return ((TypedSet)getBackingSet()).isNullAllowed();
   }
 
 }

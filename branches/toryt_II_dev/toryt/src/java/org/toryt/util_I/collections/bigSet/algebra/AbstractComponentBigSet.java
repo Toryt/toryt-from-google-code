@@ -19,8 +19,7 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
  * <p>This class contains common implementations for subtypes.</p>
  * <p>If one of the {@link #getComponents()} is <code>null</code>,
  *   the implementation in the subclass will behave as if it
- *   refers to an empty set with an appropriate
- *   {@link BigSet#getElementType()}.</p>
+ *   refers to an empty set with an appropriate <code>_ElementType_</code>.</p>
  *
  * @author Jan Dockx
  *
@@ -35,11 +34,11 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
-    implements LazyBigSet {
+public abstract class AbstractComponentBigSet<_ResultElementType_, _ComponentElementType_>
+    extends AbstractLockedBigSet<_ResultElementType_>
+    implements LazyBigSet<_ResultElementType_> {
 
   /**
-   * @pre elementType != null;
    * @pre bigSize != null;
    * @pre bigSize >= 0;
    * @pre components != null;
@@ -50,26 +49,26 @@ public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
    *          (components[i] != null) ? (! components[i].contains(null)));
    * @post Collections.containsAll(components, new.getComponents());
    */
-  public AbstractComponentBigSet(Class elementType,
-                                 boolean nullAllowed,
-                                 BigInteger bigSize,
-                                 LockableBigSet[] components) {
-    super(elementType, nullAllowed, bigSize);
+  protected AbstractComponentBigSet(boolean nullAllowed,
+                                    BigInteger bigSize,
+                                    LockableBigSet<? extends _ComponentElementType_>[] components) {
+    super(nullAllowed, bigSize);
     assert components != null;
     assert Collections.forAll(components,
                               new Assertion() {
                                     public boolean isTrueFor(Object o) {
-                                      return ((LockableBigSet)o).isLocked();
+                                      return ((LockableBigSet<?>)o).isLocked();
                                     }
                                   });
     assert nullAllowed ||
              Collections.forAll(components,
                                 new Assertion() {
                                       public boolean isTrueFor(Object o) {
-                                        return ! ((LockableBigSet)o).contains(null);
+                                        return ! ((LockableBigSet<?>)o).contains(null);
                                       }
                                     });
-    $components = (LockableBigSet[])ArrayUtils.clone(components);
+    $components = (LockableBigSet<? extends _ComponentElementType_>[])ArrayUtils.clone(components);
+    /* TODO warning ? */
   }
 
 
@@ -80,8 +79,9 @@ public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
   /**
    * @basic
    */
-  public final LockableBigSet[] getComponents() {
-    return (LockableBigSet[])ArrayUtils.clone($components);
+  public final LockableBigSet<? extends _ComponentElementType_>[] getComponents() {
+    return (LockableBigSet<? extends _ComponentElementType_>[])ArrayUtils.clone($components);
+    /* TODO warning ? */
   }
 
   /**
@@ -89,7 +89,7 @@ public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
    * @invar (forall int i; (i >= 0) && (i < $components.length);
    *          ($components[i] != null) ? $components[i].isLocked());
    */
-  private final LockableBigSet[] $components;
+  private final LockableBigSet<? extends _ComponentElementType_>[] $components;
 
   /*</property>*/
 
@@ -101,12 +101,13 @@ public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
    * if {@link #containsAll(Collection)} is expensive, so is this
    * method if <code>! o instanceof AbstractComponentBigSet</code>.
    */
+  @Override
   public boolean equals(Object o) {
-    if ((o == null) || (! (o instanceof BigSet))) {
+    if ((o == null) || (! (o instanceof BigSet<?>))) {
       return false;
     }
-    else if (o instanceof AbstractComponentBigSet) {
-      LockableBigSet[] otherComponents = ((AbstractComponentBigSet)o).getComponents();
+    else if (o instanceof AbstractComponentBigSet<?, ?>) {
+      LockableBigSet<?>[] otherComponents = ((AbstractComponentBigSet<?, ?>)o).getComponents();
       if ($components.length != otherComponents.length) {
         return false;
       }
@@ -120,12 +121,13 @@ public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
     }
     else {
       // fallback; very possibly expensive, and stupid for a lazy set
-      return getBigSize().equals(((BigSet)o).getBigSize()) &&
-             containsAll((BigSet)o) &&
-             ((BigSet)o).containsAll(this);
+      return getBigSize().equals(((BigSet<?>)o).getBigSize()) &&
+             containsAll((BigSet<?>)o) &&
+             ((BigSet<?>)o).containsAll(this);
     }
   }
 
+  @Override
   public int hashCode() {
     int acc = 0;
     for (int i =0; i < $components.length; i++) {
@@ -139,8 +141,11 @@ public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
    * This method is very expensive, as it iterates over all
    * elements (and thus generates them).
    *
-   * @deprecated
+   * @deprecated This method is very expensive, as it iterates over all
+   *             elements (and thus generates them).
    */
+  @Deprecated
+  @Override
   public final Object[] toArray() {
     return super.toArray();
   }
@@ -149,9 +154,12 @@ public abstract class AbstractComponentBigSet extends AbstractLockedBigSet
    * This method is very expensive, as it iterates over all
    * elements (and thus generates them).
    *
-   * @deprecated
+   * @deprecated This method is very expensive, as it iterates over all
+   *             elements (and thus generates them).
    */
-  public final Object[] toArray(Object[] a) {
+  @Deprecated
+  @Override
+  public final <_ComponentType_> _ComponentType_[] toArray(_ComponentType_[] a) {
     return super.toArray(a);
   }
 

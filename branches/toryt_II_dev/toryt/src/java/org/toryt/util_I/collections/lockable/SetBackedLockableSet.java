@@ -1,7 +1,6 @@
 package org.toryt.util_I.collections.lockable;
 
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -20,14 +19,16 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class SetBackedLockableSet extends AbstractCollectionBackedLockableCollection
-    implements LockableSet {
+public class SetBackedLockableSet<_ElementType_>
+    extends AbstractCollectionBackedLockableCollection<_ElementType_>
+    implements LockableSet<_ElementType_> {
 
   /**
    * @pre backingSet != null;
    * @post ! new.isLocked();
    */
-  public SetBackedLockableSet(Set backingSet) {
+  public SetBackedLockableSet(Set<_ElementType_> backingSet, boolean nullAllowed) {
+    super(nullAllowed);
     assert backingSet != null;
     $backingSet = backingSet;
   }
@@ -35,32 +36,30 @@ public class SetBackedLockableSet extends AbstractCollectionBackedLockableCollec
   /**
    * Create an instance backed by a fresh {@link HashSet}
    */
-  public SetBackedLockableSet() {
-    this(new HashSet());
+  public SetBackedLockableSet(boolean nullAllowed) {
+    this(new HashSet<_ElementType_>(), nullAllowed);
   }
 
-  protected final Set getBackingSet() {
-    return $backingSet;
-  }
-
-  protected final Collection getBackingCollection() {
+  @Override
+  protected final Set<_ElementType_> getBackingCollection() {
     return $backingSet;
   }
 
   /**
    * @invar $backingSet != null;
    */
-  private Set $backingSet;
+  private Set<_ElementType_> $backingSet;
 
-  public final Iterator iterator() {
+  public final Iterator<_ElementType_> iterator() {
     return new CollectionBackedLockIterator() {
 
       /**
        * @invar $backingIterator != null;
        */
-      private Iterator $iterator = $backingSet.iterator();
+      private Iterator<_ElementType_> $iterator = $backingSet.iterator();
 
-      protected Iterator getIterator() {
+      @Override
+      protected Iterator<_ElementType_> getIterator() {
         return $iterator;
       }
 

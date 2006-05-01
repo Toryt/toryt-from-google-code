@@ -23,7 +23,27 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractLockedCollection implements LockableCollection {
+public abstract class AbstractLockedCollection<_ElementType_>
+    implements LockableCollection<_ElementType_> {
+
+  protected AbstractLockedCollection(boolean nullAllowed) {
+    $nullAllowed = nullAllowed;
+  }
+
+
+
+  /* <property name="null allowed"> */
+  //------------------------------------------------------------------
+
+  public final boolean isNullAllowed() {
+    return $nullAllowed;
+  }
+
+  private boolean $nullAllowed;
+
+  /*</property>*/
+
+
 
   /* <property name="locked"> */
   //------------------------------------------------------------------
@@ -63,7 +83,7 @@ public abstract class AbstractLockedCollection implements LockableCollection {
    * @throws NullPointerException
    *         c == null;
    */
-  public final boolean containsAll(Collection c) {
+  public final boolean containsAll(Collection<?> c) {
     return (size() >= c.size()) && // NullPointerException as expected
            Collections.forAll(c,
                               new Assertion() {
@@ -91,20 +111,24 @@ public abstract class AbstractLockedCollection implements LockableCollection {
    * General implementation as high in the inheritance
    * hierarchy as possible.
    */
-  public Object[] toArray(Object[] a) {
+  @SuppressWarnings("unchecked")
+  public <_ResultBaseType_> _ResultBaseType_[] toArray(_ResultBaseType_[] a) {
     int size = size();
-    Object[] result;
+    _ResultBaseType_[] result;
     if (a.length >= size) {
       result = a;
       result[size] = null;
     }
     else {
-      result = (Object[])Array.newInstance(a.getClass().getComponentType(), size);
+      result = (_ResultBaseType_[])Array.newInstance(a.getClass().getComponentType(), size);
+      /* unchecked cast because Java API is not generic here */
     }
-    Iterator iter = iterator();
+    Iterator<_ElementType_> iter = iterator();
     int i = 0;
     while (iter.hasNext()) {
       result[i] = iter.next();
+      /* this is weird, yes. the reason is that we cannot say that
+       * _ResultBaseType_ super _ElementType_ for some reason */
       i++;
     }
     return result;
@@ -115,26 +139,50 @@ public abstract class AbstractLockedCollection implements LockableCollection {
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
 
-  public final boolean add(Object o) throws UnsupportedOperationException {
+  /**
+   * @deprecated Unsupported
+   */
+  @Deprecated
+  public final boolean add(_ElementType_ o) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
+  /**
+   * @deprecated Unsupported
+   */
+  @Deprecated
   public final boolean remove(Object o) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
-  public final boolean addAll(Collection c) throws UnsupportedOperationException {
+  /**
+   * @deprecated Unsupported
+   */
+  @Deprecated
+  public final boolean addAll(Collection<? extends _ElementType_> c) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
-  public final boolean retainAll(Collection c) throws UnsupportedOperationException {
+  /**
+   * @deprecated Unsupported
+   */
+  @Deprecated
+  public final boolean retainAll(Collection<?> c) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
-  public final boolean removeAll(Collection c) throws UnsupportedOperationException {
+  /**
+   * @deprecated Unsupported
+   */
+  @Deprecated
+  public final boolean removeAll(Collection<?> c) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
+  /**
+   * @deprecated Unsupported
+   */
+  @Deprecated
   public final void clear() throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
@@ -142,8 +190,12 @@ public abstract class AbstractLockedCollection implements LockableCollection {
   /*</section>*/
 
 
-  public abstract class AbstractLockedCollectionIterator implements Iterator {
+  public abstract class AbstractLockedCollectionIterator implements Iterator<_ElementType_> {
 
+    /**
+     * @deprecated Unsupported
+     */
+    @Deprecated
     public final void remove()  throws UnsupportedOperationException {
       throw new UnsupportedOperationException("Set is locked");
     }

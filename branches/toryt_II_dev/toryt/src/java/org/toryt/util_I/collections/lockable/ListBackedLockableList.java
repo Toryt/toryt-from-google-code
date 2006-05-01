@@ -21,14 +21,16 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ListBackedLockableList extends AbstractCollectionBackedLockableCollection
-    implements LockableList {
+public class ListBackedLockableList<_ElementType_>
+    extends AbstractCollectionBackedLockableCollection<_ElementType_>
+    implements LockableList<_ElementType_> {
 
   /**
    * @pre backingList != null;
    * @post ! new.isLocked();
    */
-  public ListBackedLockableList(List backingList) {
+  public ListBackedLockableList(List<_ElementType_> backingList, boolean nullAllowed) {
+    super(nullAllowed);
     assert backingList != null;
     $backingList = backingList;
   }
@@ -36,45 +38,42 @@ public class ListBackedLockableList extends AbstractCollectionBackedLockableColl
   /**
    * Create an instance backed by a fresh {@link ArrayList}
    */
-  public ListBackedLockableList() {
-    this(new ArrayList());
+  public ListBackedLockableList(boolean nullAllowed) {
+    this(new ArrayList<_ElementType_>(), nullAllowed);
   }
 
-  protected final List getBackingList() {
-    return $backingList;
-  }
-
-  protected final Collection getBackingCollection() {
+  @Override
+  protected final List<_ElementType_> getBackingCollection() {
     return $backingList;
   }
 
   /**
    * @invar $backingList != null;
    */
-  private List $backingList;
+  private List<_ElementType_> $backingList;
 
 
   /* <section name="Inspectors"> */
   //------------------------------------------------------------------
 
-  public final List subList(int fromIndex, int toIndex) {
-    return getBackingList().subList(fromIndex, toIndex);
+  public final List<_ElementType_> subList(int fromIndex, int toIndex) {
+    return getBackingCollection().subList(fromIndex, toIndex);
   }
 
-  public final Object get(int index) {
-    return getBackingList().get(index);
+  public final _ElementType_ get(int index) {
+    return getBackingCollection().get(index);
   }
 
   public final int indexOf(Object o) {
-    return getBackingList().indexOf(o);
+    return getBackingCollection().indexOf(o);
   }
 
   public final int lastIndexOf(Object o) {
-    return getBackingList().lastIndexOf(o);
+    return getBackingCollection().lastIndexOf(o);
   }
 
   public class ListBackedLockListIterator extends CollectionBackedLockIterator
-      implements ListIterator {
+      implements ListIterator<_ElementType_> {
 
     private ListBackedLockListIterator(int index) {
       $iterator = $backingList.listIterator(index);
@@ -83,9 +82,10 @@ public class ListBackedLockableList extends AbstractCollectionBackedLockableColl
     /**
      * @invar $backingIterator != null;
      */
-    private ListIterator $iterator;
+    private ListIterator<_ElementType_> $iterator;
 
-    protected final Iterator getIterator() {
+    @Override
+    protected final Iterator<_ElementType_> getIterator() {
       return $iterator;
     }
 
@@ -93,7 +93,7 @@ public class ListBackedLockableList extends AbstractCollectionBackedLockableColl
       return $iterator.hasPrevious();
     }
 
-    public final Object previous() {
+    public final _ElementType_ previous() {
       return $iterator.previous();
     }
 
@@ -110,7 +110,7 @@ public class ListBackedLockableList extends AbstractCollectionBackedLockableColl
      * @throws UnsupportedOperationException
      *         isLocked();
      */
-    public final void set(Object o) {
+    public final void set(_ElementType_ o) {
       if (isLocked()) {
         throw new UnsupportedOperationException("List is locked");
       }
@@ -122,7 +122,7 @@ public class ListBackedLockableList extends AbstractCollectionBackedLockableColl
      * @throws UnsupportedOperationException
      *         isLocked();
      */
-    public final void add(Object o) {
+    public final void add(_ElementType_ o) {
       if (isLocked()) {
         throw new UnsupportedOperationException("List is locked");
       }
@@ -131,15 +131,15 @@ public class ListBackedLockableList extends AbstractCollectionBackedLockableColl
 
   }
 
-  public final Iterator iterator() {
+  public final Iterator<_ElementType_> iterator() {
     return listIterator();
   }
 
-  public final ListIterator listIterator() {
+  public final ListIterator<_ElementType_> listIterator() {
     return new ListBackedLockListIterator(0);
   }
 
-  public final ListIterator listIterator(int index) {
+  public final ListIterator<_ElementType_> listIterator(int index) {
     return new ListBackedLockListIterator(index);
   }
 
@@ -150,32 +150,33 @@ public class ListBackedLockableList extends AbstractCollectionBackedLockableColl
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
 
-  public final void add(int index, Object o) throws UnsupportedOperationException {
+  public final void add(int index, _ElementType_ o) throws UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("List is locked");
     }
-    getBackingList().add(index, o);
+    getBackingCollection().add(index, o);
   }
 
-  public final boolean addAll(int index, Collection c) throws UnsupportedOperationException {
+  public final boolean addAll(int index, Collection<? extends _ElementType_> c)
+      throws UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("List is locked");
     }
-    return getBackingList().addAll(index, c);
+    return getBackingCollection().addAll(index, c);
   }
 
-  public final Object set(int index, Object o) throws UnsupportedOperationException {
+  public final _ElementType_ set(int index, _ElementType_ o) throws UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("List is locked");
     }
-    return getBackingList().set(index, o);
+    return getBackingCollection().set(index, o);
   }
 
-  public final Object remove(int index) throws UnsupportedOperationException {
+  public final _ElementType_ remove(int index) throws UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("List is locked");
     }
-    return getBackingList().remove(index);
+    return getBackingCollection().remove(index);
   }
 
   /*</section>*/

@@ -19,38 +19,48 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LockableList extends LockableCollection, List {
+public interface LockableList<_ElementType_>
+    extends LockableCollection<_ElementType_>, List<_ElementType_> {
 
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
 
   /**
+   * @post   ((! isNullAllowed()) && (o == null)) ? false;
    * @post   isLocked() ? false;
+   * @throws NullPointerException
+   *         (! isNullAllowed()) && (o == null);
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  void add(int index, Object o) throws UnsupportedOperationException;
+  void add(int index, _ElementType_ o) throws UnsupportedOperationException;
+
+  /**
+   * @post   ((! isNullAllowed()) && c.contains(null)) ? false;
+   * @post   isLocked() ? false;
+   * @throws NullPointerException
+   *         (! isNullAllowed()) && c.contains(null);
+   * @throws UnsupportedOperationException
+   *         isLocked();
+   */
+  boolean addAll(int index, Collection<? extends _ElementType_> c) throws UnsupportedOperationException;
+
+  /**
+   * @post   ((! isNullAllowed()) && (o == null)) ? false;
+   * @post   isLocked() ? false;
+   * @throws NullPointerException
+   *         (! isNullAllowed()) && (o == null);
+   * @throws UnsupportedOperationException
+   *         isLocked();
+   */
+  _ElementType_ set(int index, _ElementType_ o) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean addAll(int index, Collection c) throws UnsupportedOperationException;
-
-  /**
-   * @post   isLocked() ? false;
-   * @throws UnsupportedOperationException
-   *         isLocked();
-   */
-  Object set(int index, Object o) throws UnsupportedOperationException;
-
-  /**
-   * @post   isLocked() ? false;
-   * @throws UnsupportedOperationException
-   *         isLocked();
-   */
-  Object remove(int index) throws UnsupportedOperationException;
+  _ElementType_ remove(int index) throws UnsupportedOperationException;
 
   /*</section>*/
 
@@ -59,6 +69,6 @@ public interface LockableList extends LockableCollection, List {
    * @result result instanceof LockableList;
    * @result result.isLocked() == isLocked();
    */
-  List subList(int fromIndex, int toIndex);
+  List<_ElementType_> subList(int fromIndex, int toIndex);
 
 }

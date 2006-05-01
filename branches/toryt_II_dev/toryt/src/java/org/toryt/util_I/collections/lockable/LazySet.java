@@ -19,6 +19,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LazySet extends LazyCollection, LockableSet {
+public interface LazySet<_ElementType_> extends LazyCollection<_ElementType_>, LockableSet<_ElementType_> {
+
+  // NOP
 
 }

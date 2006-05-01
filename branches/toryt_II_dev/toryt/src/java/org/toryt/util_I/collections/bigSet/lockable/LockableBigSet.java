@@ -16,6 +16,9 @@ import org.toryt.util_I.collections.lockable.LockableSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LockableBigSet extends BigSet, LockableSet {
+public interface LockableBigSet<_ElementType_>
+    extends BigSet<_ElementType_>, LockableSet<_ElementType_> {
+
+  // NOP
 
 }

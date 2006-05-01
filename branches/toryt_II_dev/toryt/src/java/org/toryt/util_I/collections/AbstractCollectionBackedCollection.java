@@ -15,10 +15,11 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractCollectionBackedCollection
-    implements Collection {
+public abstract class AbstractCollectionBackedCollection<_ElementType_>
+    implements Collection<_ElementType_> {
 
-  protected abstract Collection getBackingCollection();
+  protected abstract <_BackingCollectionType_ extends Collection<_ElementType_>>
+      _BackingCollectionType_ getBackingCollection();
 
 
 
@@ -37,7 +38,7 @@ public abstract class AbstractCollectionBackedCollection
     return getBackingCollection().contains(o);
   }
 
-  public final boolean containsAll(Collection c) {
+  public final boolean containsAll(Collection<?> c) {
     return getBackingCollection().containsAll(c);
   }
 
@@ -45,14 +46,16 @@ public abstract class AbstractCollectionBackedCollection
     return getBackingCollection().toArray();
   }
 
-  public final Object[] toArray(Object[] a) {
+  public final <_ResultBaseType_> _ResultBaseType_[] toArray(_ResultBaseType_[] a) {
     return getBackingCollection().toArray(a);
   }
 
+  @Override
   public final boolean equals(Object o) {
     return getBackingCollection().equals(o);
   }
 
+  @Override
   public final int hashCode() {
     return getBackingCollection().hashCode();
   }

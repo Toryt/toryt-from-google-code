@@ -22,7 +22,14 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LockableCollection extends Collection {
+public interface LockableCollection<_ElementType_> extends Collection<_ElementType_> {
+
+  /**
+   * Is <code>null</code> allowed as element in this collection?
+   *
+   * @basic
+   */
+  boolean isNullAllowed();
 
   /**
    * @basic
@@ -30,9 +37,7 @@ public interface LockableCollection extends Collection {
    */
   boolean isLocked();
 
-
-
-  public interface LockIterator extends Iterator {
+  public interface LockIterator<_ElementType_> extends Iterator<_ElementType_> {
 
     /**
      * @post   isLocked() ? false;
@@ -49,11 +54,14 @@ public interface LockableCollection extends Collection {
   //------------------------------------------------------------------
 
   /**
+   * @post   ((! isNullAllowed()) && (o == null)) ? false;
    * @post   isLocked() ? false;
+   * @throws NullPointerException
+   *         (! isNullAllowed()) && (o == null);
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean add(Object o) throws UnsupportedOperationException;
+  boolean add(_ElementType_ o) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
@@ -63,25 +71,28 @@ public interface LockableCollection extends Collection {
   boolean remove(Object o) throws UnsupportedOperationException;
 
   /**
+   * @post   ((! isNullAllowed()) && c.contains(null)) ? false;
    * @post   isLocked() ? false;
+   * @throws NullPointerException
+   *         (! isNullAllowed()) && c.contains(null);
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean addAll(Collection c) throws UnsupportedOperationException;
+  boolean addAll(Collection<? extends _ElementType_> c) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean retainAll(Collection c) throws UnsupportedOperationException;
+  boolean retainAll(Collection<?> c) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean removeAll(Collection c) throws UnsupportedOperationException;
+  boolean removeAll(Collection<?> c) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;

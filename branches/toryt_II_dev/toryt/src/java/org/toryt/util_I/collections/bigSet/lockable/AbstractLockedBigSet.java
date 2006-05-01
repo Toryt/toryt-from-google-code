@@ -17,51 +17,19 @@ import org.toryt.util_I.collections.lockable.AbstractLockedSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractLockedBigSet extends AbstractLockedSet
-    implements LockableBigSet {
+public abstract class AbstractLockedBigSet<_ElementType_> extends AbstractLockedSet<_ElementType_>
+    implements LockableBigSet<_ElementType_> {
 
   /**
-   * @pre elementType != null;
    * @pre bigSize != null;
    * @pre bigSize >= 0;
    */
-  protected AbstractLockedBigSet(Class elementType, boolean nullAllowed, BigInteger bigSize) {
-    assert elementType != null;
+  protected AbstractLockedBigSet(boolean nullAllowed, BigInteger bigSize) {
+    super(nullAllowed);
     assert bigSize != null;
     assert bigSize.compareTo(BigInteger.ZERO) >= 0;
-    $nullAllowed = nullAllowed;
-    $elementType = elementType;
     $bigSize = bigSize;
   }
-
-
-
-  /* <property name="null allowed"> */
-  //------------------------------------------------------------------
-
-  public final boolean isNullAllowed() {
-    return $nullAllowed;
-  }
-
-  private boolean $nullAllowed;
-
-  /*</property>*/
-
-
-
-  /* <property name="element type"> */
-  //------------------------------------------------------------------
-
-  public final Class getElementType() {
-    return $elementType;
-  }
-
-  /**
-   * @invar $elementType != null;
-   */
-  private Class $elementType;
-
-  /*</property>*/
 
 
 
@@ -80,6 +48,7 @@ public abstract class AbstractLockedBigSet extends AbstractLockedSet
   /**
    * @deprecated
    */
+  @Deprecated
   public final int size() {
     return (getBigSize().compareTo(MAXINT) < 0) ?
              getBigSize().intValue() :
@@ -94,9 +63,11 @@ public abstract class AbstractLockedBigSet extends AbstractLockedSet
   /*</property>*/
 
 
-  /* this implementation is too expensive
+  /*
+   this implementation is too expensive
+
   public boolean contains(final Object o) {
-    Iterator iter = iterator();
+    Iterator<_ElementType_> iter = iterator();
     while (iter.hasNext()) {
       if (iter.next().equals(o)) {
         return true;
@@ -107,14 +78,15 @@ public abstract class AbstractLockedBigSet extends AbstractLockedSet
   */
 
   /**
-   * Overridden to use {@link #getBigSize()} instead of {@link #size()}.
+   * Overridden to use {@link #getBigSize()} instead of <code>size()</code>.
    */
+  @Override
   public boolean equals(Object o) {
     return (o != null) &&
            (o instanceof BigSet) &&
-           getBigSize().equals(((BigSet)o).getBigSize()) &&
-           containsAll((BigSet)o) &&
-           ((BigSet)o).containsAll(this);
+           getBigSize().equals(((BigSet<?>)o).getBigSize()) &&
+           containsAll((BigSet<?>)o) &&
+           ((BigSet<?>)o).containsAll(this);
   }
 
   // no need to override hashCode()

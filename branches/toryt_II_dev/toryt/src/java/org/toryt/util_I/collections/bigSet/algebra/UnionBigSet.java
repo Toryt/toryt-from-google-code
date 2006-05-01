@@ -7,7 +7,6 @@ import java.util.Iterator;
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.bigSet.BigSet;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 
 
@@ -20,8 +19,7 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
  *   Therefor, it is a precondition in the constructor for all
  *   component sets to be <em>disjunct</em>.</p>
  * <p>If one of the {@link #getComponents()} is <code>null</code>,
- *   it behaves as an empty set with
- *   {@link BigSet#getElementType() <var>component</var>.getElementType()}<code> == </code>{@link #getElementType()}.
+ *   it behaves as an empty set.</p>
  *
  * @author Jan Dockx
  *
@@ -37,15 +35,12 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class UnionBigSet extends AbstractComponentBigSet {
+public class UnionBigSet<_ElementType_> extends AbstractComponentBigSet<_ElementType_, _ElementType_> {
 
   /**
-   * @pre elementType != null;
    * @pre components != null;
    * @pre (forall int i; (i >= 0) && (i < components.length);
    *        (components[i] != null) ? components[i].isLocked());
-   * @pre (forall int i; (i >= 0) && (i < components.length);
-   *        (components[i] != null) ? getElementType().isAssignableFrom(components[i].getElementType()));
    * @pre (! nullAllowed) ?
    *        (forall int i; (i >= 0) && (i < components.length);
    *          (components[i] != null) ? (! components[i].contains(null)));
@@ -58,27 +53,15 @@ public class UnionBigSet extends AbstractComponentBigSet {
    *      because too expensive)
    * @post Collections.containsAll(components, new.getComponents());
    */
-  public UnionBigSet(Class elementType, boolean nullAllowed, LockableBigSet[] components) {
-    super(elementType, nullAllowed, calculateSize(components), components);
-    assert Collections.forAll(components,
-                              new Assertion() {
-
-                                    public boolean isTrueFor(Object o) {
-                                      return (o != null) ?
-                                              getElementType().
-                                                isAssignableFrom(((LockableBigSet)o).
-                                                                 getElementType()) :
-                                              true;
-                                    }
-
-                                  });
+  public UnionBigSet(boolean nullAllowed, LockableBigSet<? extends _ElementType_>... component) {
+    super(nullAllowed, calculateSize(component), component);
   }
 
-  private static BigInteger calculateSize(LockableBigSet[] components) {
+  private static BigInteger calculateSize(LockableBigSet<?>[] component) {
     BigInteger result = BigInteger.ZERO;
-    for (int i = 0; i < components.length; i++) {
-      if (components[i] != null) {
-        result = result.add(components[i].getBigSize());
+    for (LockableBigSet<?> c : component) {
+      if (c != null) {
+        result = result.add(c.getBigSize());
       }
     }
     return result;
@@ -91,13 +74,14 @@ public class UnionBigSet extends AbstractComponentBigSet {
   public final BigInteger getBigSize();
    */
 
+  @Override
   public final boolean contains(final Object o) {
     return Collections.exists(getComponents(),
                               new Assertion() {
 
                                     public boolean isTrueFor(Object s) {
                                       return (s != null) &&
-                                             ((LockableBigSet)s).contains(o);
+                                             ((LockableBigSet<? extends _ElementType_>)s).contains(o);
                                     }
 
                                   });
@@ -113,16 +97,16 @@ public class UnionBigSet extends AbstractComponentBigSet {
 
                                     public boolean isTrueFor(Object o) {
                                       return (o == null) ||
-                                             ((LockableBigSet)o).isEmpty();
+                                             ((LockableBigSet<? extends _ElementType_>)o).isEmpty();
                                     }
 
                                   });
   }
 
-  public Iterator iterator() {
+  public Iterator<_ElementType_> iterator() {
     return new AbstractLockedCollectionIterator() {
 
-      private final LockableBigSet[] $components = getComponents();
+      private final LockableBigSet<? extends _ElementType_>[] $components = getComponents();
 
       private int $componentIndex = -1;
 
@@ -142,7 +126,7 @@ public class UnionBigSet extends AbstractComponentBigSet {
         }
       }
 
-      private Iterator $componentIterator;
+      private Iterator<? extends _ElementType_> $componentIterator;
 
       {
         nextComponentIterator();
@@ -152,8 +136,8 @@ public class UnionBigSet extends AbstractComponentBigSet {
         return $componentIterator != null;
       }
 
-      public final Object next() {
-        Object result = $componentIterator.next();
+      public final _ElementType_ next() {
+        _ElementType_ result = $componentIterator.next();
         if (! $componentIterator.hasNext()) {
           nextComponentIterator();
         }

@@ -14,8 +14,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   override {@link Object#equals(Object)} for semantics to
  *   be correct (an implementation as <code>this == other</code>,
  *   i.e., reference semantics, is not allowed for elements).</p>
- * <p>Since elements are created lazily, {@link #toArray()} and
- *   {@link #toArray(Object[])} are
+ * <p>Since elements are created lazily, <code>toArray()</code> and
+ *   <code>toArray(Object[])</code> are
  *   especially expensive and <em>shouldn't be called</em>. To warn
  *   the developer about this, this method is declared depracated.</p>
  * <p>Lazy collections are unmodifiable. They are configured using
@@ -32,20 +32,18 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LazyCollection extends LockableCollection {
+public interface LazyCollection<_ElementType_> extends LockableCollection<_ElementType_> {
 
   /**
-   * This operation is very expensive. Don't call this method.
-   *
-   * @deprecated
+   * @deprecated This operation is very expensive. Don't call this method.
    */
+  @Deprecated
   Object[] toArray();
 
   /**
-   * This operation is very expensive. Don't call this method.
-   *
-   * @deprecated
+   * @deprecated This operation is very expensive. Don't call this method.
    */
-  Object[] toArray(Object[] o);
+  @Deprecated
+  <_ResultBaseType_> _ResultBaseType_[] toArray(_ResultBaseType_[] o);
 
 }

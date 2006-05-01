@@ -12,8 +12,6 @@ import org.toryt.util_I.collections.bigSet.BigSet;
 /**
  * <p>A {@link BigSet} that contains exactly 1 element that is
  *   <code>null</code>.</p>
- * <p>Since <code>null</code> has no type, we need to provide a
- *   {@link #getElementType() element type} at construction.
  *
  * @invar getBigSize() == 1;
  */
@@ -21,28 +19,22 @@ import org.toryt.util_I.collections.bigSet.BigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class NullSingletonBigSet extends AbstractLockedBigSet {
+public class NullSingletonBigSet<_ElementType_> extends AbstractLockedBigSet<_ElementType_> {
 
-
-  public static final NullSingletonBigSet OBJECT_INSTANCE = new NullSingletonBigSet(Object.class);
-
-
-  /**
-   * @pre backingSet != null;
-   */
-  public NullSingletonBigSet(Class elementType) {
-    super(elementType, true, BigInteger.ONE);
+  public NullSingletonBigSet() {
+    super(true, BigInteger.ONE);
   }
 
   public final boolean isEmpty() {
     return false;
   }
 
+  @Override
   public final boolean contains(Object o) {
     return (o == null);
   }
 
-  public final Iterator iterator() {
+  public final Iterator<_ElementType_> iterator() {
     return new AbstractLockedCollectionIterator() {
 
                   private boolean $done = false;
@@ -51,25 +43,29 @@ public class NullSingletonBigSet extends AbstractLockedBigSet {
                     return ! $done;
                   }
 
-                  public Object next() {
+                  public _ElementType_ next() {
                     return null;
                   }
 
                 };
   }
 
+  @Override
   public final Object[] toArray() {
     return new Object[] {null};
   }
 
-  public final Object[] toArray(Object[] a) {
-    Object[] result;
+  @SuppressWarnings("unchecked")
+  @Override
+  public final <_ComponentElementType_> _ComponentElementType_[] toArray(_ComponentElementType_[] a) {
+    _ComponentElementType_[] result;
     if (a.length > 1) {
       result = a;
       result[1] = null;
     }
     else {
-      result = (Object[])Array.newInstance(a.getClass().getComponentType(), 1);
+      result = (_ComponentElementType_[])Array.newInstance(a.getClass().getComponentType(), 1);
+      /* unchecked cast because Java API not generic */
     }
     result[0] = null;
     return result;
