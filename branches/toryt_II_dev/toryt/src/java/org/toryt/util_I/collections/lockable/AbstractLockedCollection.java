@@ -65,8 +65,8 @@ public abstract class AbstractLockedCollection<_ElementType_>
    * implementation is possible.
    */
   public boolean contains(final Object o) {
-    return Collections.exists(this, new Assertion() {
-              public boolean isTrueFor(Object element) {
+    return Collections.exists(this, new Assertion<_ElementType_>() {
+              public boolean isTrueFor(_ElementType_ element) {
                 return (((o == null) && (element == null)) ||
                         ((o != null) && (o.equals(element))));
               }
@@ -86,7 +86,7 @@ public abstract class AbstractLockedCollection<_ElementType_>
   public final boolean containsAll(Collection<?> c) {
     return (size() >= c.size()) && // NullPointerException as expected
            Collections.forAll(c,
-                              new Assertion() {
+                              new Assertion<Object>() {
                                     public boolean isTrueFor(Object o) {
                                       return contains(o);
                                     }
@@ -125,11 +125,18 @@ public abstract class AbstractLockedCollection<_ElementType_>
     }
     Iterator<_ElementType_> iter = iterator();
     int i = 0;
-    while (iter.hasNext()) {
-      result[i] = iter.next();
-      /* this is weird, yes. the reason is that we cannot say that
-       * _ResultBaseType_ super _ElementType_ for some reason */
-      i++;
+    try {
+      while (iter.hasNext()) {
+        result[i] = (_ResultBaseType_)iter.next();
+        /* this is weird, yes. the reason is that we cannot say that
+         * _ResultBaseType_ super _ElementType_ for some reason;
+         * so, we might get a ClassCastException, which we will transform into
+         * an ArrayStoreException */
+        i++;
+      }
+    }
+    catch (ClassCastException ccExc) {
+      throw new ArrayStoreException();
     }
     return result;
   }
