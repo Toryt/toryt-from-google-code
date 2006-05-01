@@ -27,9 +27,6 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
  *
  * @author Jan Dockx
  *
- * @invar (forall int i; (i >= 0) && (i < getComponents().length);
- *          getElementType().getComponentType().
- *              isAssignableFrom(getComponents()[i].getElementType()));
  * @invar ! isNullAllowed();
  * @invar getAggregatorFactory() != null;
  * @invar getElementType() == getAggregatorFactory().getElementType();
@@ -38,23 +35,19 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ProductBigSet extends AbstractComponentBigSet {
+public class ProductBigSet<_ResultElementType_, _ComponentElementType_>
+    extends AbstractComponentBigSet<_ResultElementType_, _ComponentElementType_> {
 
   /**
-   * @pre elementType != null;
    * @pre components != null;
    * @pre (forall int i; (i >= 0) && (i < components.length);
    *        (components[i] != null) ? components[i].isLocked());
-   * @pre (forall int i; (i >= 0) && (i < components.length);
-   *        (components[i] != null) ?
-   *          getElementType().getComponentType().
-   *            isAssignableFrom(components[i].getElementType()));
-   * @pre elementType.getComponentType() != null;
    * @post ArrayUtils.isEquals(components, new.getComponents());
    * @post new.getAggregatorFactory() instanceof ObjectArrayAggregatorFactory;
    */
-  public ProductBigSet(Class elementType, LockableBigSet[] components) {
-    this(new ObjectArrayAggregatorFactory(elementType.getComponentType(), components.length), components);
+  public ProductBigSet(Class elementType, LockableBigSet<? extends _ComponentElementType_>... component) {
+    this(new ObjectArrayAggregatorFactory(elementType.getComponentType(), component.length),
+         component);
   }
 
   /**
@@ -65,15 +58,16 @@ public class ProductBigSet extends AbstractComponentBigSet {
    * @post ArrayUtils.isEquals(components, new.getComponents());
    * @post new.getAggregatorFactory() == aggregatorFactory;
    */
-  public ProductBigSet(AggregatorFactory aggregatorFactory, LockableBigSet[] components) {
-    super(aggregatorFactory.getElementType(), false, calculateSize(components), components);
+  public ProductBigSet(AggregatorFactory<? extends _ResultElementType_, ? extends _ComponentElementType_> aggregatorFactory,
+                       LockableBigSet<? extends _ComponentElementType_>... components) {
+    super(false, calculateSize(components), components);
     assert aggregatorFactory != null; // bit late, I know
     assert Collections.forAll(components,
                               new Assertion() {
 
                                     public boolean isTrueFor(Object o) {
                                       return (o != null) ?
-                                               ((LockableBigSet)o).isLocked() :
+                                               ((LockableBigSet<? extends _ComponentElementType_>)o).isLocked() :
                                                true;
                                     }
 
@@ -81,13 +75,13 @@ public class ProductBigSet extends AbstractComponentBigSet {
     $aggregatorFactory = aggregatorFactory;
   }
 
-  private static BigInteger calculateSize(LockableBigSet[] components) {
+  private static BigInteger calculateSize(LockableBigSet<?>[] components) {
     BigInteger result = BigInteger.ONE;
-    for (int i = 0; i < components.length; i++) {
-      if (components[i] == null) {
+    for (LockableBigSet<?> lbs : components) {
+      if (lbs == null) {
         return BigInteger.ZERO;
       }
-      result = result.multiply(components[i].getBigSize());
+      result = result.multiply(lbs.getBigSize());
     }
     return result;
   }
@@ -95,14 +89,14 @@ public class ProductBigSet extends AbstractComponentBigSet {
   /**
    * @basic
    */
-  public final AggregatorFactory getAggregatorFactory() {
+  public final AggregatorFactory<? extends _ResultElementType_, ? extends _ComponentElementType_> getAggregatorFactory() {
     return $aggregatorFactory;
   }
 
   /**
    * @invar $aggregatorFactory != null;
    */
-  private final AggregatorFactory $aggregatorFactory;
+  private final AggregatorFactory<? extends _ResultElementType_, ? extends _ComponentElementType_> $aggregatorFactory;
 
   /**
    * @return (product int i; (i >=0 ) && (i < getComponents().length);
@@ -122,17 +116,15 @@ public class ProductBigSet extends AbstractComponentBigSet {
     if (o == null) {
       return false;
     }
-    if (! getElementType().isInstance(o)) {
-      return false;
-    }
-    LockableBigSet[] components = getComponents();
+    LockableBigSet<? extends _ComponentElementType_>[] components = getComponents();
     try {
-      final ReversibleAggregator aggregator = (ReversibleAggregator)$aggregatorFactory.create();
+      final ReversibleAggregator<? extends _ResultElementType_, ? extends _ComponentElementType_> aggregator =
+          (ReversibleAggregator<? extends _ResultElementType_, ? extends _ComponentElementType_>)$aggregatorFactory.create();
       // ClassCastException possible; this makes a performant implementation possible
       if ($aggregatorFactory.getNrOfComponents() != components.length) {
         return false;
       }
-      aggregator.decompose(o);
+      aggregator.decompose((_ResultElementType_)o);
       return Collections.forAll(components, new Assertion() {
 
                 private int i = -1;
@@ -140,7 +132,7 @@ public class ProductBigSet extends AbstractComponentBigSet {
                 public boolean isTrueFor(Object lbs) {
                   i++;
                   return (lbs != null) &&
-                         ((LockableBigSet)lbs).contains(aggregator.getComponentElement(i));
+                         ((LockableBigSet<? extends _ComponentElementType_>)lbs).contains(aggregator.getComponentElement(i));
                 }
 
               });
@@ -169,20 +161,20 @@ public class ProductBigSet extends AbstractComponentBigSet {
 
                                     public boolean isTrueFor(Object o) {
                                       return (o == null) ||
-                                             ((LockableBigSet)o).isEmpty();
+                                             ((LockableBigSet<? extends _ComponentElementType_>)o).isEmpty();
                                     }
 
                                   });
   }
 
-  public Iterator iterator() {
+  public Iterator<_ResultElementType_> iterator() {
     return new AbstractLockedCollectionIterator() {
 
-      private final LockableBigSet[] $components = getComponents();
+      private final LockableBigSet<? extends _ComponentElementType_>[] $components = getComponents();
 
       private final int dim = $components.length;
 
-      private final Iterator[] $iterators = new Iterator[dim];
+      private final Iterator<?>[] $iterators = new Iterator<?>[dim];
 
       {
         for (int i = 0; i < dim; i++) {
@@ -195,7 +187,8 @@ public class ProductBigSet extends AbstractComponentBigSet {
       /**
        * Is null if there is no next
        */
-      private Aggregator $aggregator = $aggregatorFactory.create();
+      private Aggregator<? extends _ResultElementType_, ? extends _ComponentElementType_> $aggregator =
+          $aggregatorFactory.create();
 
       {
         for (int j = dim - 1; j >= 0; j--) {
@@ -245,8 +238,8 @@ public class ProductBigSet extends AbstractComponentBigSet {
         return $aggregator != null;
       }
 
-      public final Object next() {
-        Object result = $aggregator.aggregate();
+      public final _ResultElementType_ next() {
+        _ResultElementType_ result = $aggregator.aggregate();
         prepareNext();
         return result;
       }
