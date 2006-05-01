@@ -29,23 +29,26 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
  *
  * @invar ! isNullAllowed();
  * @invar getAggregatorFactory() != null;
+ * @invar getAggregatorFactory().getNrOfComponents() == getComponents().length;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ProductBigSet<_ResultElementType_, _ComponentElementType_>
-    extends AbstractComponentBigSet<_ResultElementType_, _ComponentElementType_> {
+public class ProductBigSet<_ResultElementType_>
+    extends AbstractComponentBigSet<_ResultElementType_, Object> {
 
   /**
    * @pre components != null;
    * @pre (forall int i; (i >= 0) && (i < component.length);
    *        (component[i] != null) ? component[i].isLocked());
+   * @pre  _ResultElementType_ == Object[];
    * @post ArrayUtils.isEquals(component, new.getComponents());
    * @post new.getAggregatorFactory() instanceof ObjectArrayAggregatorFactory;
    */
-  public ProductBigSet(LockableBigSet<? extends _ComponentElementType_>... component) {
-    this(new ObjectArrayAggregatorFactory<Object>(Object.class, component.length),
+  @SuppressWarnings("unchecked") // see pre
+  public ProductBigSet(LockableBigSet<?>... component) {
+    this((AggregatorFactory<_ResultElementType_>)new ObjectArrayAggregatorFactory(component.length),
          component);
   }
 
@@ -54,17 +57,19 @@ public class ProductBigSet<_ResultElementType_, _ComponentElementType_>
    * @pre aggregatorFactory != null;
    * @pre (forall int i; (i >= 0) && (i < component.length);
    *        (component[i] != null) ? component[i].isLocked());
+   * @pre aggregatorFactory.getNrOfComponents() == component.length;
    * @post ArrayUtils.isEquals(component, new.getComponents());
    * @post new.getAggregatorFactory() == aggregatorFactory;
    */
-  public ProductBigSet(AggregatorFactory<? extends _ResultElementType_, ? extends _ComponentElementType_> aggregatorFactory,
-                       LockableBigSet<? extends _ComponentElementType_>... component) {
-    super(false, calculateSize(components), components);
+  public ProductBigSet(AggregatorFactory<? extends _ResultElementType_> aggregatorFactory,
+                       LockableBigSet<?>... component) {
+    super(false, calculateSize(component), component);
     assert aggregatorFactory != null; // bit late, I know
+    assert aggregatorFactory.getNrOfComponents() == component.length;
     assert Collections.forAll(component,
-                              new Assertion<LockableBigSet<? extends _ComponentElementType_>>() {
+                              new Assertion<LockableBigSet<?>>() {
 
-                                    public boolean isTrueFor(LockableBigSet<? extends _ComponentElementType_> o) {
+                                    public boolean isTrueFor(LockableBigSet<?> o) {
                                       return (o != null) ? o.isLocked() : true;
                                     }
 
@@ -86,14 +91,14 @@ public class ProductBigSet<_ResultElementType_, _ComponentElementType_>
   /**
    * @basic
    */
-  public final AggregatorFactory<? extends _ResultElementType_, ? extends _ComponentElementType_> getAggregatorFactory() {
+  public final AggregatorFactory<? extends _ResultElementType_> getAggregatorFactory() {
     return $aggregatorFactory;
   }
 
   /**
    * @invar $aggregatorFactory != null;
    */
-  private final AggregatorFactory<? extends _ResultElementType_, ? extends _ComponentElementType_> $aggregatorFactory;
+  private final AggregatorFactory<? extends _ResultElementType_> $aggregatorFactory;
 
   /**
    * @return (product int i; (i >=0 ) && (i < getComponents().length);
@@ -111,31 +116,36 @@ public class ProductBigSet<_ResultElementType_, _ComponentElementType_>
    */
   @Override
   public final boolean contains(final Object o) throws ClassCastException {
-    _ResultElementType_ object = (_ResultElementType_)o; // this ClassCastException should not be caught, but just thrown
     if (o == null) {
       return false;
     }
-    LockableBigSet<? extends _ComponentElementType_>[] components = getComponents();
+    @SuppressWarnings("unchecked") _ResultElementType_ object = (_ResultElementType_)o;
+      // this ClassCastException should not be caught, but just thrown
+    LockableBigSet<?>[] components = getComponents();
     try {
-      final ReversibleAggregator<? extends _ResultElementType_, ? extends _ComponentElementType_> aggregator =
-          (ReversibleAggregator<? extends _ResultElementType_, ? extends _ComponentElementType_>)$aggregatorFactory.create();
+      final ReversibleAggregator<? extends _ResultElementType_> aggregator =
+          (ReversibleAggregator<? extends _ResultElementType_>)$aggregatorFactory.create();
       // ClassCastException possible; this makes a performant implementation possible
-      if ($aggregatorFactory.getNrOfComponents() != components.length) {
-        return false;
-      }
-      aggregator.
-      aggregator.decompose(o);
+      aggregator.decompose(object); // IllegalArgumentException
       return Collections.forAll(components,
-                                new Assertion<LockableBigSet<? extends _ComponentElementType_>>() {
+                                new Assertion<LockableBigSet<?>>() {
 
                                       private int i = -1;
 
-                                      public boolean isTrueFor(LockableBigSet<? extends _ComponentElementType_> lbs) {
+                                      public boolean isTrueFor(LockableBigSet<?> lbs) {
                                         i++;
-                                        return (lbs != null) && lbs.contains(aggregator.getComponentElement(i));
+                                        return (lbs != null) &&
+                                               lbs.contains(aggregator.getComponentElement(i));
                                       }
 
                                     });
+    }
+    catch (NullPointerException npExc) {
+      /* can't decompose, and that should have been possible
+       * Cannot throw an exception, because contract says that is for
+       * null and wrong type, but type is ok (see above). So: false.
+       */
+      return false;
     }
     catch (ClassCastException ccExc) {
       /* less performant, possibly impossibly slow implementation, because
@@ -158,9 +168,9 @@ public class ProductBigSet<_ResultElementType_, _ComponentElementType_>
    */
   public final boolean isEmpty() {
     return Collections.exists(getComponents(),
-                              new Assertion<LockableBigSet<? extends _ComponentElementType_>>() {
+                              new Assertion<LockableBigSet<?>>() {
 
-                                    public boolean isTrueFor(LockableBigSet<? extends _ComponentElementType_> o) {
+                                    public boolean isTrueFor(LockableBigSet<?> o) {
                                       return (o == null) || o.isEmpty();
                                     }
 
@@ -170,7 +180,7 @@ public class ProductBigSet<_ResultElementType_, _ComponentElementType_>
   public Iterator<_ResultElementType_> iterator() {
     return new AbstractLockedCollectionIterator() {
 
-      private final LockableBigSet<? extends _ComponentElementType_>[] $components = getComponents();
+      private final LockableBigSet<?>[] $components = getComponents();
 
       private final int dim = $components.length;
 
@@ -187,8 +197,7 @@ public class ProductBigSet<_ResultElementType_, _ComponentElementType_>
       /**
        * Is null if there is no next
        */
-      private Aggregator<? extends _ResultElementType_, ? extends _ComponentElementType_> $aggregator =
-          $aggregatorFactory.create();
+      private Aggregator<? extends _ResultElementType_> $aggregator = $aggregatorFactory.create();
 
       {
         for (int j = dim - 1; j >= 0; j--) {
@@ -205,8 +214,8 @@ public class ProductBigSet<_ResultElementType_, _ComponentElementType_>
 
       private void prepareNext() {
         assert Collections.forAll($components,
-                                  new Assertion<LockableBigSet<? extends _ComponentElementType_>>() {
-                                    public boolean isTrueFor(LockableBigSet<? extends _ComponentElementType_> o) {
+                                  new Assertion<LockableBigSet<?>>() {
+                                    public boolean isTrueFor(LockableBigSet<?> o) {
                                       return o != null;
                                     }
                                   });
@@ -240,6 +249,7 @@ public class ProductBigSet<_ResultElementType_, _ComponentElementType_>
 
       public final _ResultElementType_ next() {
         _ResultElementType_ result = $aggregator.aggregate();
+          // throws IllegalArgumentException; if it does
         prepareNext();
         return result;
       }

@@ -26,7 +26,7 @@ import org.toryt.util_I.collections.priorityList.algebra.BiProductPriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface Aggregator<_AggregateType_, _ComponentElementType_> {
+public interface Aggregator<_AggregateType_> {
 
   /**
    * The number of components used to generate an aggregate.
@@ -46,7 +46,7 @@ public interface Aggregator<_AggregateType_, _ComponentElementType_> {
    * @throws IndexOutOfBoundsException
    *         (componentIndex < 0) || (componentIndex() >= getNrOfComponents());
    */
-  _ComponentElementType_ getComponentElement(int componentIndex)
+  Object getComponentElement(int componentIndex)
       throws IndexOutOfBoundsException;
 
   /**
@@ -65,19 +65,21 @@ public interface Aggregator<_AggregateType_, _ComponentElementType_> {
    *         or it is not of the correct type).
    *
    */
-  void setComponentElement(int componentIndex, _ComponentElementType_ componentElement)
+  void setComponentElement(int componentIndex, Object componentElement)
       throws IndexOutOfBoundsException, IllegalArgumentException;
 
   /**
    * Generate a aggregate-instance, based on the component elements
    * {@link #getComponentElement(int)}.
    * The result might be <code>null</code> in some special cases.
+   * This method cannot throw any exceptions. Implementations need to avoid
+   * bad component elements in some way.
    *
    * @result getElementType().isInstance(result);
    * @throws IllegalArgumentException
    *         We cannot create an aggregation given the current component
    *         elements.
    */
-  _AggregateType_ aggregate() throws IllegalArgumentException;
+  _AggregateType_ aggregate();
 
 }

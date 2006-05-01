@@ -13,20 +13,17 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractAggregator<_AggregateType_, _ComponentElementType_>
-    implements Aggregator<_AggregateType_, _ComponentElementType_> {
+public abstract class AbstractAggregator<_AggregateType_> implements Aggregator<_AggregateType_> {
 
-  public final _ComponentElementType_ getComponentElement(int componentIndex)
+  public final Object getComponentElement(int componentIndex)
       throws IndexOutOfBoundsException {
     if ((componentIndex < 0) || (componentIndex >= getNrOfComponents())) {
       throw new IndexOutOfBoundsException();
     }
-    @SuppressWarnings("unchecked") _ComponentElementType_ result =
-        (_ComponentElementType_)$componentElements[componentIndex];
-    return result;
+    return $componentElements[componentIndex];
   }
 
-  public final void setComponentElement(int componentIndex, _ComponentElementType_ componentElement)
+  public final void setComponentElement(int componentIndex, Object componentElement)
       throws IndexOutOfBoundsException, IllegalArgumentException {
     if ((componentIndex < 0) || (componentIndex >= getNrOfComponents())) {
       throw new IndexOutOfBoundsException();
@@ -42,7 +39,7 @@ public abstract class AbstractAggregator<_AggregateType_, _ComponentElementType_
    *
    * @throws IllegalArgumentException
    */
-  protected void validateComponentElement(int componentIndex, _ComponentElementType_ componentElement)
+  protected void validateComponentElement(int componentIndex, Object componentElement)
       throws IllegalArgumentException {
     // NOP
   }

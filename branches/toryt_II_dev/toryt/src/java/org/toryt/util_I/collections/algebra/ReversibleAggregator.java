@@ -11,8 +11,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface ReversibleAggregator<_AggregateType_, _ComponentElementType_>
-    extends Aggregator<_AggregateType_, _ComponentElementType_> {
+public interface ReversibleAggregator<_AggregateType_> extends Aggregator<_AggregateType_> {
 
   /**
    * <p>Decompose the given <code>object</code> into components.
@@ -31,9 +30,16 @@ public interface ReversibleAggregator<_AggregateType_, _ComponentElementType_>
    *   want to demand that the {@link #equals(Object)} method of <code>object</code>
    *   must be overwritten.</p>
    *
+   * @note The parameter <code>object</code> should not be of stronger (generic)
+   *       type. That doesn't add anything. If this aggregator {@link #aggregate() creates}
+   *       instances of a dynamic type stronger than demanded by the static
+   *       (generic) type <code>_AggregateType_</code>, we need to test for
+   *       the type anyway. And this will occur regularly: often a stronger
+   *       {@link Aggregator} will be given when one for a given type is demanded.
+   *
    * @throws IllegalArgumentException
    *         object == null;
    */
-  void decompose(_AggregateType_ object) throws IllegalArgumentException;
+  void decompose(Object object) throws IllegalArgumentException;
 
 }
