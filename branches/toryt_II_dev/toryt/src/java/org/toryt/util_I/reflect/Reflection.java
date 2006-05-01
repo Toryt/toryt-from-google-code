@@ -47,10 +47,11 @@ public class Reflection {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public static <T> Constructor<T> findConstructor(Class<T> type, String signature) throws CannotGetMethodException {
     try {
       Constructor<T>[] constructors = type.getConstructors();
-      // warning because Class.getConstructors return Constructor[] instead of Constructor<T>[]
+      // unchecked cast because Class.getConstructors return Constructor[] instead of Constructor<T>[]
       for (int i = 0; i < constructors.length; i++) {
         if (constructors[i].toString().indexOf(signature) > -1) {
           return constructors[i];
@@ -92,14 +93,16 @@ public class Reflection {
    *        the prefixed class name from.
    * @throws CannotCreateInstanceException
    */
-  public static Object instantiatePrefixed(ClassLoader cl,
-                                           final String prefix,
-                                           final String fqcn)
+  @SuppressWarnings("unchecked")
+  public static <_InstanceType_> _InstanceType_ instantiatePrefixed(ClassLoader cl,
+                                                                    final String prefix,
+                                                                    final String fqcn)
       throws CannotCreateInstanceException {
     try {
       String prefixedFqcn = prefixedFqcn(prefix, fqcn);
       try {
-        return java.beans.Beans.instantiate(cl, prefixedFqcn);
+        return (_InstanceType_)java.beans.Beans.instantiate(cl, prefixedFqcn);
+          /* unchecked cast */
       }
       catch (ClassNotFoundException cnfExc) {
         throw new CannotCreateInstanceException(prefixedFqcn, cnfExc);
@@ -161,8 +164,8 @@ public class Reflection {
    * @throws    CannotGetValueException
    *            Error retrieving value.
    */
-  public static Object constant(final String fqClassName,
-                                final String constantName)
+  public static <_ConstantValueType_> _ConstantValueType_ constant(final String fqClassName,
+                                                                   final String constantName)
       throws CannotGetClassException, CannotGetValueException {
     Class clazz = loadForName(fqClassName);
     return constant(clazz, constantName);
@@ -182,17 +185,19 @@ public class Reflection {
    * @throws    CannotGetValueException
    *            Error retrieving value.
    */
-  public static Object constant(final Class<?> clazz,
-                                final String constantName)
+  @SuppressWarnings("unchecked")
+  public static <_ConstantValueType_> _ConstantValueType_ constant(final Class<?> clazz,
+                                                                   final String constantName)
       throws CannotGetValueException {
     try {
       Field field = clazz.getField(constantName); // NoSuchFieldException
                                                   // NullPointerException
                                                   // SecurityException
-      return field.get(null); // IllegalAccessException
-                              // IllegalArgumentException
-                              // NullPointerException
-                              // ExceptionInInitializerError
+      return (_ConstantValueType_)field.get(null); // IllegalAccessException
+                                                   // IllegalArgumentException
+                                                   // NullPointerException
+                                                   // ExceptionInInitializerError
+          // unchecked cast
     }
     catch (NoSuchFieldException nsfExc) {
       throw new CannotGetValueException(clazz, constantName, nsfExc);
@@ -281,8 +286,9 @@ public class Reflection {
    *            Could not get the property read method or got the read method,
    *            but something went wrong reading the value.
    */
-  public static Object getPropertyValue(final Object bean,
-                                        final String propertyName)
+  @SuppressWarnings("unchecked")
+  public static <_ValueType_, _BeanType_> _ValueType_ getPropertyValue(final _BeanType_ bean,
+                                                                       final String propertyName)
       throws CannotGetValueException {
     Method inspector;
     try {
@@ -291,10 +297,11 @@ public class Reflection {
     catch (CannotGetMethodException cgmExc) {
       throw new CannotGetValueException(bean.getClass(), propertyName, cgmExc);
     }
-    Object result = null;
+    _ValueType_ result = null;
     assert inspector != null;
     try {
-      result = inspector.invoke(bean, (Object[])null);
+      result = (_ValueType_)inspector.invoke(bean, (Object[])null);
+      /* unchecked cast */
     }
     catch (IllegalArgumentException iaExc) {
       assert false : "Should not happen, since there are no " +
@@ -406,6 +413,36 @@ public class Reflection {
     else {
       return TypeKind.INNER;
     }
+  }
+
+  /**
+   * Introduced to keep compiler happy in getting array type, while
+   * discarding impossible exceptions.
+   *
+   * @pre componentType != null;
+   * @return Class.forName(componentType.getName() + "[]");
+   */
+  @SuppressWarnings("unchecked")
+  public static <_ComponentType_> Class<_ComponentType_[]> arrayClassForName(Class<_ComponentType_> componentType) {
+    assert componentType != null;
+    String arrayFqcn = "[L" + componentType.getName() + ";";
+    Class<_ComponentType_[]> result = null;
+    try {
+      result = (Class<_ComponentType_[]>)Class.forName(arrayFqcn);
+      /* unchecked cast */
+    }
+    /* exceptions cannot happen, since componentType was already
+       laoded before this call */
+    catch (ExceptionInInitializerError eiiErr) {
+      assert false : "cannot happen";
+    }
+    catch (LinkageError lErr) {
+      assert false : "cannot happen";
+    }
+    catch (ClassNotFoundException cnfExc) {
+      assert false : "cannot happen";
+    }
+    return result;
   }
 
 }

@@ -4,13 +4,10 @@ package org.toryt_II.testmodel;
 import java.lang.reflect.Member;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 /**
- * <p>A model of a method to test. Instances of this type deliver
- *   a {@link PriorityList} of {@link TestFactory TestFactories}
- *   for {@link #getSubject()}.</p>
+ * <p>A model of a method to test.</p>
  * <p>This class is abstract: you should use
  *   one of the more specific subclasses for different kinds of methods
  *   instead. <code>_SubjectType_</code> is still unbound, because in Java

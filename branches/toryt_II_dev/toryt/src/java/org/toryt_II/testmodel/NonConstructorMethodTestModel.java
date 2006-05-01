@@ -10,9 +10,7 @@ import org.toryt.util_I.reflect.Reflection.MethodKind;
 
 
 /**
- * A model of a method to test. Instances of this type deliver
- * a {@link PriorityList} of {@link TestFactory TestFactories}
- * for {@link #getSubject()}. This class is abstract: you should use
+ * A model of a method to test. This class is abstract: you should use
  * one of the more specific subclasses for different kinds of methods
  * instead.
  *
