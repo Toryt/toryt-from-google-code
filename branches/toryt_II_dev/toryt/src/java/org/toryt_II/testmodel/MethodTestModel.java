@@ -31,6 +31,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
 public abstract class MethodTestModel<_SubjectType_ extends Member>
     extends AbstractTestModel<_SubjectType_> {
 
+  @Override
   protected final void printStructure(IndentPrinter out) {
     assert out != null;
     out.println(getSubjectDisplayName());

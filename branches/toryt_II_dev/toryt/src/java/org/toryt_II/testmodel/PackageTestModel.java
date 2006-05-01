@@ -30,6 +30,7 @@ public class PackageTestModel extends AbstractPackageTestModelContainer<String> 
     addTestModelCollectionDelegate("classes", classTestModels);
   }
 
+  @Override
   protected String getSubjectDisplayNameSave() {
     return getSubject();
   }

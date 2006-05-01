@@ -110,6 +110,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
    * <code>clazz</code>, and that constructors for which models are added are
    * for that type.
    */
+  @SuppressWarnings("unchecked")
   private <_TypeToTest_> void addConstructors(Class<_TypeToTest_> clazz, ClassTestModel<_TypeToTest_> result) throws TestModelCreationException {
     try {
       LOG.debug("  adding ConstructorTestModels for class " + clazz);
@@ -121,7 +122,6 @@ public class DefaultTestModelFactory implements TestModelFactory {
            * this is ok, since we get the constructors from <code>clazz</code>,
            * and <code>clazz</code> is of type <code>_TypeToTest</code>
            * guaranteed */
-          // TODO how to do away with this warning
       LOG.debug("  there are " + constructors.length + " constructors");
       for (int i = 0; i < constructors.length; i++) {
         result.constructorTestModels.add(createConstructorTestModel(constructors[i]));

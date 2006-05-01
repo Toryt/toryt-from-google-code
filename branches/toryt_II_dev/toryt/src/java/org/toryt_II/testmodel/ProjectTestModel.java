@@ -16,6 +16,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class ProjectTestModel extends AbstractPackageTestModelContainer<String> {
 
+  @Override
   protected String getSubjectDisplayNameSave() {
     return getSubject();
   }

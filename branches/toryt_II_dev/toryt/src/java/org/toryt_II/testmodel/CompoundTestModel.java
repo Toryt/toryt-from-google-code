@@ -128,6 +128,7 @@ public abstract class CompoundTestModel<_SubjectType_> extends AbstractTestModel
   /*</property>*/
 
 
+  @Override
   final void printStructure(IndentPrinter out) {
     assert out != null;
     out.println(getSubjectDisplayName());

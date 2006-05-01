@@ -54,6 +54,7 @@ public abstract class ClassTestModel<_TypeToTest_> extends CompoundTestModel<Cla
 
 
 
+  @Override
   public void setSubject(Class<_TypeToTest_> subject) {
     assert (subject != null) ?
              (Reflection.typeKind(subject) == $typeKind) :
@@ -90,6 +91,7 @@ public abstract class ClassTestModel<_TypeToTest_> extends CompoundTestModel<Cla
     addTestModelCollectionDelegate("inner classes", innerClassTestModels);
   }
 
+  @Override
   protected String getSubjectDisplayNameSave() {
     return getSubject().getName();
   }

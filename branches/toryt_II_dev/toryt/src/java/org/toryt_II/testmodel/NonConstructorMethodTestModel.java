@@ -51,6 +51,7 @@ public abstract class NonConstructorMethodTestModel extends MethodTestModel<Meth
 
 
 
+  @Override
   public void setSubject(Method subject) {
     assert (subject != null) ?
              (Reflection.methodKind(subject) == $methodKind) :
@@ -63,6 +64,7 @@ public abstract class NonConstructorMethodTestModel extends MethodTestModel<Meth
     return null;
   }
 
+  @Override
   protected final String getSubjectDisplayNameSave() {
     return getSubject().toGenericString();
   }

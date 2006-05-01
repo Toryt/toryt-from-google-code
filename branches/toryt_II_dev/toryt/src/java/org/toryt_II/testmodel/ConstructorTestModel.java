@@ -27,6 +27,7 @@ public class ConstructorTestModel<_TypeToTest_> extends MethodTestModel<Construc
     return null;
   }
 
+  @Override
   protected final String getSubjectDisplayNameSave() {
     return getSubject().toGenericString();
   }

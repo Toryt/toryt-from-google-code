@@ -42,6 +42,7 @@ public abstract class AbstractTestModel<_SubjectType_> implements TestModel<_Sub
 
 
 
+  @Override
   public final String toString() {
     return getClass().getName() + "[" + getSubjectDisplayName() + "]";
   }
