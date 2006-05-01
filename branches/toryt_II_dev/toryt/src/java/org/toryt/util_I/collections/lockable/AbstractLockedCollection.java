@@ -111,7 +111,6 @@ public abstract class AbstractLockedCollection<_ElementType_>
    * General implementation as high in the inheritance
    * hierarchy as possible.
    */
-  @SuppressWarnings("unchecked")
   public <_ResultBaseType_> _ResultBaseType_[] toArray(_ResultBaseType_[] a) {
     int size = size();
     _ResultBaseType_[] result;
@@ -120,18 +119,21 @@ public abstract class AbstractLockedCollection<_ElementType_>
       result[size] = null;
     }
     else {
-      result = (_ResultBaseType_[])Array.newInstance(a.getClass().getComponentType(), size);
-      /* unchecked cast because Java API is not generic here */
+      @SuppressWarnings("unchecked") _ResultBaseType_[] newArray =
+          (_ResultBaseType_[])Array.newInstance(a.getClass().getComponentType(), size);
+      /* Java API is not generic here */
+      result = newArray;
     }
     Iterator<_ElementType_> iter = iterator();
     int i = 0;
     try {
       while (iter.hasNext()) {
-        result[i] = (_ResultBaseType_)iter.next();
+        @SuppressWarnings("unchecked") _ResultBaseType_ next = (_ResultBaseType_)iter.next();
         /* this is weird, yes. the reason is that we cannot say that
          * _ResultBaseType_ super _ElementType_ for some reason;
          * so, we might get a ClassCastException, which we will transform into
          * an ArrayStoreException */
+        result[i] = next;
         i++;
       }
     }

@@ -61,7 +61,6 @@ public class EmptyBigSet<_ElementType_> extends AbstractLockedBigSet<_ElementTyp
     return new Object[] {};
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public final <_ComponentElementType_> _ComponentElementType_[] toArray(_ComponentElementType_[] a) {
     _ComponentElementType_[] result;
@@ -70,8 +69,9 @@ public class EmptyBigSet<_ElementType_> extends AbstractLockedBigSet<_ElementTyp
       result[0] = null;
     }
     else {
-      result = (_ComponentElementType_[])Array.newInstance(a.getClass().getComponentType(), 0);
-      /* unchecked cast because Java API is not generic here */
+      @SuppressWarnings("unchecked") _ComponentElementType_[] arrayResult =
+          (_ComponentElementType_[])Array.newInstance(a.getClass().getComponentType(), 0);
+      result = arrayResult;
     }
     return result;
   }

@@ -16,14 +16,14 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 public abstract class AbstractAggregator<_AggregateType_, _ComponentElementType_>
     implements Aggregator<_AggregateType_, _ComponentElementType_> {
 
-  @SuppressWarnings("unchecked")
   public final _ComponentElementType_ getComponentElement(int componentIndex)
       throws IndexOutOfBoundsException {
     if ((componentIndex < 0) || (componentIndex >= getNrOfComponents())) {
       throw new IndexOutOfBoundsException();
     }
-    return (_ComponentElementType_)$componentElements[componentIndex];
-    /* unchecked cast */
+    @SuppressWarnings("unchecked") _ComponentElementType_ result =
+        (_ComponentElementType_)$componentElements[componentIndex];
+    return result;
   }
 
   public final void setComponentElement(int componentIndex, _ComponentElementType_ componentElement)

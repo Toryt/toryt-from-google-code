@@ -55,9 +55,8 @@ public class ObjectArrayAggregatorFactory<_ComponentElementType_>
      * set using {@link #setComponentElement(int, Object)}.
      * The result might be <code>null</code> in some special cases.
      */
-    @SuppressWarnings("unchecked")
     public final _AggregatorComponentElementType_[] aggregate() {
-      _AggregatorComponentElementType_[] result =
+      @SuppressWarnings("unchecked") _AggregatorComponentElementType_[] result =
         (_AggregatorComponentElementType_[])Array.newInstance(getComponentType(), getNrOfComponents());
       /* unchecked cast ok */
       System.arraycopy($componentElements, 0, result, 0, getNrOfComponents());

@@ -21,14 +21,14 @@ public abstract class ArrayUtils {
   /**
    * @pre resultComponentType != null;
    */
-  @SuppressWarnings("unchecked")
   public static <_InComponentType_, _ResultComponentType_>
       _ResultComponentType_[] flatten2(_InComponentType_[] array,
                                       Class<_ResultComponentType_> resultComponentType) {
     assert resultComponentType != null;
     LinkedList<_ResultComponentType_> resultList = new LinkedList<_ResultComponentType_>();
     flattenHelper(array, resultList);
-    _ResultComponentType_[] result = (_ResultComponentType_[])Array.newInstance(resultComponentType, resultList.size());
+    @SuppressWarnings("unchecked") _ResultComponentType_[] result =
+        (_ResultComponentType_[])Array.newInstance(resultComponentType, resultList.size());
     /* unchecked cast because Java API for array construction is not generic */
     resultList.toArray(result);
     return result;
@@ -37,14 +37,14 @@ public abstract class ArrayUtils {
   /**
    * @pre resultComponentType != null;
    */
-  @SuppressWarnings("unchecked")
   public static <_ResultComponentType_> void flattenHelper(Object[] array,
                                                            LinkedList<_ResultComponentType_> acc) {
     for (Object firstLevel : array) {
       if ((firstLevel == null) || (! firstLevel.getClass().isArray())) {
         // firstLevel is the final level; it must me of tye _ResultComponentType_
-        acc.add((_ResultComponentType_)firstLevel);
+        @SuppressWarnings("unchecked") _ResultComponentType_ simple = (_ResultComponentType_)firstLevel;
         // unchecked cast: it is ok, or pre's are violated
+        acc.add(simple);
       }
       else {
         // firstLevel is an array; recursive

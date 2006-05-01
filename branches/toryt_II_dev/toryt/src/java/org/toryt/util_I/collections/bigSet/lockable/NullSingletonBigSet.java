@@ -55,7 +55,7 @@ public class NullSingletonBigSet<_ElementType_> extends AbstractLockedBigSet<_El
     return new Object[] {null};
   }
 
-  @SuppressWarnings("unchecked")
+
   @Override
   public final <_ComponentElementType_> _ComponentElementType_[] toArray(_ComponentElementType_[] a) {
     _ComponentElementType_[] result;
@@ -64,8 +64,9 @@ public class NullSingletonBigSet<_ElementType_> extends AbstractLockedBigSet<_El
       result[1] = null;
     }
     else {
-      result = (_ComponentElementType_[])Array.newInstance(a.getClass().getComponentType(), 1);
-      /* unchecked cast because Java API not generic */
+      @SuppressWarnings("unchecked") _ComponentElementType_[] arrayResult =
+          (_ComponentElementType_[])Array.newInstance(a.getClass().getComponentType(), 1);
+      result = arrayResult;
     }
     result[0] = null;
     return result;

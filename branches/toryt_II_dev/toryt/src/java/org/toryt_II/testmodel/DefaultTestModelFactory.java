@@ -110,11 +110,10 @@ public class DefaultTestModelFactory implements TestModelFactory {
    * <code>clazz</code>, and that constructors for which models are added are
    * for that type.
    */
-  @SuppressWarnings("unchecked")
   private <_TypeToTest_> void addConstructors(Class<_TypeToTest_> clazz, ClassTestModel<_TypeToTest_> result) throws TestModelCreationException {
     try {
       LOG.debug("  adding ConstructorTestModels for class " + clazz);
-      Constructor<_TypeToTest_>[] constructors = clazz.getConstructors();
+      @SuppressWarnings("unchecked") Constructor<_TypeToTest_>[] constructors = clazz.getConstructors();
           // only public constructors
           /* warning because we cannot check type safety here (because the
            * Class interface return Constructor[] and not Constructor<T>[];

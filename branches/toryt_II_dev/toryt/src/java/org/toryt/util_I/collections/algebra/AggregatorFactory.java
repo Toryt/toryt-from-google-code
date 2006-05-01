@@ -36,6 +36,6 @@ public interface AggregatorFactory<_AggregateType_, _ComponentElementType_> {
    *
    * @result AggregatorFactory.result == this;
    */
-  Aggregator<_AggregateType_, _ComponentElementType_> create();
+  Aggregator<? extends _AggregateType_, ? super _ComponentElementType_> create();
 
 }
