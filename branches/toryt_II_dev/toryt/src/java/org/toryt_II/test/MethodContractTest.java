@@ -4,6 +4,7 @@ package org.toryt_II.test;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,6 +14,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.MethodContract;
@@ -23,8 +26,14 @@ import org.toryt_II.contract.hard.HardTypeContract;
 
 
 /**
- * An actual instance of a test of a method. This is a test with actual
- * test arguments.
+ * <p>An actual instance of a test of a method. This is a test with actual
+ *   test arguments. To be ready, the test needs to have a {@link #getSubject()},
+ *   a {@link #getContract()} and a {@link #getCase()}.
+ * <p>This class is abstract: you should use
+ *   one of the more specific subclasses for different kinds of methods
+ *   instead. <code>_SubjectType_</code> is still unbound, because in Java
+ *   reflection {@link java.lang.reflect.Method} and
+ *   {@link java.lang.reflect.Constructor} are unrelated types.</p>
  *
  * @invar getContract() != null;
  * @invar getContext() != null;
@@ -33,20 +42,13 @@ import org.toryt_II.contract.hard.HardTypeContract;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class MethodTest extends AbstractTest {
+public abstract class MethodContractTest<_SubjectType_ extends Member> extends AbstractTest<_SubjectType_> {
 
-  /*<construction>*/
-  //------------------------------------------------------------------
-
-  public MethodTest(MethodContract methodContract, Map testCase) {
-    $methodContract = methodContract;
-    $context = testCase;
-  }
-
-  /*</construction>*/
+  private final static Log LOG = LogFactory.getLog(MethodContractTest.class);
 
 
-  /*<property name="contract">*/
+
+  /*<property name="methodContract">*/
   //------------------------------------------------------------------
 
   public final MethodContract getMethodContract() {
@@ -78,40 +80,40 @@ public abstract class MethodTest extends AbstractTest {
    * This method gives direct access to the map that holds the context
    * of the test. This is the map that is passed in the constructor as test case.
    * The map is filled with context information, apart from the initial
-   * implicit and explicit arguments, by the {@link MethodContract#recordState(MethodTest)}
+   * implicit and explicit arguments, by the {@link MethodContract#recordState(MethodContractTest)}
    * method. In this map, there are 2 specific keys: a key for the implicit
    * object (the subject) and a key for the result of an inspector.
    */
-  public Map getContext() {
+  public Map getCase() {
     return $context;
   }
 
   private Map $context;
 
-  /**
-   * @return getContext().get(MethodTest.SUBJECT_KEY);
-   */
-  public final Object getSubject() {
-    return getContext().get(MethodContract.SUBJECT_KEY);
-  }
-
-  /**
-   * @return getContext().get(RESULT_KEY);
-   *
-   * @idea move to constructor and inspector test
-   */
-  public final Object getResult() {
-    return getContext().get(RESULT_KEY);
-  }
-
-  /**
-   * @return getContext().get(EXCEPTIOn_KEY);
-   *
-   * @idea move to constructor and inspector test
-   */
-  public final Throwable getException() {
-    return (Throwable)getContext().get(EXCEPTION_KEY);
-  }
+//  /**
+//   * @return getContext().get(MethodTest.SUBJECT_KEY);
+//   */
+//  public final Object getSubject() {
+//    return getContext().get(MethodContract.SUBJECT_KEY);
+//  }
+//
+//  /**
+//   * @return getContext().get(RESULT_KEY);
+//   *
+//   * @idea move to constructor and inspector test
+//   */
+//  public final Object getResult() {
+//    return getContext().get(RESULT_KEY);
+//  }
+//
+//  /**
+//   * @return getContext().get(EXCEPTIOn_KEY);
+//   *
+//   * @idea move to constructor and inspector test
+//   */
+//  public final Throwable getException() {
+//    return (Throwable)getContext().get(EXCEPTION_KEY);
+//  }
 
   /**
    * Extract the actual arguments from the {@link #getContext() context},
@@ -122,7 +124,7 @@ public abstract class MethodTest extends AbstractTest {
     int n = fp.length;
     Object[] result = new Object[n];
     for (int i = 0; i < n; i++) {
-      result[i] = getContext().get(fp[i]);
+      result[i] = getCase().get(fp[i]);
     }
     return result;
   }
@@ -131,11 +133,13 @@ public abstract class MethodTest extends AbstractTest {
 
 
 
-  /*<property name="success">*/
+  /*<property name="ready">*/
   //------------------------------------------------------------------
 
-  public boolean isSuccessful() {
-    return hasRun() && getFailedConditions().isEmpty();
+  public final boolean isReady() {
+    return (getSubject() != null) &&
+           ((getMethodContract() != null) && (getMethodContract().getMember() == getSubject()) &&
+           (getCase() != null) && hasMatchingCaseAndMethodTypes();  <<---- preconditions instead?
   }
 
   /*</property>*/
@@ -145,7 +149,7 @@ public abstract class MethodTest extends AbstractTest {
   /**
    * Call the method under test and validate the contract.
    * The contract is asked to record the pre-state on this with
-   * {@link MethodContract#recordState(MethodTest)}. Then the method-under-test
+   * {@link MethodContract#recordState(MethodContractTest)}. Then the method-under-test
    * is called. Afterwards, if the method ended nominally, we validate the
    * {@link MethodContract#getPostconditions() postconditions}, the
    * inertia axiom, and the
@@ -154,15 +158,10 @@ public abstract class MethodTest extends AbstractTest {
    * {@link MethodContract#getExceptionConditions() exception conditions}.
    *
    * @post new.hasRun();
-   * @throws OLDTorytException
-   *         hasRun();
    */
-  public final void test() throws OLDTorytException {
-    if (hasRun()) {
-      throw new OLDTorytException(getMethodContract(), null);
-    }
+  protected final TestResult runImplementation() {
     try {
-      getMethodContract().recordState(this);
+      getMethodContract().recordState(this); // TODO legacy, until a Case can record state itself
       methodCall();
       validateConditionSet(getMethodContract().getPostconditions());
       validateConditionSet(getMethodContract().getTypeContract().getTypeInvariantConditions());
@@ -170,46 +169,40 @@ public abstract class MethodTest extends AbstractTest {
 //      validateMore();
     }
     catch (InvocationTargetException e) {
+      // exceptions from the method itself; might fail the test, but not an error
       validateExceptionConditions(e.getCause());
     }
-    catch (IllegalArgumentException e) {
-      System.out.println(this);
-      System.out.println(e);
-      throw new OLDTorytException(getMethodContract(), e);
+    catch (IllegalArgumentException iaExc) {
+      return handleTestError(iaExc, null);
     }
-    catch (IllegalAccessException e) {
-      System.out.println(this);
-      System.out.println(e);
-      throw new OLDTorytException(getMethodContract(), e);
+    catch (IllegalAccessException iaExc) {
+      return handleTestError(iaExc, null);
     }
-    catch (NullPointerException e) {
-      System.out.println("This method was called in test on null. Check your cases (no null as subject allowed).");
-      System.out.println(this);
-      System.out.println(e);
-      throw new OLDTorytException(getMethodContract(), e);
+    catch (NullPointerException npExc) {
+      return handleTestError(npExc,
+                           "This method was called in test on null. " +
+                           "Check your cases (no null as test this allowed).");
     }
-    catch (ExceptionInInitializerError e) {
-      System.out.println(this);
-      System.out.println(e);
-      throw new OLDTorytException(getMethodContract(), e);
+    catch (ExceptionInInitializerError eiiErr) {
+      return handleTestError(eiiErr, null);
     }
-    catch (InstantiationException e) {
-      System.out.println(this);
-      System.out.println(e);
-      throw new OLDTorytException(getMethodContract(), e);
+    catch (InstantiationException iExc) {
+      return handleTestError(iExc, null);
     }
-    catch (Throwable e) {
-      System.out.println(this);
-      System.out.println(e);
-      throw new OLDTorytException(getMethodContract(), e);
-    }
-    setRun();
+    return $failedConditions.isEmpty() ? TestResult.SUCCESSFUL : TestResult.FAILED;
+  }
+
+  private TestResult handleTestError(Throwable t, String extraMessage) {
+    LOG.warn("Test failed with exception from calling method (not from the method itself. " +
+             "This is considered an error in the test, and should not happen. If this occurs, " +
+             "it most often means that the contract has an error.", t);
+    return TestResult.ERROR;
   }
 
   private void validateExceptionConditions(Throwable e) {
     assert e != null;
     Map exceptionConditionsMap = getMethodContract().getExceptionConditions();
-    getContext().put(EXCEPTION_KEY, e);
+    getCase().put(EXCEPTION_KEY, e);
     Iterator iterMap = exceptionConditionsMap.keySet().iterator();
     while (iterMap.hasNext()) {
       Class exceptionType = (Class)iterMap.next();
@@ -262,8 +255,8 @@ public abstract class MethodTest extends AbstractTest {
       return $exception;
     }
 
-    public final MethodTest getMethodTest() {
-      return MethodTest.this;
+    public final MethodContractTest getMethodTest() {
+      return MethodContractTest.this;
     }
 
     private Throwable $exception;

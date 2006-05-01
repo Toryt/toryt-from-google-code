@@ -9,7 +9,7 @@ import org.toryt.util_I.reflect.Reflection;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.AbstractMethodContract;
 import org.toryt_II.test.ConstructorTest;
-import org.toryt_II.test.MethodTest;
+import org.toryt_II.test.MethodContractTest;
 
 
 /**
@@ -62,7 +62,7 @@ public abstract class HardConstructorContract
   
   private Constructor $constructor;
   
-  public final MethodTest createMethodTest(Map testcase) {
+  public final MethodContractTest createMethodTest(Map testcase) {
     return new ConstructorTest(this, testcase);
   }
   

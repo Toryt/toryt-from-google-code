@@ -14,7 +14,7 @@ import org.toryt.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.condition.Condition;
 import org.toryt_II.contract.condition.ExceptionCondition;
-import org.toryt_II.test.MethodTest;
+import org.toryt_II.test.MethodContractTest;
 
 
 /**
@@ -93,7 +93,7 @@ public abstract class AbstractMethodContract extends AbstractContract
    * {@inheritDoc}
    * The default implementation of this method does nothing.
    */
-  public void recordState(MethodTest test) {
+  public void recordState(MethodContractTest test) {
     // NOP
   }
   

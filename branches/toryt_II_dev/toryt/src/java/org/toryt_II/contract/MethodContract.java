@@ -9,7 +9,7 @@ import org.toryt.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.condition.Condition;
 import org.toryt_II.contract.condition.ExceptionCondition;
-import org.toryt_II.test.MethodTest;
+import org.toryt_II.test.MethodContractTest;
 
 
 /**
@@ -34,7 +34,7 @@ import org.toryt_II.test.MethodTest;
  * 
  * During a test of this contract, the test needs to store it's old
  * state before actually invoking the method-under-test. How to do
- * this, is implemented {@link #recordState(MethodTest) in the contract}.
+ * this, is implemented {@link #recordState(MethodContractTest) in the contract}.
  * 
  * @author Jan Dockx
  *
@@ -69,9 +69,9 @@ public interface MethodContract extends Contract {
    */
   TypeContract getTypeContract();
   
-  public final static String SUBJECT_KEY = MethodTest.SUBJECT_KEY;
-  public final static String RESULT_KEY = MethodTest.RESULT_KEY;
-  public final static String EXCEPTION_KEY = MethodTest.EXCEPTION_KEY;
+  public final static String SUBJECT_KEY = MethodContractTest.SUBJECT_KEY;
+  public final static String RESULT_KEY = MethodContractTest.RESULT_KEY;
+  public final static String EXCEPTION_KEY = MethodContractTest.EXCEPTION_KEY;
   
   public abstract StraightList getTestCases() throws OLDTorytException;
   
@@ -126,7 +126,7 @@ public interface MethodContract extends Contract {
    * also in <code>test.getContext()</code>.
    * The default implementation of this method does nothing.
    */
-  void recordState(MethodTest test);
+  void recordState(MethodContractTest test);
   
   /**
    * Factory method for the creation of method tests of the correct
@@ -134,7 +134,7 @@ public interface MethodContract extends Contract {
    * 
    * @post result.getContract() == this;
    */
-  MethodTest createMethodTest(Map testcase);
+  MethodContractTest createMethodTest(Map testcase);
   
   /**
    * @result result.isEmpty();

@@ -25,6 +25,7 @@ import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.Contract;
 import org.toryt_II.test.AbstractTest;
 import org.toryt_II.test.Test;
+import org.toryt_II.test.TestAlreadyStartedException;
 
 
 /**
@@ -80,7 +81,7 @@ public class SimpleCli extends AbstractTest {
              : false;
   }
   
-  public final void test() throws OLDTorytException {
+  public final void run() throws TestAlreadyStartedException {
     if (hasRun()) {
       throw new OLDTorytException(null, null);
     }
@@ -99,7 +100,7 @@ public class SimpleCli extends AbstractTest {
     while (iter.hasNext() && ! hasEnough()) {
       Test t = (Test)iter.next();
       try {
-      t.test();
+      t.run();
       if (! t.isSuccessful()) {
         $failedTests.add(t);
         System.out.println();
@@ -238,7 +239,7 @@ public class SimpleCli extends AbstractTest {
         Contract contractInstance = getContractInstance(contractClass);
         if (contractInstance != null) {
           SimpleCli test = new SimpleCli(contractInstance, maxFailures);
-          test.test();
+          test.run();
         }
       }
     }

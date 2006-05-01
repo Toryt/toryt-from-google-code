@@ -12,6 +12,7 @@ import java.util.Set;
 import org.toryt.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.test.AbstractTest;
+import org.toryt_II.test.TestAlreadyStartedException;
 
 
 /**
@@ -143,7 +144,7 @@ public interface TypeContract extends Contract {
     
     private TypeContract $tc;
 
-    public final void test() throws OLDTorytException {
+    public final void run() throws TestAlreadyStartedException {
       Set allMethodContracts = new HashSet();
       allMethodContracts.addAll($tc.getClassMethodContracts());
       allMethodContracts.addAll($tc.getInstanceMethodContracts());

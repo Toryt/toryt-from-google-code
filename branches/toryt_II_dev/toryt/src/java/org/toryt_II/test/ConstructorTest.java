@@ -9,12 +9,12 @@ import org.toryt_II.contract.MethodContract;
 
 
 /**
- * An actual instance of a test of a method. This is a test with actual
+ * An actual instance of a test of a constructor. This is a test with actual
  * test arguments.
- * 
+ *
  * @invar getContract() instanceof HardConstructorContract;
  */
-public class ConstructorTest extends MethodTest {
+public class ConstructorTest extends MethodContractTest<Constructor> {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -39,7 +39,7 @@ public class ConstructorTest extends MethodTest {
 
   /* </construction> */
 
-  
+
 
   /* <property name="contract"> */
   //------------------------------------------------------------------
@@ -50,12 +50,12 @@ public class ConstructorTest extends MethodTest {
 
   /* </property> */
 
-  
+
   /**
    * Call the method of the contract with reflection.
    * The new instance is stored in the context map with
    * key {@link MethodContract#SUBJECT_KEY}.
-   * 
+   *
    * @throws InstantiationException
    * @throws IllegalAccessException
    * @throws IllegalArgumentException
@@ -70,5 +70,5 @@ public class ConstructorTest extends MethodTest {
               .newInstance(getActualParameters());
     getContext().put(MethodContract.SUBJECT_KEY, instance);
   }
-  
+
 }

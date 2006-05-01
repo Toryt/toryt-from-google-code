@@ -14,7 +14,7 @@ import org.toryt_II.contract.NonConstructorMethodContract;
  * 
  * @invar getContract() instanceof NonConstructorMethodContract;
  */
-public class NonConstructorMethodTest extends MethodTest {
+public class NonConstructorMethodTest extends MethodContractTest {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

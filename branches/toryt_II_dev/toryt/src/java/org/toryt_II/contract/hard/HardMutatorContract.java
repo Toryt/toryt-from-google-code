@@ -8,7 +8,7 @@ import java.util.Map;
 import org.toryt.util_I.reflect.Reflection;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.AbstractMethodContract;
-import org.toryt_II.test.MethodTest;
+import org.toryt_II.test.MethodContractTest;
 import org.toryt_II.test.NonConstructorMethodTest;
 
 
@@ -62,7 +62,7 @@ public abstract class HardMutatorContract
   
   private Method $method;
   
-  public final MethodTest createMethodTest(Map testcase) {
+  public final MethodContractTest createMethodTest(Map testcase) {
     return new NonConstructorMethodTest(this, testcase);
   }
 

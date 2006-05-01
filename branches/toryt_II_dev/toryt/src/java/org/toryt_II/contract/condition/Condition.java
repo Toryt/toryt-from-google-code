@@ -3,7 +3,7 @@ package org.toryt_II.contract.condition;
 
 import java.util.Map;
 
-import org.toryt_II.test.MethodTest;
+import org.toryt_II.test.MethodContractTest;
 
 
 /**
@@ -29,14 +29,14 @@ public interface Condition {
   /*</section>*/
 
   /**
-   * @see MethodTest#SUBJECT_KEY
+   * @see MethodContractTest#SUBJECT_KEY
    */
-  final static String SUBJECT_KEY = MethodTest.SUBJECT_KEY;
+  final static String SUBJECT_KEY = MethodContractTest.SUBJECT_KEY;
 
   /**
-   * @see MethodTest#RESULT_KEY
+   * @see MethodContractTest#RESULT_KEY
    */
-  final static String RESULT_KEY = MethodTest.RESULT_KEY;
+  final static String RESULT_KEY = MethodContractTest.RESULT_KEY;
 
   /**
    * Validate a context.

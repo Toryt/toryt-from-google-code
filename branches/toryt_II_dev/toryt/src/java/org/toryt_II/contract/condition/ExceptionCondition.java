@@ -3,7 +3,7 @@ package org.toryt_II.contract.condition;
 import java.util.Map;
 
 import org.toryt_II.OLDTorytException;
-import org.toryt_II.test.MethodTest;
+import org.toryt_II.test.MethodContractTest;
 
 
 /**
@@ -55,9 +55,9 @@ public abstract class ExceptionCondition implements Condition {
   private Class $exceptionType;
   
   /**
-   * @see MethodTest#EXCEPTION_KEY
+   * @see MethodContractTest#EXCEPTION_KEY
    */
-  public final static String EXCEPTION_KEY = MethodTest.EXCEPTION_KEY;
+  public final static String EXCEPTION_KEY = MethodContractTest.EXCEPTION_KEY;
   
   /**
    * Retrieve the exception from the map.

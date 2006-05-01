@@ -13,7 +13,7 @@ import org.toryt_II.contract.MethodContract;
 import org.toryt_II.contract.condition.Condition;
 import org.toryt_II.contract.hard.HardClassContract;
 import org.toryt_II.contract.hard.HardMutatorContract;
-import org.toryt_II.test.MethodTest;
+import org.toryt_II.test.MethodContractTest;
 
 
 @CvsInfo(revision = "$Revision$",
@@ -164,7 +164,7 @@ public class _Contract_Node extends HardClassContract {
                                   _C_G.getCasesWithNull()});
       }
 
-      public void recordState(MethodTest test) {
+      public void recordState(MethodContractTest test) {
         Map state = test.getContext();
         Node subject = (Node)state.get(SUBJECT_KEY);
         state.put("group@post", state.get("group"));
