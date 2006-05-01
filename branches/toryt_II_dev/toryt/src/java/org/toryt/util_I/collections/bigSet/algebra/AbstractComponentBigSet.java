@@ -55,20 +55,19 @@ public abstract class AbstractComponentBigSet<_ResultElementType_, _ComponentEle
     super(nullAllowed, bigSize);
     assert components != null;
     assert Collections.forAll(components,
-                              new Assertion() {
-                                    public boolean isTrueFor(Object o) {
-                                      return ((LockableBigSet<?>)o).isLocked();
+                              new Assertion<LockableBigSet<? extends _ComponentElementType_>>() {
+                                    public boolean isTrueFor(LockableBigSet<? extends _ComponentElementType_> o) {
+                                      return (o == null) || o.isLocked();
                                     }
                                   });
     assert nullAllowed ||
              Collections.forAll(components,
-                                new Assertion() {
-                                      public boolean isTrueFor(Object o) {
-                                        return ! ((LockableBigSet<?>)o).contains(null);
+                                new Assertion<LockableBigSet<? extends _ComponentElementType_>>() {
+                                      public boolean isTrueFor(LockableBigSet<? extends _ComponentElementType_> o) {
+                                        return (o == null) || (! o.contains(null));
                                       }
                                     });
     $components = (LockableBigSet<? extends _ComponentElementType_>[])ArrayUtils.clone(components);
-    /* TODO warning ? */
   }
 
 
@@ -81,7 +80,6 @@ public abstract class AbstractComponentBigSet<_ResultElementType_, _ComponentEle
    */
   public final LockableBigSet<? extends _ComponentElementType_>[] getComponents() {
     return (LockableBigSet<? extends _ComponentElementType_>[])ArrayUtils.clone($components);
-    /* TODO warning ? */
   }
 
   /**

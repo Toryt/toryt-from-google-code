@@ -26,7 +26,7 @@ public class Collections {
    * @pre c != null;
    * @return ! c.contains(null)
    */
-  public static boolean noNull(Collection c) {
+  public static boolean noNull(Collection<?> c) {
     assert c != null;
     return ! c.contains(null);
   }
@@ -34,12 +34,12 @@ public class Collections {
   /**
    * @pre c != null;
    * @pre a != null;
-   * @return (forall Object o; c.contains(o); a.isTrueFor(o));
+   * @return (forall _T_ o; c.contains(o); a.isTrueFor(o));
    */
-  public static boolean forAll(Collection c, Assertion a) {
+  public static <_T_> boolean forAll(Collection<_T_> c, Assertion<_T_> a) {
     assert c != null;
     assert a != null;
-    Iterator iter = c.iterator();
+    Iterator<_T_> iter = c.iterator();
     while (iter.hasNext()) {
       if (! a.isTrueFor(iter.next())) {
         return false;
@@ -51,12 +51,12 @@ public class Collections {
   /**
    * @pre c != null;
    * @pre a != null;
-   * @return (exists Object o; c.contains(o); a.isTrueFor(o));
+   * @return (exists _T_ o; c.contains(o); a.isTrueFor(o));
    */
-  public static boolean exists(Collection c, Assertion a) {
+  public static <_T_> boolean exists(Collection<_T_> c, Assertion<_T_> a) {
     assert c != null;
     assert a != null;
-    Iterator iter = c.iterator();
+    Iterator<_T_> iter = c.iterator();
     while (iter.hasNext()) {
       if (a.isTrueFor(iter.next())) {
         return true;
@@ -69,10 +69,13 @@ public class Collections {
    * @pre c != null;
    * @pre type != null;
    * @return (forall Object o, c.contains(o); type.isInstance(o));
+   *
+   * @deprecated Use generics instead
    */
-  public static boolean instanceOf(Collection c, final Class type) {
+  @Deprecated
+  public static <_T_> boolean instanceOf(Collection<_T_> c, final Class<_T_> type) {
     assert type != null;
-    return forAll(c, new Assertion() {
+    return forAll(c, new Assertion<_T_>() {
 
                             public boolean isTrueFor(Object o) {
                               return type.isInstance(o);
@@ -87,8 +90,10 @@ public class Collections {
    * @pre a != null;
    * @pre b != null;
    * @return c1.containsAll(c2) && c2.containsAll(c1);
+   * @deprecated use c1.equals(c2)
    */
-  public static boolean sameContents(final Collection c1, final Collection c2) {
+  @Deprecated
+  public static boolean sameContents(final Collection<?> c1, final Collection<?> c2) {
     assert c1 != null;
     assert c2 != null;
     return c1.containsAll(c2) && c2.containsAll(c1);
@@ -99,7 +104,7 @@ public class Collections {
    * @result ! m.containsKey(null)
    * @result ! m.containsValue(null)
    */
-  public static boolean noNull(Map m) {
+  public static boolean noNull(Map<?, ?> m) {
     assert m != null;
     return (! m.containsKey(null)) && (! m.containsValue(null));
   }
@@ -110,18 +115,20 @@ public class Collections {
    * @pre valueType != null;
    * @result (forall Object o, m.containsKey(o); keyType.isInstance(o));
    * @result (forall Object o, m.containsValue(o); valueType.isInstance(o));
+   *
+   * @deprecated Use generics instead
    */
-  public static boolean instanceOf(Map m, final Class keyType, final Class valueType) {
+  @Deprecated
+  public static <_K_, _V_> boolean instanceOf(Map<_K_, _V_> m, final Class<_K_> keyType, final Class<_V_> valueType) {
     assert m != null;
     assert keyType != null;
     assert valueType != null;
     return forAll(m.entrySet(),
-                  new Assertion() {
+                  new Assertion<Map.Entry<_K_, _V_>>() {
 
-                          public boolean isTrueFor(Object o) {
-                            Map.Entry entry = (Map.Entry)o;
-                            return keyType.isInstance(entry.getKey()) &&
-                                   valueType.isInstance(entry.getValue());
+                          public boolean isTrueFor(Map.Entry<_K_, _V_> o) {
+                            return keyType.isInstance(o.getKey()) &&
+                                   valueType.isInstance(o.getValue());
                           }
 
                        });
@@ -133,7 +140,7 @@ public class Collections {
    * @return (forall int i; (i >= 0) && (i < array.length);
    *            a.isTrueFor(array[i]));
    */
-  public static boolean forAll(Object[] array, Assertion a) {
+  public static <_T_> boolean forAll(_T_[] array, Assertion<_T_> a) {
     assert array != null;
     assert a != null;
     for (int i = 0; i < array.length; i++) {
@@ -150,10 +157,10 @@ public class Collections {
    * @return (forall Object o; map.values().contains(o);
    *            a.isTrueFor(o));
    */
-  public static boolean forAllValues(Map map, Assertion a) {
+  public static <_V_> boolean forAllValues(Map<?, _V_> map, Assertion<_V_> a) {
     assert map != null;
     assert a != null;
-    Iterator iter = map.values().iterator();
+    Iterator<_V_> iter = map.values().iterator();
     while (iter.hasNext()) {
       if (! a.isTrueFor(iter.next())) {
         return false;
@@ -168,7 +175,7 @@ public class Collections {
    * @return (exists int i; (i >= 0) && (i < array.length);
    *            a.isTrueFor(array[i]));
    */
-  public static boolean exists(Object[] array, Assertion a) {
+  public static <_T_> boolean exists(_T_[] array, Assertion<_T_> a) {
     assert array != null;
     assert a != null;
     for (int i = 0; i < array.length; i++) {
@@ -183,7 +190,7 @@ public class Collections {
    * @pre a != null;
    * @return (forall int i; (i >= 0) && (i < a.length); a[i] != null);
    */
-  public static boolean noNull(Object[] a) {
+  public static <_T_> boolean noNull(_T_[] a) {
     assert a != null;
     return ! ArrayUtils.contains(a, null);
   }
@@ -195,12 +202,12 @@ public class Collections {
    * @pre b != null;
    * @return (forall Object o; ArrayUtils.contains(b, o), ArrayUtils.contains(a, o));
    */
-  public static boolean containsAll(final Object[] a, final Object[] b) {
+  public static <_T_> boolean containsAll(final _T_[] a, final _T_[] b) {
     assert a != null;
     assert b != null;
-    return forAll(b, new Assertion() {
+    return forAll(b, new Assertion<_T_>() {
 
-                            public boolean isTrueFor(Object o) {
+                            public boolean isTrueFor(_T_ o) {
                               return ArrayUtils.contains(a, o);
                             }
 
@@ -208,13 +215,13 @@ public class Collections {
   }
 
   /**
-   * <code>a</code> contains all elements of <code>b</code>.
+   * <code>a</code> contains all elements of <code>b</code>, in any order.
    *
    * @pre a != null;
    * @pre b != null;
    * @return containsAll(a, b) && containsAll(b, a);
    */
-  public static boolean sameContents(final Object[] a, final Object[] b) {
+  public static <_T_> boolean sameContents(final _T_[] a, final _T_[] b) {
     assert a != null;
     assert b != null;
     return containsAll(a, b) && containsAll(b, a);

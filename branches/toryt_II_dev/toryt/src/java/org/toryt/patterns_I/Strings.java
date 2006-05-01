@@ -1,5 +1,6 @@
 package org.toryt.patterns_I;
 
+
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -16,6 +17,9 @@ public class Strings {
     // NOP
   }
 
+  /**
+   * <strong>= {@value}</strong>
+   */
   public static final String EMPTY = "";
 
 }

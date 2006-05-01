@@ -77,11 +77,10 @@ public class UnionBigSet<_ElementType_> extends AbstractComponentBigSet<_Element
   @Override
   public final boolean contains(final Object o) {
     return Collections.exists(getComponents(),
-                              new Assertion() {
+                              new Assertion<LockableBigSet<? extends _ElementType_>>() {
 
-                                    public boolean isTrueFor(Object s) {
-                                      return (s != null) &&
-                                             ((LockableBigSet<? extends _ElementType_>)s).contains(o);
+                                    public boolean isTrueFor(LockableBigSet<? extends _ElementType_> s) {
+                                      return (s != null) && s.contains(o);
                                     }
 
                                   });
@@ -93,11 +92,10 @@ public class UnionBigSet<_ElementType_> extends AbstractComponentBigSet<_Element
    */
   public final boolean isEmpty() {
     return Collections.forAll(getComponents(),
-                              new Assertion() {
+                              new Assertion<LockableBigSet<? extends _ElementType_>>() {
 
-                                    public boolean isTrueFor(Object o) {
-                                      return (o == null) ||
-                                             ((LockableBigSet<? extends _ElementType_>)o).isEmpty();
+                                    public boolean isTrueFor(LockableBigSet<? extends _ElementType_> o) {
+                                      return (o == null) || o.isEmpty();
                                     }
 
                                   });
