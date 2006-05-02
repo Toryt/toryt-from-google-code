@@ -3,16 +3,15 @@ package org.toryt.util_I.collections.priorityList;
 
 import java.math.BigInteger;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.toryt.util_I.collections.bigSet.lockable.EmptyBigSet;
+import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 
 
 /**
  * <p>An empty {@link PriorityList}.</p>
- * <p>We need to provide a
- *   {@link #getPriorityElementType() priority element type} at construction.
  *
  * @author Jan Dockx
  */
@@ -20,41 +19,29 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class EmptyPriorityList extends AbstractLockedPriorityList {
-
-
-  public static final EmptyPriorityList OBJECT_INSTANCE = new EmptyPriorityList(Object.class);
-
+public final class EmptyPriorityList<_PriorityElementType_>
+    extends AbstractLockedPriorityList<_PriorityElementType_> {
 
   /**
    * This method is introduced for use in {@link #subList(int, int)}.
-   *
-   * @pre priorityPriorityElementType != null;
    */
-  public EmptyPriorityList(Class priorityElementType) {
-    super(priorityElementType, BigInteger.ZERO);
+  public EmptyPriorityList() {
+    super(BigInteger.ZERO);
   }
 
+  private EmptyBigSet<_PriorityElementType_> $ebs = new EmptyBigSet<_PriorityElementType_>();
+
+  @Override
   public final int hashCode() {
     return 1;
   }
 
-  public final boolean containsPriorityElement(final Object o) {
+  public final boolean containsPriorityElement(final _PriorityElementType_ o) {
     return false;
   }
 
-  public final Iterator priorityElementIterator() {
-    return new AbstractLockedCollectionIterator() {
-
-                  public final boolean hasNext() {
-                    return false;
-                  }
-
-                  public Object next() {
-                    throw new IndexOutOfBoundsException();
-                  }
-
-                };
+  public final Iterator<_PriorityElementType_> priorityElementIterator() {
+    return $ebs.iterator();
   }
 
   public final int size() {
@@ -65,11 +52,12 @@ public final class EmptyPriorityList extends AbstractLockedPriorityList {
     return true;
   }
 
+  @Override
   public final boolean contains(Object o) {
     return false;
   }
 
-  public final Object get(int index) {
+  public final LockableBigSet<_PriorityElementType_> get(int index) {
     throw new IndexOutOfBoundsException();
   }
 
@@ -81,14 +69,14 @@ public final class EmptyPriorityList extends AbstractLockedPriorityList {
     return -1;
   }
 
-  public final ListIterator listIterator(int index) {
+  public final ListIterator<LockableBigSet<_PriorityElementType_>> listIterator(int index) {
     return new AbstractLockedListIterator() {
 
                   public boolean hasNext() {
                     return false;
                   }
 
-                  public Object next() {
+                  public LockableBigSet<_PriorityElementType_> next() {
                     throw new IndexOutOfBoundsException();
                   }
 
@@ -96,7 +84,7 @@ public final class EmptyPriorityList extends AbstractLockedPriorityList {
                     return false;
                   }
 
-                  public Object previous() {
+                  public LockableBigSet<_PriorityElementType_> previous() {
                     throw new IndexOutOfBoundsException();
                   }
 
@@ -111,13 +99,17 @@ public final class EmptyPriorityList extends AbstractLockedPriorityList {
                 };
   }
 
-  public final List subList(int fromIndex, int toIndex) {
+  public final EmptyPriorityList<_PriorityElementType_> subList(int fromIndex, int toIndex) {
     if ((fromIndex == 0) && (toIndex == 0)) {
       return this;
     }
     else {
       throw new IndexOutOfBoundsException();
     }
+  }
+
+  public final boolean isNullPriorityElementAllowed() {
+    return false; // whatever
   }
 
 }

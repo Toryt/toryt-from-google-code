@@ -49,10 +49,10 @@ public class SetBackedLockableSet<_ElementType_>
       /**
        * @invar $backingIterator != null;
        */
-      private Iterator<_ElementType_> $iterator = getBackingCollection().iterator();
+      private final Iterator<_ElementType_> $iterator = getBackingCollection().iterator();
 
       @Override
-      protected Iterator<_ElementType_> getIterator() {
+      protected Iterator<_ElementType_> getBackingIterator() {
         return $iterator;
       }
 

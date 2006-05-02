@@ -8,12 +8,12 @@ import java.util.List;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.lockable.LockableList;
-import org.toryt.util_I.collections.typed.TypedList;
 
 
 /**
  * <p>A {@link List} of priority buckets. A priority bucket is a
- *   {@link LockableBigSet}. When <code>PriorityLists</code> are combined,
+ *   {@link LockableBigSet} of type <code>_PriorityElementType_</code>.
+ *   When <code>PriorityLists</code> are combined,
  *   the priority of elements is kept.</p>
  * <p>0 is considered the highest priority, and larger bucket numbers
  *   represent a lower priority.</p>
@@ -26,29 +26,18 @@ import org.toryt.util_I.collections.typed.TypedList;
  * @author Jan Dockx
  *
  * @invar toryt:cC org.toryt.patterns_I.Collections;
- * @invar getPriorityElementType() !=  null;
- * @invar getElementType() == LockableBigSet.class;
  * @invar ! isNullAllowed();
  * @invar (forall LockableBigSet lbs; contains(lbs);
- *          lbs.getElementType() == getPriorityElementType());
- * @invar (forall LockableBigSet lbs; contains(lbs);
  *          lbs.isLocked() == isLocked());
+ * @invar (forall LockableBigSet lbs; contains(lbs);
+ *          lbs.isNullAllowed() == isNullPriorityElementAllowed());
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface PriorityList<_PriorityElementType_> extends TypedList, LockableList {
-
-  /**
-   * The type of the elements of the priority buckets.
-   * No other types of objects are allowed in the buckets.
-   *
-   * @basic
-   *
-   * @note When moving to Java 5, replace this with a generic implementation.
-   */
-  Class getPriorityElementType();
+public interface PriorityList<_PriorityElementType_>
+    extends LockableList<LockableBigSet<_PriorityElementType_>> {
 
   /**
    * The total number of elements in the all priority buckets.
@@ -62,7 +51,7 @@ public interface PriorityList<_PriorityElementType_> extends TypedList, Lockable
    *
    * @return (exists LockableBigSet lbs; contains(lbs); lbs.contains(o));
    */
-  boolean containsPriorityElement(Object o);
+  boolean containsPriorityElement(_PriorityElementType_ o);
 
   /**
    * An iterator that iterates over the priority elements in priority
@@ -71,6 +60,11 @@ public interface PriorityList<_PriorityElementType_> extends TypedList, Lockable
    * the list order). The elements of a bucket or visited in no
    * particular order.
    */
-  Iterator priorityElementIterator();
+  Iterator<_PriorityElementType_> priorityElementIterator();
+
+  /**
+   * @basic
+   */
+  boolean isNullPriorityElementAllowed();
 
 }

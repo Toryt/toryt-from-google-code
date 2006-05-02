@@ -52,8 +52,17 @@ public class ListBackedLockableList<_ElementType_>
   /* <section name="Inspectors"> */
   //------------------------------------------------------------------
 
-  public final List<_ElementType_> subList(int fromIndex, int toIndex) {
-    return getBackingCollection().subList(fromIndex, toIndex);
+  /**
+   * This method is not final. Some lazy subclasses want to override it.
+   */
+  public ListBackedLockableList<_ElementType_> subList(int fromIndex, int toIndex) {
+    ListBackedLockableList<_ElementType_> result =
+        new ListBackedLockableList<_ElementType_>(getBackingCollection().subList(fromIndex, toIndex),
+                                                  isNullAllowed());
+    if (isLocked()) {
+      result.lock();
+    }
+    return result;
   }
 
   public final _ElementType_ get(int index) {
@@ -68,22 +77,23 @@ public class ListBackedLockableList<_ElementType_>
     return getBackingCollection().lastIndexOf(o);
   }
 
-  public class ListBackedLockListIterator extends CollectionBackedLockIterator
+  public class ListBackedLockableListIterator extends CollectionBackedLockIterator
       implements ListIterator<_ElementType_> {
 
-    private ListBackedLockListIterator(int index) {
+    protected ListBackedLockableListIterator(int index) {
       $iterator = getBackingCollection().listIterator(index);
+    }
+
+    @Override
+    protected final ListIterator<_ElementType_> getBackingIterator() {
+      return $iterator;
     }
 
     /**
      * @invar $backingIterator != null;
      */
-    private ListIterator<_ElementType_> $iterator;
+    private final ListIterator<_ElementType_> $iterator;
 
-    @Override
-    protected final Iterator<_ElementType_> getIterator() {
-      return $iterator;
-    }
 
     public final boolean hasPrevious() {
       return $iterator.hasPrevious();
@@ -110,6 +120,9 @@ public class ListBackedLockableList<_ElementType_>
       if (isLocked()) {
         throw new UnsupportedOperationException("List is locked");
       }
+      if ((! isNullAllowed()) && (o == null)) {
+        throw new NullPointerException("Null is not allowed");
+      }
       $iterator.set(o);
     }
 
@@ -122,6 +135,9 @@ public class ListBackedLockableList<_ElementType_>
       if (isLocked()) {
         throw new UnsupportedOperationException("List is locked");
       }
+      if ((! isNullAllowed()) && (o == null)) {
+        throw new NullPointerException("Null is not allowed");
+      }
       $iterator.add(o);
     }
 
@@ -132,11 +148,11 @@ public class ListBackedLockableList<_ElementType_>
   }
 
   public final ListIterator<_ElementType_> listIterator() {
-    return new ListBackedLockListIterator(0);
+    return new ListBackedLockableListIterator(0);
   }
 
   public final ListIterator<_ElementType_> listIterator(int index) {
-    return new ListBackedLockListIterator(index);
+    return new ListBackedLockableListIterator(index);
   }
 
   /*</section>*/
@@ -146,29 +162,48 @@ public class ListBackedLockableList<_ElementType_>
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
 
-  public final void add(int index, _ElementType_ o) throws UnsupportedOperationException {
+  public final void add(int index, _ElementType_ o)
+      throws UnsupportedOperationException, NullPointerException,
+             IndexOutOfBoundsException {
     if (isLocked()) {
       throw new UnsupportedOperationException("List is locked");
+    }
+    if ((! isNullAllowed()) && (o == null)) {
+      throw new NullPointerException("Null is not allowed");
     }
     getBackingCollection().add(index, o);
   }
 
-  public final boolean addAll(int index, Collection<? extends _ElementType_> c)
-      throws UnsupportedOperationException {
+  /**
+   * Not final, because lazy subclasses want to override this.
+   */
+  public boolean addAll(int index, Collection<? extends _ElementType_> c)
+      throws UnsupportedOperationException, NullPointerException,
+             IndexOutOfBoundsException {
     if (isLocked()) {
       throw new UnsupportedOperationException("List is locked");
+    }
+    if ((! isNullAllowed()) && (c != null) && (c.contains(null))) {
+      throw new NullPointerException("Null is not allowed");
     }
     return getBackingCollection().addAll(index, c);
   }
 
-  public final _ElementType_ set(int index, _ElementType_ o) throws UnsupportedOperationException {
+  public final _ElementType_ set(int index, _ElementType_ o)
+      throws UnsupportedOperationException, NullPointerException,
+             IndexOutOfBoundsException {
     if (isLocked()) {
       throw new UnsupportedOperationException("List is locked");
+    }
+    if ((! isNullAllowed()) && (o == null)) {
+      throw new NullPointerException("Null is not allowed");
     }
     return getBackingCollection().set(index, o);
   }
 
-  public final _ElementType_ remove(int index) throws UnsupportedOperationException {
+  public final _ElementType_ remove(int index)
+      throws UnsupportedOperationException,
+             IndexOutOfBoundsException {
     if (isLocked()) {
       throw new UnsupportedOperationException("List is locked");
     }

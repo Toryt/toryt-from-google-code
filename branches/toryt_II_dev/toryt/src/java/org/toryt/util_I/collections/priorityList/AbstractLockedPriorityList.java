@@ -19,52 +19,24 @@ import org.toryt.util_I.collections.lockable.AbstractLockedList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractLockedPriorityList extends AbstractLockedList
-    implements PriorityList {
+public abstract class AbstractLockedPriorityList<_PriorityElementType_>
+    extends AbstractLockedList<LockableBigSet<_PriorityElementType_>>
+    implements PriorityList<_PriorityElementType_> {
 
   /**
-   * @pre priorityPriorityElementType != null;
    * @pre cardinality != null;
    * @pre cardinality >= 0;
    */
-  protected AbstractLockedPriorityList(Class priorityPriorityElementType, BigInteger cardinality) {
-    assert priorityPriorityElementType != null;
+  protected AbstractLockedPriorityList(BigInteger cardinality) {
+    super(false);
     assert cardinality != null;
     assert cardinality.compareTo(BigInteger.ZERO) >= 0;
-    $priorityPriorityElementType = priorityPriorityElementType;
     $cardinality = cardinality;
   }
 
 
 
-  /* <property name="element type"> */
-  //------------------------------------------------------------------
-
-  public final Class getElementType() {
-    return LockableBigSet.class;
-  }
-
-  /*</property>*/
-
-
-
-  /* <property name="priority element type"> */
-  //------------------------------------------------------------------
-
-  public final Class getPriorityElementType() {
-    return $priorityPriorityElementType;
-  }
-
-  /**
-   * @invar $priorityPriorityElementType != null;
-   */
-  private Class $priorityPriorityElementType;
-
-  /*</property>*/
-
-
-
-  /* <property name="size"> */
+  /* <property name="cardinality"> */
   //------------------------------------------------------------------
 
   /**
@@ -82,20 +54,17 @@ public abstract class AbstractLockedPriorityList extends AbstractLockedList
   /*</property>*/
 
 
-  public final boolean isNullAllowed() {
-    return false;
-  }
-
+  @Override
   public String toString() {
     StringBuffer result = new StringBuffer();
-    ListIterator iter = listIterator();
+    ListIterator<LockableBigSet<_PriorityElementType_>> iter = listIterator();
     while (iter.hasNext()) {
-      LockableBigSet lbs = (LockableBigSet)iter.next();
+      LockableBigSet<_PriorityElementType_> lbs = iter.next();
       result.append(iter.previousIndex());
       result.append(" (");
       result.append(lbs.getBigSize());
       result.append("): ");
-      Iterator lbsIter = lbs.iterator();
+      Iterator<_PriorityElementType_> lbsIter = lbs.iterator();
       while (lbsIter.hasNext()) {
         result.append(priorityElementToString(lbsIter.next()));
         if (lbsIter.hasNext()) {
@@ -107,7 +76,7 @@ public abstract class AbstractLockedPriorityList extends AbstractLockedList
     return result.toString();
   }
 
-  protected String priorityElementToString(Object element) {
+  protected String priorityElementToString(_PriorityElementType_ element) {
     return (element == null) ? "null" : element.toString();
   }
 

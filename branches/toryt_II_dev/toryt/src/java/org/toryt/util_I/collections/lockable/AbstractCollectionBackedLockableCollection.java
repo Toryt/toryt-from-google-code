@@ -71,7 +71,16 @@ public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, 
   }
 
   public final void lock() {
+    extraLock();
     $locked = true;
+  }
+
+  /**
+   * Extra lock activity.
+   * This implementation does nothing, but subclasses might do more.
+   */
+  protected void extraLock() {
+    // NOP
   }
 
   private boolean $locked;
@@ -86,21 +95,24 @@ public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, 
   public abstract class CollectionBackedLockIterator
       implements LockIterator<_ElementType_> {
 
-    protected abstract Iterator<_ElementType_> getIterator();
+    protected abstract Iterator<_ElementType_> getBackingIterator();
 
     public final boolean hasNext() {
-      return getIterator().hasNext();
+      return getBackingIterator().hasNext();
     }
 
-    public final _ElementType_ next() {
-      return getIterator().next();
+    /**
+     * Not final, because lazy subtypes might want to override this.
+     */
+    public _ElementType_ next() {
+      return getBackingIterator().next();
     }
 
     public final void remove() {
       if (isLocked()) {
         throw new UnsupportedOperationException("Collection is locked");
       }
-      getIterator().remove();
+      getBackingIterator().remove();
     }
 
   }
