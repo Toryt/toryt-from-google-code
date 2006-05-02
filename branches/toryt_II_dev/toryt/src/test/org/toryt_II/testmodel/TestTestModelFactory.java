@@ -10,11 +10,13 @@ import org.toryt.example.Bookmark;
 
 public class TestTestModelFactory extends TestCase {
 
+  @Override
   protected void setUp() throws Exception {
     super.setUp();
     $testModelFactory = new DefaultTestModelFactory();
   }
 
+  @Override
   protected void tearDown() throws Exception {
     $testModelFactory = null;
     super.tearDown();
@@ -22,7 +24,7 @@ public class TestTestModelFactory extends TestCase {
 
   private TestModelFactory $testModelFactory;
 
-  public static final Class CLASS_UNDER_TEST = Bookmark.class;
+  public static final Class<Bookmark> CLASS_UNDER_TEST = Bookmark.class;
 
   public static final String PACKAGE_NAME_UNDER_TEST_1 = "org.toryt.example";
 
@@ -81,10 +83,10 @@ public class TestTestModelFactory extends TestCase {
   /*
    * Test method for 'org.toryt_II.testmodel.TestModelFactory.createClassTestModel(Class)'
    */
-  public void testCreateClassTestModel() {
-    StaticClassTestModel result = $testModelFactory.createStaticClassTestModel(CLASS_UNDER_TEST);
+  public void testCreateClassTestModel() throws TestModelCreationException {
+    StaticClassTestModel<Bookmark> result = $testModelFactory.createStaticClassTestModel(CLASS_UNDER_TEST);
     result.printStructure(System.out);
-    assertEquals(CLASS_UNDER_TEST, result.getClazz());
+    assertEquals(CLASS_UNDER_TEST, result.getSubject());
     assertTrue(result.getChildTestModels().containsAll(result.constructorTestModels.getSet()));
     assertTrue(result.getChildTestModels().containsAll(result.instanceMutatorTestModels.getSet()));
     assertTrue(result.getChildTestModels().containsAll(result.instanceInspectorTestModels.getSet()));
@@ -97,10 +99,10 @@ public class TestTestModelFactory extends TestCase {
   /*
    * Test method for 'org.toryt_II.testmodel.TestModelFactory.createPackageTestModel(File[], Package)'
    */
-  public void testCreatePackageTestModel1() {
+  public void testCreatePackageTestModel1() throws TestModelCreationException {
     PackageTestModel result = $testModelFactory.createPackageTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PACKAGE_NAME_UNDER_TEST_1);
     result.printStructure(System.out);
-    assertEquals(PACKAGE_NAME_UNDER_TEST_1, result.getPackageName());
+    assertEquals(PACKAGE_NAME_UNDER_TEST_1, result.getSubject());
     assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
     assertTrue(result.getChildTestModels().containsAll(result.classTestModels.getSet()));
   }
@@ -108,10 +110,10 @@ public class TestTestModelFactory extends TestCase {
   /*
    * Test method for 'org.toryt_II.testmodel.TestModelFactory.createPackageTestModel(File[], Package)'
    */
-  public void testCreatePackageTestModel2() {
+  public void testCreatePackageTestModel2() throws TestModelCreationException {
     PackageTestModel result = $testModelFactory.createPackageTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PACKAGE_NAME_UNDER_TEST_2);
     result.printStructure(System.out);
-    assertEquals(PACKAGE_NAME_UNDER_TEST_2, result.getPackageName());
+    assertEquals(PACKAGE_NAME_UNDER_TEST_2, result.getSubject());
     assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
     assertTrue(result.getChildTestModels().containsAll(result.classTestModels.getSet()));
   }
@@ -119,20 +121,20 @@ public class TestTestModelFactory extends TestCase {
   /*
    * Test method for 'org.toryt_II.testmodel.TestModelFactory.createProjectTestModel(File[], Package)'
    */
-  public void testCreateProjectTestModel1() {
+  public void testCreateProjectTestModel1() throws TestModelCreationException {
     ProjectTestModel result = $testModelFactory.createProjectTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PROJECT_NAME_UNDER_TEST_1);
     result.printStructure(System.out);
-    assertEquals(PROJECT_NAME_UNDER_TEST_1, result.getProjectName());
+    assertEquals(PROJECT_NAME_UNDER_TEST_1, result.getSubject());
     assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
   }
 
   /*
    * Test method for 'org.toryt_II.testmodel.TestModelFactory.createProjectTestModel(File[], Package)'
    */
-  public void testCreateProjectTestModel2() {
+  public void testCreateProjectTestModel2() throws TestModelCreationException {
     ProjectTestModel result = $testModelFactory.createProjectTestModel(SOURCE_DIRECTORY_UNDER_TEST_2, PROJECT_NAME_UNDER_TEST_2);
     result.printStructure(System.out);
-    assertEquals(PROJECT_NAME_UNDER_TEST_2, result.getProjectName());
+    assertEquals(PROJECT_NAME_UNDER_TEST_2, result.getSubject());
     assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
   }
 
