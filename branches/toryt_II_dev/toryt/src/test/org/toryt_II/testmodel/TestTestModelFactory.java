@@ -30,13 +30,13 @@ public class TestTestModelFactory extends TestCase {
 
   public static final String PACKAGE_NAME_UNDER_TEST_2 = "org";
 
-  public static final File SOURCE_DIRECTORY_UNDER_TEST_1 = new File("target/classes");
+  public static final File CLASS_DIRECTORY_UNDER_TEST_1 = new File("target/classes");
 
   public static final String PROJECT_NAME_UNDER_TEST_1 = "Toryt Example";
 
-  public static final File SOURCE_DIRECTORY_UNDER_TEST_2 = new File("target/classes");
+//  public static final File CLASS_DIRECTORY_UNDER_TEST_2 = new File("target/classes");
 
-  public static final String PROJECT_NAME_UNDER_TEST_2 = "Toryt";
+//  public static final String PROJECT_NAME_UNDER_TEST_2 = "Toryt";
 
 //  /*
 //   * Test method for 'org.toryt_II.testmodel.TestModelFactory.createConstructorTestModel(Constructor)'
@@ -100,7 +100,7 @@ public class TestTestModelFactory extends TestCase {
    * Test method for 'org.toryt_II.testmodel.TestModelFactory.createPackageTestModel(File[], Package)'
    */
   public void testCreatePackageTestModel1() throws TestModelCreationException {
-    PackageTestModel result = $testModelFactory.createPackageTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PACKAGE_NAME_UNDER_TEST_1);
+    PackageTestModel result = $testModelFactory.createPackageTestModel(CLASS_DIRECTORY_UNDER_TEST_1, PACKAGE_NAME_UNDER_TEST_1);
     result.printStructure(System.out);
     assertEquals(PACKAGE_NAME_UNDER_TEST_1, result.getSubject());
     assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
@@ -111,7 +111,7 @@ public class TestTestModelFactory extends TestCase {
    * Test method for 'org.toryt_II.testmodel.TestModelFactory.createPackageTestModel(File[], Package)'
    */
   public void testCreatePackageTestModel2() throws TestModelCreationException {
-    PackageTestModel result = $testModelFactory.createPackageTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PACKAGE_NAME_UNDER_TEST_2);
+    PackageTestModel result = $testModelFactory.createPackageTestModel(CLASS_DIRECTORY_UNDER_TEST_1, PACKAGE_NAME_UNDER_TEST_2);
     result.printStructure(System.out);
     assertEquals(PACKAGE_NAME_UNDER_TEST_2, result.getSubject());
     assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
@@ -122,21 +122,21 @@ public class TestTestModelFactory extends TestCase {
    * Test method for 'org.toryt_II.testmodel.TestModelFactory.createProjectTestModel(File[], Package)'
    */
   public void testCreateProjectTestModel1() throws TestModelCreationException {
-    ProjectTestModel result = $testModelFactory.createProjectTestModel(SOURCE_DIRECTORY_UNDER_TEST_1, PROJECT_NAME_UNDER_TEST_1);
+    ProjectTestModel result = $testModelFactory.createProjectTestModel(CLASS_DIRECTORY_UNDER_TEST_1, PROJECT_NAME_UNDER_TEST_1);
     result.printStructure(System.out);
     assertEquals(PROJECT_NAME_UNDER_TEST_1, result.getSubject());
     assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
   }
 
-  /*
-   * Test method for 'org.toryt_II.testmodel.TestModelFactory.createProjectTestModel(File[], Package)'
-   */
-  public void testCreateProjectTestModel2() throws TestModelCreationException {
-    ProjectTestModel result = $testModelFactory.createProjectTestModel(SOURCE_DIRECTORY_UNDER_TEST_2, PROJECT_NAME_UNDER_TEST_2);
-    result.printStructure(System.out);
-    assertEquals(PROJECT_NAME_UNDER_TEST_2, result.getSubject());
-    assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
-  }
+//  /*
+//   * Test method for 'org.toryt_II.testmodel.TestModelFactory.createProjectTestModel(File[], Package)'
+//   */
+//  public void testCreateProjectTestModel2() throws TestModelCreationException {
+//    ProjectTestModel result = $testModelFactory.createProjectTestModel(CLASS_DIRECTORY_UNDER_TEST_2, PROJECT_NAME_UNDER_TEST_2);
+//    result.printStructure(System.out);
+//    assertEquals(PROJECT_NAME_UNDER_TEST_2, result.getSubject());
+//    assertTrue(result.getChildTestModels().containsAll(result.packageTestModels.getSet()));
+//  }
 
 }
 
