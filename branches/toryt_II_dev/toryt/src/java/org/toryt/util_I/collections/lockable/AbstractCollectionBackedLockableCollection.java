@@ -10,7 +10,9 @@ import org.toryt.util_I.collections.AbstractCollectionBackedCollection;
 
 /**
  * <p>Generalization of common code for {@link SetBackedLockableSet}
- *   and {@link ListBackedLockableList}.</p>
+ *   and {@link ListBackedLockableList}. The backing collection
+ *   needs to be kept private, to ensure correct behavior when
+ *   {@link #isLocked()}.</p>
  *
  * @author Jan Dockx
  */
@@ -18,14 +20,34 @@ import org.toryt.util_I.collections.AbstractCollectionBackedCollection;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractCollectionBackedLockableCollection<_ElementType_>
+public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, _BackingCollection_ extends Collection<_ElementType_>>
     extends AbstractCollectionBackedCollection<_ElementType_>
     implements LockableCollection<_ElementType_> {
 
-  protected AbstractCollectionBackedLockableCollection(boolean nullAllowed) {
+  /**
+   * The <code>backingCollection</code> should not be exposed to protect integrity
+   * when {@link #isLocked()}.
+   *
+   * @pre backingCollection != null;
+   * @post new.isNullAllowed() == nullAllowed;
+   * @post new.getBackingCollection() == backingCollection;
+   * @post ! new.isLocked();
+   */
+  protected AbstractCollectionBackedLockableCollection(_BackingCollection_ backingCollection, boolean nullAllowed) {
+    assert backingCollection != null;
     $nullAllowed = nullAllowed;
+    $backingCollection = backingCollection;
   }
 
+  @Override
+  protected final _BackingCollection_ getBackingCollection() {
+    return $backingCollection;
+  }
+
+  /**
+   * @invar $backingCollection != null;
+   */
+  private _BackingCollection_ $backingCollection;
 
 
   /* <property name="null allowed"> */

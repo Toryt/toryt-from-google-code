@@ -13,7 +13,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 /**
  * <p>Implementation of {@link LockableCollection} and {@link List},
- * backed by another {@link List}.</p>
+ *   backed by another {@link List}. The backing collection
+ *   needs to be kept private, to ensure correct behavior when
+ *   {@link #isLocked()}.</p>
  *
  * @author Jan Dockx
  */
@@ -22,35 +24,29 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class ListBackedLockableList<_ElementType_>
-    extends AbstractCollectionBackedLockableCollection<_ElementType_>
+    extends AbstractCollectionBackedLockableCollection<_ElementType_, List<_ElementType_>>
     implements LockableList<_ElementType_> {
 
   /**
+   * The <code>backingList</code> should not be exposed to protect integrity
+   * when {@link #isLocked()}.
+   *
    * @pre backingList != null;
+   * @post new.isNullAllowed() == nullAllowed;
+   * @post new.getBackingCollection() == backingList;
    * @post ! new.isLocked();
    */
-  public ListBackedLockableList(List<_ElementType_> backingList, boolean nullAllowed) {
-    super(nullAllowed);
-    assert backingList != null;
-    $backingList = backingList;
+  protected ListBackedLockableList(List<_ElementType_> backingList, boolean nullAllowed) {
+    super(backingList, nullAllowed);
   }
 
   /**
-   * Create an instance backed by a fresh {@link ArrayList}
+   * Create an instance backed by a fresh {@link ArrayList}.
    */
   public ListBackedLockableList(boolean nullAllowed) {
     this(new ArrayList<_ElementType_>(), nullAllowed);
   }
 
-  @Override
-  protected final List<_ElementType_> getBackingCollection() {
-    return $backingList;
-  }
-
-  /**
-   * @invar $backingList != null;
-   */
-  private List<_ElementType_> $backingList;
 
 
   /* <section name="Inspectors"> */
@@ -76,7 +72,7 @@ public class ListBackedLockableList<_ElementType_>
       implements ListIterator<_ElementType_> {
 
     private ListBackedLockListIterator(int index) {
-      $iterator = $backingList.listIterator(index);
+      $iterator = getBackingCollection().listIterator(index);
     }
 
     /**

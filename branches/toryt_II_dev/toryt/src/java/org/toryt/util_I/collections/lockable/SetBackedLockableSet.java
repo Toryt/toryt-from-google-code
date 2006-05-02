@@ -20,35 +20,28 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class SetBackedLockableSet<_ElementType_>
-    extends AbstractCollectionBackedLockableCollection<_ElementType_>
+    extends AbstractCollectionBackedLockableCollection<_ElementType_, Set<_ElementType_>>
     implements LockableSet<_ElementType_> {
 
   /**
+   * The <code>backingSet</code> should not be exposed to protect integrity
+   * when {@link #isLocked()}.
+   *
    * @pre backingSet != null;
+   * @post new.isNullAllowed() == nullAllowed;
+   * @post new.getBackingCollection() == backingSet;
    * @post ! new.isLocked();
    */
-  public SetBackedLockableSet(Set<_ElementType_> backingSet, boolean nullAllowed) {
-    super(nullAllowed);
-    assert backingSet != null;
-    $backingSet = backingSet;
+  protected SetBackedLockableSet(Set<_ElementType_> backingSet, boolean nullAllowed) {
+    super(backingSet, nullAllowed);
   }
 
   /**
-   * Create an instance backed by a fresh {@link HashSet}
+   * Create an instance backed by a fresh {@link HashSet}.
    */
   public SetBackedLockableSet(boolean nullAllowed) {
     this(new HashSet<_ElementType_>(), nullAllowed);
   }
-
-  @Override
-  protected final Set<_ElementType_> getBackingCollection() {
-    return $backingSet;
-  }
-
-  /**
-   * @invar $backingSet != null;
-   */
-  private Set<_ElementType_> $backingSet;
 
   public final Iterator<_ElementType_> iterator() {
     return new CollectionBackedLockIterator() {
@@ -56,7 +49,7 @@ public class SetBackedLockableSet<_ElementType_>
       /**
        * @invar $backingIterator != null;
        */
-      private Iterator<_ElementType_> $iterator = $backingSet.iterator();
+      private Iterator<_ElementType_> $iterator = getBackingCollection().iterator();
 
       @Override
       protected Iterator<_ElementType_> getIterator() {
