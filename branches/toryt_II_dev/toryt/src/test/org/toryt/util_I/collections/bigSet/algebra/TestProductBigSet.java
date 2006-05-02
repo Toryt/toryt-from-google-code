@@ -17,27 +17,30 @@ import junit.framework.TestCase;
          tag      = "$Name$")
 public class TestProductBigSet extends TestCase {
 
+  @Override
   public void setUp() {
-    SetBackedLockableBigSet[] components = new SetBackedLockableBigSet[3];
-    for (int i = 0; i < 3; i++) {
-      components[i] = new SetBackedLockableBigSet(Integer.class, false);
-      fillSet(components[i], (int)Math.pow(10, i));
-    }
-    $subject = new ProductBigSet(Integer[].class, components);
+    SetBackedLockableBigSet<Integer> component1 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(component1, 10);
+    SetBackedLockableBigSet<Integer> component2 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(component2, 100);
+    SetBackedLockableBigSet<Integer> component3 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(component3, 1000);
+    $subject = new ProductBigSet<Integer[]>(component1, component2, component3);
   }
 
+  @Override
   public void tearDown() {
     $subject = null;
   }
 
-  private void fillSet(SetBackedLockableBigSet lbs, int factor) {
+  private void fillSet(SetBackedLockableBigSet<Integer> lbs, int factor) {
     for (int i = 0; i < 3; i++) {
       lbs.add(new Integer((i + 1) * factor));
     }
     lbs.lock();
   }
 
-  private ProductBigSet $subject;
+  private ProductBigSet<Integer[]> $subject;
 
   public void testEmpty() {
     assertTrue(! ($subject.isEmpty()));
@@ -48,9 +51,12 @@ public class TestProductBigSet extends TestCase {
   }
 
   public void testIterator() {
-    Iterator iter = $subject.iterator();
+    Iterator<Integer[]> iter = $subject.iterator();
     while (iter.hasNext()) {
-      Integer[] e = (Integer[])iter.next();
+      Object[] e = iter.next();
+
+//RETURNS Object[]
+
       String s = "[" + e[0] + ", " + e[1] + ", " + e[2] + "]";
       System.out.println(s);
     }

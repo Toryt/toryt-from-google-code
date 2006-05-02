@@ -36,7 +36,7 @@ public class ObjectArrayAggregatorFactory extends AbstractAggregatorFactory<Obje
       extends AbstractReversibleAggregator<Object[]> {
 
     public int getNrOfComponents() {
-      return ObjectArrayAggregator.this.getNrOfComponents();
+      return ObjectArrayAggregatorFactory.this.getNrOfComponents();
     }
 
     /**

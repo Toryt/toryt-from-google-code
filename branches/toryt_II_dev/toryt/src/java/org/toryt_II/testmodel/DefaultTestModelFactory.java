@@ -258,7 +258,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
               "\" from class directory " + classDirectory.getPath());
     ProjectTestModel result = new ProjectTestModel();
     result.setSubject(projectName);
-    addPackages(classDirectory, "", classDirectory, result);
+    addPackages(classDirectory, null, classDirectory, result);
     return result;
   }
 
@@ -273,11 +273,13 @@ public class DefaultTestModelFactory implements TestModelFactory {
     File[] directoryContents = directory.listFiles(JAVA_SUBPACKAGE_FILTER);
     for (int i = 0; i < directoryContents.length; i++) {
       File packageCandidate = directoryContents[i];
-      String packageCandidateName = parentPackageName + packageCandidate.getName();
       if (NO_PACKAGE_DIR_NAME.equals(packageCandidate.getName())) {
         LOG.debug("  " + NO_PACKAGE_DIR_NAME + " is a reserved directory name, and not a package");
       }
       else {
+        String packageCandidateName =
+            ((parentPackageName == null) ? "" : parentPackageName + ".") +
+            packageCandidate.getName();
         LOG.debug("  candidate package: " + packageCandidateName);
         File[] packageCandidateContents = packageCandidate.listFiles(JAVA_CLASS_FILTER);
         LOG.debug("  only is a real package if it contains Java class files: " + packageCandidateContents.length);
@@ -287,7 +289,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
         }
         else { // this is not a package; go deeper
           LOG.debug("  no, but there might be real packages deeper");
-          addPackages(packageCandidate, packageCandidateName + ".", classDirectory, result);
+          addPackages(packageCandidate, packageCandidateName, classDirectory, result);
         }
       }
     }
