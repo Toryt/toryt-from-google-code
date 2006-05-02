@@ -1,14 +1,13 @@
 package org.toryt.util_I.collections.bigSet.algebra;
 
+
 import java.math.BigInteger;
 import java.util.Iterator;
 
-import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.bigSet.algebra.UnionBigSet;
-import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
-
 import junit.framework.TestCase;
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
 
 
 @CvsInfo(revision = "$Revision$",
@@ -17,27 +16,31 @@ import junit.framework.TestCase;
          tag      = "$Name$")
 public class TestUnionBigSet extends TestCase {
 
+  @Override
+  @SuppressWarnings("unchecked")
   public void setUp() {
-    SetBackedLockableBigSet[] components = new SetBackedLockableBigSet[3];
-    for (int i = 0; i < 3; i++) {
-      components[i] = new SetBackedLockableBigSet(Integer.class, false);
-      fillSet(components[i], (int)Math.pow(10, i));
-    }
-    $subject = new UnionBigSet(Integer.class, false, components);
+    SetBackedLockableBigSet<Integer> component1 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(component1, 10);
+    SetBackedLockableBigSet<Integer> component2 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(component2, 100);
+    SetBackedLockableBigSet<Integer> component3 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(component3, 1000);
+    $subject = new UnionBigSet<Integer>(false, component1, component2, component3);
   }
 
+  @Override
   public void tearDown() {
     $subject = null;
   }
 
-  private void fillSet(SetBackedLockableBigSet lbs, int factor) {
+  private void fillSet(SetBackedLockableBigSet<Integer> lbs, int factor) {
     for (int i = 0; i < 3; i++) {
       lbs.add(new Integer((i + 1) * factor));
     }
     lbs.lock();
   }
 
-  private UnionBigSet $subject;
+  private UnionBigSet<Integer> $subject;
 
   public void testEmpty() {
     assertTrue(! ($subject.isEmpty()));
@@ -48,7 +51,7 @@ public class TestUnionBigSet extends TestCase {
   }
 
   public void testIterator() {
-    Iterator iter = $subject.iterator();
+    Iterator<Integer> iter = $subject.iterator();
     while (iter.hasNext()) {
       System.out.println(iter.next());
     }
