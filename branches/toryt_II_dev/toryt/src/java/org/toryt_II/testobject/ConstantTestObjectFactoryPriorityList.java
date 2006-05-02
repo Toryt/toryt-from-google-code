@@ -26,13 +26,11 @@ public class ConstantTestObjectFactoryPriorityList<_TestObjectType_>
     implements TestObjectFactoryPriorityList<_TestObjectType_> {
 
   public ConstantTestObjectFactoryPriorityList() {
-    super(TestObjectFactory.class);
+    super(false);
   }
 
 
   /**
-   * @pre priority >= 0;
-   * @pre testObject != null;
    * @post (exists TestObjectFactory tof; get(priority).contains(tof);
    *            tof.generate() == testObject);
    * @throws UnsupportedOperationException
@@ -40,8 +38,8 @@ public class ConstantTestObjectFactoryPriorityList<_TestObjectType_>
    * @throws UnsupportedOperationException
    *         get(priority).isLocked();
    */
-  public final void addImmutableTestObject(int priority, _TestObjectType_ testObject) {
-    assert testObject != null;
+  public final void addImmutableTestObject(int priority, _TestObjectType_ testObject)
+      throws UnsupportedOperationException, NullPointerException, IndexOutOfBoundsException {
     addPriorityElement(priority, new ConstantTestObjectFactory<_TestObjectType_>(testObject));
   }
 

@@ -238,9 +238,10 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @result != null;
    * @result result instanceof PriorityListTestObjectFactoryPriorityList<forClass>;
    */
-  public TestObjectFactoryPriorityList<?> getTofPl(Class<?> forClass) throws NoTofPlFoundException {
+  public <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getTofPl(Class<_ForClassType_> forClass)
+      throws NoTofPlFoundException {
     assert forClass != null;
-    TestObjectFactoryPriorityList<?> result = getCachedTofPl(forClass);
+    TestObjectFactoryPriorityList<_ForClassType_> result = getCachedTofPl(forClass);
     if (result == null) {
       result = getTofPlFromSystemProperty(forClass);
     }
@@ -261,7 +262,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private TestObjectFactoryPriorityList<?> getTofPlFromSystemProperty(Class<?> forClass) {
+  private <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getTofPlFromSystemProperty(Class<_ForClassType_> forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
     assert forClass == null;
@@ -273,17 +274,15 @@ public class DefaultTofPlFactory implements TofPlFactory {
     String tofPlFqcn = properties.getProperty(key);
     _LOG.debug("  value of system property: \"" + tofPlFqcn + "\"");
     _LOG.debug("  trying to instantiate class with FQCN " + tofPlFqcn + " with default constructor");
-    TestObjectFactoryPriorityList<?> result = null;
     try {
-      result = (TestObjectFactoryPriorityList<?>)Beans.instantiate(null, tofPlFqcn);
+      @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClassType_> result =
+          (TestObjectFactoryPriorityList<_ForClassType_>)Beans.instantiate(null, tofPlFqcn);
       // runtime cannot check against generic type instantiation
-      /*
-       * TODO how can we do away with this warning?
-       */
       _LOG.info("Created TOF PL for class " + forClass +
                " from class " + tofPlFqcn + " (value of system property " +
                key + ")");
       addCachedTofPl(forClass, result);
+      return result;
     }
     catch (AlreadyHasTofPlForClassException e) {
       assert false : "AlreadyHasTofPlForClassException should not happen: " + e;
@@ -297,7 +296,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
     catch (ClassCastException ccExc) {
       logTofPlFromSystemPropertyInstantiationProblem(forClass, tofPlFqcn, key, ccExc);
     }
-    return result;
+    return null; // keep compiler happy
   }
 
   private static void logTofPlFromSystemPropertyInstantiationProblem(Class<?> forClass,
@@ -315,20 +314,17 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private TestObjectFactoryPriorityList<?> getTofPlFromBasePackageList(Class<?> forClass) {
+  private <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getTofPlFromBasePackageList(Class<_ForClassType_> forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
-    TestObjectFactoryPriorityList<?> result = null;
     Iterator<String> iter = getBasePackageNamesList(forClass).iterator();
     while (iter.hasNext()) {
       String packageName = iter.next();
       String fqcnToPrefix = packageName + "." + forClass.getName();
       try {
-        result = (TestObjectFactoryPriorityList<?>)Reflection.instantiatePrefixed(null, CLASS_NAME_PREFIX, fqcnToPrefix);
+        @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClassType_> result =
+            (TestObjectFactoryPriorityList<_ForClassType_>)Reflection.instantiatePrefixed(null, CLASS_NAME_PREFIX, fqcnToPrefix);
         // runtime cannot check against generic type instantiation
-        /*
-         * TODO how can we do away with this warning?
-         */
         assert result != null; // we only get here if this succeeds
         if (_LOG.isInfoEnabled()) {
           _LOG.info("Created TOF PL for class " + forClass +
@@ -336,7 +332,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
                    " (using base package list)");
         }
         addCachedTofPl(forClass, result);
-        break;
+        return result;
       }
       catch (AlreadyHasTofPlForClassException e) {
         assert false : "AlreadyHasTofPlForClassException should not happen: " + e;
@@ -349,34 +345,32 @@ public class DefaultTofPlFactory implements TofPlFactory {
         }
       }
     }
-    return result; // null if no TOF PL found this way
+    return null; // null if no TOF PL found this way
   }
 
   /**
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private TestObjectFactoryPriorityList<?> getTofPlFromContractConstant(Class<?> forClass) {
+  private <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getTofPlFromContractConstant(Class<_ForClassType_> forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
-    TestObjectFactoryPriorityList<?> result = null;
     ClassContract contract = null;
     try {
       contract = Contracts.classContractInstance(forClass);
       if (contract != null) {
-        result = (TestObjectFactoryPriorityList<?>)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
+        @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClassType_> result =
+            (TestObjectFactoryPriorityList<_ForClassType_>)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
         // runtime cannot check against generic type instantiation
-        /*
-         * TODO how can we do away with this warning?
-         */
         if (result != null) {
           if (_LOG.isInfoEnabled()) {
             _LOG.info("Retrieved TOF PL for class " + forClass +
                      " from contract constant " + contract.getClass() + "." +
                      CONTRACT_CONSTANT_NAME);
-            addCachedTofPl(forClass, result);
           }
+          addCachedTofPl(forClass, result);
         }
+        return result;
       }
     }
     catch (AlreadyHasTofPlForClassException e) {
@@ -396,7 +390,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
                   contract + ")", cnibExc);
       }
     }
-    return result;
+    return null; // if exceptions
   }
 
   /**
@@ -406,8 +400,10 @@ public class DefaultTofPlFactory implements TofPlFactory {
    *
    * @basic
    */
-  public TestObjectFactoryPriorityList<?> getCachedTofPl(Class<?> forClass) {
-    return TOF_PL_MAP.get(forClass);
+  public <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getCachedTofPl(Class<_ForClassType_> forClass) {
+    @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClassType_> result =
+        (TestObjectFactoryPriorityList<_ForClassType_>)TOF_PL_MAP.get(forClass);
+    return result;
   }
 
   /**
@@ -417,15 +413,13 @@ public class DefaultTofPlFactory implements TofPlFactory {
    *
    * @pre forClass != null;
    * @pre tofPl != null;
-   * @pre tofPl instanceof TestObjectFactoryPriorityList<forClass>;
    * @post new.getCachedTofPl(forClass) == tofPl;
    */
-  public void addCachedTofPl(final Class<?> forClass, final TestObjectFactoryPriorityList<?> tofPl)
+  public <_ForClassType_> void addCachedTofPl(final Class<_ForClassType_> forClass,
+                                                final TestObjectFactoryPriorityList<_ForClassType_> tofPl)
       throws AlreadyHasTofPlForClassException {
     assert forClass != null;
     assert tofPl != null;
-    assert tofPl.getPriorityElementType() == TestObjectFactory.class;
-    // cannot test generic type isntantiation at runtime
     if (TOF_PL_MAP.get(forClass) != null) {
       throw new AlreadyHasTofPlForClassException(this, forClass, TOF_PL_MAP.get(forClass));
     }
