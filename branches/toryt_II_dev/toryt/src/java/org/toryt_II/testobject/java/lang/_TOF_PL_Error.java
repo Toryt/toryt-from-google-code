@@ -2,9 +2,8 @@ package org.toryt_II.testobject.java.lang;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
+import org.toryt_II.testobject.ArrayHashTofPl;
 import org.toryt_II.testobject.TestObjectFactory;
-import org.toryt_II.testobject.TestObjectFactoryPriorityList;
 
 
 /**
@@ -17,13 +16,7 @@ import org.toryt_II.testobject.TestObjectFactoryPriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class _TOF_PL_Error
-    extends ArrayHashPriorityList<TestObjectFactory<Error>>
-    implements TestObjectFactoryPriorityList<Error> {
-
-  public _TOF_PL_Error() {
-    super(TestObjectFactory.class);
-  }
+public class _TOF_PL_Error extends ArrayHashTofPl<Error> {
 
   public final static String MESSAGE_1 = "dummy message 1";
 
