@@ -239,4 +239,26 @@ public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityLi
     return result.toString();
   }
 
+
+  /**
+   * This method is very expensive, as it iterates over all buckets
+   * (and thus generates them).
+   *
+   * @deprecated
+   */
+  public final Object[] toArray() {
+    return super.toArray();
+  }
+
+  /**
+   * This method is very expensive, as it iterates over all buckets
+   * (and thus generates them).
+   *
+   * @deprecated
+   */
+  public final Object[] toArray(Object[] a) {
+    return super.toArray(a);
+  }
+
+
 }

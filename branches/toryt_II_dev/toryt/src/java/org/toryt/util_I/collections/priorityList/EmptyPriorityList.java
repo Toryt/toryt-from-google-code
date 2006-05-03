@@ -36,7 +36,7 @@ public final class EmptyPriorityList<_PriorityElementType_>
     return 1;
   }
 
-  public final boolean containsPriorityElement(final _PriorityElementType_ o) {
+  public final boolean containsPriorityElement(final Object o) {
     return false;
   }
 
@@ -69,7 +69,7 @@ public final class EmptyPriorityList<_PriorityElementType_>
     return -1;
   }
 
-  public final ListIterator<LockableBigSet<_PriorityElementType_>> listIterator(int index) {
+  public final ListIterator<LockableBigSet<? extends _PriorityElementType_>> listIterator(int index) {
     return new AbstractLockedListIterator() {
 
                   public boolean hasNext() {

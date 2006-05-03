@@ -37,7 +37,7 @@ import org.toryt.util_I.collections.lockable.LockableList;
          state    = "$State$",
          tag      = "$Name$")
 public interface PriorityList<_PriorityElementType_>
-    extends LockableList<LockableBigSet<_PriorityElementType_>> {
+    extends LockableList<LockableBigSet<? extends _PriorityElementType_>> {
 
   /**
    * The total number of elements in the all priority buckets.
@@ -51,7 +51,7 @@ public interface PriorityList<_PriorityElementType_>
    *
    * @return (exists LockableBigSet lbs; contains(lbs); lbs.contains(o));
    */
-  boolean containsPriorityElement(_PriorityElementType_ o);
+  boolean containsPriorityElement(Object o);
 
   /**
    * An iterator that iterates over the priority elements in priority
@@ -60,11 +60,16 @@ public interface PriorityList<_PriorityElementType_>
    * the list order). The elements of a bucket or visited in no
    * particular order.
    */
-  Iterator<_PriorityElementType_> priorityElementIterator();
+  Iterator<? extends _PriorityElementType_> priorityElementIterator();
 
   /**
    * @basic
    */
   boolean isNullPriorityElementAllowed();
+
+  /**
+   * More strict return type.
+   */
+  PriorityList<_PriorityElementType_> subList(int fromIndexInclusive, int toIndexExclusive);
 
 }

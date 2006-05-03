@@ -3,6 +3,7 @@ package org.toryt.util_I.collections.priorityList;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +25,11 @@ import org.toryt.util_I.collections.lockable.ListBackedLockableList;
  *   backed by a {@link HashSet} (users should not
  *   depend on this knowledge). The buckets can contain <code>null</code>.
  *   Use {@link #addPriorityElement(int, Object)} to add priority
- *   elements directly.</p>
+ *   elements directly. The {@link List} mutators will always throw
+ *   an {@link UnsupportedOperationException}. You can use
+ *   mutators on element {@link LockableBigSet LockableBigSets} if
+ *   they are not locked. Locking this list als locks the
+ *   element {@link LockableBigSet LockableBigSets}.</p>
  * <p>Instances are intended to be used in the following way:</p>
  * <pre>
  *   ArrayHashPriorityList<_PriorityElementType_> pl =
@@ -47,7 +52,7 @@ import org.toryt.util_I.collections.lockable.ListBackedLockableList;
          state    = "$State$",
          tag      = "$Name$")
 public class ArrayHashPriorityList<_PriorityElementType_>
-    extends ListBackedLockableList<LockableBigSet<_PriorityElementType_>>
+    extends ListBackedLockableList<LockableBigSet<? extends _PriorityElementType_>>
     implements PriorityList<_PriorityElementType_> {
 
   /* we start with an empty backing list, and we make sure in all setters
@@ -67,7 +72,7 @@ public class ArrayHashPriorityList<_PriorityElementType_>
    *            ! sblb.isLocked());
    * @post new.getBackingCollection() == backingList;
    */
-  protected ArrayHashPriorityList(List<LockableBigSet<_PriorityElementType_>> backingList,
+  private ArrayHashPriorityList(List<LockableBigSet<? extends _PriorityElementType_>> backingList,
                                   boolean nullAllowed) {
     super(backingList, false);
     assert Collections.noNull(backingList);
@@ -109,11 +114,11 @@ public class ArrayHashPriorityList<_PriorityElementType_>
 
   @Override
   protected final void extraLock() {
-    Iterator<LockableBigSet<_PriorityElementType_>> iter = iterator();
+    Iterator<LockableBigSet<? extends _PriorityElementType_>> iter = iterator();
     while (iter.hasNext()) {
       try {
-        SetBackedLockableBigSet<_PriorityElementType_> lbs =
-            (SetBackedLockableBigSet<_PriorityElementType_>)iter.next();
+        SetBackedLockableBigSet<? extends _PriorityElementType_> lbs =
+            (SetBackedLockableBigSet<? extends _PriorityElementType_>)iter.next();
         lbs.lock();
       }
       catch (ClassCastException ccExc) {
@@ -123,12 +128,12 @@ public class ArrayHashPriorityList<_PriorityElementType_>
          in this list by generics; if we do, we need to
          make the generic definition of PriorityList to allow
          for subtypes of LockableBigSet static typing:
-         extends LockableList<? extends LockableBigSet<_PriorityElementType_>>
+         extends LockableList<? extends LockableBigSet<? extends _PriorityElementType_>>
          instead of
-         extends LockableList<LockableBigSet<_PriorityElementType_>>
+         extends LockableList<LockableBigSet<? extends _PriorityElementType_>>
          but, we cannot use ? in an extends clause of a class
          (don't know why, actually).
-         Without that, we must use extends LockableList<LockableBigSet<_PriorityElementType_>>
+         Without that, we must use extends LockableList<LockableBigSet<? extends _PriorityElementType_>>
          here, because we reach LockableList via PriorityList and via
          ListBackedLockableList, and via both paths, we need to get at the same
          generic definition of the _ElementType_ of LockableList,
@@ -152,9 +157,9 @@ public class ArrayHashPriorityList<_PriorityElementType_>
   public final BigInteger getCardinality() {
     if (! isLocked()) {
       $cachedCardinality = BigInteger.ZERO;
-      Iterator<LockableBigSet<_PriorityElementType_>> iter = iterator();
+      Iterator<LockableBigSet<? extends _PriorityElementType_>> iter = iterator();
       while (iter.hasNext()) {
-        BigSet<_PriorityElementType_> lbs = iter.next();
+        LockableBigSet<? extends _PriorityElementType_> lbs = iter.next();
         $cachedCardinality = $cachedCardinality.add(lbs.getBigSize());
       }
     }
@@ -166,6 +171,8 @@ public class ArrayHashPriorityList<_PriorityElementType_>
 
 
   /**
+   * Only working modification method for this class.
+   *
    * @pre priority >= 0;
    * @post get(priority).contains(o);
    * @throws UnsupportedOperationException
@@ -180,36 +187,55 @@ public class ArrayHashPriorityList<_PriorityElementType_>
     if (isLocked()) {
       throw new UnsupportedOperationException("priority list is locked");
     }
-    LockableBigSet<_PriorityElementType_> lbs= null;
+    SetBackedLockableBigSet<_PriorityElementType_> lbs= null;
     if (priority < size()) {
-      lbs = get(priority);
+      lbs = (SetBackedLockableBigSet<_PriorityElementType_>)get(priority);
+      /* ok in this implementation: we know this will only contain
+       * SetBackedLockableBigSet<_PriorityElementType_> with that precise
+       * type in this class (this isn't true for PriorityLists in general).
+       */
     }
     if (lbs == null) {
       lbs = fillWithEmptyBucketsUpUntil(priority);
         // possible UnsupportedOperationException
     }
+    assert get(priority) == lbs;
     assert Collections.noNull(getBackingCollection().subList(0, priority + 1));
-    // TODO there is workaround here, that might be solved in eclipse 3.2
-    //    lbs.add(o); // possible UnsupportedOperationException, NullPointerException
-    /* compilation error in eclipse;
-     * "The method add(_PriorityElementType_) is ambiguous for the type
-     * LockableBigSet<_PriorityElementType_>"
-     *
-     * This might be an error in the compiler:
-     * https://bugs.eclipse.org/bugs/show_bug.cgi?id=100869
-     * Not solved in 3.1, but described to be fixed in 3.2
-     *
-     * Workaround: static upcast (SetBackedLockableBigSet code executed via
-     * dynamic binding anyway).
-     */
-    ((BigSet<_PriorityElementType_>)lbs).add(o);
-    /* END OF WORKAROUND */
+    lbs.add(o); // possible UnsupportedOperationException, NullPointerException
   }
+
+  private SetBackedLockableBigSet<_PriorityElementType_> createFreshBucket() {
+    SetBackedLockableBigSet<_PriorityElementType_> lbsP =
+        new SetBackedLockableBigSet<_PriorityElementType_>(isNullPriorityElementAllowed());
+    if (isLocked()) {
+      lbsP.lock();
+    }
+    return lbsP;
+  }
+
+  /**
+   * @return new.get(priority);
+   * @result new.size() > priority;
+   */
+  private SetBackedLockableBigSet<_PriorityElementType_> fillWithEmptyBucketsUpUntil(int priority) {
+    assert priority >= getBackingCollection().size();
+    assert ! isLocked();
+    SetBackedLockableBigSet<_PriorityElementType_> lbs = null;
+    while (getBackingCollection().size() <= priority) {
+      // add to the end of the list until it is large enough
+      lbs = createFreshBucket();
+      getBackingCollection().add(lbs);
+    }
+    // return last added lbs
+    return lbs;
+  }
+
+
 
   public final boolean containsPriorityElement(final Object o) {
     return Collections.exists(this,
-                               new Assertion<Set<_PriorityElementType_>>() {
-                                      public boolean isTrueFor(Set<_PriorityElementType_> s) {
+                               new Assertion<Set<? extends _PriorityElementType_>>() {
+                                      public boolean isTrueFor(Set<? extends _PriorityElementType_> s) {
                                         return s.contains(o);
                                       }
                                     });
@@ -221,9 +247,9 @@ public class ArrayHashPriorityList<_PriorityElementType_>
                   /**
                    * @invar $listIter != null;
                    */
-                  private Iterator<LockableBigSet<_PriorityElementType_>> $listIter = iterator();
+                  private Iterator<LockableBigSet<? extends _PriorityElementType_>> $listIter = iterator();
 
-                  private Iterator<_PriorityElementType_> $bucketIter;
+                  private Iterator<? extends _PriorityElementType_> $bucketIter;
 
                   {
                     prepareNext();
@@ -234,7 +260,7 @@ public class ArrayHashPriorityList<_PriorityElementType_>
                     $bucketIter = null;
                     assert $bucketIter == null;
                     while (($bucketIter == null) && ($listIter.hasNext())) {
-                      Set<_PriorityElementType_> nextBucket = $listIter.next();
+                      Set<? extends _PriorityElementType_> nextBucket = $listIter.next();
                       assert nextBucket != null;
                       if (! nextBucket.isEmpty()) {
                         $bucketIter = nextBucket.iterator();
@@ -266,34 +292,6 @@ public class ArrayHashPriorityList<_PriorityElementType_>
   }
 
 
-  private LockableBigSet<_PriorityElementType_> createFreshBucket() {
-    SetBackedLockableBigSet<_PriorityElementType_> lbsP =
-        new SetBackedLockableBigSet<_PriorityElementType_>(isNullPriorityElementAllowed());
-    if (isLocked()) {
-      lbsP.lock();
-    }
-    return lbsP;
-  }
-
-  /**
-   * @return new.get(priority);
-   * @result new.size() > priority;
-   */
-  private LockableBigSet<_PriorityElementType_> fillWithEmptyBucketsUpUntil(int priority) {
-    assert priority >= getBackingCollection().size();
-    assert ! isLocked();
-    LockableBigSet<_PriorityElementType_> lbs = null;
-    while (getBackingCollection().size() <= priority) {
-      // add to the end of the list until it is large enough
-      lbs = createFreshBucket();
-      getBackingCollection().add(lbs);
-    }
-    // return last added lbs
-    return lbs;
-  }
-
-
-
   /* <section name="inspectors"> */
   //------------------------------------------------------------------
 
@@ -315,31 +313,159 @@ public class ArrayHashPriorityList<_PriorityElementType_>
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
 
-  /* don't need to overwrite add(E), addAll(Collection<? extends E>):
-   * add won't accept null, and only of correct type, and added to the end,
-   * so no need to add intermediate empty sets.
-   */
+  // all modifying operations always throw UnsupportedOperationException
+  // also, the listIterator modification operations are not allowed
 
-  /* when we are locked, nothing can be added; when we are not locked,
-   * adding a locked lbs is ok
+  /**
+   * @deprecated use {@link #addPriorityElement(int, Object)} instead
    */
+  @Override
+  @Deprecated
+  public final boolean add(LockableBigSet<? extends _PriorityElementType_> o)
+      throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+  }
 
-  /* No need to override index based mutators: they all throw IndexOutOfBounds when used beyond size().
+  /**
+   * @deprecated use {@link #addPriorityElement(int, Object)} instead
    */
+  @Override
+  @Deprecated
+  public final boolean remove(Object o) throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+  }
+
+  /**
+   * @deprecated use {@link #addPriorityElement(int, Object)} instead
+   */
+  @Override
+  @Deprecated
+  public final boolean addAll(Collection<? extends LockableBigSet<? extends _PriorityElementType_>> c)
+      throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+  }
+
+  /**
+   * @deprecated use {@link #addPriorityElement(int, Object)} instead
+   */
+  @Override
+  @Deprecated
+  public final boolean retainAll(Collection<?> c) throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+  }
+
+  /**
+   * @deprecated use {@link #addPriorityElement(int, Object)} instead
+   */
+  @Override
+  @Deprecated
+  public final boolean removeAll(Collection<?> c) throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+  }
+
+  /**
+   * @deprecated use {@link #addPriorityElement(int, Object)} instead
+   */
+  @Override
+  @Deprecated
+  public final void clear() throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+  }
+
+  /**
+   * @deprecated use {@link #addPriorityElement(int, Object)} instead
+   */
+  @Override
+  @Deprecated
+  public final void add(int index, LockableBigSet<? extends _PriorityElementType_> o)
+      throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+  }
+
+  /**
+   * @deprecated use {@link #addPriorityElement(int, Object)} instead
+   */
+  @Override
+  @Deprecated
+  public boolean addAll(int index, Collection<? extends LockableBigSet<? extends _PriorityElementType_>> c)
+      throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+  }
+
+  /**
+   * @deprecated use {@link #addPriorityElement(int, Object)} instead
+   */
+  @Override
+  @Deprecated
+  public final LockableBigSet<? extends _PriorityElementType_> set(int index, LockableBigSet<? extends _PriorityElementType_> o)
+      throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+  }
+
+  /**
+   * @deprecated use {@link #addPriorityElement(int, Object)} instead
+   */
+  @Override
+  @Deprecated
+  public final LockableBigSet<? extends _PriorityElementType_> remove(int index)
+      throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+  }
+
+  public class LockedListIterator extends ListBackedLockableListIterator {
+
+    protected LockedListIterator(int index) {
+      super(index);
+    }
+
+    /**
+     * @deprecated use {@link ArrayHashPriorityList#addPriorityElement(int, Object)} instead
+     */
+    @Override
+    @Deprecated
+    public final void set(LockableBigSet<? extends _PriorityElementType_> o) throws UnsupportedOperationException {
+      throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+    }
+
+    /**
+     * @deprecated use {@link ArrayHashPriorityList#addPriorityElement(int, Object)} instead
+     */
+    @Override
+    @Deprecated
+    public final void add(LockableBigSet<? extends _PriorityElementType_> o) throws UnsupportedOperationException {
+      throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+    }
+
+    /**
+     * @deprecated use {@link ArrayHashPriorityList#addPriorityElement(int, Object)} instead
+     */
+    @Override
+    @Deprecated
+    public void remove() throws UnsupportedOperationException {
+      throw new UnsupportedOperationException("use addPriorityElement(int priority, _ElementType o) instead");
+    }
+
+  }
+
+  @Override
+  public final ListIterator<LockableBigSet<? extends _PriorityElementType_>> listIterator(int index) {
+    return new LockedListIterator(index);
+  }
+
 
   /*</section>*/
 
   @Override
   public String toString() {
     StringBuffer result = new StringBuffer();
-    ListIterator<LockableBigSet<_PriorityElementType_>> iter = listIterator();
+    ListIterator<LockableBigSet<? extends _PriorityElementType_>> iter = listIterator();
     while (iter.hasNext()) {
-      BigSet<_PriorityElementType_> bs = iter.next();
+      BigSet<? extends _PriorityElementType_> bs = iter.next();
       result.append(iter.previousIndex());
       result.append(" (");
       result.append(bs.getBigSize());
       result.append("): ");
-      Iterator<_PriorityElementType_> bsIter = bs.iterator();
+      Iterator<? extends _PriorityElementType_> bsIter = bs.iterator();
       while (bsIter.hasNext()) {
         result.append(bsIter.next());
         if (bsIter.hasNext()) {

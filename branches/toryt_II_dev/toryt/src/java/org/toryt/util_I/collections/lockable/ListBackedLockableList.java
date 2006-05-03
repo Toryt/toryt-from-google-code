@@ -112,11 +112,13 @@ public class ListBackedLockableList<_ElementType_>
     }
 
     /**
+     * Not final, because locked subclasses want to override this.
+     *
      * @post   isLocked() ? false;
      * @throws UnsupportedOperationException
      *         isLocked();
      */
-    public final void set(_ElementType_ o) {
+    public void set(_ElementType_ o) {
       if (isLocked()) {
         throw new UnsupportedOperationException("List is locked");
       }
@@ -127,11 +129,13 @@ public class ListBackedLockableList<_ElementType_>
     }
 
     /**
+     * Not final, because locked subclasses want to override this.
+     *
      * @post   isLocked() ? false;
      * @throws UnsupportedOperationException
      *         isLocked();
      */
-    public final void add(_ElementType_ o) {
+    public void add(_ElementType_ o) {
       if (isLocked()) {
         throw new UnsupportedOperationException("List is locked");
       }
@@ -151,7 +155,10 @@ public class ListBackedLockableList<_ElementType_>
     return new ListBackedLockableListIterator(0);
   }
 
-  public final ListIterator<_ElementType_> listIterator(int index) {
+  /**
+   * Not final, because locked subclasses want to override this.
+   */
+  public ListIterator<_ElementType_> listIterator(int index) {
     return new ListBackedLockableListIterator(index);
   }
 
@@ -162,7 +169,10 @@ public class ListBackedLockableList<_ElementType_>
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
 
-  public final void add(int index, _ElementType_ o)
+  /**
+   * Not final, because locked subclasses want to override this.
+   */
+  public void add(int index, _ElementType_ o)
       throws UnsupportedOperationException, NullPointerException,
              IndexOutOfBoundsException {
     if (isLocked()) {
@@ -175,7 +185,7 @@ public class ListBackedLockableList<_ElementType_>
   }
 
   /**
-   * Not final, because lazy subclasses want to override this.
+   * Not final, because lazy and locked subclasses want to override this.
    */
   public boolean addAll(int index, Collection<? extends _ElementType_> c)
       throws UnsupportedOperationException, NullPointerException,
@@ -189,7 +199,10 @@ public class ListBackedLockableList<_ElementType_>
     return getBackingCollection().addAll(index, c);
   }
 
-  public final _ElementType_ set(int index, _ElementType_ o)
+  /**
+   * Not final, because locked subclasses want to override this.
+   */
+  public _ElementType_ set(int index, _ElementType_ o)
       throws UnsupportedOperationException, NullPointerException,
              IndexOutOfBoundsException {
     if (isLocked()) {
@@ -201,7 +214,10 @@ public class ListBackedLockableList<_ElementType_>
     return getBackingCollection().set(index, o);
   }
 
-  public final _ElementType_ remove(int index)
+  /**
+   * Not final, because locked subclasses want to override this.
+   */
+  public _ElementType_ remove(int index)
       throws UnsupportedOperationException,
              IndexOutOfBoundsException {
     if (isLocked()) {

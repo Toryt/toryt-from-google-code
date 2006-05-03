@@ -2,8 +2,8 @@ package org.toryt.util_I.collections.priorityList.algebra;
 
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
@@ -23,60 +23,44 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ConcatPriorityList extends AbstractComponentPriorityList {
+public class ConcatPriorityList<_PriorityElement_>
+    extends AbstractComponentPriorityList<_PriorityElement_> {
 
   /**
-   * @pre priorityElementType != null;
-   * @pre $components != null;
-   * @pre cC:noNull($components);
-   * @pre (forall int i; (i >= 0) && (i < $components.length);
-   *        $components[i].isLocked());
-   * @pre (forall int i; (i >= 0) && (i < $components.length);
-   *        getPriorityElementType().isAssignableFrom($components[i].getPriorityElementType()));
-   * @pre (forall int i; (i >= 0) && (i < $components.length);
-   *        (forall int j; (j >= 0) && (j < $components.length) && (j != i);
-   *          (forall Object o; $components[i].containsPriorityElement(o);
-   *             ! $components[j].containsPriorityElement(o)));
-   *      component priority lists must be disjunct on the level of the priority
-   *      elements (not checked with an assertion because too expensive)
+   * @pre component != null;
+   * @pre cC:noNull(component);
+   * @pre (forall int i; (i >= 0) && (i < component.length);
+   *        component[i].isLocked());
    */
-  public ConcatPriorityList(Class priorityElementType, PriorityList[] components) {
-    super(priorityElementType,
-          calculateSize(components),
-          components);
-    assert Collections.forAll(components,
-                              new Assertion() {
-                                    public boolean isTrueFor(Object o) {
-                                      return getPriorityElementType().
-                                              isAssignableFrom(((PriorityList)o).
-                                                               getPriorityElementType());
-                                    }
-                                  });
+  public ConcatPriorityList(PriorityList<? extends _PriorityElement_>... component) {
+    super(calculateSize(component),
+          component);
   }
 
-  private static int calculateSize(PriorityList[] components) {
+  private static int calculateSize(PriorityList<?>[] components) {
     assert components != null;
     int acc = 0;
-    for (int i = 0; i < components.length; i++) {
-      acc += (components[i] == null) ? 0 : components[i].size();
+    for (PriorityList<?> pl : components) {
+      acc += (pl == null) ? 0 : pl.size();
     }
     return acc;
   }
 
+  @Override
   public final boolean contains(final Object o) {
     return Collections.exists(getComponents(),
-                              new Assertion() {
-                                    public boolean isTrueFor(Object s) {
-                                      return (s == null) && ((PriorityList)s).contains(o);
+                              new Assertion<PriorityList<? extends _PriorityElement_>>() {
+                                    public boolean isTrueFor(PriorityList<? extends _PriorityElement_> s) {
+                                      return s.contains(o);
                                     }
                                   });
   }
 
-  public final List subList(int fromIndex, int toIndex) {
-    if ((fromIndex < 0) || (toIndex < 0) || (toIndex < fromIndex)) {
+  public final ConcatPriorityList<_PriorityElement_> subList(int fromIndex, int toIndex) {
+    if ((fromIndex < 0) || (toIndex < 0) || (fromIndex > toIndex) || (toIndex > size())) {
       throw new IndexOutOfBoundsException();
     }
-    PriorityList[] components = getComponents();
+    PriorityList<? extends _PriorityElement_>[] components = getComponents();
     int relativeFromIndex = fromIndex;
     int relativeToIndex = toIndex;
     // find from-component
@@ -112,21 +96,18 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
     // create and return result
     assert components[fromComponent] != null;
     assert components[toComponent] != null;
-    if (toComponent == fromComponent) {
-      return components[fromComponent].subList(relativeFromIndex, relativeToIndex);
+    int nrOfSubcomponents = toComponent - fromComponent + 1;
+    assert nrOfSubcomponents > 0;
+    @SuppressWarnings("unchecked") PriorityList<? extends _PriorityElement_>[] subcomponents =
+          (PriorityList<? extends _PriorityElement_>[])new PriorityList<?>[nrOfSubcomponents];
+    subcomponents[0] = components[fromComponent].subList(relativeFromIndex, components[fromComponent].size());
+    for (int i = 1; i < nrOfSubcomponents - 1; i++) {
+      subcomponents[i] = components[fromComponent + i];
     }
-    else {
-      int nrOfSubcomponents = toComponent - fromComponent + 1;
-      PriorityList[] subcomponents = new PriorityList[nrOfSubcomponents];
-      subcomponents[0] = (PriorityList)components[fromComponent].
-                            subList(relativeFromIndex, components[fromComponent].size());
-      for (int i = 1; i < nrOfSubcomponents - 1; i++) {
-        subcomponents[i] = components[fromComponent + i];
-      }
-      subcomponents[nrOfSubcomponents - 1] = (PriorityList)components[toComponent].
-                                                subList(0, relativeToIndex);
-      return new ConcatPriorityList(getPriorityElementType(), subcomponents);
+    if (toComponent > fromComponent) {
+      subcomponents[nrOfSubcomponents - 1] = components[toComponent].subList(0, relativeToIndex);
     }
+    return new ConcatPriorityList<_PriorityElement_>(subcomponents);
   }
 
   private class RelativePosition {
@@ -135,20 +116,18 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
       assert ai >= 0;
       this.absoluteIndex = ai;
       this.relativeIndex = ai;
-      while ((componentIndex < components.length) &&
-             ((components[componentIndex] == null) ||
-               (relativeIndex >= components[componentIndex].size()))) {
-        relativeIndex -= (components[componentIndex] == null) ?
+      while ((componentIndex < getComponents().length) &&
+             ((getComponents()[componentIndex] == null) ||
+               (relativeIndex >= getComponents()[componentIndex].size()))) {
+        relativeIndex -= (getComponents()[componentIndex] == null) ?
                            0 :
-                           components[componentIndex].size();
+                             getComponents()[componentIndex].size();
         componentIndex++;
       }
-      if (componentIndex >= components.length) {
+      if (componentIndex >= getComponents().length) {
         throw new IndexOutOfBoundsException();
       }
     }
-
-    public final PriorityList[] components = getComponents();
 
     public int absoluteIndex;
 
@@ -158,13 +137,14 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
 
   }
 
-  public final Object get(int index) {
+  public final LockableBigSet<? extends _PriorityElement_> get(int index) {
     RelativePosition rp = new RelativePosition(index);
-    return rp.components[rp.componentIndex].get(rp.relativeIndex);
+    return getComponents()[rp.componentIndex].get(rp.relativeIndex);
   }
 
+  @Override
   public final int indexOf(Object o) {
-    PriorityList[] components = getComponents();
+    PriorityList<? extends _PriorityElement_>[] components = getComponents();
     int accIndex = 0;
     for (int i = 0; i < components.length; i++) {
       if (components[i] != null) {
@@ -180,8 +160,9 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
     return -1;
   }
 
+  @Override
   public final int lastIndexOf(Object o) {
-    PriorityList[] components = getComponents();
+    PriorityList<? extends _PriorityElement_>[] components = getComponents();
     int accIndex = size() - components[components.length].size();
     for (int i = components.length; i >= 0; i--) {
       if (components[i] != null) {
@@ -197,35 +178,37 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
     return -1;
   }
 
-  public final ListIterator listIterator(final int index) {
+  public final ListIterator<LockableBigSet<? extends _PriorityElement_>> listIterator(final int index)
+      throws IndexOutOfBoundsException {
     return new AbstractLockedListIterator() {
 
                   private RelativePosition $rp = new RelativePosition(index);
 
-                  private ListIterator $componentIterator =
-                    $rp.components[$rp.componentIndex].listIterator($rp.relativeIndex);
+                  private ListIterator<? extends LockableBigSet<? extends _PriorityElement_>> $componentIterator =
+                      getComponents()[$rp.componentIndex].listIterator($rp.relativeIndex);
 
                   public boolean hasNext() {
                     return ($componentIterator != null) && $componentIterator.hasNext();
                   }
 
-                  public Object next() {
-                    Object result = $componentIterator.next();
+                  public LockableBigSet<? extends _PriorityElement_> next() {
+                    PriorityList<? extends _PriorityElement_>[] components = getComponents();
+                    LockableBigSet<? extends _PriorityElement_> result = $componentIterator.next();
                     if (! $componentIterator.hasNext()) {
                       do {
                         $rp.componentIndex++;
-                      } while (($rp.componentIndex < $rp.components.length) &&
-                               (($rp.components[$rp.componentIndex] == null) ||
-                                  $rp.components[$rp.componentIndex].isEmpty()));
-                      if ($rp.componentIndex < $rp.components.length) {
-                        assert $rp.components[$rp.componentIndex] != null;
-                        assert ! $rp.components[$rp.componentIndex].isEmpty();
+                      } while (($rp.componentIndex < components.length) &&
+                               ((components[$rp.componentIndex] == null) ||
+                                  components[$rp.componentIndex].isEmpty()));
+                      if ($rp.componentIndex < components.length) {
+                        assert components[$rp.componentIndex] != null;
+                        assert ! components[$rp.componentIndex].isEmpty();
                         $componentIterator =
-                          $rp.components[$rp.componentIndex].listIterator();
+                          components[$rp.componentIndex].listIterator();
                       }
                       // else, leave it
                     }
-                    $rp.absoluteIndex--;
+                    $rp.absoluteIndex++;
                     return result;
                   }
 
@@ -233,20 +216,20 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
                     return ($componentIterator != null) && $componentIterator.hasPrevious();
                   }
 
-                  public Object previous() {
-                    Object result = $componentIterator.previous();
+                  public LockableBigSet<? extends _PriorityElement_> previous() {
+                    PriorityList<? extends _PriorityElement_>[] components = getComponents();
+                    LockableBigSet<? extends _PriorityElement_> result = $componentIterator.previous();
                     if (! $componentIterator.hasPrevious()) {
                       do {
                         $rp.componentIndex--;
                       } while (($rp.componentIndex >= 0) &&
-                               (($rp.components[$rp.componentIndex] == null) ||
-                                  $rp.components[$rp.componentIndex].isEmpty()));
+                               ((components[$rp.componentIndex] == null) ||
+                                  components[$rp.componentIndex].isEmpty()));
                       if ($rp.componentIndex >= 0) {
-                        assert $rp.components[$rp.componentIndex] != null;
-                        assert ! $rp.components[$rp.componentIndex].isEmpty();
+                        assert components[$rp.componentIndex] != null;
+                        assert ! components[$rp.componentIndex].isEmpty();
                         $componentIterator =
-                          $rp.components[$rp.componentIndex].
-                            listIterator($rp.components[$rp.componentIndex].size());
+                          components[$rp.componentIndex].listIterator(components[$rp.componentIndex].size());
                       }
                       // else, leave it
                     }
@@ -265,12 +248,12 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
                 };
   }
 
-  public Iterator priorityElementIterator() {
-    return new AbstractLockedCollectionIterator() {
+  public Iterator<_PriorityElement_> priorityElementIterator() {
+    return new Iterator<_PriorityElement_>() {
 
-                  private Iterator $listIter = iterator();
+                  private Iterator<LockableBigSet<? extends _PriorityElement_>> $listIter = iterator();
 
-                  private Iterator $bucketIter;
+                  private Iterator<? extends _PriorityElement_> $bucketIter;
 
                   {
                     nextBucketIterator();
@@ -279,7 +262,7 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
                   private void nextBucketIterator() {
                     $bucketIter = null;
                     while ($listIter.hasNext() && ($bucketIter == null)) {
-                      LockableBigSet bucket = (LockableBigSet)$listIter.next();
+                      Set<? extends _PriorityElement_> bucket = $listIter.next();
                       if (! bucket.isEmpty()) {
                         $bucketIter = bucket.iterator();
                       }
@@ -290,15 +273,30 @@ public class ConcatPriorityList extends AbstractComponentPriorityList {
                     return $bucketIter != null;
                   }
 
-                  public Object next() {
-                    Object result = $bucketIter.next();
+                  public _PriorityElement_ next() {
+                    _PriorityElement_ result = $bucketIter.next();
                     if (! $bucketIter.hasNext()) {
                       nextBucketIterator();
                     }
                     return result;
                   }
 
+                  /**
+                   * @deprecated Unsupported
+                   */
+                  @Deprecated
+                  public final void remove()  throws UnsupportedOperationException {
+                    throw new UnsupportedOperationException("Set is locked");
+                  }
+
                 };
+  }
+
+  /**
+   * @mudo
+   */
+  public boolean isNullPriorityElementAllowed() {
+    return false;
   }
 
 }

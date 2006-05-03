@@ -11,6 +11,7 @@ import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.algebra.UnionBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
+import org.toryt.util_I.collections.lockable.AbstractLockedList.AbstractLockedListIterator;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
@@ -31,8 +32,6 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  * @author Jan Dockx
  *
  * @invar (forall int i; (i >= 0) && (i < getComponents().length);
- *          getPriorityElementType().isAssignableFrom(getComponents()[i].getPriorityElementType()));
- * @invar (forall int i; (i >= 0) && (i < getComponents().length);
  *          (forall int j; (j >= 0) && (j < getComponents().length) && (j != i);
  *            (forall Object o; getComponents()[i].containsPriorityElement(o);
  *              ! getComponents()[j].containsPriorityElement(o)));
@@ -42,16 +41,14 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class UnionPriorityList extends AbstractComponentPriorityList {
+public class UnionPriorityList<_PriorityElement_>
+    extends AbstractComponentPriorityList<_PriorityElement_> {
 
   /**
-   * @pre priorityElementType != null;
-   * @pre $components != null;
-   * @pre cC:noNull($components);
+   * @pre component != null;
+   * @pre cC:noNull(components);
    * @pre (forall int i; (i >= 0) && (i < $components.length);
    *        $components[i].isLocked());
-   * @pre (forall int i; (i >= 0) && (i < $components.length);
-   *        getPriorityElementType().isAssignableFrom($components[i].getPriorityElementType()));
    * @pre (forall int i; (i >= 0) && (i < $components.length);
    *        (forall int j; (j >= 0) && (j < $components.length) && (j != i);
    *          (forall Object o; $components[i].containsPriorityElement(o);
@@ -60,106 +57,19 @@ public class UnionPriorityList extends AbstractComponentPriorityList {
    *      elements (not checked with an assertion because too expensive)
    * @post Collections.containsAll($components, new.getComponents());
    */
-  public UnionPriorityList(Class priorityElementType, PriorityList[] components) {
-    super(priorityElementType,
-          calculateSize(components),
-          components);
-    assert Collections.forAll(components,
-                              new Assertion() {
-                                    public boolean isTrueFor(Object o) {
-                                      return getPriorityElementType().
-                                              isAssignableFrom(((PriorityList)o).
-                                                               getPriorityElementType());
-                                    }
-                                  });
+  public UnionPriorityList(PriorityList<? extends _PriorityElement_>... component) {
+    super(calculateSize(component),
+          component);
+    // no assertion for being disjunct
   }
 
-  private static int calculateSize(PriorityList[] components) {
+  private static int calculateSize(PriorityList<?>[] components) {
     assert components != null;
     int max = 0;
-    for (int i = 0; i < components.length; i++) {
-      max = Math.max(components[i].size(), max);
+    for (PriorityList<?> pl : components) {
+      max = Math.max(pl.size(), max);
     }
     return max;
-  }
-
-  private class UnionListIterator extends AbstractLockedListIterator {
-
-    public UnionListIterator(int index) {
-      initIterators(index);
-    }
-
-    private final PriorityList[] $components = getComponents();
-
-    private final ListIterator[] $iterators = new ListIterator[$components.length];
-
-    private void initIterators(int index) {
-      for (int i = 0; i < $components.length; i++) {
-        $iterators[i] = $components[i].listIterator(index);
-      }
-    }
-
-    public boolean hasNext() {
-      // TODO Auto-generated method stub
-      return false;
-    }
-
-    public Object next() {
-      LockableBigSet[] result = new LockableBigSet[$iterators.length];
-      for (int i = 0; i < $iterators.length; i++) {
-        if ($iterators[i].hasNext()) {
-          result[i] = (LockableBigSet)$iterators[i].next();
-        }
-      }
-      return new UnionBigSet(getPriorityElementType(), result);
-CHANGE UnionBigSet to accept nulls in components !!!
-      // MUDO either cache this, or override BigSet.equals()!!!!
-    }
-
-    public boolean hasPrevious() {
-      // TODO Auto-generated method stub
-      return false;
-    }
-
-    public Object previous() {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    public int nextIndex() {
-      // TODO Auto-generated method stub
-      return 0;
-    }
-
-    public int previousIndex() {
-      // TODO Auto-generated method stub
-      return 0;
-    }
-
-    public void set(Object o) {
-      // TODO Auto-generated method stub
-
-    }
-
-    public void add(Object o) {
-      // TODO Auto-generated method stub
-
-    }
-
-  }
-
-  public List subList(int fromIndex, int toIndex) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  public final Object get(int index) {
-    PriorityList[] components = getComponents();
-    LockableBigSet[] result = new LockableBigSet[components.length];
-    for (int i = 0; i < components.length; i++) {
-      result[i] = (LockableBigSet)components[i].get(index);
-    }
-    return new UnionBigSet(getPriorityElementType(), true, result);
   }
 
   /**
@@ -169,8 +79,122 @@ CHANGE UnionBigSet to accept nulls in components !!!
    *             effectively creates buckets one after the
    *             other
    */
+  @Override
+  @Deprecated
   public final boolean contains(final Object o) {
     return super.contains(o);
+  }
+
+  public final UnionPriorityList<_PriorityElement_> subList(int fromInclusive, int toExclusive)
+      throws IndexOutOfBoundsException {
+    if ((fromInclusive < 0) || (toExclusive < 0) || (fromInclusive > toExclusive) || (toExclusive > size())) {
+      throw new IndexOutOfBoundsException();
+    }
+    PriorityList<? extends _PriorityElement_>[] components = getComponents();
+    @SuppressWarnings("unchecked") PriorityList<? extends _PriorityElement_>[] subcomponents =
+      (PriorityList<? extends _PriorityElement_>[])new PriorityList<?>[getComponents().length];
+    for (int i = 0; i < subcomponents.length; i++) {
+      PriorityList<? extends _PriorityElement_> pl = components[i];
+      int maxPriority = Math.min(toExclusive, pl.size());
+      subcomponents[i] = pl.subList(fromInclusive, maxPriority);
+    }
+    return new UnionPriorityList<_PriorityElement_>(subcomponents);
+  }
+
+  public final UnionBigSet<? extends _PriorityElement_> get(int index) {
+    PriorityList<? extends _PriorityElement_>[] components = getComponents();
+    @SuppressWarnings("unchecked") LockableBigSet<? extends _PriorityElement_>[] result =
+        (LockableBigSet<? extends _PriorityElement_>[])new LockableBigSet<?>[components.length];
+    for (int i = 0; i < components.length; i++) {
+      result[i] = (index < components[i].size()) ? components[i].get(index) : null;
+    }
+    return new UnionBigSet<_PriorityElement_>(isNullPriorityElementAllowed(), result);
+  }
+
+   public final ListIterator<LockableBigSet<? extends _PriorityElement_>> listIterator(final int index)
+       throws IndexOutOfBoundsException {
+     return new UnionListIterator(index);
+   }
+
+  private class UnionListIterator extends AbstractLockedListIterator {
+
+    public UnionListIterator(int index) throws IndexOutOfBoundsException {
+      if ((index < 0) || (index > size())) {
+        throw new IndexOutOfBoundsException();
+      }
+      PriorityList<? extends _PriorityElement_>[] components = getComponents();
+      @SuppressWarnings("unchecked")
+      ListIterator<? extends LockableBigSet<? extends _PriorityElement_>>[] iterators =
+          (ListIterator<? extends LockableBigSet<? extends _PriorityElement_>>[])new ListIterator<?>[components.length];
+      $componentIterators = iterators;
+      for (int i = 0; i < components.length; i++) {
+        assert components[i] != null;
+        $componentIterators[i] = (index <= components[i].size()) ?
+                                   components[i].listIterator(index) :
+                                   components[i].listIterator(components[i].size());
+      }
+      $currentNextIndex = index;
+    }
+
+    /**
+     * $componentIterators[i] are past the last position for a component that is depleted;
+     *
+     * @invar Collections.noNull($componentIterators);
+     */
+    private final ListIterator<? extends LockableBigSet<? extends _PriorityElement_>>[] $componentIterators;
+
+    /**
+     * @invar $currentNextIndex >= 0;
+     */
+    private int $currentNextIndex;
+
+    public int nextIndex() {
+      return $currentNextIndex;
+    }
+
+    public int previousIndex() {
+      return $currentNextIndex - 1;
+    }
+
+    public boolean hasNext() {
+      return $currentNextIndex < size();
+    }
+
+    public boolean hasPrevious() {
+      return $currentNextIndex > 0;
+    }
+
+    public LockableBigSet<? extends _PriorityElement_> next() {
+      @SuppressWarnings("unchecked") LockableBigSet<? extends _PriorityElement_>[] resultComponents =
+          (LockableBigSet<? extends _PriorityElement_>[])new LockableBigSet<?>[$componentIterators.length];
+      for (int i = 0; i < $componentIterators.length; i++) {
+        resultComponents[i] = $componentIterators[i].hasNext() ?
+                                $componentIterators[i].next() :
+                                null;
+      }
+      $currentNextIndex++;
+      return new UnionBigSet<_PriorityElement_>(isNullPriorityElementAllowed(), resultComponents);
+    }
+
+    public LockableBigSet<? extends _PriorityElement_> previous() {
+      @SuppressWarnings("unchecked") LockableBigSet<? extends _PriorityElement_>[] resultComponents =
+        (LockableBigSet<? extends _PriorityElement_>[])new LockableBigSet<?>[$componentIterators.length];
+    for (int i = 0; i < $componentIterators.length; i++) {
+      resultComponents[i] = $componentIterators[i].hasPrevious() ?
+                              $componentIterators[i].previous() :
+                              null;
+    }
+    $currentNextIndex--;
+    return new UnionBigSet<_PriorityElement_>(isNullPriorityElementAllowed(), resultComponents);
+    }
+
+  }
+
+  /**
+   * @mudo
+   */
+  public boolean isNullPriorityElementAllowed() {
+    return false;
   }
 
 }

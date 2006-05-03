@@ -23,8 +23,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractLockedCollection<_ElementType_>
-    implements LockableCollection<_ElementType_> {
+public abstract class AbstractLockedCollection<_Element_>
+    implements LockableCollection<_Element_> {
 
   protected AbstractLockedCollection(boolean nullAllowed) {
     $nullAllowed = nullAllowed;
@@ -65,8 +65,8 @@ public abstract class AbstractLockedCollection<_ElementType_>
    * implementation is possible.
    */
   public boolean contains(final Object o) {
-    return Collections.exists(this, new Assertion<_ElementType_>() {
-              public boolean isTrueFor(_ElementType_ element) {
+    return Collections.exists(this, new Assertion<_Element_>() {
+              public boolean isTrueFor(_Element_ element) {
                 return (((o == null) && (element == null)) ||
                         ((o != null) && (o.equals(element))));
               }
@@ -124,7 +124,7 @@ public abstract class AbstractLockedCollection<_ElementType_>
       /* Java API is not generic here */
       result = newArray;
     }
-    Iterator<_ElementType_> iter = iterator();
+    Iterator<_Element_> iter = iterator();
     int i = 0;
     try {
       while (iter.hasNext()) {
@@ -152,7 +152,7 @@ public abstract class AbstractLockedCollection<_ElementType_>
    * @deprecated Unsupported
    */
   @Deprecated
-  public final boolean add(_ElementType_ o) throws UnsupportedOperationException {
+  public final boolean add(_Element_ o) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
@@ -168,7 +168,7 @@ public abstract class AbstractLockedCollection<_ElementType_>
    * @deprecated Unsupported
    */
   @Deprecated
-  public final boolean addAll(Collection<? extends _ElementType_> c) throws UnsupportedOperationException {
+  public final boolean addAll(Collection<? extends _Element_> c) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
@@ -199,7 +199,7 @@ public abstract class AbstractLockedCollection<_ElementType_>
   /*</section>*/
 
 
-  public abstract class AbstractLockedCollectionIterator implements Iterator<_ElementType_> {
+  public abstract class AbstractLockedCollectionIterator implements Iterator<_Element_> {
 
     /**
      * @deprecated Unsupported

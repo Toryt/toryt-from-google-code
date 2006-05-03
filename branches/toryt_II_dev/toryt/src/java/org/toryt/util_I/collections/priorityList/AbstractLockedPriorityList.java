@@ -20,7 +20,7 @@ import org.toryt.util_I.collections.lockable.AbstractLockedList;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractLockedPriorityList<_PriorityElementType_>
-    extends AbstractLockedList<LockableBigSet<_PriorityElementType_>>
+    extends AbstractLockedList<LockableBigSet<? extends _PriorityElementType_>>
     implements PriorityList<_PriorityElementType_> {
 
   /**
@@ -57,14 +57,14 @@ public abstract class AbstractLockedPriorityList<_PriorityElementType_>
   @Override
   public String toString() {
     StringBuffer result = new StringBuffer();
-    ListIterator<LockableBigSet<_PriorityElementType_>> iter = listIterator();
+    ListIterator<LockableBigSet<? extends _PriorityElementType_>> iter = listIterator();
     while (iter.hasNext()) {
-      LockableBigSet<_PriorityElementType_> lbs = iter.next();
+      LockableBigSet<? extends _PriorityElementType_> lbs = iter.next();
       result.append(iter.previousIndex());
       result.append(" (");
       result.append(lbs.getBigSize());
       result.append("): ");
-      Iterator<_PriorityElementType_> lbsIter = lbs.iterator();
+      Iterator<? extends _PriorityElementType_> lbsIter = lbs.iterator();
       while (lbsIter.hasNext()) {
         result.append(priorityElementToString(lbsIter.next()));
         if (lbsIter.hasNext()) {

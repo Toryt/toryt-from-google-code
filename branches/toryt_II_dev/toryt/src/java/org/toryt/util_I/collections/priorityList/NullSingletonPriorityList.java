@@ -62,7 +62,7 @@ public final class NullSingletonPriorityList<_PriorityElementType_>
     return 0;
   }
 
-  public final boolean containsPriorityElement(final _PriorityElementType_ o) {
+  public final boolean containsPriorityElement(final Object o) {
     return (o == null);
   }
 
@@ -98,7 +98,7 @@ public final class NullSingletonPriorityList<_PriorityElementType_>
     return indexOf(o);
   }
 
-  public final ListIterator<LockableBigSet<_PriorityElementType_>> listIterator(final int index) {
+  public final ListIterator<LockableBigSet<? extends _PriorityElementType_>> listIterator(final int index) {
     return new AbstractLockedListIterator() {
 
                   private boolean $delivered = (index == 1);

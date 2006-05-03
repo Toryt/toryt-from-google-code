@@ -108,7 +108,10 @@ public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, 
       return getBackingIterator().next();
     }
 
-    public final void remove() {
+    /**
+     * Not final, because locked subclasses want to override this.
+     */
+    public void remove() {
       if (isLocked()) {
         throw new UnsupportedOperationException("Collection is locked");
       }
@@ -124,7 +127,10 @@ public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, 
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
 
-  public final boolean add(_ElementType_ o)
+  /**
+   * Not final, because locked subclasses want to override this.
+   */
+  public boolean add(_ElementType_ o)
       throws NullPointerException, UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("Collection is locked");
@@ -135,14 +141,20 @@ public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, 
     return getBackingCollection().add(o);
   }
 
-  public final boolean remove(Object o) throws UnsupportedOperationException {
+  /**
+   * Not final, because locked subclasses want to override this.
+   */
+  public boolean remove(Object o) throws UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("Collection is locked");
     }
     return getBackingCollection().remove(o);
   }
 
-  public final boolean addAll(Collection<? extends _ElementType_> c)
+  /**
+   * Not final, because locked subclasses want to override this.
+   */
+  public boolean addAll(Collection<? extends _ElementType_> c)
       throws NullPointerException, UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("Collection is locked");
@@ -153,21 +165,30 @@ public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, 
     return getBackingCollection().addAll(c);
   }
 
-  public final boolean retainAll(Collection<?> c) throws UnsupportedOperationException {
+  /**
+   * Not final, because locked subclasses want to override this.
+   */
+  public boolean retainAll(Collection<?> c) throws UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("Collection is locked");
     }
     return getBackingCollection().retainAll(c);
   }
 
-  public final boolean removeAll(Collection<?> c) throws UnsupportedOperationException {
+  /**
+   * Not final, because locked subclasses want to override this.
+   */
+  public boolean removeAll(Collection<?> c) throws UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("Collection is locked");
     }
     return getBackingCollection().removeAll(c);
   }
 
-  public final void clear() throws UnsupportedOperationException {
+  /**
+   * Not final, because locked subclasses want to override this.
+   */
+  public void clear() throws UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("Collection is locked");
     }

@@ -21,8 +21,8 @@ import org.toryt.util_I.collections.priorityList.AbstractLockedPriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractLazyLockedComponentPriorityList extends AbstractLockedPriorityList
-    implements LazyList {
+public abstract class AbstractLazyLockedComponentPriorityList<_ElementType_>
+    extends AbstractLockedPriorityList<_ElementType_>  {
 
   /**
    * @pre priorityPriorityElementType != null;

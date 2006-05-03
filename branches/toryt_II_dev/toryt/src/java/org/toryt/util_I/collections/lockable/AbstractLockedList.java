@@ -22,14 +22,45 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractLockedList<_ElementType_>
-    extends AbstractLockedCollection<_ElementType_>
-    implements LockableList<_ElementType_> {
+public abstract class AbstractLockedList<_Element_>
+    extends AbstractLockedCollection<_Element_>
+    implements LockableList<_Element_> {
 
   protected AbstractLockedList(boolean nullAllowed) {
     super(nullAllowed);
   }
 
+  /**
+   * Trivial, {@link ListIterator} based implementation.
+   */
+  public int indexOf(Object o) {
+    /* trivial implementation */
+    ListIterator<_Element_> iter = listIterator();
+    while (iter.hasNext()) {
+      _Element_ e = iter.next();
+      if ((o == e) || ((e != null) && e.equals(o))) {
+        return iter.previousIndex();
+      }
+    }
+    // not found
+    return -1;
+  }
+
+  /**
+   * Trivial, {@link ListIterator} based implementation.
+   */
+   public int lastIndexOf(Object o) {
+     /* trivial implementation */
+     ListIterator<_Element_> iter = listIterator(size());
+     while (iter.hasPrevious()) {
+       _Element_ e = iter.previous();
+       if ((o == e) || ((e != null) && e.equals(o))) {
+         return iter.nextIndex();
+       }
+     }
+     // not found
+     return -1;
+   }
 
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
@@ -38,7 +69,7 @@ public abstract class AbstractLockedList<_ElementType_>
    * @deprecated Unsupported
    */
   @Deprecated
-  public final void add(int index, _ElementType_ o) throws UnsupportedOperationException {
+  public final void add(int index, _Element_ o) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("List is locked");
   }
 
@@ -46,7 +77,7 @@ public abstract class AbstractLockedList<_ElementType_>
    * @deprecated Unsupported
    */
   @Deprecated
-  public final boolean addAll(int index, Collection<? extends _ElementType_> c)
+  public final boolean addAll(int index, Collection<? extends _Element_> c)
       throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
@@ -55,7 +86,7 @@ public abstract class AbstractLockedList<_ElementType_>
    * @deprecated Unsupported
    */
   @Deprecated
-  public final _ElementType_ set(int index, _ElementType_ o) throws UnsupportedOperationException {
+  public final _Element_ set(int index, _Element_ o) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
@@ -63,7 +94,7 @@ public abstract class AbstractLockedList<_ElementType_>
    * @deprecated Unsupported
    */
   @Deprecated
-  public final _ElementType_ remove(int index) throws UnsupportedOperationException {
+  public final _Element_ remove(int index) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Set is locked");
   }
 
@@ -84,10 +115,10 @@ public abstract class AbstractLockedList<_ElementType_>
   protected final boolean hasSameElementsOnSamePlace(List<?> other) {
     assert other != null;
     assert other.size() == size();
-    ListIterator<_ElementType_> thisLi = listIterator();
+    ListIterator<_Element_> thisLi = listIterator();
     ListIterator<?> otherLi = other.listIterator();
     while (thisLi.hasNext()) {
-      _ElementType_ thisInstance = thisLi.next();
+      _Element_ thisInstance = thisLi.next();
       Object otherInstance = otherLi.next();
       if (((thisInstance == null) && (otherInstance != null)) ||
           ((thisInstance != null) && (! thisInstance.equals(otherInstance)))) {
@@ -109,31 +140,31 @@ public abstract class AbstractLockedList<_ElementType_>
   @Override
   public int hashCode() {
     int hashCode = 1;
-    Iterator<_ElementType_> i = iterator();
+    Iterator<_Element_> i = iterator();
     while (i.hasNext()) {
-        _ElementType_ obj = i.next();
+        _Element_ obj = i.next();
         hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
     }
     return hashCode;
   }
 
-  public final Iterator<_ElementType_> iterator() {
+  public final Iterator<_Element_> iterator() {
     return listIterator();
   }
 
-  public final ListIterator<_ElementType_> listIterator() {
+  public final ListIterator<_Element_> listIterator() {
     return listIterator(0);
   }
 
   public abstract class AbstractLockedListIterator
       extends AbstractLockedCollectionIterator
-      implements ListIterator<_ElementType_> {
+      implements ListIterator<_Element_> {
 
     /**
      * @deprecated Unsupported
      */
     @Deprecated
-    public void set(_ElementType_ o) throws UnsupportedOperationException {
+    public void set(_Element_ o) throws UnsupportedOperationException {
       throw new UnsupportedOperationException("Set is locked");
     }
 
@@ -141,7 +172,7 @@ public abstract class AbstractLockedList<_ElementType_>
      * @deprecated Unsupported
      */
     @Deprecated
-    public void add(_ElementType_ o) throws UnsupportedOperationException {
+    public void add(_Element_ o) throws UnsupportedOperationException {
       throw new UnsupportedOperationException("Set is locked");
     }
 

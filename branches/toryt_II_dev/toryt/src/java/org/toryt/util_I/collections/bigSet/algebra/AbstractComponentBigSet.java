@@ -132,31 +132,4 @@ public abstract class AbstractComponentBigSet<_ResultElementType_, _ComponentEle
     return acc;
   }
 
-
-  /**
-   * This method is very expensive, as it iterates over all
-   * elements (and thus generates them).
-   *
-   * @deprecated This method is very expensive, as it iterates over all
-   *             elements (and thus generates them).
-   */
-  @Deprecated
-  @Override
-  public final Object[] toArray() {
-    return super.toArray();
-  }
-
-  /**
-   * This method is very expensive, as it iterates over all
-   * elements (and thus generates them).
-   *
-   * @deprecated This method is very expensive, as it iterates over all
-   *             elements (and thus generates them).
-   */
-  @Deprecated
-  @Override
-  public final <_ComponentType_> _ComponentType_[] toArray(_ComponentType_[] a) {
-    return super.toArray(a);
-  }
-
 }
