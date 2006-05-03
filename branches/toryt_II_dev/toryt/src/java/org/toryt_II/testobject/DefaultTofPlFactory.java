@@ -238,10 +238,10 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @result != null;
    * @result result instanceof PriorityListTestObjectFactoryPriorityList<forClass>;
    */
-  public <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getTofPl(Class<_ForClassType_> forClass)
+  public <_ForClass_> TestObjectFactoryPriorityList<_ForClass_> getTofPl(Class<_ForClass_> forClass)
       throws NoTofPlFoundException {
     assert forClass != null;
-    TestObjectFactoryPriorityList<_ForClassType_> result = getCachedTofPl(forClass);
+    TestObjectFactoryPriorityList<_ForClass_> result = getCachedTofPl(forClass);
     if (result == null) {
       result = getTofPlFromSystemProperty(forClass);
     }
@@ -262,7 +262,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getTofPlFromSystemProperty(Class<_ForClassType_> forClass) {
+  private <_ForClass_> TestObjectFactoryPriorityList<_ForClass_> getTofPlFromSystemProperty(Class<_ForClass_> forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
     assert forClass == null;
@@ -275,8 +275,8 @@ public class DefaultTofPlFactory implements TofPlFactory {
     _LOG.debug("  value of system property: \"" + tofPlFqcn + "\"");
     _LOG.debug("  trying to instantiate class with FQCN " + tofPlFqcn + " with default constructor");
     try {
-      @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClassType_> result =
-          (TestObjectFactoryPriorityList<_ForClassType_>)Beans.instantiate(null, tofPlFqcn);
+      @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClass_> result =
+          (TestObjectFactoryPriorityList<_ForClass_>)Beans.instantiate(null, tofPlFqcn);
       // runtime cannot check against generic type instantiation
       _LOG.info("Created TOF PL for class " + forClass +
                " from class " + tofPlFqcn + " (value of system property " +
@@ -314,7 +314,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getTofPlFromBasePackageList(Class<_ForClassType_> forClass) {
+  private <_ForClass_> TestObjectFactoryPriorityList<_ForClass_> getTofPlFromBasePackageList(Class<_ForClass_> forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
     Iterator<String> iter = getBasePackageNamesList(forClass).iterator();
@@ -322,8 +322,8 @@ public class DefaultTofPlFactory implements TofPlFactory {
       String packageName = iter.next();
       String fqcnToPrefix = packageName + "." + forClass.getName();
       try {
-        @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClassType_> result =
-            (TestObjectFactoryPriorityList<_ForClassType_>)Reflection.instantiatePrefixed(null, CLASS_NAME_PREFIX, fqcnToPrefix);
+        @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClass_> result =
+            (TestObjectFactoryPriorityList<_ForClass_>)Reflection.instantiatePrefixed(null, CLASS_NAME_PREFIX, fqcnToPrefix);
         // runtime cannot check against generic type instantiation
         assert result != null; // we only get here if this succeeds
         if (_LOG.isInfoEnabled()) {
@@ -352,15 +352,15 @@ public class DefaultTofPlFactory implements TofPlFactory {
    * @pre forClass != null;
    * @pre getCachedTofPl(forClass) == null;
    */
-  private <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getTofPlFromContractConstant(Class<_ForClassType_> forClass) {
+  private <_ForClass_> TestObjectFactoryPriorityList<_ForClass_> getTofPlFromContractConstant(Class<_ForClass_> forClass) {
     assert forClass != null;
     assert getCachedTofPl(forClass) == null;
     ClassContract contract = null;
     try {
       contract = Contracts.classContractInstance(forClass);
       if (contract != null) {
-        @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClassType_> result =
-            (TestObjectFactoryPriorityList<_ForClassType_>)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
+        @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClass_> result =
+            (TestObjectFactoryPriorityList<_ForClass_>)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
         // runtime cannot check against generic type instantiation
         if (result != null) {
           if (_LOG.isInfoEnabled()) {
@@ -400,9 +400,9 @@ public class DefaultTofPlFactory implements TofPlFactory {
    *
    * @basic
    */
-  public <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getCachedTofPl(Class<_ForClassType_> forClass) {
-    @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClassType_> result =
-        (TestObjectFactoryPriorityList<_ForClassType_>)TOF_PL_MAP.get(forClass);
+  public <_ForClass_> TestObjectFactoryPriorityList<_ForClass_> getCachedTofPl(Class<_ForClass_> forClass) {
+    @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClass_> result =
+        (TestObjectFactoryPriorityList<_ForClass_>)TOF_PL_MAP.get(forClass);
     return result;
   }
 

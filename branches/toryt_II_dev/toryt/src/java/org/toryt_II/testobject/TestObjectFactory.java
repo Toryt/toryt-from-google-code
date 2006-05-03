@@ -26,7 +26,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface TestObjectFactory<_TestObjectType_> {
+public interface TestObjectFactory<_TestObject_> {
 
   /**
    * @basic
@@ -34,6 +34,6 @@ public interface TestObjectFactory<_TestObjectType_> {
    * @throws Throwable
    *         true;
    */
-  _TestObjectType_ generate() throws Throwable;
+  _TestObject_ generate() throws Throwable;
 
 }

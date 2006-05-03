@@ -19,9 +19,9 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ConstantTestObjectFactoryPriorityList<_TestObjectType_>
-    extends ArrayHashPriorityList<TestObjectFactory<_TestObjectType_>>
-    implements TestObjectFactoryPriorityList<_TestObjectType_> {
+public class ConstantTestObjectFactoryPriorityList<_TestObject_>
+    extends ArrayHashPriorityList<TestObjectFactory<_TestObject_>>
+    implements TestObjectFactoryPriorityList<_TestObject_> {
 
   public ConstantTestObjectFactoryPriorityList() {
     super(false);
@@ -36,9 +36,9 @@ public class ConstantTestObjectFactoryPriorityList<_TestObjectType_>
    * @throws UnsupportedOperationException
    *         get(priority).isLocked();
    */
-  public final void addImmutableTestObject(int priority, _TestObjectType_ testObject)
+  public final void addImmutableTestObject(int priority, _TestObject_ testObject)
       throws UnsupportedOperationException, NullPointerException, IndexOutOfBoundsException {
-    addPriorityElement(priority, new ConstantTestObjectFactory<_TestObjectType_>(testObject));
+    addPriorityElement(priority, new ConstantTestObjectFactory<_TestObject_>(testObject));
   }
 
 }

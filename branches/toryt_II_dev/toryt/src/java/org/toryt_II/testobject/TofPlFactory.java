@@ -38,7 +38,7 @@ public interface TofPlFactory {
    *         No <acronym title="Test Object Generator Priority List">TOGPL</acronym>
    *         could be retrieved or created for <code>forClass</code>.
    */
-  <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getTofPl(Class<_ForClassType_> forClass)
+  <_ForClass_> TestObjectFactoryPriorityList<_ForClass_> getTofPl(Class<_ForClass_> forClass)
       throws NoTofPlFoundException;
 
   /**
@@ -48,7 +48,7 @@ public interface TofPlFactory {
    *
    * @basic
    */
-  <_ForClassType_> TestObjectFactoryPriorityList<_ForClassType_> getCachedTofPl(Class<_ForClassType_> forClass);
+  <_ForClass_> TestObjectFactoryPriorityList<_ForClass_> getCachedTofPl(Class<_ForClass_> forClass);
 
   /**
    * Add a <acronym title="Test Object Factory Priority List">TOF PL</acronym>
@@ -63,8 +63,8 @@ public interface TofPlFactory {
    * @throws AlreadyHasTofPlForClassException
    *         getCachedTofPl(forClass) != null;
    */
-  <_ForClassType_> void addCachedTofPl(final Class<_ForClassType_> forClass,
-                                                final TestObjectFactoryPriorityList<_ForClassType_> tofPl)
+  <_ForClass_> void addCachedTofPl(final Class<_ForClass_> forClass,
+                                   final TestObjectFactoryPriorityList<_ForClass_> tofPl)
       throws AlreadyHasTofPlForClassException;
 
 }

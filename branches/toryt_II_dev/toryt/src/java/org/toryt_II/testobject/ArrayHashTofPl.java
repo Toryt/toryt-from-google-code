@@ -18,9 +18,9 @@ import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ArrayHashTofPl<_TestObjectType_>
-    extends ArrayHashPriorityList<TestObjectFactory<_TestObjectType_>>
-    implements TestObjectFactoryPriorityList<_TestObjectType_> {
+public class ArrayHashTofPl<_TestObject_>
+    extends ArrayHashPriorityList<TestObjectFactory<_TestObject_>>
+    implements TestObjectFactoryPriorityList<_TestObject_> {
 
   public ArrayHashTofPl() {
     super(false);

@@ -17,7 +17,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class AlreadyHasTofPlForClassException/*<_ForClass_>*/ extends TofPlFactoryException {
+public class AlreadyHasTofPlForClassException /*<_ForClass_>*/ extends TofPlFactoryException {
 
   /**
    * @pre tofPlFactory != null;
@@ -27,7 +27,8 @@ public class AlreadyHasTofPlForClassException/*<_ForClass_>*/ extends TofPlFacto
    * @post new.getForClass() == forClass;
    * @post new.getTofPl() == tofPl;
    */
-  public AlreadyHasTofPlForClassException(TofPlFactory tofPlFactory, Class<?> forClass,
+  public AlreadyHasTofPlForClassException(TofPlFactory tofPlFactory,
+                                          Class<?> forClass,
                                           TestObjectFactoryPriorityList<?> tofPl) {
     super(tofPlFactory, forClass);
     assert tofPl != null;

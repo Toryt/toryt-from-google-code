@@ -17,8 +17,8 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface TestObjectFactoryPriorityList<_TestObjectType_>
-    extends PriorityList<TestObjectFactory<_TestObjectType_>> {
+public interface TestObjectFactoryPriorityList<_TestObject_>
+    extends PriorityList<TestObjectFactory<_TestObject_>> {
 
   // NOP
 

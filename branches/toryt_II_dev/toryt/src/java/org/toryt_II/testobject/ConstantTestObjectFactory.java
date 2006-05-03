@@ -14,23 +14,23 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ConstantTestObjectFactory<_TestObjectType_>
-    implements TestObjectFactory<_TestObjectType_> {
+public class ConstantTestObjectFactory<_TestObject_>
+    implements TestObjectFactory<_TestObject_> {
 
   /**
    * @pre immutableInstance != null;
    * @post new.generate() == immutableInstance;
    */
-  public ConstantTestObjectFactory(_TestObjectType_ immutableInstance) {
+  public ConstantTestObjectFactory(_TestObject_ immutableInstance) {
     super();
     assert immutableInstance != null;
     $immutableInstance = immutableInstance;
   }
 
-  public final _TestObjectType_ generate() {
+  public final _TestObject_ generate() {
     return $immutableInstance;
   }
 
-  private final _TestObjectType_ $immutableInstance;
+  private final _TestObject_ $immutableInstance;
 
 }
