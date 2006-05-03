@@ -90,10 +90,12 @@ public final class NullSingletonPriorityList<_PriorityElementType_>
     return $lbs;
   }
 
+  @Override
   public final int indexOf(Object o) {
     return $lbs.equals(o) ? 0 : -1;
   }
 
+  @Override
   public final int lastIndexOf(Object o) {
     return indexOf(o);
   }

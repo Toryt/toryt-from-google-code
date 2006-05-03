@@ -61,10 +61,12 @@ public final class EmptyPriorityList<_PriorityElementType_>
     throw new IndexOutOfBoundsException();
   }
 
+  @Override
   public final int indexOf(Object o) {
     return -1;
   }
 
+  @Override
   public final int lastIndexOf(Object o) {
     return -1;
   }
