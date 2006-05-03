@@ -40,20 +40,6 @@ public class ProductBigSet<_ResultElementType_>
 
   /**
    * @pre components != null;
-   * @pre (forall int i; (i >= 0) && (i < component.length);
-   *        (component[i] != null) ? component[i].isLocked());
-   * @pre  _ResultElementType_ == Object[];
-   * @post ArrayUtils.isEquals(component, new.getComponents());
-   * @post new.getAggregatorFactory() instanceof ObjectArrayAggregatorFactory;
-   */
-  @SuppressWarnings("unchecked") // see pre
-  public ProductBigSet(LockableBigSet<?>... component) {
-    this((AggregatorFactory<_ResultElementType_>)new ObjectArrayAggregatorFactory(component.length),
-         component);
-  }
-
-  /**
-   * @pre components != null;
    * @pre aggregatorFactory != null;
    * @pre (forall int i; (i >= 0) && (i < component.length);
    *        (component[i] != null) ? component[i].isLocked());

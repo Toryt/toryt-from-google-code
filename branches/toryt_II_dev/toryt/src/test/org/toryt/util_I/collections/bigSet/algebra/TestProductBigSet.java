@@ -3,11 +3,10 @@ package org.toryt.util_I.collections.bigSet.algebra;
 import java.math.BigInteger;
 import java.util.Iterator;
 
-import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.bigSet.algebra.ProductBigSet;
-import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
-
 import junit.framework.TestCase;
+
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
 
 
 
@@ -25,7 +24,7 @@ public class TestProductBigSet extends TestCase {
     fillSet(component2, 100);
     SetBackedLockableBigSet<Integer> component3 = new SetBackedLockableBigSet<Integer>(false);
     fillSet(component3, 1000);
-    $subject = new ProductBigSet<Integer[]>(component1, component2, component3);
+    $subject = new ObjectArrayProductBigSet(component1, component2, component3);
   }
 
   @Override
@@ -40,7 +39,7 @@ public class TestProductBigSet extends TestCase {
     lbs.lock();
   }
 
-  private ProductBigSet<Integer[]> $subject;
+  private ObjectArrayProductBigSet $subject;
 
   public void testEmpty() {
     assertTrue(! ($subject.isEmpty()));
@@ -51,12 +50,9 @@ public class TestProductBigSet extends TestCase {
   }
 
   public void testIterator() {
-    Iterator<Integer[]> iter = $subject.iterator();
+    Iterator<Object[]> iter = $subject.iterator();
     while (iter.hasNext()) {
       Object[] e = iter.next();
-
-//RETURNS Object[]
-
       String s = "[" + e[0] + ", " + e[1] + ", " + e[2] + "]";
       System.out.println(s);
     }
