@@ -35,8 +35,8 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ProductBigSet<_ResultElementType_>
-    extends AbstractComponentBigSet<_ResultElementType_, Object> {
+public class ProductBigSet<_ResultElement_>
+    extends AbstractComponentBigSet<_ResultElement_, Object> {
 
   /**
    * @pre components != null;
@@ -47,7 +47,7 @@ public class ProductBigSet<_ResultElementType_>
    * @post ArrayUtils.isEquals(component, new.getComponents());
    * @post new.getAggregatorFactory() == aggregatorFactory;
    */
-  public ProductBigSet(AggregatorFactory<? extends _ResultElementType_> aggregatorFactory,
+  public ProductBigSet(AggregatorFactory<? extends _ResultElement_> aggregatorFactory,
                        LockableBigSet<?>... component) {
     super(false, calculateSize(component), component);
     assert aggregatorFactory != null; // bit late, I know
@@ -77,14 +77,14 @@ public class ProductBigSet<_ResultElementType_>
   /**
    * @basic
    */
-  public final AggregatorFactory<? extends _ResultElementType_> getAggregatorFactory() {
+  public final AggregatorFactory<? extends _ResultElement_> getAggregatorFactory() {
     return $aggregatorFactory;
   }
 
   /**
    * @invar $aggregatorFactory != null;
    */
-  private final AggregatorFactory<? extends _ResultElementType_> $aggregatorFactory;
+  private final AggregatorFactory<? extends _ResultElement_> $aggregatorFactory;
 
   /**
    * @return (product int i; (i >=0 ) && (i < getComponents().length);
@@ -105,12 +105,12 @@ public class ProductBigSet<_ResultElementType_>
     if (o == null) {
       return false;
     }
-    @SuppressWarnings("unchecked") _ResultElementType_ object = (_ResultElementType_)o;
+    @SuppressWarnings("unchecked") _ResultElement_ object = (_ResultElement_)o;
       // this ClassCastException should not be caught, but just thrown
     LockableBigSet<?>[] components = getComponents();
     try {
-      final ReversibleAggregator<? extends _ResultElementType_> aggregator =
-          (ReversibleAggregator<? extends _ResultElementType_>)$aggregatorFactory.create();
+      final ReversibleAggregator<? extends _ResultElement_> aggregator =
+          (ReversibleAggregator<? extends _ResultElement_>)$aggregatorFactory.create();
       // ClassCastException possible; this makes a performant implementation possible
       aggregator.decompose(object); // IllegalArgumentException
       return Collections.forAll(components,
@@ -137,9 +137,9 @@ public class ProductBigSet<_ResultElementType_>
       /* less performant, possibly impossibly slow implementation, because
          elements cannot be decomposed. */
       return Collections.exists(this,
-                                new Assertion<_ResultElementType_>() {
+                                new Assertion<_ResultElement_>() {
 
-                                      public boolean isTrueFor(_ResultElementType_ aggregated) {
+                                      public boolean isTrueFor(_ResultElement_ aggregated) {
                                         assert o != null;
                                         return o.equals(aggregated);
                                       }
@@ -163,7 +163,7 @@ public class ProductBigSet<_ResultElementType_>
                                   });
   }
 
-  public Iterator<_ResultElementType_> iterator() {
+  public Iterator<_ResultElement_> iterator() {
     return new AbstractLockedCollectionIterator() {
 
       private final LockableBigSet<?>[] $components = getComponents();
@@ -183,7 +183,7 @@ public class ProductBigSet<_ResultElementType_>
       /**
        * Is null if there is no next
        */
-      private Aggregator<? extends _ResultElementType_> $aggregator = $aggregatorFactory.create();
+      private Aggregator<? extends _ResultElement_> $aggregator = $aggregatorFactory.create();
 
       {
         for (int j = dim - 1; j >= 0; j--) {
@@ -233,8 +233,8 @@ public class ProductBigSet<_ResultElementType_>
         return $aggregator != null;
       }
 
-      public final _ResultElementType_ next() {
-        _ResultElementType_ result = $aggregator.aggregate();
+      public final _ResultElement_ next() {
+        _ResultElement_ result = $aggregator.aggregate();
           // throws IllegalArgumentException; if it does
         prepareNext();
         return result;

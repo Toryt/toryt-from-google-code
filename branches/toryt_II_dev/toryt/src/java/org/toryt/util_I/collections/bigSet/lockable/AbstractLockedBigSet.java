@@ -17,8 +17,8 @@ import org.toryt.util_I.collections.lockable.AbstractLockedSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractLockedBigSet<_ElementType_> extends AbstractLockedSet<_ElementType_>
-    implements LockableBigSet<_ElementType_> {
+public abstract class AbstractLockedBigSet<_Element_> extends AbstractLockedSet<_Element_>
+    implements LockableBigSet<_Element_> {
 
   /**
    * @pre bigSize != null;

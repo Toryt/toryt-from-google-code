@@ -23,9 +23,9 @@ import org.toryt.util_I.collections.lockable.SetBackedLockableSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class SetBackedLockableBigSet<_ElementType_>
-    extends SetBackedLockableSet<_ElementType_>
-    implements LockableBigSet<_ElementType_> {
+public class SetBackedLockableBigSet<_Element_>
+    extends SetBackedLockableSet<_Element_>
+    implements LockableBigSet<_Element_> {
 
   /**
    * Creates an instance backed by a {@link HashSet}.

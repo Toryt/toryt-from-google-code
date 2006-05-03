@@ -35,7 +35,7 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class UnionBigSet<_ElementType_> extends AbstractComponentBigSet<_ElementType_, _ElementType_> {
+public class UnionBigSet<_Element_> extends AbstractComponentBigSet<_Element_, _Element_> {
 
   /**
    * @pre components != null;
@@ -53,7 +53,7 @@ public class UnionBigSet<_ElementType_> extends AbstractComponentBigSet<_Element
    *      because too expensive)
    * @post Collections.containsAll(components, new.getComponents());
    */
-  public UnionBigSet(boolean nullAllowed, LockableBigSet<? extends _ElementType_>... component) {
+  public UnionBigSet(boolean nullAllowed, LockableBigSet<? extends _Element_>... component) {
     super(nullAllowed, calculateSize(component), component);
   }
 
@@ -77,9 +77,9 @@ public class UnionBigSet<_ElementType_> extends AbstractComponentBigSet<_Element
   @Override
   public final boolean contains(final Object o) {
     return Collections.exists(getComponents(),
-                              new Assertion<LockableBigSet<? extends _ElementType_>>() {
+                              new Assertion<LockableBigSet<? extends _Element_>>() {
 
-                                    public boolean isTrueFor(LockableBigSet<? extends _ElementType_> s) {
+                                    public boolean isTrueFor(LockableBigSet<? extends _Element_> s) {
                                       return (s != null) && s.contains(o);
                                     }
 
@@ -92,19 +92,19 @@ public class UnionBigSet<_ElementType_> extends AbstractComponentBigSet<_Element
    */
   public final boolean isEmpty() {
     return Collections.forAll(getComponents(),
-                              new Assertion<LockableBigSet<? extends _ElementType_>>() {
+                              new Assertion<LockableBigSet<? extends _Element_>>() {
 
-                                    public boolean isTrueFor(LockableBigSet<? extends _ElementType_> o) {
+                                    public boolean isTrueFor(LockableBigSet<? extends _Element_> o) {
                                       return (o == null) || o.isEmpty();
                                     }
 
                                   });
   }
 
-  public Iterator<_ElementType_> iterator() {
+  public Iterator<_Element_> iterator() {
     return new AbstractLockedCollectionIterator() {
 
-      private final LockableBigSet<? extends _ElementType_>[] $components = getComponents();
+      private final LockableBigSet<? extends _Element_>[] $components = getComponents();
 
       private int $componentIndex = -1;
 
@@ -124,7 +124,7 @@ public class UnionBigSet<_ElementType_> extends AbstractComponentBigSet<_Element
         }
       }
 
-      private Iterator<? extends _ElementType_> $componentIterator;
+      private Iterator<? extends _Element_> $componentIterator;
 
       {
         nextComponentIterator();
@@ -134,8 +134,8 @@ public class UnionBigSet<_ElementType_> extends AbstractComponentBigSet<_Element
         return $componentIterator != null;
       }
 
-      public final _ElementType_ next() {
-        _ElementType_ result = $componentIterator.next();
+      public final _Element_ next() {
+        _Element_ result = $componentIterator.next();
         if (! $componentIterator.hasNext()) {
           nextComponentIterator();
         }

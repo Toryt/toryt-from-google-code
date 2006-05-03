@@ -33,8 +33,8 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractComponentBigSet<_ResultElementType_, _ComponentElementType_>
-    extends AbstractLockedBigSet<_ResultElementType_> {
+public abstract class AbstractComponentBigSet<_ResultElement_, _ComponentElement_>
+    extends AbstractLockedBigSet<_ResultElement_> {
 
   /**
    * @pre bigSize != null;
@@ -49,23 +49,23 @@ public abstract class AbstractComponentBigSet<_ResultElementType_, _ComponentEle
    */
   protected AbstractComponentBigSet(boolean nullAllowed,
                                     BigInteger bigSize,
-                                    LockableBigSet<? extends _ComponentElementType_>[] components) {
+                                    LockableBigSet<? extends _ComponentElement_>[] components) {
     super(nullAllowed, bigSize);
     assert components != null;
     assert Collections.forAll(components,
-                              new Assertion<LockableBigSet<? extends _ComponentElementType_>>() {
-                                    public boolean isTrueFor(LockableBigSet<? extends _ComponentElementType_> o) {
+                              new Assertion<LockableBigSet<? extends _ComponentElement_>>() {
+                                    public boolean isTrueFor(LockableBigSet<? extends _ComponentElement_> o) {
                                       return (o == null) || o.isLocked();
                                     }
                                   });
     assert nullAllowed ||
              Collections.forAll(components,
-                                new Assertion<LockableBigSet<? extends _ComponentElementType_>>() {
-                                      public boolean isTrueFor(LockableBigSet<? extends _ComponentElementType_> o) {
+                                new Assertion<LockableBigSet<? extends _ComponentElement_>>() {
+                                      public boolean isTrueFor(LockableBigSet<? extends _ComponentElement_> o) {
                                         return (o == null) || (! o.contains(null));
                                       }
                                     });
-    $components = (LockableBigSet<? extends _ComponentElementType_>[])ArrayUtils.clone(components);
+    $components = (LockableBigSet<? extends _ComponentElement_>[])ArrayUtils.clone(components);
   }
 
 
@@ -76,8 +76,8 @@ public abstract class AbstractComponentBigSet<_ResultElementType_, _ComponentEle
   /**
    * @basic
    */
-  public final LockableBigSet<? extends _ComponentElementType_>[] getComponents() {
-    return (LockableBigSet<? extends _ComponentElementType_>[])ArrayUtils.clone($components);
+  public final LockableBigSet<? extends _ComponentElement_>[] getComponents() {
+    return (LockableBigSet<? extends _ComponentElement_>[])ArrayUtils.clone($components);
   }
 
   /**
@@ -85,7 +85,7 @@ public abstract class AbstractComponentBigSet<_ResultElementType_, _ComponentEle
    * @invar (forall int i; (i >= 0) && (i < $components.length);
    *          ($components[i] != null) ? $components[i].isLocked());
    */
-  private final LockableBigSet<? extends _ComponentElementType_>[] $components;
+  private final LockableBigSet<? extends _ComponentElement_>[] $components;
 
   /*</property>*/
 

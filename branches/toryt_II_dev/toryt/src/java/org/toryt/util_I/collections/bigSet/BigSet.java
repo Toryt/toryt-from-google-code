@@ -25,7 +25,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface BigSet<_ElementType_> extends Set<_ElementType_> {
+public interface BigSet<_Element_> extends Set<_Element_> {
 
   /**
    * The number of elements as a {@link BigInteger}.

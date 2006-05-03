@@ -19,7 +19,7 @@ import org.toryt.util_I.collections.bigSet.BigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class NullSingletonBigSet<_ElementType_> extends AbstractLockedBigSet<_ElementType_> {
+public class NullSingletonBigSet<_Element_> extends AbstractLockedBigSet<_Element_> {
 
   public NullSingletonBigSet() {
     super(true, BigInteger.ONE);
@@ -34,7 +34,7 @@ public class NullSingletonBigSet<_ElementType_> extends AbstractLockedBigSet<_El
     return (o == null);
   }
 
-  public final Iterator<_ElementType_> iterator() {
+  public final Iterator<_Element_> iterator() {
     return new AbstractLockedCollectionIterator() {
 
                   private boolean $done = false;
@@ -43,7 +43,7 @@ public class NullSingletonBigSet<_ElementType_> extends AbstractLockedBigSet<_El
                     return ! $done;
                   }
 
-                  public _ElementType_ next() {
+                  public _Element_ next() {
                     return null;
                   }
 
@@ -57,15 +57,15 @@ public class NullSingletonBigSet<_ElementType_> extends AbstractLockedBigSet<_El
 
 
   @Override
-  public final <_ComponentElementType_> _ComponentElementType_[] toArray(_ComponentElementType_[] a) {
-    _ComponentElementType_[] result;
+  public final <_ComponentElement_> _ComponentElement_[] toArray(_ComponentElement_[] a) {
+    _ComponentElement_[] result;
     if (a.length > 1) {
       result = a;
       result[1] = null;
     }
     else {
-      @SuppressWarnings("unchecked") _ComponentElementType_[] arrayResult =
-          (_ComponentElementType_[])Array.newInstance(a.getClass().getComponentType(), 1);
+      @SuppressWarnings("unchecked") _ComponentElement_[] arrayResult =
+          (_ComponentElement_[])Array.newInstance(a.getClass().getComponentType(), 1);
       result = arrayResult;
     }
     result[0] = null;
