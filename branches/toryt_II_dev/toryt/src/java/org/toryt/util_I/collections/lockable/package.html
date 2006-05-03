@@ -1,0 +1,22 @@
+ <html>
+   <head>org.util_I.collections</head>
+   <body>
+     <h1>On Lazy Collections.</h1>
+     <p>{@link Collection} that generates its elements fresh while
+       iterating over them. Since each new {@link #iterator()}
+       will generate fresh objects, these objects <strong>must</strong>
+       override {@link Object#equals(Object)} for semantics to
+       be correct (an implementation as <code>this == other</code>,
+       i.e., reference semantics, is not allowed for elements).</p>
+     <p>Since elements are created lazily, <code>toArray()</code> and
+       <code>toArray(Object[])</code> are
+       especially expensive and <em>shouldn't be called</em>. To warn
+       the developer about this, this method is declared depracated.</p>
+     <p>Lazy collections are unmodifiable. They are configured using
+       constructor arguments. If these arguments are
+       {@link Collection Collections} themselves, they should be of type
+       {@link LockableCollection}, and {@link LockableCollection#isLocked() locked}
+       before they are used.</p>
+     <p>These collections have an invar <code>isLocked()</code>.</p>
+   </body>
+ </html>

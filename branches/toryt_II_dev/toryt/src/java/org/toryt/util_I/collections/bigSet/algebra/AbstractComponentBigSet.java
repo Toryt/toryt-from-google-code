@@ -10,7 +10,6 @@ import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.BigSet;
 import org.toryt.util_I.collections.bigSet.lockable.AbstractLockedBigSet;
-import org.toryt.util_I.collections.bigSet.lockable.LazyBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 
 
@@ -35,8 +34,7 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractComponentBigSet<_ResultElementType_, _ComponentElementType_>
-    extends AbstractLockedBigSet<_ResultElementType_>
-    implements LazyBigSet<_ResultElementType_> {
+    extends AbstractLockedBigSet<_ResultElementType_> {
 
   /**
    * @pre bigSize != null;
