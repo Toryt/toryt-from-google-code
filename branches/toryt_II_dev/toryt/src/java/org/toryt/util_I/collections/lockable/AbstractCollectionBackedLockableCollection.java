@@ -20,9 +20,9 @@ import org.toryt.util_I.collections.AbstractCollectionBackedCollection;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, _BackingCollection_ extends Collection<_ElementType_>>
-    extends AbstractCollectionBackedCollection<_ElementType_>
-    implements LockableCollection<_ElementType_> {
+public abstract class AbstractCollectionBackedLockableCollection<_Element_, _BackingCollection_ extends Collection<_Element_>>
+    extends AbstractCollectionBackedCollection<_Element_>
+    implements LockableCollection<_Element_> {
 
   /**
    * The <code>backingCollection</code> should not be exposed to protect integrity
@@ -93,9 +93,9 @@ public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, 
   //------------------------------------------------------------------
 
   public abstract class CollectionBackedLockIterator
-      implements LockIterator<_ElementType_> {
+      implements LockIterator<_Element_> {
 
-    protected abstract Iterator<_ElementType_> getBackingIterator();
+    protected abstract Iterator<_Element_> getBackingIterator();
 
     public final boolean hasNext() {
       return getBackingIterator().hasNext();
@@ -104,7 +104,7 @@ public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, 
     /**
      * Not final, because lazy subtypes might want to override this.
      */
-    public _ElementType_ next() {
+    public _Element_ next() {
       return getBackingIterator().next();
     }
 
@@ -130,7 +130,7 @@ public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, 
   /**
    * Not final, because locked subclasses want to override this.
    */
-  public boolean add(_ElementType_ o)
+  public boolean add(_Element_ o)
       throws NullPointerException, UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("Collection is locked");
@@ -154,7 +154,7 @@ public abstract class AbstractCollectionBackedLockableCollection<_ElementType_, 
   /**
    * Not final, because locked subclasses want to override this.
    */
-  public boolean addAll(Collection<? extends _ElementType_> c)
+  public boolean addAll(Collection<? extends _Element_> c)
       throws NullPointerException, UnsupportedOperationException {
     if (isLocked()) {
       throw new UnsupportedOperationException("Collection is locked");

@@ -23,9 +23,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ListBackedLockableList<_ElementType_>
-    extends AbstractCollectionBackedLockableCollection<_ElementType_, List<_ElementType_>>
-    implements LockableList<_ElementType_> {
+public class ListBackedLockableList<_Element_>
+    extends AbstractCollectionBackedLockableCollection<_Element_, List<_Element_>>
+    implements LockableList<_Element_> {
 
   /**
    * The <code>backingList</code> should not be exposed to protect integrity
@@ -36,7 +36,7 @@ public class ListBackedLockableList<_ElementType_>
    * @post new.getBackingCollection() == backingList;
    * @post ! new.isLocked();
    */
-  protected ListBackedLockableList(List<_ElementType_> backingList, boolean nullAllowed) {
+  protected ListBackedLockableList(List<_Element_> backingList, boolean nullAllowed) {
     super(backingList, nullAllowed);
   }
 
@@ -44,7 +44,7 @@ public class ListBackedLockableList<_ElementType_>
    * Create an instance backed by a fresh {@link ArrayList}.
    */
   public ListBackedLockableList(boolean nullAllowed) {
-    this(new ArrayList<_ElementType_>(), nullAllowed);
+    this(new ArrayList<_Element_>(), nullAllowed);
   }
 
 
@@ -55,9 +55,9 @@ public class ListBackedLockableList<_ElementType_>
   /**
    * This method is not final. Some lazy subclasses want to override it.
    */
-  public ListBackedLockableList<_ElementType_> subList(int fromIndex, int toIndex) {
-    ListBackedLockableList<_ElementType_> result =
-        new ListBackedLockableList<_ElementType_>(getBackingCollection().subList(fromIndex, toIndex),
+  public ListBackedLockableList<_Element_> subList(int fromIndex, int toIndex) {
+    ListBackedLockableList<_Element_> result =
+        new ListBackedLockableList<_Element_>(getBackingCollection().subList(fromIndex, toIndex),
                                                   isNullAllowed());
     if (isLocked()) {
       result.lock();
@@ -65,7 +65,7 @@ public class ListBackedLockableList<_ElementType_>
     return result;
   }
 
-  public final _ElementType_ get(int index) {
+  public final _Element_ get(int index) {
     return getBackingCollection().get(index);
   }
 
@@ -78,28 +78,28 @@ public class ListBackedLockableList<_ElementType_>
   }
 
   public class ListBackedLockableListIterator extends CollectionBackedLockIterator
-      implements ListIterator<_ElementType_> {
+      implements ListIterator<_Element_> {
 
     protected ListBackedLockableListIterator(int index) {
       $iterator = getBackingCollection().listIterator(index);
     }
 
     @Override
-    protected final ListIterator<_ElementType_> getBackingIterator() {
+    protected final ListIterator<_Element_> getBackingIterator() {
       return $iterator;
     }
 
     /**
      * @invar $backingIterator != null;
      */
-    private final ListIterator<_ElementType_> $iterator;
+    private final ListIterator<_Element_> $iterator;
 
 
     public final boolean hasPrevious() {
       return $iterator.hasPrevious();
     }
 
-    public final _ElementType_ previous() {
+    public final _Element_ previous() {
       return $iterator.previous();
     }
 
@@ -118,7 +118,7 @@ public class ListBackedLockableList<_ElementType_>
      * @throws UnsupportedOperationException
      *         isLocked();
      */
-    public void set(_ElementType_ o) {
+    public void set(_Element_ o) {
       if (isLocked()) {
         throw new UnsupportedOperationException("List is locked");
       }
@@ -135,7 +135,7 @@ public class ListBackedLockableList<_ElementType_>
      * @throws UnsupportedOperationException
      *         isLocked();
      */
-    public void add(_ElementType_ o) {
+    public void add(_Element_ o) {
       if (isLocked()) {
         throw new UnsupportedOperationException("List is locked");
       }
@@ -147,18 +147,18 @@ public class ListBackedLockableList<_ElementType_>
 
   }
 
-  public final Iterator<_ElementType_> iterator() {
+  public final Iterator<_Element_> iterator() {
     return listIterator();
   }
 
-  public final ListIterator<_ElementType_> listIterator() {
+  public final ListIterator<_Element_> listIterator() {
     return new ListBackedLockableListIterator(0);
   }
 
   /**
    * Not final, because locked subclasses want to override this.
    */
-  public ListIterator<_ElementType_> listIterator(int index) {
+  public ListIterator<_Element_> listIterator(int index) {
     return new ListBackedLockableListIterator(index);
   }
 
@@ -172,7 +172,7 @@ public class ListBackedLockableList<_ElementType_>
   /**
    * Not final, because locked subclasses want to override this.
    */
-  public void add(int index, _ElementType_ o)
+  public void add(int index, _Element_ o)
       throws UnsupportedOperationException, NullPointerException,
              IndexOutOfBoundsException {
     if (isLocked()) {
@@ -187,7 +187,7 @@ public class ListBackedLockableList<_ElementType_>
   /**
    * Not final, because lazy and locked subclasses want to override this.
    */
-  public boolean addAll(int index, Collection<? extends _ElementType_> c)
+  public boolean addAll(int index, Collection<? extends _Element_> c)
       throws UnsupportedOperationException, NullPointerException,
              IndexOutOfBoundsException {
     if (isLocked()) {
@@ -202,7 +202,7 @@ public class ListBackedLockableList<_ElementType_>
   /**
    * Not final, because locked subclasses want to override this.
    */
-  public _ElementType_ set(int index, _ElementType_ o)
+  public _Element_ set(int index, _Element_ o)
       throws UnsupportedOperationException, NullPointerException,
              IndexOutOfBoundsException {
     if (isLocked()) {
@@ -217,7 +217,7 @@ public class ListBackedLockableList<_ElementType_>
   /**
    * Not final, because locked subclasses want to override this.
    */
-  public _ElementType_ remove(int index)
+  public _Element_ remove(int index)
       throws UnsupportedOperationException,
              IndexOutOfBoundsException {
     if (isLocked()) {

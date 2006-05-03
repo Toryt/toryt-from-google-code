@@ -22,7 +22,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LockableCollection<_ElementType_> extends Collection<_ElementType_> {
+public interface LockableCollection<_Element_> extends Collection<_Element_> {
 
   /**
    * Is <code>null</code> allowed as element in this collection?
@@ -37,7 +37,7 @@ public interface LockableCollection<_ElementType_> extends Collection<_ElementTy
    */
   boolean isLocked();
 
-  public interface LockIterator<_ElementType_> extends Iterator<_ElementType_> {
+  public interface LockIterator<_IteratorElement_> extends Iterator<_IteratorElement_> {
 
     /**
      * @post   isLocked() ? false;
@@ -61,7 +61,7 @@ public interface LockableCollection<_ElementType_> extends Collection<_ElementTy
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean add(_ElementType_ o) throws UnsupportedOperationException;
+  boolean add(_Element_ o) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
@@ -78,7 +78,7 @@ public interface LockableCollection<_ElementType_> extends Collection<_ElementTy
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean addAll(Collection<? extends _ElementType_> c) throws UnsupportedOperationException;
+  boolean addAll(Collection<? extends _Element_> c) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;

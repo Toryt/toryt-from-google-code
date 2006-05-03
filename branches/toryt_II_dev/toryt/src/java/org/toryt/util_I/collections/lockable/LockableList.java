@@ -19,8 +19,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LockableList<_ElementType_>
-    extends LockableCollection<_ElementType_>, List<_ElementType_> {
+public interface LockableList<_Element_>
+    extends LockableCollection<_Element_>, List<_Element_> {
 
   /* <section name="Modifying Operations"> */
   //------------------------------------------------------------------
@@ -33,7 +33,7 @@ public interface LockableList<_ElementType_>
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  void add(int index, _ElementType_ o) throws UnsupportedOperationException;
+  void add(int index, _Element_ o) throws UnsupportedOperationException;
 
   /**
    * @post   ((! isNullAllowed()) && c.contains(null)) ? false;
@@ -43,7 +43,7 @@ public interface LockableList<_ElementType_>
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  boolean addAll(int index, Collection<? extends _ElementType_> c) throws UnsupportedOperationException;
+  boolean addAll(int index, Collection<? extends _Element_> c) throws UnsupportedOperationException;
 
   /**
    * @post   ((! isNullAllowed()) && (o == null)) ? false;
@@ -53,14 +53,14 @@ public interface LockableList<_ElementType_>
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  _ElementType_ set(int index, _ElementType_ o) throws UnsupportedOperationException;
+  _Element_ set(int index, _Element_ o) throws UnsupportedOperationException;
 
   /**
    * @post   isLocked() ? false;
    * @throws UnsupportedOperationException
    *         isLocked();
    */
-  _ElementType_ remove(int index) throws UnsupportedOperationException;
+  _Element_ remove(int index) throws UnsupportedOperationException;
 
   /*</section>*/
 
@@ -69,6 +69,6 @@ public interface LockableList<_ElementType_>
    * @result result instanceof LockableList;
    * @result result.isLocked() == isLocked();
    */
-  List<_ElementType_> subList(int fromIndex, int toIndex);
+  List<_Element_> subList(int fromIndex, int toIndex);
 
 }

@@ -20,9 +20,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractLockedSet<_ElementType_>
-    extends AbstractLockedCollection<_ElementType_>
-    implements LockableSet<_ElementType_> {
+public abstract class AbstractLockedSet<_Element_>
+    extends AbstractLockedCollection<_Element_>
+    implements LockableSet<_Element_> {
 
   protected AbstractLockedSet(boolean nullAllowed) {
     super(nullAllowed);
@@ -40,9 +40,9 @@ public abstract class AbstractLockedSet<_ElementType_>
   @Override
   public int hashCode() {
     int acc = 0;
-    Iterator<_ElementType_> iter = iterator();
+    Iterator<_Element_> iter = iterator();
     while (iter.hasNext()) {
-      _ElementType_ o = iter.next();
+      _Element_ o = iter.next();
       acc += (o == null) ? 0 : o.hashCode();
     }
     return acc;
