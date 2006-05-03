@@ -21,8 +21,6 @@ import org.toryt_II.TorytException;
          tag      = "$Name$")
 public class TestModelCreationException extends TorytException {
 
-  // TODO why can't we not make this class generic?
-
   /**
    * @pre subject != null;
    * @post new.getSubject() == subject;

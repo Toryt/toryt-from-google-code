@@ -23,7 +23,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
 public class ConstructorTestModel<_TypeToTest_> extends MethodTestModel<Constructor<_TypeToTest_>> {
 
   public PriorityList getTestFactoryList() {
-    // TODO Auto-generated method stub
+    // MUDO Auto-generated method stub
     return null;
   }
 

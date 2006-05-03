@@ -19,8 +19,6 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class NamedMemberException extends ReflectionException {
 
-  // TODO why can't I have a generic paramter in an exception?
-
   /**
    * @pre clazz != null;
    * @pre memberName != null;

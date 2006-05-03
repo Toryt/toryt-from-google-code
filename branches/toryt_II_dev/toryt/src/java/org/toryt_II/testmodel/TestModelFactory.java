@@ -93,10 +93,6 @@ public interface TestModelFactory {
    * @pre Reflection.typeKind(innerClazz) == TypeKind.INNER;
    * @throws TestModelCreationException
    *         Could not create the test model for some reason.
-   *
-   * @todo check whether static nested classes are possible for inner classes;
-   *       otherwise, the {@link InnerClassTestModel} interface (and
-   *       inheritance hierarchy) must change.
    */
   <_TypeToTest_> InnerClassTestModel<_TypeToTest_> createInnerClassTestModel(Class<_TypeToTest_>  innerClazz)
       throws TestModelCreationException;

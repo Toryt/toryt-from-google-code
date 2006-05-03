@@ -99,8 +99,6 @@ public abstract class MethodContractTest<_SubjectType_ extends Member> extends A
 //
 //  /**
 //   * @return getContext().get(RESULT_KEY);
-//   *
-//   * @idea move to constructor and inspector test
 //   */
 //  public final Object getResult() {
 //    return getContext().get(RESULT_KEY);
@@ -108,8 +106,6 @@ public abstract class MethodContractTest<_SubjectType_ extends Member> extends A
 //
 //  /**
 //   * @return getContext().get(EXCEPTIOn_KEY);
-//   *
-//   * @idea move to constructor and inspector test
 //   */
 //  public final Throwable getException() {
 //    return (Throwable)getContext().get(EXCEPTION_KEY);

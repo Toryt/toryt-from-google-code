@@ -91,7 +91,7 @@ public abstract class AbstractTestModel<_SubjectType_> implements TestModel<_Sub
    * <code>IndentPrinter</code> for all its kinds of children,
    * that will then be rendered in different sections.
    *
-   * @todo This was created as needed, but looks interesting,
+   * @idea This was created as needed, but looks interesting,
    *       and should be generalized. This is a bad design
    *       as it is, since IndentPrinter depends on AbstractTestModel,
    *       and it should only depend on the TestModel interface.

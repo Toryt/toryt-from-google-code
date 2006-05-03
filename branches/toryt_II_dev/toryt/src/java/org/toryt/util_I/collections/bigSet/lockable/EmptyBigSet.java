@@ -20,11 +20,6 @@ import org.toryt.util_I.collections.bigSet.BigSet;
          tag      = "$Name$")
 public class EmptyBigSet<_ElementType_> extends AbstractLockedBigSet<_ElementType_> {
 
-
-//  public static final EmptyBigSet OBJECT_INSTANCE = new EmptyBigSet<Object>();
-  // MUDO generic singletons? how about that?
-
-
   public EmptyBigSet() {
     super(false, BigInteger.ZERO);
   }

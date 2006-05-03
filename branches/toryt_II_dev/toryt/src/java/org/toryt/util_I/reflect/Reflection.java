@@ -20,8 +20,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * interested in the result of reflection, and not in a particular
  * reason why some reflective inspection might have failed.
  *
- * @mudo (jand) most methods are also in ppw-bean; consolidate
- * @mudo all methods should have easy 1 or 2 {@link ReflectionException}s
+ * @idea (jand) most methods are also in ppw-bean; consolidate
  *
  * @author    Jan Dockx
  */

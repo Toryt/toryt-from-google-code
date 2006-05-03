@@ -309,7 +309,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
                      file.getName().endsWith(JAVA_CLASS_SUFFIX) &&
                      (file.getName().indexOf(JAVA_NESTED_CLASS_SEPARATOR) < 0) &&
                      ! file.getName().startsWith("_");
-              // MUDO needs more exclusion; add grep filter
+              // IDEA needs more exclusion; add grep filter
             }
 
           };
@@ -322,7 +322,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
                      file.canRead() &&
                      file.isDirectory() &&
                      ! file.getName().equals("CVS");
-              // MUDO needs more exclusion, for javadoc; add grep filter
+              // IDEA needs more exclusion, for javadoc; add grep filter
             }
 
           };

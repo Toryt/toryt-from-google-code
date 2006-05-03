@@ -19,8 +19,6 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class AlreadyHasTofPlForClassException/*<_ForClass_>*/ extends TofPlFactoryException {
 
-  // TODO Why can't we make this exception generic?
-
   /**
    * @pre tofPlFactory != null;
    * @pre forClass != null;

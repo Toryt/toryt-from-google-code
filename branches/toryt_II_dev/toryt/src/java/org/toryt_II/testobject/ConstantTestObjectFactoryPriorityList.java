@@ -14,8 +14,6 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  * {@link #addPriorityElement(int, Object)}, and {@link #lock()} when ready.
  *
  * @author Jan Dockx
- *
- * @mudo we should be able to define the type of generated test objects
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
