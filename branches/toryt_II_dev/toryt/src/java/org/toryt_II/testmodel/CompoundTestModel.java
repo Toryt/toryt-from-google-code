@@ -42,7 +42,7 @@ import org.toryt.util_I.collections.priorityList.algebra.UnionPriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class CompoundTestModel<_SubjectType_> extends AbstractTestModel<_SubjectType_> {
+public abstract class CompoundTestModel<_Subject_> extends AbstractTestModel<_Subject_> {
 
   /*<property name="child test models">*/
   //------------------------------------------------------------------

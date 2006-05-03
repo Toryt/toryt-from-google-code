@@ -24,7 +24,7 @@ public interface TestModelFactory {
   /**
    * Create a {@link ConstructorTestModel} for <code>constructor</code>.
    *
-   * The generic parameter <_TypeToTest_> ensures at <em>compile time</em> that
+   * The generic parameter <_Subject_> ensures at <em>compile time</em> that
    * the returned {@link ConstructorTestModel} is indeed for the same type
    * as the <code>constructor</code>.
    *
@@ -32,7 +32,7 @@ public interface TestModelFactory {
    * @throws TestModelCreationException
    *         Could not create the test model for some reason.
    */
-  <_TypeToTest_> ConstructorTestModel<_TypeToTest_> createConstructorTestModel(Constructor<_TypeToTest_> constructor)
+  <_Subject_> ConstructorTestModel<_Subject_> createConstructorTestModel(Constructor<_Subject_> constructor)
       throws TestModelCreationException;
 
   /**
@@ -85,7 +85,7 @@ public interface TestModelFactory {
    * <code><b>public</b></code> methods (that are not basic inspectors),
    * inner classes and static nested classes.
    *
-   * The generic parameter <_TypeToTest_> ensures at <em>compile time</em> that
+   * The generic parameter <_Subject_> ensures at <em>compile time</em> that
    * the returned {@link InnerClassTestModel} is indeed for the type
    * <code>innerClazz</code>.
    *
@@ -94,7 +94,7 @@ public interface TestModelFactory {
    * @throws TestModelCreationException
    *         Could not create the test model for some reason.
    */
-  <_TypeToTest_> InnerClassTestModel<_TypeToTest_> createInnerClassTestModel(Class<_TypeToTest_>  innerClazz)
+  <_Subject_> InnerClassTestModel<_Subject_> createInnerClassTestModel(Class<_Subject_>  innerClazz)
       throws TestModelCreationException;
 
   /**
@@ -103,7 +103,7 @@ public interface TestModelFactory {
    * <code><b>public</b></code> methods (that are not basic inspectors),
    * inner classes and static nested classes.
    *
-   * The generic parameter <_TypeToTest_> ensures at <em>compile time</em> that
+   * The generic parameter <_Subject_> ensures at <em>compile time</em> that
    * the returned {@link StaticClassTestModel} is indeed for the type
    * <code>clazz</code>.
    *
@@ -114,7 +114,7 @@ public interface TestModelFactory {
    *
    * @idea This should be extended to include non-public members.
    */
-  <_TypeToTest_> StaticClassTestModel<_TypeToTest_> createStaticClassTestModel(Class<_TypeToTest_>  clazz)
+  <_Subject_> StaticClassTestModel<_Subject_> createStaticClassTestModel(Class<_Subject_>  clazz)
       throws TestModelCreationException;
 
   /**

@@ -33,9 +33,9 @@ public class DefaultTestModelFactory implements TestModelFactory {
 
 
 
-  public <_TypeToTest_> ConstructorTestModel<_TypeToTest_> createConstructorTestModel(Constructor<_TypeToTest_> constructor) {
+  public <_Subject_> ConstructorTestModel<_Subject_> createConstructorTestModel(Constructor<_Subject_> constructor) {
     assert constructor != null;
-    ConstructorTestModel<_TypeToTest_> result = new ConstructorTestModel<_TypeToTest_>();
+    ConstructorTestModel<_Subject_> result = new ConstructorTestModel<_Subject_>();
     result.setSubject(constructor);
     return result;
   }
@@ -72,32 +72,32 @@ public class DefaultTestModelFactory implements TestModelFactory {
     return result;
   }
 
-  public <_TypeToTest_> InnerClassTestModel<_TypeToTest_> createInnerClassTestModel(Class<_TypeToTest_>  innerClazz)
+  public <_Subject_> InnerClassTestModel<_Subject_> createInnerClassTestModel(Class<_Subject_>  innerClazz)
       throws TestModelCreationException {
     assert innerClazz != null;
     assert Reflection.typeKind(innerClazz) == TypeKind.INNER;
     LOG.debug("Creating InnerClassTestModel for class " + innerClazz);
-    InnerClassTestModel<_TypeToTest_> result = new InnerClassTestModel<_TypeToTest_>();
+    InnerClassTestModel<_Subject_> result = new InnerClassTestModel<_Subject_>();
     initClassTestModel(innerClazz, result);
     return result;
   }
 
-  public <_TypeToTest_> StaticClassTestModel<_TypeToTest_> createStaticClassTestModel(Class<_TypeToTest_>  clazz)
+  public <_Subject_> StaticClassTestModel<_Subject_> createStaticClassTestModel(Class<_Subject_>  clazz)
       throws TestModelCreationException {
     assert clazz != null;
     assert Reflection.typeKind(clazz) == TypeKind.STATIC;
     LOG.debug("Creating StaticClassTestModel for class " + clazz);
-    StaticClassTestModel<_TypeToTest_> result = new StaticClassTestModel<_TypeToTest_>();
+    StaticClassTestModel<_Subject_> result = new StaticClassTestModel<_Subject_>();
     initClassTestModel(clazz, result);
     return result;
   }
 
   /**
-   * The generic parameter <_TypeToTest_> ensures at <em>compile time</em> that
+   * The generic parameter <_Subject_> ensures at <em>compile time</em> that
    * the returned {@link ClassTestModel} <code>result</code> is indeed for the type
    * <code>clazz</code>.
    */
-  private <_TypeToTest_> void initClassTestModel(Class<_TypeToTest_> clazz, ClassTestModel<_TypeToTest_> result) throws TestModelCreationException {
+  private <_Subject_> void initClassTestModel(Class<_Subject_> clazz, ClassTestModel<_Subject_> result) throws TestModelCreationException {
     result.setSubject(clazz);
     addConstructors(clazz, result);
     addMethods(clazz, result);
@@ -105,15 +105,15 @@ public class DefaultTestModelFactory implements TestModelFactory {
   }
 
   /**
-   * The generic parameter <_TypeToTest_> ensures at <em>compile time</em> that
+   * The generic parameter <_Subject_> ensures at <em>compile time</em> that
    * the returned {@link ClassTestModel} <code>result</code> is indeed for the type
    * <code>clazz</code>, and that constructors for which models are added are
    * for that type.
    */
-  private <_TypeToTest_> void addConstructors(Class<_TypeToTest_> clazz, ClassTestModel<_TypeToTest_> result) throws TestModelCreationException {
+  private <_Subject_> void addConstructors(Class<_Subject_> clazz, ClassTestModel<_Subject_> result) throws TestModelCreationException {
     try {
       LOG.debug("  adding ConstructorTestModels for class " + clazz);
-      @SuppressWarnings("unchecked") Constructor<_TypeToTest_>[] constructors = clazz.getConstructors();
+      @SuppressWarnings("unchecked") Constructor<_Subject_>[] constructors = clazz.getConstructors();
           // only public constructors
           /* warning because we cannot check type safety here (because the
            * Class interface return Constructor[] and not Constructor<T>[];
@@ -131,7 +131,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
     }
   }
 
-  private <_TypeToTest_> void addMethods(Class<_TypeToTest_> clazz, ClassTestModel<_TypeToTest_> result)
+  private <_Subject_> void addMethods(Class<_Subject_> clazz, ClassTestModel<_Subject_> result)
       throws TestModelCreationException {
     try {
       LOG.debug("  adding MethodTestModels for class " + clazz);
@@ -168,7 +168,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
     }
   }
 
-  private <_TypeToTest_> void addNestedClasses(Class<_TypeToTest_> clazz, ClassTestModel<_TypeToTest_> result)
+  private <_Subject_> void addNestedClasses(Class<_Subject_> clazz, ClassTestModel<_Subject_> result)
       throws TestModelCreationException {
     try {
       LOG.debug("  adding TestModels for nested classes in class  " + clazz);
@@ -186,7 +186,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
                 // static nested classes only need to be added to the declaring class test model
                 LOG.debug("    " + clazzes[i] + " is an static nested class");
                 try {
-                  ((StaticClassTestModel<_TypeToTest_>)result).staticNestedClassTestModels.add(createStaticClassTestModel(clazzes[i]));
+                  ((StaticClassTestModel<_Subject_>)result).staticNestedClassTestModels.add(createStaticClassTestModel(clazzes[i]));
                 }
                 catch (ClassCastException ccExc) {
                   // static nested classses can only be nested in static classes

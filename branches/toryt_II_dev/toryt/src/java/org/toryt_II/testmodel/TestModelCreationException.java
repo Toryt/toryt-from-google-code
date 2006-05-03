@@ -27,7 +27,7 @@ public class TestModelCreationException extends TorytException {
    * @post (message == null) ? new.getMessage() == null : message.equals(new.getMessage());
    * @post new.getCause() == cause;
    */
-  public TestModelCreationException(Object /*SubjectType*/ subject, String message, Throwable cause) {
+  public TestModelCreationException(Object /*_Subject_*/ subject, String message, Throwable cause) {
     super(message, cause);
     assert subject != null;
     $subject = subject;
@@ -36,13 +36,13 @@ public class TestModelCreationException extends TorytException {
   /**
    * @basic
    */
-  public Object /*SubjectType*/ getSubject() {
+  public Object /*_Subject_*/ getSubject() {
     return $subject;
   }
 
   /**
    * @invar $subject != null;
    */
-  private final Object /*SubjectType*/ $subject;
+  private final Object /*_Subject_*/ $subject;
 
 }

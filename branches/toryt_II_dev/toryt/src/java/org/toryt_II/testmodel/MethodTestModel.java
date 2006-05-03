@@ -25,8 +25,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class MethodTestModel<_SubjectType_ extends Member>
-    extends AbstractTestModel<_SubjectType_> {
+public abstract class MethodTestModel<_Subject_ extends Member>
+    extends AbstractTestModel<_Subject_> {
 
   @Override
   protected final void printStructure(IndentPrinter out) {

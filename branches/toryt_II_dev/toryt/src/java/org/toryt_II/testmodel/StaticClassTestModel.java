@@ -20,7 +20,7 @@ import org.toryt.util_I.reflect.Reflection.TypeKind;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class StaticClassTestModel<_TypeToTest_>  extends ClassTestModel<_TypeToTest_>  {
+public class StaticClassTestModel<_Subject_>  extends ClassTestModel<_Subject_>  {
 
   public StaticClassTestModel() {
     super(TypeKind.STATIC);

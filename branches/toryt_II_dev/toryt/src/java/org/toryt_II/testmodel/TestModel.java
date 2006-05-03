@@ -32,13 +32,13 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface TestModel<_SubjectType_> {
+public interface TestModel<_Subject_> {
 
   /**
    * The subject of the tests this instance models.
    * @basic
    */
-  _SubjectType_ getSubject();
+  _Subject_ getSubject();
 
   /**
    * The union of the method tests of all packages.

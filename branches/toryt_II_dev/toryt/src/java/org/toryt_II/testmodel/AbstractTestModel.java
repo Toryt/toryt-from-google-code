@@ -17,26 +17,26 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractTestModel<_SubjectType_> implements TestModel<_SubjectType_> {
+public abstract class AbstractTestModel<_Subject_> implements TestModel<_Subject_> {
 
   /*<property name="typeKind">*/
   //------------------------------------------------------------------
 
-  public final _SubjectType_ getSubject() {
+  public final _Subject_ getSubject() {
     return $subject;
   }
 
   /**
    * @post new.getSubject() == subject;
    */
-  public void setSubject(_SubjectType_ subject) {
+  public void setSubject(_Subject_ subject) {
     $subject = subject;
   }
 
   /**
    * @invar $subject != null;
    */
-  private _SubjectType_ $subject;
+  private _Subject_ $subject;
 
   /*</property>*/
 

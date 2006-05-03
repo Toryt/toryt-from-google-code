@@ -20,7 +20,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ConstructorTestModel<_TypeToTest_> extends MethodTestModel<Constructor<_TypeToTest_>> {
+public class ConstructorTestModel<_Subject_> extends MethodTestModel<Constructor<_Subject_>> {
 
   public PriorityList getTestFactoryList() {
     // MUDO Auto-generated method stub

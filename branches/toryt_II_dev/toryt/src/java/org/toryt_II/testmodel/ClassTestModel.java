@@ -31,7 +31,7 @@ import org.toryt.util_I.reflect.Reflection.TypeKind;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class ClassTestModel<_TypeToTest_> extends CompoundTestModel<Class<_TypeToTest_>> {
+public abstract class ClassTestModel<_Subject_> extends CompoundTestModel<Class<_Subject_>> {
 
 
 
@@ -55,7 +55,7 @@ public abstract class ClassTestModel<_TypeToTest_> extends CompoundTestModel<Cla
 
 
   @Override
-  public void setSubject(Class<_TypeToTest_> subject) {
+  public void setSubject(Class<_Subject_> subject) {
     assert (subject != null) ?
              (Reflection.typeKind(subject) == $typeKind) :
              true;

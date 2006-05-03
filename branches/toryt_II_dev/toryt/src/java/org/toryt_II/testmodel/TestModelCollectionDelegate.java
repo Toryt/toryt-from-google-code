@@ -22,7 +22,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TestModelCollectionDelegate<_TestModelType_ extends TestModel> {
+public class TestModelCollectionDelegate<_TestModel_ extends TestModel> {
 
   /**
    * @pre compoundTestModel != null;
@@ -40,7 +40,7 @@ public class TestModelCollectionDelegate<_TestModelType_ extends TestModel> {
    * @basic
    * @init new.getTestModels().isEmpty();
    */
-  public Set<_TestModelType_> getSet() {
+  public Set<_TestModel_> getSet() {
     return Collections.unmodifiableSet($testModels);
   }
 
@@ -57,7 +57,7 @@ public class TestModelCollectionDelegate<_TestModelType_ extends TestModel> {
    * @pre testModel != null;
    * @post new.getTestModels().contains(testModel);
    */
-  public void add(_TestModelType_ testModel) {
+  public void add(_TestModel_ testModel) {
     assert testModel != null;
     $testModels.add(testModel);
     $compoundTestModel.resetCachedTestFactoryList();
@@ -67,7 +67,7 @@ public class TestModelCollectionDelegate<_TestModelType_ extends TestModel> {
   /**
    * @post ! new.getTestModels().contains(testModel);
    */
-  public void remove(_TestModelType_ testModel) {
+  public void remove(_TestModel_ testModel) {
     $testModels.remove(testModel);
     $compoundTestModel.resetCachedTestFactoryList();
     // TODO events
@@ -77,7 +77,7 @@ public class TestModelCollectionDelegate<_TestModelType_ extends TestModel> {
    * @post new.getTestModels().isEmpty();
    */
   public void removeAll() {
-    $testModels = new HashSet<_TestModelType_>();
+    $testModels = new HashSet<_TestModel_>();
     $compoundTestModel.resetCachedTestFactoryList();
     // TODO events
   }
@@ -85,7 +85,7 @@ public class TestModelCollectionDelegate<_TestModelType_ extends TestModel> {
   /**
    * @invar cC:noNull($testModels);
    */
-  private Set<_TestModelType_> $testModels = new HashSet<_TestModelType_>();
+  private Set<_TestModel_> $testModels = new HashSet<_TestModel_>();
 
   /*</property>*/
 
