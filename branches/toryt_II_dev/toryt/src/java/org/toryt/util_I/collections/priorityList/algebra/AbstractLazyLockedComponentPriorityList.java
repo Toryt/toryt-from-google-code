@@ -11,9 +11,9 @@ import org.toryt.util_I.collections.priorityList.AbstractLockedPriorityList;
 
 
 /**
- * <p>Implementation of common expensive methodes for {@link ProductPriorityList},
+ * <p>Implementation of common expensive methodes for {@link ConcatPriorityList},
  *   {@link BiProductPriorityList} and {@link UnionPriorityList}.
- *   These are all {@link LazyList LazyLists}.</p>
+ *   These are all lazy lists.</p>
  *
  * @author Jan Dockx
  */
@@ -21,8 +21,8 @@ import org.toryt.util_I.collections.priorityList.AbstractLockedPriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractLazyLockedComponentPriorityList<_ElementType_>
-    extends AbstractLockedPriorityList<_ElementType_>  {
+public abstract class AbstractLazyLockedComponentPriorityList<_Element_>
+    extends AbstractLockedPriorityList<_Element_>  {
 
   /**
    * @pre priorityPriorityElementType != null;

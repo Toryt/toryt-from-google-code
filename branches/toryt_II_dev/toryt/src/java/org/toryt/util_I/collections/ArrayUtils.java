@@ -21,14 +21,14 @@ public abstract class ArrayUtils {
   /**
    * @pre resultComponentType != null;
    */
-  public static <_InComponentType_, _ResultComponentType_>
-      _ResultComponentType_[] flatten2(_InComponentType_[] array,
-                                      Class<_ResultComponentType_> resultComponentType) {
+  public static <_InBase_, _ResultBase_>
+      _ResultBase_[] flatten2(_InBase_[] array,
+                                      Class<_ResultBase_> resultComponentType) {
     assert resultComponentType != null;
-    LinkedList<_ResultComponentType_> resultList = new LinkedList<_ResultComponentType_>();
+    LinkedList<_ResultBase_> resultList = new LinkedList<_ResultBase_>();
     flattenHelper(array, resultList);
-    @SuppressWarnings("unchecked") _ResultComponentType_[] result =
-        (_ResultComponentType_[])Array.newInstance(resultComponentType, resultList.size());
+    @SuppressWarnings("unchecked") _ResultBase_[] result =
+        (_ResultBase_[])Array.newInstance(resultComponentType, resultList.size());
     /* unchecked cast because Java API for array construction is not generic */
     resultList.toArray(result);
     return result;
@@ -37,12 +37,12 @@ public abstract class ArrayUtils {
   /**
    * @pre resultComponentType != null;
    */
-  public static <_ResultComponentType_> void flattenHelper(Object[] array,
-                                                           LinkedList<_ResultComponentType_> acc) {
+  public static <_ResultBase_> void flattenHelper(Object[] array,
+                                                           LinkedList<_ResultBase_> acc) {
     for (Object firstLevel : array) {
       if ((firstLevel == null) || (! firstLevel.getClass().isArray())) {
         // firstLevel is the final level; it must me of tye _ResultComponentType_
-        @SuppressWarnings("unchecked") _ResultComponentType_ simple = (_ResultComponentType_)firstLevel;
+        @SuppressWarnings("unchecked") _ResultBase_ simple = (_ResultBase_)firstLevel;
         // unchecked cast: it is ok, or pre's are violated
         acc.add(simple);
       }

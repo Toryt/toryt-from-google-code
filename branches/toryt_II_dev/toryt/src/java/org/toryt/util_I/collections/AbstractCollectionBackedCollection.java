@@ -15,11 +15,11 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractCollectionBackedCollection<_ElementType_>
-    implements Collection<_ElementType_> {
+public abstract class AbstractCollectionBackedCollection<_Element_>
+    implements Collection<_Element_> {
 
-  protected abstract <_BackingCollectionType_ extends Collection<_ElementType_>>
-      _BackingCollectionType_ getBackingCollection();
+  protected abstract <_BackingCollection_ extends Collection<_Element_>>
+      _BackingCollection_ getBackingCollection();
 
 
 
@@ -46,7 +46,7 @@ public abstract class AbstractCollectionBackedCollection<_ElementType_>
     return getBackingCollection().toArray();
   }
 
-  public final <_ResultBaseType_> _ResultBaseType_[] toArray(_ResultBaseType_[] a) {
+  public final <_Base_> _Base_[] toArray(_Base_[] a) {
     return getBackingCollection().toArray(a);
   }
 

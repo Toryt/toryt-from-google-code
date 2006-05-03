@@ -24,18 +24,18 @@ import org.toryt.util_I.collections.bigSet.lockable.NullSingletonBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class NullSingletonPriorityList<_PriorityElementType_>
-    extends AbstractLockedPriorityList<_PriorityElementType_> {
+public final class NullSingletonPriorityList<_PriorityElement_>
+    extends AbstractLockedPriorityList<_PriorityElement_> {
 
   public NullSingletonPriorityList() {
     super(BigInteger.ONE);
-    $lbs = new NullSingletonBigSet<_PriorityElementType_>();
+    $lbs = new NullSingletonBigSet<_PriorityElement_>();
   }
 
   /**
    * @invar $lbs != null;
    */
-  private final NullSingletonBigSet<_PriorityElementType_> $lbs;
+  private final NullSingletonBigSet<_PriorityElement_> $lbs;
 
   @Override
   public final boolean equals(Object o) {
@@ -66,7 +66,7 @@ public final class NullSingletonPriorityList<_PriorityElementType_>
     return (o == null);
   }
 
-  public final Iterator<_PriorityElementType_> priorityElementIterator() {
+  public final Iterator<_PriorityElement_> priorityElementIterator() {
     return $lbs.iterator();
   }
 
@@ -83,7 +83,7 @@ public final class NullSingletonPriorityList<_PriorityElementType_>
     return $lbs.equals(o);
   }
 
-  public final NullSingletonBigSet<_PriorityElementType_> get(int index) {
+  public final NullSingletonBigSet<_PriorityElement_> get(int index) {
     if (index != 0) {
       throw new IndexOutOfBoundsException();
     }
@@ -100,7 +100,7 @@ public final class NullSingletonPriorityList<_PriorityElementType_>
     return indexOf(o);
   }
 
-  public final ListIterator<LockableBigSet<? extends _PriorityElementType_>> listIterator(final int index) {
+  public final ListIterator<LockableBigSet<? extends _PriorityElement_>> listIterator(final int index) {
     return new AbstractLockedListIterator() {
 
                   private boolean $delivered = (index == 1);
@@ -109,7 +109,7 @@ public final class NullSingletonPriorityList<_PriorityElementType_>
                     return $delivered;
                   }
 
-                  public final NullSingletonBigSet<_PriorityElementType_> next() {
+                  public final NullSingletonBigSet<_PriorityElement_> next() {
                     return $lbs;
                   }
 
@@ -117,7 +117,7 @@ public final class NullSingletonPriorityList<_PriorityElementType_>
                     return ! $delivered;
                   }
 
-                  public final NullSingletonBigSet<_PriorityElementType_> previous() {
+                  public final NullSingletonBigSet<_PriorityElement_> previous() {
                     return $lbs;
                   }
 
@@ -132,12 +132,12 @@ public final class NullSingletonPriorityList<_PriorityElementType_>
                 };
   }
 
-  public final NullSingletonPriorityList<_PriorityElementType_> subList(int fromIndex, int toIndex) {
+  public final NullSingletonPriorityList<_PriorityElement_> subList(int fromIndex, int toIndex) {
     if ((fromIndex == 0) && (toIndex == 1)) {
       return this;
     }
     else if ((fromIndex == 0) && (toIndex == 0)) {
-      return new NullSingletonPriorityList<_PriorityElementType_>();
+      return new NullSingletonPriorityList<_PriorityElement_>();
     }
     else {
       throw new IndexOutOfBoundsException();

@@ -19,8 +19,8 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class EmptyPriorityList<_PriorityElementType_>
-    extends AbstractLockedPriorityList<_PriorityElementType_> {
+public final class EmptyPriorityList<_PriorityElement_>
+    extends AbstractLockedPriorityList<_PriorityElement_> {
 
   /**
    * This method is introduced for use in {@link #subList(int, int)}.
@@ -29,7 +29,7 @@ public final class EmptyPriorityList<_PriorityElementType_>
     super(BigInteger.ZERO);
   }
 
-  private EmptyBigSet<_PriorityElementType_> $ebs = new EmptyBigSet<_PriorityElementType_>();
+  private EmptyBigSet<_PriorityElement_> $ebs = new EmptyBigSet<_PriorityElement_>();
 
   @Override
   public final int hashCode() {
@@ -40,7 +40,7 @@ public final class EmptyPriorityList<_PriorityElementType_>
     return false;
   }
 
-  public final Iterator<_PriorityElementType_> priorityElementIterator() {
+  public final Iterator<_PriorityElement_> priorityElementIterator() {
     return $ebs.iterator();
   }
 
@@ -57,7 +57,7 @@ public final class EmptyPriorityList<_PriorityElementType_>
     return false;
   }
 
-  public final LockableBigSet<_PriorityElementType_> get(int index) {
+  public final LockableBigSet<_PriorityElement_> get(int index) {
     throw new IndexOutOfBoundsException();
   }
 
@@ -71,14 +71,14 @@ public final class EmptyPriorityList<_PriorityElementType_>
     return -1;
   }
 
-  public final ListIterator<LockableBigSet<? extends _PriorityElementType_>> listIterator(int index) {
+  public final ListIterator<LockableBigSet<? extends _PriorityElement_>> listIterator(int index) {
     return new AbstractLockedListIterator() {
 
                   public boolean hasNext() {
                     return false;
                   }
 
-                  public LockableBigSet<_PriorityElementType_> next() {
+                  public LockableBigSet<_PriorityElement_> next() {
                     throw new IndexOutOfBoundsException();
                   }
 
@@ -86,7 +86,7 @@ public final class EmptyPriorityList<_PriorityElementType_>
                     return false;
                   }
 
-                  public LockableBigSet<_PriorityElementType_> previous() {
+                  public LockableBigSet<_PriorityElement_> previous() {
                     throw new IndexOutOfBoundsException();
                   }
 
@@ -101,7 +101,7 @@ public final class EmptyPriorityList<_PriorityElementType_>
                 };
   }
 
-  public final EmptyPriorityList<_PriorityElementType_> subList(int fromIndex, int toIndex) {
+  public final EmptyPriorityList<_PriorityElement_> subList(int fromIndex, int toIndex) {
     if ((fromIndex == 0) && (toIndex == 0)) {
       return this;
     }

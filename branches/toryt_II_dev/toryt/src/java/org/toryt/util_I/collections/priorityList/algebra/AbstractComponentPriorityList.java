@@ -28,8 +28,8 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractComponentPriorityList<_ElementType_>
-    extends AbstractLockedPriorityList<_ElementType_> {
+public abstract class AbstractComponentPriorityList<_Element_>
+    extends AbstractLockedPriorityList<_Element_> {
 
   /**
    * @pre size >= 0;
@@ -40,21 +40,21 @@ public abstract class AbstractComponentPriorityList<_ElementType_>
    * @post Collections.containsAll(components, new.getComponents());
    */
   protected AbstractComponentPriorityList(int size,
-                                          PriorityList<? extends _ElementType_>[] components) {
+                                          PriorityList<? extends _Element_>[] components) {
     super(calculateCardinality(components));
     assert size >= 0;
     assert components != null;
     assert Collections.noNull(components);
     assert Collections.forAll(components,
-                              new Assertion<PriorityList<? extends _ElementType_>>() {
+                              new Assertion<PriorityList<? extends _Element_>>() {
 
-                                    public boolean isTrueFor(PriorityList<? extends _ElementType_> o) {
+                                    public boolean isTrueFor(PriorityList<? extends _Element_> o) {
                                       return o.isLocked();
                                     }
 
                                   });
     $size = size;
-    $components = (PriorityList<? extends _ElementType_>[])ArrayUtils.clone(components);
+    $components = (PriorityList<? extends _Element_>[])ArrayUtils.clone(components);
   }
 
   private static BigInteger calculateCardinality(PriorityList<?>[] components) {
@@ -73,8 +73,8 @@ public abstract class AbstractComponentPriorityList<_ElementType_>
   /**
    * @basic
    */
-  public final PriorityList<? extends _ElementType_>[] getComponents() {
-    return (PriorityList<? extends _ElementType_>[])ArrayUtils.clone($components);
+  public final PriorityList<? extends _Element_>[] getComponents() {
+    return (PriorityList<? extends _Element_>[])ArrayUtils.clone($components);
   }
 
   /**
@@ -83,7 +83,7 @@ public abstract class AbstractComponentPriorityList<_ElementType_>
    * @invar (forall int i; (i >= 0) && (i < $components.length);
    *          $components[i].isLocked());
    */
-  private final PriorityList<? extends _ElementType_>[] $components;
+  private final PriorityList<? extends _Element_>[] $components;
 
   /*</property>*/
 
@@ -91,8 +91,8 @@ public abstract class AbstractComponentPriorityList<_ElementType_>
 
   public final boolean containsPriorityElement(final Object o) {
     return Collections.exists(getComponents(),
-                              new Assertion<PriorityList<? extends _ElementType_>>() {
-                                    public boolean isTrueFor(PriorityList<? extends _ElementType_> s) {
+                              new Assertion<PriorityList<? extends _Element_>>() {
+                                    public boolean isTrueFor(PriorityList<? extends _Element_> s) {
                                       return s.containsPriorityElement(o);
                                     }
                                   });
