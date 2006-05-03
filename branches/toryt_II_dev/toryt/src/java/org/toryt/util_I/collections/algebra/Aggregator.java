@@ -26,7 +26,7 @@ import org.toryt.util_I.collections.priorityList.algebra.BiProductPriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface Aggregator<_AggregateType_> {
+public interface Aggregator<_Aggregate_> {
 
   /**
    * The number of components used to generate an aggregate.
@@ -80,6 +80,6 @@ public interface Aggregator<_AggregateType_> {
    *         We cannot create an aggregation given the current component
    *         elements.
    */
-  _AggregateType_ aggregate();
+  _Aggregate_ aggregate();
 
 }

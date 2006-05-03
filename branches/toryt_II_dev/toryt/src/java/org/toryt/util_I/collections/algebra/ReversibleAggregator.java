@@ -11,7 +11,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface ReversibleAggregator<_AggregateType_> extends Aggregator<_AggregateType_> {
+public interface ReversibleAggregator<_Aggregate_> extends Aggregator<_Aggregate_> {
 
   /**
    * <p>Decompose the given <code>object</code> into components.

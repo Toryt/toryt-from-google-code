@@ -12,7 +12,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractAggregatorFactory<_AggregateType_> implements AggregatorFactory<_AggregateType_> {
+public abstract class AbstractAggregatorFactory<_Aggregate_>
+    implements AggregatorFactory<_Aggregate_> {
 
   /**
    * @pre nrOfComponents >= 0;

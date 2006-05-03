@@ -19,7 +19,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface AggregatorFactory<_AggregateType_> {
+public interface AggregatorFactory<_Aggregate_> {
 
   /**
    * The number of components that {@link Aggregator Aggregators} generated
@@ -36,6 +36,6 @@ public interface AggregatorFactory<_AggregateType_> {
    *
    * @result AggregatorFactory.result == this;
    */
-  Aggregator<? extends _AggregateType_> create();
+  Aggregator<? extends _Aggregate_> create();
 
 }

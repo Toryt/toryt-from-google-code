@@ -13,7 +13,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractAggregator<_AggregateType_> implements Aggregator<_AggregateType_> {
+public abstract class AbstractAggregator<_Aggregate_> implements Aggregator<_Aggregate_> {
 
   public final Object getComponentElement(int componentIndex)
       throws IndexOutOfBoundsException {
