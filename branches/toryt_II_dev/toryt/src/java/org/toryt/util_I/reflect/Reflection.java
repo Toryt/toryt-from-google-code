@@ -46,9 +46,10 @@ public class Reflection {
     }
   }
 
-  public static <T> Constructor<T> findConstructor(Class<T> type, String signature) throws CannotGetMethodException {
+  public static <_T_> Constructor<_T_> findConstructor(Class<_T_> type, String signature)
+      throws CannotGetMethodException {
     try {
-      @SuppressWarnings("unchecked") Constructor<T>[] constructors = type.getConstructors();
+      @SuppressWarnings("unchecked") Constructor<_T_>[] constructors = type.getConstructors();
       // unchecked cast because Class.getConstructors return Constructor[] instead of Constructor<T>[]
       for (int i = 0; i < constructors.length; i++) {
         if (constructors[i].toString().indexOf(signature) > -1) {
@@ -91,15 +92,15 @@ public class Reflection {
    *        the prefixed class name from.
    * @throws CannotCreateInstanceException
    */
-  public static <_InstanceType_> _InstanceType_ instantiatePrefixed(ClassLoader cl,
-                                                                    final String prefix,
-                                                                    final String fqcn)
+  public static <_Instance_> _Instance_ instantiatePrefixed(ClassLoader cl,
+                                                            final String prefix,
+                                                            final String fqcn)
       throws CannotCreateInstanceException {
     try {
       String prefixedFqcn = prefixedFqcn(prefix, fqcn);
       try {
-        @SuppressWarnings("unchecked") _InstanceType_ result =
-          (_InstanceType_)java.beans.Beans.instantiate(cl, prefixedFqcn);
+        @SuppressWarnings("unchecked") _Instance_ result =
+          (_Instance_)java.beans.Beans.instantiate(cl, prefixedFqcn);
         return result;
       }
       catch (ClassNotFoundException cnfExc) {
@@ -162,8 +163,8 @@ public class Reflection {
    * @throws    CannotGetValueException
    *            Error retrieving value.
    */
-  public static <_ConstantValueType_> _ConstantValueType_ constant(final String fqClassName,
-                                                                   final String constantName)
+  public static <_ConstantValue_> _ConstantValue_ constant(final String fqClassName,
+                                                           final String constantName)
       throws CannotGetClassException, CannotGetValueException {
     Class clazz = loadForName(fqClassName);
     return constant(clazz, constantName);
@@ -183,15 +184,15 @@ public class Reflection {
    * @throws    CannotGetValueException
    *            Error retrieving value.
    */
-  public static <_ConstantValueType_> _ConstantValueType_ constant(final Class<?> clazz,
-                                                                   final String constantName)
+  public static <_ConstantValue_> _ConstantValue_ constant(final Class<?> clazz,
+                                                           final String constantName)
       throws CannotGetValueException {
     try {
       Field field = clazz.getField(constantName); // NoSuchFieldException
                                                   // NullPointerException
                                                   // SecurityException
-      @SuppressWarnings("unchecked") _ConstantValueType_ result =
-          (_ConstantValueType_)field.get(null); // IllegalAccessException
+      @SuppressWarnings("unchecked") _ConstantValue_ result =
+          (_ConstantValue_)field.get(null); // IllegalAccessException
                                                 // IllegalArgumentException
                                                 // NullPointerException
                                                 // ExceptionInInitializerError
@@ -284,8 +285,8 @@ public class Reflection {
    *            Could not get the property read method or got the read method,
    *            but something went wrong reading the value.
    */
-  public static <_ValueType_, _BeanType_> _ValueType_ getPropertyValue(final _BeanType_ bean,
-                                                                       final String propertyName)
+  public static <_Value_, _Bean_> _Value_ getPropertyValue(final _Bean_ bean,
+                                                           final String propertyName)
       throws CannotGetValueException {
     Method inspector;
     try {
@@ -296,8 +297,8 @@ public class Reflection {
     }
     assert inspector != null;
     try {
-      @SuppressWarnings("unchecked") _ValueType_ result =
-          (_ValueType_)inspector.invoke(bean, (Object[])null);
+      @SuppressWarnings("unchecked") _Value_ result =
+          (_Value_)inspector.invoke(bean, (Object[])null);
       return result;
     }
     catch (IllegalArgumentException iaExc) {
@@ -419,12 +420,12 @@ public class Reflection {
    * @pre componentType != null;
    * @return Class.forName(componentType.getName() + "[]");
    */
-  public static <_ComponentType_> Class<_ComponentType_[]> arrayClassForName(Class<_ComponentType_> componentType) {
+  public static <_ArrayBase_> Class<_ArrayBase_[]> arrayClassForName(Class<_ArrayBase_> componentType) {
     assert componentType != null;
     String arrayFqcn = "[L" + componentType.getName() + ";";
     try {
-      @SuppressWarnings("unchecked") Class<_ComponentType_[]> result =
-          (Class<_ComponentType_[]>)Class.forName(arrayFqcn);
+      @SuppressWarnings("unchecked") Class<_ArrayBase_[]> result =
+          (Class<_ArrayBase_[]>)Class.forName(arrayFqcn);
       return result;
     }
     /* exceptions cannot happen, since componentType was already
