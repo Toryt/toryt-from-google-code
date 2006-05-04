@@ -12,7 +12,7 @@ import org.toryt.util_I.collections.priorityList.AbstractLockedPriorityList;
 
 /**
  * <p>Implementation of common expensive methodes for {@link ConcatPriorityList},
- *   {@link BiProductPriorityList} and {@link UnionPriorityList}.
+ *   {@link BiArrayProductPriorityList} and {@link UnionPriorityList}.
  *   These are all lazy lists.</p>
  *
  * @author Jan Dockx

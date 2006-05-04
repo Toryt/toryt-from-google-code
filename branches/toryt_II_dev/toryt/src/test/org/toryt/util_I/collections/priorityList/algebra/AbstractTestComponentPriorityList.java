@@ -8,8 +8,8 @@ import java.util.ListIterator;
 import junit.framework.TestCase;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
+import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 @CvsInfo(revision = "$Revision$",
@@ -18,28 +18,28 @@ import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
          tag      = "$Name$")
 public class AbstractTestComponentPriorityList extends TestCase {
 
-  protected ArrayHashPriorityList<PriorityElementDummy> $ahpl1;
-  protected ArrayHashPriorityList<PriorityElementDummy> $ahpl2;
-  protected ArrayHashPriorityList<PriorityElementDummy> $ahpl3;
-  protected ArrayHashPriorityList<PriorityElementDummy> $ahpl4;
-  protected AbstractComponentPriorityList<PriorityElementDummy> $subject;
+  protected ArrayHashPriorityList<PriorityElementDummy> $ahplA;
+  protected ArrayHashPriorityList<PriorityElementDummy> $ahplB;
+  protected ArrayHashPriorityList<PriorityElementDummy> $ahplC;
+  protected ArrayHashPriorityList<PriorityElementDummy> $ahplD;
+  protected PriorityList<?> $subject;
 
   @Override
   public void setUp() {
-    $ahpl1 = new ArrayHashPriorityList<PriorityElementDummy>(false);
-    fillPriorityList($ahpl1, 1, 5, 2);
-    $ahpl2 = new ArrayHashPriorityList<PriorityElementDummy>(false);
-    fillPriorityList($ahpl2, 2, 3, 4);
-    $ahpl3 = new ArrayHashPriorityList<PriorityElementDummy>(false);
-    fillPriorityList($ahpl3, 3, 1, 2);
-    $ahpl4 = new ArrayHashPriorityList<PriorityElementDummy>(false);
-    fillPriorityList($ahpl4, 4, 3, 3);
+    $ahplA = new ArrayHashPriorityList<PriorityElementDummy>(false);
+    fillPriorityList($ahplA, "A", 5, 2);
+    $ahplB = new ArrayHashPriorityList<PriorityElementDummy>(false);
+    fillPriorityList($ahplB, "B", 3, 4);
+    $ahplC = new ArrayHashPriorityList<PriorityElementDummy>(false);
+    fillPriorityList($ahplC, "C", 1, 2);
+    $ahplD = new ArrayHashPriorityList<PriorityElementDummy>(false);
+    fillPriorityList($ahplD, "D", 3, 3);
   }
 
-  private void fillPriorityList(ArrayHashPriorityList<PriorityElementDummy> ahpl, int priorityListNumber, int maxPriority, int maxInBucket) {
+  private void fillPriorityList(ArrayHashPriorityList<PriorityElementDummy> ahpl, String plName, int maxPriority, int maxInBucket) {
     for (int priority = 0; priority <= maxPriority; priority++) {
       for (int inBucket = 1; inBucket <= maxInBucket; inBucket++) {
-        ahpl.addPriorityElement(priority, new PriorityElementDummy(priorityListNumber, priority, inBucket));
+        ahpl.addPriorityElement(priority, new PriorityElementDummy(plName, priority));
       }
     }
     ahpl.lock();
@@ -47,10 +47,10 @@ public class AbstractTestComponentPriorityList extends TestCase {
 
   @Override
   public void tearDown() {
-    $ahpl1 = null;
-    $ahpl2 = null;
-    $ahpl3 = null;
-    $ahpl4 = null;
+    $ahplA = null;
+    $ahplB = null;
+    $ahplC = null;
+    $ahplD = null;
     $subject = null;
   }
 
@@ -69,7 +69,7 @@ public class AbstractTestComponentPriorityList extends TestCase {
 
   public void testIteration() {
     int counter = 0;
-    ListIterator<LockableBigSet<? extends PriorityElementDummy>> iter = $subject.listIterator();
+    ListIterator<?> iter = $subject.listIterator();
     while (iter.hasNext()) {
       assertEquals(counter, iter.nextIndex());
       assertEquals($subject.get(counter), iter.next());
@@ -81,7 +81,7 @@ public class AbstractTestComponentPriorityList extends TestCase {
 
   public void testPriorityElementIteration() {
     int counter = 0;
-    Iterator<PriorityElementDummy> iter = $subject.priorityElementIterator();
+    Iterator<?> iter = $subject.priorityElementIterator();
     while (iter.hasNext()) {
       System.out.println(iter.next());
       counter++;

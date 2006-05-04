@@ -13,7 +13,7 @@ public class TestUnionPriorityList extends AbstractTestComponentPriorityList {
   @Override
   public void setUp() {
     super.setUp();
-    $subject = new UnionPriorityList<PriorityElementDummy>(false, $ahpl1, $ahpl2, $ahpl3, $ahpl4);
+    $subject = new UnionPriorityList<PriorityElementDummy>(false, $ahplA, $ahplB, $ahplC, $ahplD);
   }
 
 }

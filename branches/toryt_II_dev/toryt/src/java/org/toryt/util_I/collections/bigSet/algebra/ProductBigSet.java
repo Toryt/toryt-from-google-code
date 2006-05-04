@@ -42,8 +42,8 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ProductBigSet<_Label_, _Element_>
-    extends AbstractLockedBigSet<Map<_Label_, _Element_>> {
+public class ProductBigSet<_Label_, _ResultMapElement_>
+    extends AbstractLockedBigSet<Map<_Label_, _ResultMapElement_>> {
 
   /**
    * @pre factors != null;
@@ -52,7 +52,7 @@ public class ProductBigSet<_Label_, _Element_>
    * @pre (forall LockableBigSet<?> lbs : factors.values(); (lbs == null) || lbs.isLocked());
    * @post new.getFactors().equals(factors);
    */
-  public ProductBigSet(Map<? extends _Label_, ? extends LockableBigSet<? extends _Element_>> factors) {
+  public ProductBigSet(Map<? extends _Label_, ? extends LockableBigSet<? extends _ResultMapElement_>> factors) {
     super(false, calculateSize(factors));
     assert ! factors.isEmpty();
     assert Collections.noNullKey(factors);
@@ -63,14 +63,14 @@ public class ProductBigSet<_Label_, _Element_>
                                           }
                                         });
     { // initFactors
-      $factors = new HashMap<_Label_, LockableBigSet<? extends _Element_>>(factors);
+      $factors = new HashMap<_Label_, LockableBigSet<? extends _ResultMapElement_>>(factors);
       @SuppressWarnings("unchecked") _Label_[] labels = (_Label_[])new Object[factors.size()];
       $factorLabels = labels;
-      @SuppressWarnings("unchecked") LockableBigSet<? extends _Element_>[] lockableBigSets =
-          (LockableBigSet<? extends _Element_>[])new LockableBigSet<?>[factors.size()];
+      @SuppressWarnings("unchecked") LockableBigSet<? extends _ResultMapElement_>[] lockableBigSets =
+          (LockableBigSet<? extends _ResultMapElement_>[])new LockableBigSet<?>[factors.size()];
       $factorBigSets = lockableBigSets;
       int i = 0;
-      for (Map.Entry<? extends _Label_, ? extends LockableBigSet<? extends _Element_>> entry : factors.entrySet()) {
+      for (Map.Entry<? extends _Label_, ? extends LockableBigSet<? extends _ResultMapElement_>> entry : factors.entrySet()) {
         /* actual order in arrays is not important, but must be kept
          once decided on */
         $factorLabels[i] = entry.getKey();
@@ -110,7 +110,7 @@ public class ProductBigSet<_Label_, _Element_>
   /**
    * @basic
    */
-  public final Map<_Label_, ? extends LockableBigSet<? extends _Element_>> getFactors() {
+  public final Map<_Label_, ? extends LockableBigSet<? extends _ResultMapElement_>> getFactors() {
     return java.util.Collections.unmodifiableMap($factors);
   }
 
@@ -120,7 +120,7 @@ public class ProductBigSet<_Label_, _Element_>
    * @invar (forall LockableBigSet<?> lbs : $factors.values(); (lbs == null) || lbs.isLocked());
    * @invar (forall _Label_ l : $factors.keySet(); Collections.contains($factorLabels, l));
    */
-  private Map<_Label_, ? extends LockableBigSet<? extends _Element_>> $factors;
+  private Map<_Label_, ? extends LockableBigSet<? extends _ResultMapElement_>> $factors;
 
   /**
    * @invar $factorLabels != null;
@@ -134,7 +134,7 @@ public class ProductBigSet<_Label_, _Element_>
    * @invar (forall int i; (i >= 0) && (i < $factorBigSets.length);
    *           $factorBigSet[i] = $factor.get($factorLabels[i]);
    */
-  private final LockableBigSet<? extends _Element_>[] $factorBigSets;
+  private final LockableBigSet<? extends _ResultMapElement_>[] $factorBigSets;
 
 
   /*</property>*/
@@ -150,7 +150,7 @@ public class ProductBigSet<_Label_, _Element_>
    * method if <code>! o instanceof MapProductBigSet</code>.
    */
   @Override
-  public boolean equals(Object o) {
+  public final boolean equals(Object o) {
     if ((o == null) || (! (o instanceof BigSet<?>))) {
       return false;
     }
@@ -167,7 +167,7 @@ public class ProductBigSet<_Label_, _Element_>
   }
 
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     return $factors.hashCode();
   }
 
@@ -176,11 +176,11 @@ public class ProductBigSet<_Label_, _Element_>
     if (o == null) {
       return false;
     }
-    @SuppressWarnings("unchecked") Map<? extends _Label_, ? extends _Element_> object =
-        (Map<? extends _Label_, ? extends _Element_>)o;
+    @SuppressWarnings("unchecked") Map<? extends _Label_, ? extends _ResultMapElement_> object =
+        (Map<? extends _Label_, ? extends _ResultMapElement_>)o;
       // this ClassCastException should not be caught, but just thrown
-    for (Map.Entry<? extends _Label_, ? extends _Element_> entry : object.entrySet()) {
-      LockableBigSet<? extends _Element_> lbs = $factors.get(entry.getKey());
+    for (Map.Entry<? extends _Label_, ? extends _ResultMapElement_> entry : object.entrySet()) {
+      LockableBigSet<? extends _ResultMapElement_> lbs = $factors.get(entry.getKey());
       if ((lbs == null) || (! lbs.contains(entry.getValue()))) {
         // if (lbs == null), this is empty, so nothing can match
         return false;
@@ -198,7 +198,7 @@ public class ProductBigSet<_Label_, _Element_>
     return size() == 0;
   }
 
-  public Iterator<Map<_Label_, _Element_>> iterator() {
+  public Iterator<Map<_Label_, _ResultMapElement_>> iterator() {
     return new AbstractLockedCollectionIterator() {
 
       private final int dim = $factorBigSets.length;
@@ -208,15 +208,15 @@ public class ProductBigSet<_Label_, _Element_>
        *
        * @invar (exists Iterator<?> iter : $iterators; iter.hasNext());
        */
-      private Iterator<? extends _Element_>[] $iterators;
+      private Iterator<? extends _ResultMapElement_>[] $iterators;
 
-      private _Element_[] $elements;
+      private _ResultMapElement_[] $elements;
 
       {
         if (! isEmpty()) {
           // prepare iterators
-          @SuppressWarnings("unchecked") Iterator<? extends _Element_>[] iterators =
-              (Iterator<? extends _Element_>[])new Iterator<?>[dim];
+          @SuppressWarnings("unchecked") Iterator<? extends _ResultMapElement_>[] iterators =
+              (Iterator<? extends _ResultMapElement_>[])new Iterator<?>[dim];
           $iterators = iterators;
           for (int i = 0; i < dim; i++) {
             assert $factorBigSets[i] != null : "cannot be null because we are not empty";
@@ -224,7 +224,7 @@ public class ProductBigSet<_Label_, _Element_>
             assert $iterators[i].hasNext() : "at least 1 element, because we are not empty";
           }
           // prepare first element
-          @SuppressWarnings("unchecked") _Element_[] elements = (_Element_[])new Object[dim];
+          @SuppressWarnings("unchecked") _ResultMapElement_[] elements = (_ResultMapElement_[])new Object[dim];
           $elements = elements;
           for (int j = dim - 1; j >= 0; j--) {
             assert ($iterators[j] != null) && ($iterators[j].hasNext());
@@ -244,8 +244,8 @@ public class ProductBigSet<_Label_, _Element_>
         assert $elements != null;
         assert $iterators != null;
         assert Collections.forAll($factorBigSets,
-                                  new Assertion<LockableBigSet<? extends _Element_>>() {
-                                        public boolean isTrueFor(LockableBigSet<? extends _Element_> o) {
+                                  new Assertion<LockableBigSet<? extends _ResultMapElement_>>() {
+                                        public boolean isTrueFor(LockableBigSet<? extends _ResultMapElement_> o) {
                                           return (o != null) && (! o.isEmpty());
                                         }
                                       });
@@ -284,11 +284,11 @@ public class ProductBigSet<_Label_, _Element_>
         return $elements != null;
       }
 
-      public final Map<_Label_, _Element_> next() throws NoSuchElementException {
+      public final Map<_Label_, _ResultMapElement_> next() throws NoSuchElementException {
         if ($elements == null) {
           throw new NoSuchElementException();
         }
-        Map<_Label_, _Element_> result = createEmptyElementMap();
+        Map<_Label_, _ResultMapElement_> result = createEmptyElementMap();
         for (int j = 0; j < $elements.length; j++) {
           result.put($factorLabels[j], $elements[j]);
         }
@@ -299,8 +299,8 @@ public class ProductBigSet<_Label_, _Element_>
     };
   }
 
-  protected Map<_Label_, _Element_> createEmptyElementMap() {
-    return new HashMap<_Label_, _Element_>($factorLabels.length);
+  protected Map<_Label_, _ResultMapElement_> createEmptyElementMap() {
+    return new HashMap<_Label_, _ResultMapElement_>($factorLabels.length);
   }
 
 }

@@ -2,74 +2,84 @@ package org.toryt.util_I.collections.priorityList.algebra;
 
 
 import java.math.BigInteger;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.ArrayUtils;
-import org.toryt.util_I.collections.bigSet.algebra.ArrayProductBigSet;
+import org.toryt.util_I.collections.bigSet.algebra.ProductBigSet;
 import org.toryt.util_I.collections.bigSet.algebra.UnionBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
 /**
+ * <p>A lazy priority list, that is the cartesian product of 2 factor
+ *   {@link PriorityList PriorityLists}. The factor {@link PriorityList PriorityLists} have
+ *   to be locked, and are presented at construction time, in a
+ *   {@link Map}. Factors are labelled, and the priority elements in this
+ *   {@link PriorityList} are {@link Map Maps} with the same labels, and
+ *   for each label an element from the corresponding factor
+ *   {@link PriorityList}. The labels can be of any type, but they
+ *   will often be {@code Strings}.</p>
+ * <p>If one of the factor {@link PriorityList PriorityLists} is <code>null</code>,
+ *   it behaves as an empty list, making this an empty list too.
+ *   This might become {@link #isEmpty()}, but will never contain
+ *   <code>null</code>.</p>
+ *
  * @author Jan Dockx
+ *
+ * @invar getFactors().size() == 2;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityList {
+public class BiProductPriorityList<_Label_, _ResultMapElement_>
+    extends AbstractProductPriorityList<_Label_, _ResultMapElement_> {
 
-  private BiProductPriorityList(PriorityList leftFactor, PriorityList rightFactor, int fromIndex, int toIndex) {
-    super(buildPriorityElementType(leftFactor, rightFactor),
-          calculateCardinality(leftFactor, rightFactor));
-    $leftFactor = leftFactor;
-    $rightFactor = rightFactor;
-    $fromIndex = fromIndex;
-    $toIndex = toIndex;
-    $baseSize = calculateBaseSize(leftFactor, rightFactor);
-  }
-
-  public BiProductPriorityList(PriorityList leftFactor, PriorityList rightFactor) {
-    this(leftFactor, rightFactor, 0, calculateBaseSize(leftFactor, rightFactor));
-  }
-
-  private int $fromIndex;
-  private int $toIndex;
-
-  private static Class buildPriorityElementType(PriorityList leftFactor, PriorityList rightFactor) {
-    return Object[].class;
-    // IDEA more specific: closest supertype of left PETand right PET.
-  }
-
-  private static BigInteger calculateCardinality(PriorityList leftFactor, PriorityList rightFactor) {
-    return ((leftFactor == null) || (rightFactor == null)) ?
-             BigInteger.ZERO :
-             leftFactor.getCardinality().multiply(rightFactor.getCardinality());
-  }
-
-  public final PriorityList getLeftFactor() {
-    return $leftFactor;
-  }
-
-  private PriorityList $leftFactor;
-
-  public final PriorityList getRightFactor() {
-    return $rightFactor;
-  }
-
-  private PriorityList $rightFactor;
+  /* <construction> */
+  //------------------------------------------------------------------
 
   /**
-   * @return Math.min(getLeftFactor().size(), getRightFactor().size()) - 1;
+   * @pre factors != null;
+   * @pre ! factors.isEmpty();
+   * @pre Collections.noNullKey(factors);
+   * @pre factors.size() == 2;
+   * @pre (forall PriorityList<?> pl : factors.values(); (pl == null) || pl.isLocked());
+   * @post new.getFactors().equals(factors);
+   */
+  public BiProductPriorityList(Map<? extends _Label_, ? extends PriorityList<? extends _ResultMapElement_>> factors,
+                                int fromInclusive, int toExclusive) {
+    super(factors, fromInclusive, toExclusive);
+  }
+
+  /**
+   * @pre factors != null;
+   * @pre ! factors.isEmpty();
+   * @pre Collections.noNullKey(factors);
+   * @pre factors.size() == 2;
+   * @pre (forall PriorityList<?> pl : factors.values(); (pl == null) || pl.isLocked());
+   * @post new.getFactors().equals(factors);
+   */
+  public BiProductPriorityList(Map<? extends _Label_, ? extends PriorityList<? extends _ResultMapElement_>> factors) {
+    this(factors, 0, AbstractProductPriorityList.calculateBaseSize(factors));
+  }
+
+  /*</construction>*/
+
+
+
+  /* <section name="bi-structure"> */
+  //------------------------------------------------------------------
+
+  /**
+   * @return Math.min(getFactors().values().size()) - 1;
    */
   public final int getPlateauLeftPriority() {
-    return (($leftFactor == null) || ($rightFactor == null)) ?
+    assert $factorPriorityLists.length == 2;
+    return (($factorPriorityLists[0] == null) || ($factorPriorityLists[1] == null)) ?
              0 :
-             Math.min($leftFactor.size(), $rightFactor.size()) - 1;
+             Math.min($factorPriorityLists[0].size(), $factorPriorityLists[1].size()) - 1;
   }
 
   /**
@@ -86,45 +96,10 @@ public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityLi
     return getPlateauLeftPriority() + getPlateauSize() - 1;
   }
 
-  public int size() {
-    return $toIndex - $fromIndex;
-  }
-
-  private static int calculateBaseSize(PriorityList leftFactor, PriorityList rightFactor) {
-    return ((leftFactor == null) || (rightFactor == null)) ?
-              0 :
-              (leftFactor.size() - 1) + (rightFactor.size() - 1) + 1;
-
-  }
-
-  public final int getBaseSize() {
-    return $baseSize;
-  }
-
-  private int $baseSize;
-
-  public final boolean isEmpty() {
-    return size() == 0;
-  }
-
-  public Object get(int index) throws IndexOutOfBoundsException {
-    if (index < 0) {
-      throw new IndexOutOfBoundsException();
-    }
-    int priority = index + $fromIndex;
-    int leftStartPriority = Math.max(0, priority - $rightFactor.size() + 1);
-    int nrOfCombinationsInBucket = getNrOfCombinationsInBucket(priority);
-    LockableBigSet[] components = new LockableBigSet[nrOfCombinationsInBucket];
-    for (int i = 0; i < nrOfCombinationsInBucket; i++) {
-      int leftPriority = leftStartPriority + i;
-      int rightPriority = priority - leftPriority;
-      components[i] = new ArrayProductBigSet(Object[].class,
-                                        new LockableBigSet[] {(LockableBigSet)$leftFactor.get(leftPriority),
-                                                              (LockableBigSet)$rightFactor.get(rightPriority)});
-    }
-    return new UnionBigSet(getPriorityElementType(), true, components);
-  }
-
+  /**
+   * This is an {@code int}, and not a {@link BigInteger}, for the product of
+   * 2 factors.
+   */
   public final int getNrOfCombinationsInBucket(int priority) {
     return (priority <= getPlateauLeftPriority()) ?
               priority + 1 :
@@ -133,132 +108,42 @@ public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityLi
                  getPlateauLeftPriority() + 1);
   }
 
-  public final List subList(int fromIndex, int toIndex) {
-    return new BiProductPriorityList($leftFactor, $rightFactor, fromIndex, toIndex);
+  /*</section>*/
+
+
+
+  /* <section name="list methods"> */
+  //------------------------------------------------------------------
+
+  public final BiProductPriorityList<_Label_, _ResultMapElement_> subList(int fromIndex, int toIndex)
+      throws IndexOutOfBoundsException {
+    return new BiProductPriorityList<_Label_, _ResultMapElement_>($factors, fromIndex, toIndex);
   }
 
-  public final ListIterator listIterator(final int index) {
-    return new AbstractLockedListIterator() {
+  /*</section>*/
 
-      private int $cursor = index;
 
-      public final boolean hasNext() {
-        return $cursor < size();
-      }
-
-      public Object next() {
-        Object result = get($cursor);
-        $cursor++;
-        return result;
-      }
-
-      public boolean hasPrevious() {
-        return $cursor > 0;
-      }
-
-      public Object previous() {
-        $cursor--;
-        return get($cursor);
-      }
-
-      public int nextIndex() {
-        return $cursor;
-      }
-
-      public int previousIndex() {
-        return $cursor - 1;
-      }
-
-    };
-  }
-
-  public Iterator priorityElementIterator() {
-    return new AbstractLockedCollectionIterator() {
-
-                  Iterator $listIterator = iterator();
-
-                  /**
-                   * @invar ($lbsIterator == null) || ($lbsIterator.hasNext());
-                   */
-                  Iterator $lbsIterator;
-
-                  {
-                    prepareNextLbsIterator();
-                  }
-
-                  private void prepareNextLbsIterator() {
-                    $lbsIterator = null;
-                    while (($lbsIterator == null) && $listIterator.hasNext()) {
-                      LockableBigSet lbs = (LockableBigSet)$listIterator.next();
-                      if (! lbs.isEmpty()) {
-                        $lbsIterator = lbs.iterator();
-                      }
-                    }
-                  }
-
-                  public final boolean hasNext() {
-                    return ($lbsIterator != null);
-                  }
-
-                  public final Object next() {
-                    Object result = $lbsIterator.next();
-                    if (! $lbsIterator.hasNext()) {
-                      prepareNextLbsIterator();
-                    }
-                    return result;
-                  }
-
-                };
-  }
-
-  public final int hashCode() {
-    return $leftFactor.hashCode() + $rightFactor.hashCode();
-  }
-
-  /**
-   * Find an equal <code>Object[]</code>.
-   */
-  public final boolean containsPriorityElement(final Object o) {
-    Object[] element = (Object[])o;
-    return $leftFactor.contains(element[0]) && $rightFactor.contains(element[1]);
-  }
-
-  protected String priorityElementToString(Object element) {
-    Object[] e = (Object[])element;
-    // MUDO remove after development is finished
-    e = ArrayUtils.flatten(e);
-    // MUDO remove after development is finished
-    StringBuffer result = new StringBuffer("[");
-    for (int i = 0; i < e.length; i++) {
-      result.append(e[i]);
-      if (i < e.length - 1) {
-        result.append(", ");
-      }
+  public UnionBigSet<? extends Map<_Label_, _ResultMapElement_>> get(int index) throws IndexOutOfBoundsException {
+    if ((index < 0) || (index >= size())) {
+      throw new IndexOutOfBoundsException();
     }
-    result.append("]");
-    return result.toString();
+    int priority = index + $fromInclusive;
+    int leftStartPriority = Math.max(0, priority - $factorPriorityLists[1].size() + 1);
+    int nrOfCombinationsInBucket = getNrOfCombinationsInBucket(priority);
+    @SuppressWarnings("unchecked") LockableBigSet<? extends Map<_Label_, _ResultMapElement_>>[] products =
+        (ProductBigSet<_Label_, _ResultMapElement_>[])new ProductBigSet<?, ?>[nrOfCombinationsInBucket];
+    for (int i = 0; i < nrOfCombinationsInBucket; i++) {
+      int leftPriority = leftStartPriority + i;
+      int rightPriority = priority - leftPriority;
+      Map<_Label_, LockableBigSet<? extends _ResultMapElement_>> componentMap =
+          new HashMap<_Label_, LockableBigSet<? extends _ResultMapElement_>>(2);
+      componentMap.put($factorLabels[0], $factorPriorityLists[0].get(leftPriority));
+      componentMap.put($factorLabels[1], $factorPriorityLists[1].get(rightPriority));
+      products[i] = new ProductBigSet<_Label_, _ResultMapElement_>(componentMap);
+    }
+    UnionBigSet<Map<_Label_, _ResultMapElement_>> result =
+        new UnionBigSet<Map<_Label_, _ResultMapElement_>>(isNullPriorityElementAllowed(), products);
+    return result;
   }
-
-
-  /**
-   * This method is very expensive, as it iterates over all buckets
-   * (and thus generates them).
-   *
-   * @deprecated
-   */
-  public final Object[] toArray() {
-    return super.toArray();
-  }
-
-  /**
-   * This method is very expensive, as it iterates over all buckets
-   * (and thus generates them).
-   *
-   * @deprecated
-   */
-  public final Object[] toArray(Object[] a) {
-    return super.toArray(a);
-  }
-
 
 }

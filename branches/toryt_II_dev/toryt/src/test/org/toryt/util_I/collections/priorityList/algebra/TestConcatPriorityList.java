@@ -13,7 +13,7 @@ public class TestConcatPriorityList extends AbstractTestComponentPriorityList {
   @Override
   public void setUp() {
     super.setUp();
-    $subject = new ConcatPriorityList<PriorityElementDummy>(false, $ahpl1, $ahpl2, $ahpl3, $ahpl4);
+    $subject = new ConcatPriorityList<PriorityElementDummy>(false, $ahplA, $ahplB, $ahplC, $ahplD);
   }
 
 }

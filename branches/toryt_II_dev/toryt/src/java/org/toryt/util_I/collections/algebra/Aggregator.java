@@ -2,13 +2,13 @@ package org.toryt.util_I.collections.algebra;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.priorityList.algebra.BiProductPriorityList;
+import org.toryt.util_I.collections.priorityList.algebra.BiArrayProductPriorityList;
 
 
   /**
  * <p>Instances are used to aggregate elements from different components
  *   in product-collections (see, e.g., ArrayProductBigSet,
- *   {@link BiProductPriorityList}).</p>
+ *   {@link BiArrayProductPriorityList}).</p>
  * <p>Component elements are set with an index. <code>_ComponentElementType_</code>
  *   is a supertype of the type of the components. Most often, you should
  *   use <code>Object</code> as actual generic parameter, but this makes

@@ -3,15 +3,12 @@ package org.toryt.util_I.collections.priorityList.algebra;
 
 import java.math.BigInteger;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.priorityList.AbstractLockedPriorityList;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
@@ -181,51 +178,6 @@ public abstract class AbstractComponentPriorityList<_PriorityElement_>
       acc += ($components[i] == null) ? 0 : $components[i].hashCode();
     }
     return acc;
-  }
-
-  public final Iterator<_PriorityElement_> priorityElementIterator() {
-    return new Iterator<_PriorityElement_>() {
-
-                  private Iterator<LockableBigSet<? extends _PriorityElement_>> $listIter = iterator();
-
-                  private Iterator<? extends _PriorityElement_> $bucketIter;
-
-                  {
-                    nextBucketIterator();
-                  }
-
-                  private void nextBucketIterator() {
-                    assert ($bucketIter == null) || (! $bucketIter.hasNext());
-                    $bucketIter = null;
-                    while ($listIter.hasNext() && ($bucketIter == null)) {
-                      Set<? extends _PriorityElement_> bucket = $listIter.next();
-                      if (! bucket.isEmpty()) {
-                        $bucketIter = bucket.iterator();
-                      }
-                    }
-                  }
-
-                  public boolean hasNext() {
-                    return $bucketIter != null;
-                  }
-
-                  public _PriorityElement_ next() {
-                    _PriorityElement_ result = $bucketIter.next();
-                    if (! $bucketIter.hasNext()) {
-                      nextBucketIterator();
-                    }
-                    return result;
-                  }
-
-                  /**
-                   * @deprecated Unsupported
-                   */
-                  @Deprecated
-                  public final void remove()  throws UnsupportedOperationException {
-                    throw new UnsupportedOperationException("Set is locked");
-                  }
-
-                };
   }
 
 }

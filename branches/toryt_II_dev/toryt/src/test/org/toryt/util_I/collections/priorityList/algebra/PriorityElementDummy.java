@@ -10,17 +10,17 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class PriorityElementDummy {
 
-  public PriorityElementDummy(int priorityListNumber, int priority, int inBucket) {
-    $priorityListNumber = priorityListNumber;
+  public PriorityElementDummy(String priorityListName, int priority) { //, String inBucketId) {
+    $priorityListName = priorityListName;
     $priority = priority;
-    $inBucket = inBucket;
+//    $inBucketId = inBucketId;
   }
 
-  public final int getPriorityListNumber() {
-    return $priorityListNumber;
+  public final String getPriorityListName() {
+    return $priorityListName;
   }
 
-  private int $priorityListNumber;
+  private String $priorityListName;
 
   public final int getPriority() {
     return $priority;
@@ -28,18 +28,15 @@ public class PriorityElementDummy {
 
   private int $priority;
 
-  public final int getInBucket() {
-    return $inBucket;
-  }
-
-  private int $inBucket;
+//  public final String getInBucketId() {
+//    return $inBucketId;
+//  }
+//
+//  private String $inBucketId;
 
   @Override
   public String toString() {
-    return "[list: " + $priorityListNumber +
-           " , priority: " + $priority +
-           " , in bucket: " + $inBucket +
-           "]";
+    return "[" + $priorityListName + + $priority + "(" + Integer.toHexString(hashCode()) + ")]";
   }
 
 }
