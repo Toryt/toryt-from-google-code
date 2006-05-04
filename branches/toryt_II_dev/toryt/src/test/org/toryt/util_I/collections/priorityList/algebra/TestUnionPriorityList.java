@@ -8,12 +8,12 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TestConcatPriorityList extends AbstractTestComponentPriorityList {
+public class TestUnionPriorityList extends AbstractTestComponentPriorityList {
 
   @Override
   public void setUp() {
     super.setUp();
-    $subject = new ConcatPriorityList<PriorityElementDummy>(false, $ahpl1, $ahpl2, $ahpl3, $ahpl4);
+    $subject = new UnionPriorityList<PriorityElementDummy>(false, $ahpl1, $ahpl2, $ahpl3, $ahpl4);
   }
 
 }

@@ -26,7 +26,7 @@ public final class EmptyPriorityList<_PriorityElement_>
    * This method is introduced for use in {@link #subList(int, int)}.
    */
   public EmptyPriorityList() {
-    super(BigInteger.ZERO);
+    super(BigInteger.ZERO, false);
   }
 
   private EmptyBigSet<_PriorityElement_> $ebs = new EmptyBigSet<_PriorityElement_>();
@@ -108,10 +108,6 @@ public final class EmptyPriorityList<_PriorityElement_>
     else {
       throw new IndexOutOfBoundsException();
     }
-  }
-
-  public final boolean isNullPriorityElementAllowed() {
-    return false; // whatever
   }
 
 }

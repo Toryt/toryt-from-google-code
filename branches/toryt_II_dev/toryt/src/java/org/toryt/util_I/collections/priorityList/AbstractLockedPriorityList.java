@@ -26,13 +26,29 @@ public abstract class AbstractLockedPriorityList<_PriorityElement_>
   /**
    * @pre cardinality != null;
    * @pre cardinality >= 0;
+   * @post new.isNullPriorityElementAllowed() == nullPriorityElementAllowed;
+   * @post new.getCardinality().equals(cardinality);
    */
-  protected AbstractLockedPriorityList(BigInteger cardinality) {
+  protected AbstractLockedPriorityList(BigInteger cardinality, boolean nullPriorityElementAllowed) {
     super(false);
     assert cardinality != null;
     assert cardinality.compareTo(BigInteger.ZERO) >= 0;
+    $nullPriorityElementAllowed = nullPriorityElementAllowed;
     $cardinality = cardinality;
   }
+
+
+
+  /* <property name="nullPriorityElementAllowed"> */
+  //------------------------------------------------------------------
+
+  public final boolean isNullPriorityElementAllowed() {
+    return $nullPriorityElementAllowed;
+  }
+
+  private boolean $nullPriorityElementAllowed;
+
+  /*</property>*/
 
 
 

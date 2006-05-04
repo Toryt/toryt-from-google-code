@@ -73,7 +73,7 @@ public class ArrayHashPriorityList<_PriorityElement_>
    * @post new.getBackingCollection() == backingList;
    */
   private ArrayHashPriorityList(List<LockableBigSet<? extends _PriorityElement_>> backingList,
-                                  boolean nullAllowed) {
+                                boolean nullAllowed) {
     super(backingList, false);
     assert Collections.noNull(backingList);
     $nullPriorityElementAllowed = nullAllowed;

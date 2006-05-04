@@ -28,7 +28,7 @@ public final class NullSingletonPriorityList<_PriorityElement_>
     extends AbstractLockedPriorityList<_PriorityElement_> {
 
   public NullSingletonPriorityList() {
-    super(BigInteger.ONE);
+    super(BigInteger.ONE, true);
     $lbs = new NullSingletonBigSet<_PriorityElement_>();
   }
 
@@ -142,10 +142,6 @@ public final class NullSingletonPriorityList<_PriorityElement_>
     else {
       throw new IndexOutOfBoundsException();
     }
-  }
-
-  public final boolean isNullPriorityElementAllowed() {
-    return true;
   }
 
 }

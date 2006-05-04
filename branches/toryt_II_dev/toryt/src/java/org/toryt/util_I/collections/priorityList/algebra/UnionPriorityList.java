@@ -1,17 +1,11 @@
 package org.toryt.util_I.collections.priorityList.algebra;
 
 
-import java.math.BigInteger;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 
-import org.toryt.patterns_I.Assertion;
-import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.algebra.UnionBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
-import org.toryt.util_I.collections.lockable.AbstractLockedList.AbstractLockedListIterator;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
@@ -55,11 +49,14 @@ public class UnionPriorityList<_PriorityElement_>
    *             ! $components[j].containsPriorityElement(o)));
    *      component priority lists must be disjunct on the level of the priority
    *      elements (not checked with an assertion because too expensive)
-   * @post Collections.containsAll($components, new.getComponents());
+   * @pre (! nullAllowed) ? (forall int i; (i >= 0) && (i < components.length);
+   *          ! components[i].containsPriorityElement(null));
+   * @post new.isNullPriorityElementAllowed() == nullPriorityElementAllowed;
+   * @post Collections.containsAll(components, new.getComponents());
    */
-  public UnionPriorityList(PriorityList<? extends _PriorityElement_>... component) {
-    super(calculateSize(component),
-          component);
+  public UnionPriorityList(boolean nullPriorityElementAllowed,
+                           PriorityList<? extends _PriorityElement_>... component) {
+    super(calculateSize(component), nullPriorityElementAllowed, component);
     // no assertion for being disjunct
   }
 
@@ -98,7 +95,7 @@ public class UnionPriorityList<_PriorityElement_>
       int maxPriority = Math.min(toExclusive, pl.size());
       subcomponents[i] = pl.subList(fromInclusive, maxPriority);
     }
-    return new UnionPriorityList<_PriorityElement_>(subcomponents);
+    return new UnionPriorityList<_PriorityElement_>(isNullPriorityElementAllowed(), subcomponents);
   }
 
   public final UnionBigSet<? extends _PriorityElement_> get(int index) {
@@ -188,13 +185,6 @@ public class UnionPriorityList<_PriorityElement_>
     return new UnionBigSet<_PriorityElement_>(isNullPriorityElementAllowed(), resultComponents);
     }
 
-  }
-
-  /**
-   * @mudo
-   */
-  public boolean isNullPriorityElementAllowed() {
-    return false;
   }
 
 }

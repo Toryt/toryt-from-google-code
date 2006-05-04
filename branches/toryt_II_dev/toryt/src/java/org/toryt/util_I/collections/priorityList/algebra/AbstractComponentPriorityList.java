@@ -3,12 +3,15 @@ package org.toryt.util_I.collections.priorityList.algebra;
 
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.priorityList.AbstractLockedPriorityList;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
@@ -28,8 +31,8 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractComponentPriorityList<_Element_>
-    extends AbstractLockedPriorityList<_Element_> {
+public abstract class AbstractComponentPriorityList<_PriorityElement_>
+    extends AbstractLockedPriorityList<_PriorityElement_> {
 
   /**
    * @pre size >= 0;
@@ -37,24 +40,39 @@ public abstract class AbstractComponentPriorityList<_Element_>
    * @pre cC:noNull(components);
    * @pre (forall int i; (i >= 0) && (i < components.length);
    *        components[i].isLocked());
+   * @pre (! nullPriorityElementAllowed) ? (forall int i; (i >= 0) && (i < components.length);
+   *          ! components[i].containsPriorityElement(null));
+   * @post new.size() == size;
+   * @post new.isNullPriorityElementAllowed() == nullPriorityElementAllowed;
    * @post Collections.containsAll(components, new.getComponents());
    */
   protected AbstractComponentPriorityList(int size,
-                                          PriorityList<? extends _Element_>[] components) {
-    super(calculateCardinality(components));
+                                          boolean nullPriorityElementAllowed,
+                                          PriorityList<? extends _PriorityElement_>[] components) {
+    super(calculateCardinality(components), nullPriorityElementAllowed);
     assert size >= 0;
     assert components != null;
     assert Collections.noNull(components);
     assert Collections.forAll(components,
-                              new Assertion<PriorityList<? extends _Element_>>() {
+                              new Assertion<PriorityList<? extends _PriorityElement_>>() {
 
-                                    public boolean isTrueFor(PriorityList<? extends _Element_> o) {
+                                    public boolean isTrueFor(PriorityList<? extends _PriorityElement_> o) {
                                       return o.isLocked();
                                     }
 
                                   });
+    assert (! nullPriorityElementAllowed) ?
+             Collections.forAll(components,
+                                new Assertion<PriorityList<? extends _PriorityElement_>>() {
+
+                                      public boolean isTrueFor(PriorityList<? extends _PriorityElement_> o) {
+                                        return ! o.containsPriorityElement(null);
+                                      }
+
+                                    }) :
+             true;
     $size = size;
-    $components = (PriorityList<? extends _Element_>[])ArrayUtils.clone(components);
+    $components = (PriorityList<? extends _PriorityElement_>[])ArrayUtils.clone(components);
   }
 
   private static BigInteger calculateCardinality(PriorityList<?>[] components) {
@@ -73,8 +91,8 @@ public abstract class AbstractComponentPriorityList<_Element_>
   /**
    * @basic
    */
-  public final PriorityList<? extends _Element_>[] getComponents() {
-    return (PriorityList<? extends _Element_>[])ArrayUtils.clone($components);
+  public final PriorityList<? extends _PriorityElement_>[] getComponents() {
+    return (PriorityList<? extends _PriorityElement_>[])ArrayUtils.clone($components);
   }
 
   /**
@@ -83,7 +101,7 @@ public abstract class AbstractComponentPriorityList<_Element_>
    * @invar (forall int i; (i >= 0) && (i < $components.length);
    *          $components[i].isLocked());
    */
-  private final PriorityList<? extends _Element_>[] $components;
+  private final PriorityList<? extends _PriorityElement_>[] $components;
 
   /*</property>*/
 
@@ -91,8 +109,8 @@ public abstract class AbstractComponentPriorityList<_Element_>
 
   public final boolean containsPriorityElement(final Object o) {
     return Collections.exists(getComponents(),
-                              new Assertion<PriorityList<? extends _Element_>>() {
-                                    public boolean isTrueFor(PriorityList<? extends _Element_> s) {
+                              new Assertion<PriorityList<? extends _PriorityElement_>>() {
+                                    public boolean isTrueFor(PriorityList<? extends _PriorityElement_> s) {
                                       return s.containsPriorityElement(o);
                                     }
                                   });
@@ -163,6 +181,51 @@ public abstract class AbstractComponentPriorityList<_Element_>
       acc += ($components[i] == null) ? 0 : $components[i].hashCode();
     }
     return acc;
+  }
+
+  public final Iterator<_PriorityElement_> priorityElementIterator() {
+    return new Iterator<_PriorityElement_>() {
+
+                  private Iterator<LockableBigSet<? extends _PriorityElement_>> $listIter = iterator();
+
+                  private Iterator<? extends _PriorityElement_> $bucketIter;
+
+                  {
+                    nextBucketIterator();
+                  }
+
+                  private void nextBucketIterator() {
+                    assert ($bucketIter == null) || (! $bucketIter.hasNext());
+                    $bucketIter = null;
+                    while ($listIter.hasNext() && ($bucketIter == null)) {
+                      Set<? extends _PriorityElement_> bucket = $listIter.next();
+                      if (! bucket.isEmpty()) {
+                        $bucketIter = bucket.iterator();
+                      }
+                    }
+                  }
+
+                  public boolean hasNext() {
+                    return $bucketIter != null;
+                  }
+
+                  public _PriorityElement_ next() {
+                    _PriorityElement_ result = $bucketIter.next();
+                    if (! $bucketIter.hasNext()) {
+                      nextBucketIterator();
+                    }
+                    return result;
+                  }
+
+                  /**
+                   * @deprecated Unsupported
+                   */
+                  @Deprecated
+                  public final void remove()  throws UnsupportedOperationException {
+                    throw new UnsupportedOperationException("Set is locked");
+                  }
+
+                };
   }
 
 }

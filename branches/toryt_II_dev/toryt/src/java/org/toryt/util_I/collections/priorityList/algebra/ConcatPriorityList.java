@@ -1,9 +1,7 @@
 package org.toryt.util_I.collections.priorityList.algebra;
 
 
-import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.Set;
 
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
@@ -31,10 +29,14 @@ public class ConcatPriorityList<_PriorityElement_>
    * @pre cC:noNull(component);
    * @pre (forall int i; (i >= 0) && (i < component.length);
    *        component[i].isLocked());
+   * @pre (! nullAllowed) ? (forall int i; (i >= 0) && (i < components.length);
+   *          ! components[i].containsPriorityElement(null));
+   * @post new.isNullPriorityElementAllowed() == nullPriorityElementAllowed;
+   * @post Collections.containsAll(components, new.getComponents());
    */
-  public ConcatPriorityList(PriorityList<? extends _PriorityElement_>... component) {
-    super(calculateSize(component),
-          component);
+  public ConcatPriorityList(boolean nullPriorityElementAllowed,
+                            PriorityList<? extends _PriorityElement_>... component) {
+    super(calculateSize(component), nullPriorityElementAllowed, component);
   }
 
   private static int calculateSize(PriorityList<?>[] components) {
@@ -107,7 +109,7 @@ public class ConcatPriorityList<_PriorityElement_>
     if (toComponent > fromComponent) {
       subcomponents[nrOfSubcomponents - 1] = components[toComponent].subList(0, relativeToIndex);
     }
-    return new ConcatPriorityList<_PriorityElement_>(subcomponents);
+    return new ConcatPriorityList<_PriorityElement_>(isNullAllowed(), subcomponents);
   }
 
   private class RelativePosition {
@@ -246,57 +248,6 @@ public class ConcatPriorityList<_PriorityElement_>
                   }
 
                 };
-  }
-
-  public Iterator<_PriorityElement_> priorityElementIterator() {
-    return new Iterator<_PriorityElement_>() {
-
-                  private Iterator<LockableBigSet<? extends _PriorityElement_>> $listIter = iterator();
-
-                  private Iterator<? extends _PriorityElement_> $bucketIter;
-
-                  {
-                    nextBucketIterator();
-                  }
-
-                  private void nextBucketIterator() {
-                    $bucketIter = null;
-                    while ($listIter.hasNext() && ($bucketIter == null)) {
-                      Set<? extends _PriorityElement_> bucket = $listIter.next();
-                      if (! bucket.isEmpty()) {
-                        $bucketIter = bucket.iterator();
-                      }
-                    }
-                  }
-
-                  public boolean hasNext() {
-                    return $bucketIter != null;
-                  }
-
-                  public _PriorityElement_ next() {
-                    _PriorityElement_ result = $bucketIter.next();
-                    if (! $bucketIter.hasNext()) {
-                      nextBucketIterator();
-                    }
-                    return result;
-                  }
-
-                  /**
-                   * @deprecated Unsupported
-                   */
-                  @Deprecated
-                  public final void remove()  throws UnsupportedOperationException {
-                    throw new UnsupportedOperationException("Set is locked");
-                  }
-
-                };
-  }
-
-  /**
-   * @mudo
-   */
-  public boolean isNullPriorityElementAllowed() {
-    return false;
   }
 
 }
