@@ -2,13 +2,12 @@ package org.toryt.util_I.collections.algebra;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.bigSet.algebra.ProductBigSet;
 import org.toryt.util_I.collections.priorityList.algebra.BiProductPriorityList;
 
 
   /**
  * <p>Instances are used to aggregate elements from different components
- *   in product-collections (see, e.g., {@link ProductBigSet},
+ *   in product-collections (see, e.g., ArrayProductBigSet,
  *   {@link BiProductPriorityList}).</p>
  * <p>Component elements are set with an index. <code>_ComponentElementType_</code>
  *   is a supertype of the type of the components. Most often, you should
@@ -21,7 +20,15 @@ import org.toryt.util_I.collections.priorityList.algebra.BiProductPriorityList;
  * <p>Implementations might benefit from {@link AbstractAggregator}.</p>
  *
  * @invar getNrOfComponents() >= 0;
+ *
+ * @deprecated These classes where only here for the old ProductBigSet,
+ *             which were array based. This wasn't very nice, and is now
+ *             replace by a Map base product.
+ *             These classes aren't very nice either, so the are going
+ *             away too.
+ * @mudo throw away
  */
+@Deprecated
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",

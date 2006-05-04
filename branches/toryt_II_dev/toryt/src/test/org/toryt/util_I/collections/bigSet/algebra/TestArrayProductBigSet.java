@@ -10,10 +10,14 @@ import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
 
 
 
+@SuppressWarnings("deprecation")
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
+/**
+ * @mudo throw away
+ */
 public class TestArrayProductBigSet extends TestCase {
 
   @Override

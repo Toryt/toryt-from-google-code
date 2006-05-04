@@ -2,12 +2,11 @@ package org.toryt.util_I.collections.bigSet.algebra;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.algebra.ObjectArrayAggregatorFactory;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 
 
 /**
- * <p>A {@link ArrayProductBigSet} that uses an {@link ObjectArrayAggregatorFactory}
+ * <p>A {@link ArrayProductBigSet} that uses an ObjectArrayAggregatorFactory
  *   as {@link #getAggregatorFactory() aggregator factory}. It always
  *   returns {@code Object[]} as {@code _ResultElementType}.</p>
  *
@@ -31,7 +30,7 @@ public class ObjectArrayProductBigSet extends ArrayProductBigSet<Object[]> {
    * @post ArrayUtils.isEquals(component, new.getComponents());
    */
   public ObjectArrayProductBigSet(LockableBigSet<?>... component) {
-    super(new ObjectArrayAggregatorFactory(component.length),
+    super(new org.toryt.util_I.collections.algebra.ObjectArrayAggregatorFactory(component.length),
           component);
   }
 
