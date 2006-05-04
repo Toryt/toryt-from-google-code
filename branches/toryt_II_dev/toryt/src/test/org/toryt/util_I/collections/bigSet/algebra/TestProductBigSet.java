@@ -1,7 +1,10 @@
 package org.toryt.util_I.collections.bigSet.algebra;
 
+
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -18,13 +21,17 @@ public class TestProductBigSet extends TestCase {
 
   @Override
   public void setUp() {
-    SetBackedLockableBigSet<Integer> component1 = new SetBackedLockableBigSet<Integer>(false);
-    fillSet(component1, 10);
-    SetBackedLockableBigSet<Integer> component2 = new SetBackedLockableBigSet<Integer>(false);
-    fillSet(component2, 100);
-    SetBackedLockableBigSet<Integer> component3 = new SetBackedLockableBigSet<Integer>(false);
-    fillSet(component3, 1000);
-    $subject = new ObjectArrayProductBigSet(component1, component2, component3);
+    SetBackedLockableBigSet<Integer> factor1 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(factor1, 10);
+    SetBackedLockableBigSet<Integer> factor2 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(factor2, 100);
+    SetBackedLockableBigSet<Integer> factor3 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(factor3, 1000);
+    HashMap<String, SetBackedLockableBigSet<Integer>> factors = new HashMap<String, SetBackedLockableBigSet<Integer>>(3);
+    factors.put("A", factor1);
+    factors.put("B", factor2);
+    factors.put("C", factor3);
+    $subject = new ProductBigSet<String, Number>(factors);
   }
 
   @Override
@@ -39,7 +46,7 @@ public class TestProductBigSet extends TestCase {
     lbs.lock();
   }
 
-  private ObjectArrayProductBigSet $subject;
+  private ProductBigSet<String, Number> $subject;
 
   public void testEmpty() {
     assertTrue(! ($subject.isEmpty()));
@@ -50,11 +57,9 @@ public class TestProductBigSet extends TestCase {
   }
 
   public void testIterator() {
-    Iterator<Object[]> iter = $subject.iterator();
+    Iterator<Map<String, Number>> iter = $subject.iterator();
     while (iter.hasNext()) {
-      Object[] e = iter.next();
-      String s = "[" + e[0] + ", " + e[1] + ", " + e[2] + "]";
-      System.out.println(s);
+      System.out.println(iter.next());
     }
   }
 

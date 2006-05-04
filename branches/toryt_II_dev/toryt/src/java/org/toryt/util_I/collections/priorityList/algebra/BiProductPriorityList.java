@@ -8,7 +8,7 @@ import java.util.ListIterator;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.ArrayUtils;
-import org.toryt.util_I.collections.bigSet.algebra.ProductBigSet;
+import org.toryt.util_I.collections.bigSet.algebra.ArrayProductBigSet;
 import org.toryt.util_I.collections.bigSet.algebra.UnionBigSet;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.priorityList.PriorityList;
@@ -118,7 +118,7 @@ public class BiProductPriorityList extends AbstractLazyLockedComponentPriorityLi
     for (int i = 0; i < nrOfCombinationsInBucket; i++) {
       int leftPriority = leftStartPriority + i;
       int rightPriority = priority - leftPriority;
-      components[i] = new ProductBigSet(Object[].class,
+      components[i] = new ArrayProductBigSet(Object[].class,
                                         new LockableBigSet[] {(LockableBigSet)$leftFactor.get(leftPriority),
                                                               (LockableBigSet)$rightFactor.get(rightPriority)});
     }

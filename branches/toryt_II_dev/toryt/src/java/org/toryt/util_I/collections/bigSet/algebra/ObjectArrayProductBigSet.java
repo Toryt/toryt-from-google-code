@@ -7,19 +7,22 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 
 
 /**
- * <p>A {@link ProductBigSet} that uses an {@link ObjectArrayAggregatorFactory}
+ * <p>A {@link ArrayProductBigSet} that uses an {@link ObjectArrayAggregatorFactory}
  *   as {@link #getAggregatorFactory() aggregator factory}. It always
  *   returns {@code Object[]} as {@code _ResultElementType}.</p>
  *
  * @author Jan Dockx
  *
  * @invar getAggregatorFactory() instanceof ObjectArrayAggregatorFactory;
+ *
+ * @deprecated This is not a very nice class. Use {@link ProductBigSet} instead.
  */
+@Deprecated
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ObjectArrayProductBigSet extends ProductBigSet<Object[]> {
+public class ObjectArrayProductBigSet extends ArrayProductBigSet<Object[]> {
 
   /**
    * @pre components != null;

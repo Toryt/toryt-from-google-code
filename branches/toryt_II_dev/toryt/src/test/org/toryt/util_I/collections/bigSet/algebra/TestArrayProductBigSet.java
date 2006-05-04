@@ -1,10 +1,7 @@
 package org.toryt.util_I.collections.bigSet.algebra;
 
-
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -17,21 +14,17 @@ import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TestMapProductBigSet extends TestCase {
+public class TestArrayProductBigSet extends TestCase {
 
   @Override
   public void setUp() {
-    SetBackedLockableBigSet<Integer> factor1 = new SetBackedLockableBigSet<Integer>(false);
-    fillSet(factor1, 10);
-    SetBackedLockableBigSet<Integer> factor2 = new SetBackedLockableBigSet<Integer>(false);
-    fillSet(factor2, 100);
-    SetBackedLockableBigSet<Integer> factor3 = new SetBackedLockableBigSet<Integer>(false);
-    fillSet(factor3, 1000);
-    HashMap<String, SetBackedLockableBigSet<Integer>> factors = new HashMap<String, SetBackedLockableBigSet<Integer>>(3);
-    factors.put("A", factor1);
-    factors.put("B", factor2);
-    factors.put("C", factor3);
-    $subject = new MapProductBigSet<String, Number>(factors);
+    SetBackedLockableBigSet<Integer> component1 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(component1, 10);
+    SetBackedLockableBigSet<Integer> component2 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(component2, 100);
+    SetBackedLockableBigSet<Integer> component3 = new SetBackedLockableBigSet<Integer>(false);
+    fillSet(component3, 1000);
+    $subject = new ObjectArrayProductBigSet(component1, component2, component3);
   }
 
   @Override
@@ -46,7 +39,7 @@ public class TestMapProductBigSet extends TestCase {
     lbs.lock();
   }
 
-  private MapProductBigSet<String, Number> $subject;
+  private ObjectArrayProductBigSet $subject;
 
   public void testEmpty() {
     assertTrue(! ($subject.isEmpty()));
@@ -57,9 +50,11 @@ public class TestMapProductBigSet extends TestCase {
   }
 
   public void testIterator() {
-    Iterator<Map<String, Number>> iter = $subject.iterator();
+    Iterator<Object[]> iter = $subject.iterator();
     while (iter.hasNext()) {
-      System.out.println(iter.next());
+      Object[] e = iter.next();
+      String s = "[" + e[0] + ", " + e[1] + ", " + e[2] + "]";
+      System.out.println(s);
     }
   }
 
