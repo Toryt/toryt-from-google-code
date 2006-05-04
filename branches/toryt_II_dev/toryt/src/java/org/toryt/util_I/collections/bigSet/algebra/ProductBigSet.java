@@ -30,6 +30,8 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
  * @invar ! isNullAllowed();
  * @invar getAggregatorFactory() != null;
  * @invar getAggregatorFactory().getNrOfComponents() == getComponents().length;
+ *
+ * @note This is not a very nice class. Use {@link MapProductBigSet} instead.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

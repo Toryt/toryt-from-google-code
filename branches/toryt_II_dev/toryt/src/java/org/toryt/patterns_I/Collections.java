@@ -111,6 +111,15 @@ public class Collections {
 
   /**
    * @pre m != null;
+   * @result ! m.containsKey(null);
+   */
+  public static boolean noNullKey(Map<?, ?> m) {
+    assert m != null;
+    return (! m.containsKey(null));
+  }
+
+  /**
+   * @pre m != null;
    * @pre keyType != null;
    * @pre valueType != null;
    * @result (forall Object o, m.containsKey(o); keyType.isInstance(o));
