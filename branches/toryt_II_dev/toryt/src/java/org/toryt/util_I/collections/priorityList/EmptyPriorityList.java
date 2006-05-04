@@ -40,6 +40,7 @@ public final class EmptyPriorityList<_PriorityElement_>
     return false;
   }
 
+  @Override
   public final Iterator<_PriorityElement_> priorityElementIterator() {
     return $ebs.iterator();
   }

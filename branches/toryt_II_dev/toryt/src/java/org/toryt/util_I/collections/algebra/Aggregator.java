@@ -2,7 +2,6 @@ package org.toryt.util_I.collections.algebra;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.priorityList.algebra.BiArrayProductPriorityList;
 
 
   /**

@@ -71,7 +71,13 @@ public abstract class AbstractLockedPriorityList<_PriorityElement_>
   /*</property>*/
 
 
-  public final Iterator<_PriorityElement_> priorityElementIterator() {
+  /**
+   * Simple implementation, that is based on underlying iterators: we just visit
+   * one priority bucket after the other.
+   *
+   * Subclasses may override this with a more performant implementation.
+   */
+  public Iterator<_PriorityElement_> priorityElementIterator() {
     return new Iterator<_PriorityElement_>() {
       /* simple, iterator based implementation, that iterates one bucket after the other */
 

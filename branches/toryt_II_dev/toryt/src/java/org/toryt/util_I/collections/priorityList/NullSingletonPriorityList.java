@@ -66,6 +66,7 @@ public final class NullSingletonPriorityList<_PriorityElement_>
     return (o == null);
   }
 
+  @Override
   public final Iterator<_PriorityElement_> priorityElementIterator() {
     return $lbs.iterator();
   }
