@@ -73,7 +73,6 @@ public abstract class AbstractProductPriorityList<_Label_, _ResultMapElement_>
     assert factors != null;
     assert ! factors.isEmpty();
     assert Collections.noNullKey(factors);
-    assert factors.size() == 2;
     assert Collections.forAllValues(factors,
                                     new Assertion<PriorityList<?>>() {
                                       public boolean isTrueFor(PriorityList<?> o) {

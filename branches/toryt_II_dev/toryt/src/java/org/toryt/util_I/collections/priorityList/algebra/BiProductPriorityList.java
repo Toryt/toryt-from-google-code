@@ -51,6 +51,7 @@ public class BiProductPriorityList<_Label_, _ResultMapElement_>
   public BiProductPriorityList(Map<? extends _Label_, ? extends PriorityList<? extends _ResultMapElement_>> factors,
                                 int fromInclusive, int toExclusive) {
     super(factors, fromInclusive, toExclusive);
+    assert factors.size() == 2;
   }
 
   /**
