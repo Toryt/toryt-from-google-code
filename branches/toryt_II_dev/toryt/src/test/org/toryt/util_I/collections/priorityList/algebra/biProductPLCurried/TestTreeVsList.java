@@ -168,7 +168,7 @@ public class TestTreeVsList extends TestCase {
 //    assertTrue(equalsFlattened($leftCurry, $treeCurry));
 //  }
 
-  private static boolean equalsFlattened(PriorityList<Map<String, Object>> pl1, PriorityList<Map<String, Object>> pl2) {
+ public static boolean equalsFlattened(PriorityList<Map<String, Object>> pl1, PriorityList<Map<String, Object>> pl2) {
     return containsAllFlattened(pl1, pl2) &&
            containsAllFlattened(pl2, pl1);
   }
