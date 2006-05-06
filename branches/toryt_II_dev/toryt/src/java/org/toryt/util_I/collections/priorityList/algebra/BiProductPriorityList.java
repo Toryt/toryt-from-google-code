@@ -63,7 +63,7 @@ public class BiProductPriorityList<_Label_, _ResultMapElement_>
    * @post new.getFactors().equals(factors);
    */
   public BiProductPriorityList(Map<? extends _Label_, ? extends PriorityList<? extends _ResultMapElement_>> factors) {
-    this(factors, 0, AbstractProductPriorityList.calculateBaseSize(factors));
+    this(factors, 0, baseSize(factors));
   }
 
   /*</construction>*/

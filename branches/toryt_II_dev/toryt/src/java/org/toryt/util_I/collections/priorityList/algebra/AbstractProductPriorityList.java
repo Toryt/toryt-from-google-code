@@ -69,7 +69,7 @@ public abstract class AbstractProductPriorityList<_Label_, _ResultMapElement_>
    */
   public AbstractProductPriorityList(Map<? extends _Label_, ? extends PriorityList<? extends _ResultMapElement_>> factors,
                                 int fromInclusive, int toExclusive) {
-    super(calculateCardinality(factors), false);
+    super(cardinality(factors), false);
     assert factors != null;
     assert ! factors.isEmpty();
     assert Collections.noNullKey(factors);
@@ -81,7 +81,7 @@ public abstract class AbstractProductPriorityList<_Label_, _ResultMapElement_>
                                     });
     $fromInclusive = fromInclusive;
     $toExclusive = toExclusive;
-    $baseSize = calculateBaseSize(factors);
+    $baseSize = baseSize(factors);
     { // initFactors
       $factors = new HashMap<_Label_, PriorityList<? extends _ResultMapElement_>>(factors);
       @SuppressWarnings("unchecked") _Label_[] labels = (_Label_[])new Object[factors.size()];
@@ -100,7 +100,7 @@ public abstract class AbstractProductPriorityList<_Label_, _ResultMapElement_>
     }
   }
 
-  private static BigInteger calculateCardinality(Map<?, ? extends PriorityList<?>> factors) {
+  private static BigInteger cardinality(Map<?, ? extends PriorityList<?>> factors) {
     assert factors != null;
     BigInteger result = BigInteger.ONE;
     for (PriorityList<?> pl : factors.values()) {
@@ -112,14 +112,14 @@ public abstract class AbstractProductPriorityList<_Label_, _ResultMapElement_>
     return result;
   }
 
-  protected static int calculateBaseSize(Map<?, ? extends PriorityList<?>> factors) {
+  protected static int baseSize(Map<?, ? extends PriorityList<?>> factors) {
     assert factors != null;
     int result = 1;
     for (PriorityList<?> pl : factors.values()) {
       if (pl == null) {
         return 0;
       }
-      result = result += pl.size() - 1;
+      result += pl.size() - 1;
     }
     return result;
   }
