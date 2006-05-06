@@ -18,6 +18,17 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class ArrayUtils {
 
+  public static <_Base_> _Base_[] subArray(_Base_[] array, int fromInclusive, int toExclusive) {
+    assert fromInclusive >= 0;
+    assert toExclusive >= 0;
+    assert fromInclusive <= toExclusive;
+    int lenght = toExclusive - fromInclusive;
+    @SuppressWarnings("unchecked") _Base_[] result =
+        (_Base_[])Array.newInstance(array.getClass().getComponentType(), lenght);
+    System.arraycopy(array, fromInclusive, result, 0, lenght);
+    return result;
+  }
+
   /**
    * @pre resultComponentType != null;
    */

@@ -161,6 +161,24 @@ public class Collections {
   }
 
   /**
+   * @pre array != null;
+   * @pre a != null;
+   * @return (forall int i; (i >= 0) && (i < array.length);
+   *            a.isTrueFor(array[i]));
+   */
+  @SuppressWarnings("boxing")
+  public static boolean forAll(int[] array, Assertion<Integer> a) {
+    assert array != null;
+    assert a != null;
+    for (int i = 0; i < array.length; i++) {
+      if (! a.isTrueFor(array[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
    * @pre map != null;
    * @pre a != null;
    * @return (forall Object o; map.values().contains(o);
