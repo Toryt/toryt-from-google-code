@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>org.toryt_I</title>
+  </head>
+  <body>
+    <p>Compatibility package. This package contains code that enables
+      Toryt II to work with Toryt I {@link org.toryt_I.Contract Contracts}.</p>
+    <p>To use Toryt I contracts with Toryt II, include both the Toryt I
+      <kbd>jar</kbd> and the Toryt II jar in the classpath.</p>
+    <p>In Toryt II, the interface <code>CaseProvider</code> is no longer
+      used. Existing contracts could safely remove dependencies on this
+      interface, and implementations of the methods of these interfaces.</p>
+    <p>In Toryt II, method contracts find out there cases themselves.
+      The <code>getCases()</code> methods are not called, but they have to
+      be in the contract for compatibility with the Toryt I interface.</p>
+  </body>
+</html>
