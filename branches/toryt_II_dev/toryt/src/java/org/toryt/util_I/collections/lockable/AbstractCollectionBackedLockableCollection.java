@@ -92,7 +92,7 @@ public abstract class AbstractCollectionBackedLockableCollection<_Element_, _Bac
   /* <section name="Inspectors"> */
   //------------------------------------------------------------------
 
-  public abstract class CollectionBackedLockIterator
+  public abstract class CollectionBackedLockedIterator
       implements LockIterator<_Element_> {
 
     protected abstract Iterator<_Element_> getBackingIterator();

@@ -77,7 +77,7 @@ public class ListBackedLockableList<_Element_>
     return getBackingCollection().lastIndexOf(o);
   }
 
-  public class ListBackedLockableListIterator extends CollectionBackedLockIterator
+  public class ListBackedLockableListIterator extends CollectionBackedLockedIterator
       implements ListIterator<_Element_> {
 
     protected ListBackedLockableListIterator(int index) {

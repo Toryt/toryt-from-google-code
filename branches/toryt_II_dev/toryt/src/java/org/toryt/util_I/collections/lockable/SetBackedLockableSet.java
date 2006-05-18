@@ -44,7 +44,7 @@ public class SetBackedLockableSet<_Element_>
   }
 
   public final Iterator<_Element_> iterator() {
-    return new CollectionBackedLockIterator() {
+    return new CollectionBackedLockedIterator() {
 
       /**
        * @invar $backingIterator != null;
