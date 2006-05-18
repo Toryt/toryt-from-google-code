@@ -14,12 +14,9 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.CannotGetValueException;
 import org.toryt.util_I.reflect.CannotCreateInstanceException;
 import org.toryt.util_I.reflect.Reflection;
-import org.toryt_II.contract.ClassContract;
-import org.toryt_II.contract.Contract;
-import org.toryt_II.main.Contracts;
+import org.toryt_II.OLDcontract.Contract;
 
 
 /**
@@ -248,9 +245,10 @@ public class DefaultTofPlFactory implements TofPlFactory {
     if (result == null) {
       result = getTofPlFromBasePackageList(forClass);
     }
-    if (result == null) {
-      result = getTofPlFromContractConstant(forClass);
-    }
+//    TODO see below
+//    if (result == null) {
+//      result = getTofPlFromContractConstant(forClass);
+//    }
     if (result == null) {
       throw new NoTofPlFoundException(this, forClass);
     }
@@ -348,50 +346,52 @@ public class DefaultTofPlFactory implements TofPlFactory {
     return null; // null if no TOF PL found this way
   }
 
-  /**
-   * @pre forClass != null;
-   * @pre getCachedTofPl(forClass) == null;
-   */
-  private <_ForClass_> TestObjectFactoryPriorityList<_ForClass_> getTofPlFromContractConstant(Class<_ForClass_> forClass) {
-    assert forClass != null;
-    assert getCachedTofPl(forClass) == null;
-    ClassContract contract = null;
-    try {
-      contract = Contracts.classContractInstance(forClass);
-      if (contract != null) {
-        @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClass_> result =
-            (TestObjectFactoryPriorityList<_ForClass_>)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
-        // runtime cannot check against generic type instantiation
-        if (result != null) {
-          if (_LOG.isInfoEnabled()) {
-            _LOG.info("Retrieved TOF PL for class " + forClass +
-                     " from contract constant " + contract.getClass() + "." +
-                     CONTRACT_CONSTANT_NAME);
-          }
-          addCachedTofPl(forClass, result);
-        }
-        return result;
-      }
-    }
-    catch (AlreadyHasTofPlForClassException e) {
-      assert false : "AlreadyHasTofPlForClassException should not happen: " + e;
-    }
-    catch (CannotGetValueException cngcExc) {
-      if (_LOG.isDebugEnabled()) {
-        _LOG.debug("Could not retrieve TOF PL for class " + forClass +
-                  "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +
-                  contract + ")", cngcExc);
-      }
-    }
-    catch (CannotCreateInstanceException cnibExc) {
-      if (_LOG.isDebugEnabled()) {
-        _LOG.debug("Could not retrieve TOF PL for class " + forClass +
-                  "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +
-                  contract + ")", cnibExc);
-      }
-    }
-    return null; // if exceptions
-  }
+//  TODO This seemed ok, but it fucks up package dependency: this makes this package dependent
+//  on contracts, which is not good. Think about how to fix this.
+//  /**
+//   * @pre forClass != null;
+//   * @pre getCachedTofPl(forClass) == null;
+//   */
+//  private <_ForClass_> TestObjectFactoryPriorityList<_ForClass_> getTofPlFromContractConstant(Class<_ForClass_> forClass) {
+//    assert forClass != null;
+//    assert getCachedTofPl(forClass) == null;
+//    ClassContract contract = null;
+//    try {
+//      contract = Contracts.classContractInstance(forClass);
+//      if (contract != null) {
+//        @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClass_> result =
+//            (TestObjectFactoryPriorityList<_ForClass_>)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
+//        // runtime cannot check against generic type instantiation
+//        if (result != null) {
+//          if (_LOG.isInfoEnabled()) {
+//            _LOG.info("Retrieved TOF PL for class " + forClass +
+//                     " from contract constant " + contract.getClass() + "." +
+//                     CONTRACT_CONSTANT_NAME);
+//          }
+//          addCachedTofPl(forClass, result);
+//        }
+//        return result;
+//      }
+//    }
+//    catch (AlreadyHasTofPlForClassException e) {
+//      assert false : "AlreadyHasTofPlForClassException should not happen: " + e;
+//    }
+//    catch (CannotGetValueException cngcExc) {
+//      if (_LOG.isDebugEnabled()) {
+//        _LOG.debug("Could not retrieve TOF PL for class " + forClass +
+//                  "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +
+//                  contract + ")", cngcExc);
+//      }
+//    }
+//    catch (CannotCreateInstanceException cnibExc) {
+//      if (_LOG.isDebugEnabled()) {
+//        _LOG.debug("Could not retrieve TOF PL for class " + forClass +
+//                  "\" (from contract constant " + CONTRACT_CONSTANT_NAME + ", contract is " +
+//                  contract + ")", cnibExc);
+//      }
+//    }
+//    return null; // if exceptions
+//  }
 
   /**
    * Return the cached <acronym title="Test Object Factory Priority List">TOF PL</acronym>
