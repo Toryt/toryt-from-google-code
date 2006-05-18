@@ -1,4 +1,4 @@
-package org.toryt_II.test;
+package org.toryt_II.contractest;
 
 
 import java.io.PrintStream;
@@ -23,6 +23,7 @@ import org.toryt_II.contract.TypeContract;
 import org.toryt_II.contract.condition.Condition;
 import org.toryt_II.contract.condition.ExceptionCondition;
 import org.toryt_II.contract.hard.HardTypeContract;
+import org.toryt_II.test.AbstractTest;
 
 
 /**

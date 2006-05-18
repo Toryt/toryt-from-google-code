@@ -31,7 +31,7 @@ public class TestNotReadyException extends TestException {
    */
   public TestNotReadyException(Test test) {
     super(test);
-    assert ! test.getResult().hasRun();
+    assert ! test.getOutcome().hasRun();
   }
 
 }

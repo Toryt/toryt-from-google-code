@@ -1,9 +1,9 @@
 package org.toryt_II.test;
 
 
-import static org.toryt_II.test.TestResult.ERROR;
-import static org.toryt_II.test.TestResult.NOT_RUN_YET;
-import static org.toryt_II.test.TestResult.RUNNING;
+import static org.toryt_II.test.TestOutcome.ERROR;
+import static org.toryt_II.test.TestOutcome.NOT_RUN_YET;
+import static org.toryt_II.test.TestOutcome.RUNNING;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,83 +51,80 @@ public abstract class AbstractTest<_SubjectType_> implements Test<_SubjectType_>
   /*<property name="result">*/
   //------------------------------------------------------------------
 
-  /**
-   * The test result;
-   */
-  public final TestResult getResult() {
-    return $testResult;
+  public final TestOutcome getOutcome() {
+    return $outcome;
   }
 
   /**
    * @pre isReady();
-   * @pre testResult != null;
-   * @post new.getResult() == testResult;
+   * @pre outcome != null;
+   * @post new.getOutcome() == outcome;
    */
-  protected final void setResult(TestResult testResult) {
+  protected final void setOutcome(TestOutcome outcome) {
     assert isReady();
-    assert testResult != null;
-    $testResult = testResult;
+    assert outcome != null;
+    $outcome = outcome;
   }
 
   /**
-   * @invar $testResult != null;
+   * @invar $outcome != null;
    */
-  private TestResult $testResult = NOT_RUN_YET;
+  private TestOutcome $outcome = NOT_RUN_YET;
 
   /*</property>*/
 
 
 
-  /*<section name="runnign">*/
+  /*<section name="running">*/
   //------------------------------------------------------------------
 
   /**
    * This implementation delegates the actual testing to
    * {@link #runImplementation()}. First, we check to see
    * if this test is ready and not started already. If it is, we throw
-   * the appropriate exception. Then, we set the {@link #getResult()}
-   * to {@link TestResult#RUNNING}, and call {@link #runImplementation()}.
+   * the appropriate exception. Then, we set the {@link #getOutcome()}
+   * to {@link TestOutcome#RUNNING}, and call {@link #runImplementation()}.
    * When this method completes normally, the result is used
-   * to set {@link #getResult()}. If the method throws any exception,
-   * {@link #getResult()} is set to {@link #ERROR}.
+   * to set {@link #getOutcome()}. If the method throws any exception,
+   * {@link #getOutcome()} is set to {@link #ERROR}.
    */
   public final void run() throws TestNotReadyException, TestAlreadyStartedException  {
     if (! isReady()) {
       throw new TestNotReadyException(this);
     }
     synchronized(this) {
-      if (getResult().hasStarted()) {
+      if (getOutcome().hasStarted()) {
         throw new TestAlreadyStartedException(this);
       }
       else {
-        setResult(RUNNING);
+        setOutcome(RUNNING);
       }
     }
     try {
-      TestResult testResult = runImplementation();
+      TestOutcome testResult = runImplementation();
       assert testResult != null;
       assert testResult.hasRun();
-      setResult(testResult);
+      setOutcome(testResult);
     }
     catch (Throwable t) {
       LOG.warn("Caught exception during test run. This usually means that there is an " +
                "error in the testing code, not the tested code.", t);
-      setResult(ERROR);
+      setOutcome(ERROR);
     }
   }
 
   /**
    * The actual implementation of the test. This method should not throw any
    * kind of exception (but if some do escape, there is a last minute
-   * result around this call; any exception that does pass through
+   * rescue around this call; any exception that does pass through
    * is considered an {@link #ERROR}). When the test concludes without
-   * problems, it should return a {@link TestResult} appropriately.
+   * problems, it should return a {@link TestOutcome} appropriately.
    *
    * @pre ! getResult() == RUNNING;
    * @post result != null;
    * @post result.hasRun();
    */
-  protected abstract TestResult runImplementation();
+  protected abstract TestOutcome runImplementation();
 
   /*</section>*/
 

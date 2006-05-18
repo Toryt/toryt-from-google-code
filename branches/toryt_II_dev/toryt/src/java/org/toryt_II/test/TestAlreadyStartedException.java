@@ -27,7 +27,7 @@ public class TestAlreadyStartedException extends TestException {
    */
   public TestAlreadyStartedException(Test test) {
     super(test);
-    assert test.getResult().hasRun();
+    assert test.getOutcome().hasRun();
   }
 
 }

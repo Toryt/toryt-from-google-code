@@ -28,7 +28,7 @@ public class TestNotRunYetException extends TestException {
    */
   public TestNotRunYetException(Test test) {
     super(test);
-    assert ! test.getResult().hasRun();
+    assert ! test.getOutcome().hasRun();
   }
 
 }

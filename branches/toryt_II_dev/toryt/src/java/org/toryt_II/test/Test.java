@@ -8,7 +8,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 /**
  * An actual instance of a test. A test can only be run once.
- * {@link #getResult()} returns the status of the test.
+ * {@link #getOutcome()} returns the status of the test.
  *
  * @invar getResult() != null;
  * @invar getResult().hasStarted() ? isReady() == new.isReady();
@@ -20,6 +20,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 public interface Test<_SubjectType_> {
 
   /**
+   * The object under test (a project, package, class, method, ...).
+   *
    * @basic
    */
   _SubjectType_ getSubject();
@@ -36,10 +38,10 @@ public interface Test<_SubjectType_> {
    * Execution of the test cannot throw <strong>any</strong>
    * {@link Exception}, {@link Error} or other {@link Throwable}
    * (except for notification of the fact that the test already ran).
-   * During execution of the test, {@link #getResult()} must return
-   * {@link TestResult#RUNNING}. When the test has run, {@link #getResult()}
-   * must be set to either {@link TestResult#ERROR}, {@link TestResult#FAILED}
-   * or {@link TestResult#SUCCESSFUL}. This method can only be called once.
+   * During execution of the test, {@link #getOutcome()} must return
+   * {@link TestOutcome#RUNNING}. When the test has run, {@link #getOutcome()}
+   * must be set to either {@link TestOutcome#ERROR}, {@link TestOutcome#FAILED}
+   * or {@link TestOutcome#SUCCESSFUL}. This method can only be called once.
    *
    * @post   isReady();
    *         Since we can't change pre-state, if the test is not ready,
@@ -56,11 +58,12 @@ public interface Test<_SubjectType_> {
   void run() throws TestNotReadyException, TestAlreadyStartedException;
 
   /**
-   * The test result;
+   * The outcome of the test.
+   *
    * @basic
-   * @init TestResult.NOT_RUN_YET
+   * @init TestOutcome.NOT_RUN_YET
    */
-  TestResult getResult();
+  TestOutcome getOutcome();
 
   /**
    * Structured output on an output stream.
@@ -68,6 +71,7 @@ public interface Test<_SubjectType_> {
    * @deprecated
    * @mudo not sure about deprecation
    */
+  @Deprecated
   void report(PrintStream out);
 
 }

@@ -1,20 +1,20 @@
-package org.toryt_II.test;
+package org.toryt_II.contractest;
 
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-import org.toryt_II.contract.ConstructorContract;
-import org.toryt_II.contract.MethodContract;
+import org.toryt_II.OLDcontract.MethodContract;
+import org.toryt_II.OLDcontract.NonConstructorMethodContract;
 
 
 /**
- * An actual instance of a test of a constructor. This is a test with actual
- * test arguments.
- *
- * @invar getContract() instanceof HardConstructorContract;
+ * Test class for non-constructor methods, i.e., instance methods
+ * and non-constructor class methods.
+ * 
+ * @invar getContract() instanceof NonConstructorMethodContract;
  */
-public class ConstructorTest extends MethodContractTest<Constructor> {
+public class NonConstructorMethodTest extends MethodContractTest {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
@@ -33,42 +33,42 @@ public class ConstructorTest extends MethodContractTest<Constructor> {
   /* <construction> */
   //------------------------------------------------------------------
 
-  public ConstructorTest(ConstructorContract constructorContract, Map testCase) {
-    super(constructorContract, testCase);
+  public NonConstructorMethodTest(NonConstructorMethodContract methodContract, Map testCase) {
+    super(methodContract, testCase);
   }
 
   /* </construction> */
 
-
+  
 
   /* <property name="contract"> */
   //------------------------------------------------------------------
 
-  public final ConstructorContract getConstructorContract() {
-    return (ConstructorContract)getMethodContract();
+  public final NonConstructorMethodContract getNonConstructorMethodContract() {
+    return (NonConstructorMethodContract)getMethodContract();
   }
 
   /* </property> */
 
 
+  
   /**
    * Call the method of the contract with reflection.
-   * The new instance is stored in the context map with
-   * key {@link MethodContract#SUBJECT_KEY}.
-   *
-   * @throws InstantiationException
+   * The result (if there is one) is stored in the context map with
+   * key {@link #RESULT_KEY}.
+   * 
    * @throws IllegalAccessException
    * @throws IllegalArgumentException
    * @throws InvocationTargetException
    */
   protected final void methodCall()
-      throws InstantiationException,
-             IllegalAccessException,
+      throws IllegalAccessException,
              IllegalArgumentException,
              InvocationTargetException {
-    Object instance = getConstructorContract().getConstructor()
-              .newInstance(getActualParameters());
-    getContext().put(MethodContract.SUBJECT_KEY, instance);
+    Object result = getNonConstructorMethodContract().getMethod()
+              .invoke(getContext().get(MethodContract.SUBJECT_KEY),
+                      getActualParameters());
+    getContext().put(RESULT_KEY, result);
   }
-
+  
 }
