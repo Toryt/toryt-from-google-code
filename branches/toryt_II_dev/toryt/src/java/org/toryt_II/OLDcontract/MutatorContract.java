@@ -1,4 +1,4 @@
-package org.toryt_II.contract;
+package org.toryt_II.OLDcontract;
 
 
 
@@ -6,7 +6,7 @@ package org.toryt_II.contract;
 /**
  * @author Jan Dockx
  */
-public interface ClassMethodContract extends NonConstructorMethodContract {
+public interface MutatorContract extends InstanceMethodContract {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -19,6 +19,5 @@ public interface ClassMethodContract extends NonConstructorMethodContract {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
-  
   
 }

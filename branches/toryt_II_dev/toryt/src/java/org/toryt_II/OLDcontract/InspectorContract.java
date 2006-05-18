@@ -1,4 +1,4 @@
-package org.toryt_II.contract;
+package org.toryt_II.OLDcontract;
 
 
 
@@ -6,7 +6,7 @@ package org.toryt_II.contract;
 /**
  * @author Jan Dockx
  */
-public interface MutatorContract extends InstanceMethodContract {
+public interface InspectorContract extends InstanceMethodContract {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------

@@ -1,15 +1,12 @@
-package org.toryt_II.contract;
+package org.toryt_II.OLDcontract;
 
-import org.toryt_II.contract.hard.HardTypeContract;
+
 
 
 /**
- * The contract of an interface. A {@link HardTypeContract} for types that
- * are interfaces.
- * 
- * @invar getType().isInterface();
+ * @author Jan Dockx
  */
-public interface InterfaceContract extends TypeContract {
+public interface ClassMethodContract extends NonConstructorMethodContract {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -22,5 +19,6 @@ public interface InterfaceContract extends TypeContract {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
-
+  
+  
 }

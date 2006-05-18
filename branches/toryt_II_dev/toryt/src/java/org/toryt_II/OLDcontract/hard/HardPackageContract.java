@@ -1,4 +1,4 @@
-package org.toryt_II.contract.hard;
+package org.toryt_II.OLDcontract.hard;
 
 
 import java.util.Collections;
@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.toryt_II.OLDTorytException;
-import org.toryt_II.contract.AbstractPackageContract;
-import org.toryt_II.contract.ClassContract;
+import org.toryt_II.OLDcontract.AbstractPackageContract;
+import org.toryt_II.OLDcontract.ClassContract;
 
 
 /**
@@ -48,7 +48,7 @@ public class HardPackageContract
    * @throws OLDTorytException
    *         ! pc.isClosed();
    */
-  public final void addSubPackageContract(org.toryt_II.contract.PackageContract pc)
+  public final void addSubPackageContract(org.toryt_II.OLDcontract.PackageContract pc)
       throws OLDTorytException {
     assert pc != null;
     if (isClosed()) {

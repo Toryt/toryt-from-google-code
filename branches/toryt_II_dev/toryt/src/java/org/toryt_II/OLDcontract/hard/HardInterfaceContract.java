@@ -1,4 +1,4 @@
-package org.toryt_II.contract.hard;
+package org.toryt_II.OLDcontract.hard;
 
 import org.toryt_II.OLDTorytException;
 
@@ -9,7 +9,7 @@ import org.toryt_II.OLDTorytException;
  * @author Jan Dockx
  */
 public class HardInterfaceContract
-    extends HardTypeContract implements org.toryt_II.contract.InterfaceContract {
+    extends HardTypeContract implements org.toryt_II.OLDcontract.InterfaceContract {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------

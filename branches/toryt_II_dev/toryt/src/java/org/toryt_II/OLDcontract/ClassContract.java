@@ -1,8 +1,8 @@
-package org.toryt_II.contract;
+package org.toryt_II.OLDcontract;
 
 import java.util.Set;
 
-import org.toryt_II.contract.hard.HardTypeContract;
+import org.toryt_II.OLDcontract.hard.HardTypeContract;
 
 
 /**

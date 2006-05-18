@@ -1,4 +1,4 @@
-package org.toryt_II.contract;
+package org.toryt_II.OLDcontract;
 
 
 import java.util.Collections;
@@ -6,11 +6,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.toryt.support.straightlist.ConcatStraightList;
-import org.toryt.support.straightlist.StraightList;
 import org.toryt.util_I.reflect.Reflection;
+import org.toryt_I.support.straightlist.ConcatStraightList;
+import org.toryt_I.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
-import org.toryt_II.contract.TypeContract.AllMembersCoveredTest;
+import org.toryt_II.OLDcontract.TypeContract.AllMembersCoveredTest;
 import org.toryt_II.contract.condition.Condition;
 
 

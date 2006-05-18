@@ -1,6 +1,6 @@
 package org.toryt_II;
 
-import org.toryt_II.contract.Contract;
+import org.toryt_II.OLDcontract.Contract;
 
 
 

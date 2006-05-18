@@ -1,13 +1,13 @@
 package org.toryt.example;
 
 
-import org.toryt.support.straightlist.StraightList;
-import org.toryt.support.straightlist.LazyMappingStraightList.Mapping;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.toryt_I.support.straightlist.StraightList;
+import org.toryt_I.support.straightlist.LazyMappingStraightList.Mapping;
 import org.toryt_II.OLDTorytException;
-import org.toryt_II.contract.hard.HardClassContract;
-import org.toryt_II.contract.hard.HardConstructorContract;
-import org.toryt_II.contract.hard.HardMutatorContract;
+import org.toryt_II.OLDcontract.hard.HardClassContract;
+import org.toryt_II.OLDcontract.hard.HardConstructorContract;
+import org.toryt_II.OLDcontract.hard.HardMutatorContract;
 
 
 @CvsInfo(revision = "$Revision$",

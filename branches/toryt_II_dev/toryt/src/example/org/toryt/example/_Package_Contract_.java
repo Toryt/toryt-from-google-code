@@ -1,7 +1,7 @@
 package org.toryt.example;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.OLDTorytException;
-import org.toryt_II.contract.hard.HardPackageContract;
+import org.toryt_II.OLDcontract.hard.HardPackageContract;
 
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

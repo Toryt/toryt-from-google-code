@@ -3,7 +3,7 @@ package org.toryt.example;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.OLDTorytException;
-import org.toryt_II.contract.hard.HardProjectContract;
+import org.toryt_II.OLDcontract.hard.HardProjectContract;
 
 
 @CvsInfo(revision = "$Revision$",

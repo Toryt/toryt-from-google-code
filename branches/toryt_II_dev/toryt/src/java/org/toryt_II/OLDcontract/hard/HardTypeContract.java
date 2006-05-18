@@ -1,4 +1,4 @@
-package org.toryt_II.contract.hard;
+package org.toryt_II.OLDcontract.hard;
 
 
 import java.lang.reflect.Method;
@@ -8,10 +8,10 @@ import java.util.Set;
 
 import org.toryt.util_I.reflect.Reflection;
 import org.toryt_II.OLDTorytException;
-import org.toryt_II.contract.AbstractTypeContract;
-import org.toryt_II.contract.ClassMethodContract;
-import org.toryt_II.contract.InstanceMethodContract;
-import org.toryt_II.contract.InterfaceContract;
+import org.toryt_II.OLDcontract.AbstractTypeContract;
+import org.toryt_II.OLDcontract.ClassMethodContract;
+import org.toryt_II.OLDcontract.InstanceMethodContract;
+import org.toryt_II.OLDcontract.InterfaceContract;
 
 
 /**

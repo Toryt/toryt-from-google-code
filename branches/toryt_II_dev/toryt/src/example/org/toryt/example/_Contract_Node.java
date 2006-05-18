@@ -3,17 +3,17 @@ package org.toryt.example;
 
 import java.util.Map;
 
-import org.toryt.support.straightlist.LazyCombinationStraightList;
-import org.toryt.support.straightlist.LazyMappingStraightList;
-import org.toryt.support.straightlist.StraightList;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.toryt_I.support.straightlist.LazyCombinationStraightList;
+import org.toryt_I.support.straightlist.LazyMappingStraightList;
+import org.toryt_I.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
+import org.toryt_II.OLDcontract.MethodContract;
+import org.toryt_II.OLDcontract.hard.HardClassContract;
+import org.toryt_II.OLDcontract.hard.HardMutatorContract;
 import org.toryt_II.cases.Cases;
-import org.toryt_II.contract.MethodContract;
 import org.toryt_II.contract.condition.Condition;
-import org.toryt_II.contract.hard.HardClassContract;
-import org.toryt_II.contract.hard.HardMutatorContract;
-import org.toryt_II.test.MethodContractTest;
+import org.toryt_II.contractest.MethodContractTest;
 
 
 @CvsInfo(revision = "$Revision$",

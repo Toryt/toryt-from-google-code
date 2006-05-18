@@ -1,23 +1,23 @@
-package org.toryt_II.contract.hard;
+package org.toryt_II.OLDcontract.hard;
 
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.toryt.util_I.reflect.Reflection;
 import org.toryt_II.OLDTorytException;
-import org.toryt_II.contract.AbstractMethodContract;
-import org.toryt_II.test.ConstructorTest;
-import org.toryt_II.test.MethodContractTest;
+import org.toryt_II.OLDcontract.AbstractMethodContract;
+import org.toryt_II.contractest.MethodContractTest;
+import org.toryt_II.contractest.NonConstructorMethodTest;
 
 
 /**
  * @author Jan Dockx
  */
-public abstract class HardConstructorContract
+public abstract class HardMutatorContract
     extends AbstractMethodContract
-    implements org.toryt_II.contract.ConstructorContract {
+    implements org.toryt_II.OLDcontract.MutatorContract {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -38,32 +38,32 @@ public abstract class HardConstructorContract
    * @pre constructor != null;
    * @pre constructor.getDeclaringClass() == getTypeContract().getType();
    */
-  public HardConstructorContract(HardTypeContract typeContract, Constructor constructor) {
+  public HardMutatorContract(HardTypeContract typeContract, Method method) {
     super(typeContract);
-    assert constructor != null;
-    assert constructor.getDeclaringClass() == getTypeContract().getType();
-    $constructor = constructor;
+    assert method != null;
+    assert method.getDeclaringClass() == getTypeContract().getType();
+    $method = method;
   }
   
   /**
    * @pre typeContract != null;
    */
-  public HardConstructorContract(HardTypeContract typeContract, Class type, String signature) throws OLDTorytException {
-    this(typeContract, Reflection.findConstructor(type, signature, null));
+  public HardMutatorContract(HardTypeContract typeContract, Class type, String signature) throws OLDTorytException {
+    this(typeContract, Reflection.findMethod(type, signature, null));
   }
-
+  
   public final Member getMember() {
-    return $constructor;
+    return getMethod();
   }
   
-  public final Constructor getConstructor() {
-    return $constructor;
+  public final Method getMethod() {
+    return $method;
   }
   
-  private Constructor $constructor;
+  private Method $method;
   
   public final MethodContractTest createMethodTest(Map testcase) {
-    return new ConstructorTest(this, testcase);
+    return new NonConstructorMethodTest(this, testcase);
   }
-  
+
 }

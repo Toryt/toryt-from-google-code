@@ -1,4 +1,4 @@
-package org.toryt_II.contract.hard;
+package org.toryt_II.OLDcontract.hard;
 
 
 import java.io.IOException;
@@ -8,10 +8,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.toryt.support.straightlist.ConcatStraightList;
-import org.toryt.support.straightlist.LazyMappingStraightList;
-import org.toryt.support.straightlist.NullFirstStraightList;
-import org.toryt.support.straightlist.StraightList;
+import org.toryt_I.support.straightlist.ConcatStraightList;
+import org.toryt_I.support.straightlist.LazyMappingStraightList;
+import org.toryt_I.support.straightlist.NullFirstStraightList;
+import org.toryt_I.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.cases.CaseProvider;
 import org.toryt_II.main.Contracts;
@@ -21,7 +21,7 @@ import org.toryt_II.main.Contracts;
  * @author Jan Dockx
  */
 public abstract class HardClassContract
-    extends HardTypeContract implements org.toryt_II.contract.ClassContract, CaseProvider {
+    extends HardTypeContract implements org.toryt_II.OLDcontract.ClassContract, CaseProvider {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -51,7 +51,7 @@ public abstract class HardClassContract
     super(fqn);
   }
 
-  public final org.toryt_II.contract.ClassContract getDirectSuperClassContract() {
+  public final org.toryt_II.OLDcontract.ClassContract getDirectSuperClassContract() {
     return $directSuperClassContract;
   }
   
@@ -86,7 +86,7 @@ public abstract class HardClassContract
     }
   }
    
-  private org.toryt_II.contract.ClassContract $directSuperClassContract;
+  private org.toryt_II.OLDcontract.ClassContract $directSuperClassContract;
   
   public final Set getConstructorContracts() {
     return Collections.unmodifiableSet($constructorContracts);

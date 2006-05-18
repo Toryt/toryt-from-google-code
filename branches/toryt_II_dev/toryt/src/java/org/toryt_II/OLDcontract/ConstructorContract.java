@@ -1,12 +1,15 @@
-package org.toryt_II.contract;
+package org.toryt_II.OLDcontract;
 
 
+import java.lang.reflect.Constructor;
 
 
 /**
  * @author Jan Dockx
+ * 
+ * @invar getMember() instanceof Constructor;
  */
-public interface InspectorContract extends InstanceMethodContract {
+public interface ConstructorContract extends MethodContract {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -19,5 +22,14 @@ public interface InspectorContract extends InstanceMethodContract {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
+
   
+  
+
+  
+  /**
+   * @return getMember();
+   */
+  public Constructor getConstructor();
+
 }

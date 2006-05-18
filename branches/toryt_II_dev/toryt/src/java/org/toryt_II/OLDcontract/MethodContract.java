@@ -1,15 +1,15 @@
-package org.toryt_II.contract;
+package org.toryt_II.OLDcontract;
 
 
 import java.lang.reflect.Member;
 import java.util.Map;
 import java.util.Set;
 
-import org.toryt.support.straightlist.StraightList;
+import org.toryt_I.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.contract.condition.Condition;
 import org.toryt_II.contract.condition.ExceptionCondition;
-import org.toryt_II.test.MethodContractTest;
+import org.toryt_II.contractest.MethodContractTest;
 
 
 /**

@@ -11,11 +11,11 @@ import org.toryt.util_I.reflect.CannotCreateInstanceException;
 import org.toryt.util_I.reflect.CannotGetClassException;
 import org.toryt.util_I.reflect.Reflection;
 import org.toryt_II.OLDTorytException;
-import org.toryt_II.contract.ClassContract;
-import org.toryt_II.contract.PackageContract;
-import org.toryt_II.contract.ProjectContract;
-import org.toryt_II.contract.TypeContract;
-import org.toryt_II.contract.hard.HardPackageContract;
+import org.toryt_II.OLDcontract.ClassContract;
+import org.toryt_II.OLDcontract.PackageContract;
+import org.toryt_II.OLDcontract.ProjectContract;
+import org.toryt_II.OLDcontract.TypeContract;
+import org.toryt_II.OLDcontract.hard.HardPackageContract;
 
 
 /**
@@ -171,8 +171,8 @@ public class Contracts {
     if (pc == null) {
 //    pc = (HardPackageContract)java.beans.Beans.instantiate(Contracts.class.getClassLoader(),
 //    packageName + "." + PACKAGE_CONTRACT_CLASS_NAME);
-      org.toryt_II.contract.hard.HardPackageContract hPc
-          = new org.toryt_II.contract.hard.HardPackageContract(Package.getPackage(packageName));
+      org.toryt_II.OLDcontract.hard.HardPackageContract hPc
+          = new org.toryt_II.OLDcontract.hard.HardPackageContract(Package.getPackage(packageName));
       assert hPc != null : "Package " + packageName + " could not be loaded.";
       String relativePackageDirName = packageName.replace('.', File.separatorChar);
       File pDir = new File(sourcePath, relativePackageDirName);

@@ -1,4 +1,4 @@
-package org.toryt_II.contract.hard;
+package org.toryt_II.OLDcontract.hard;
 
 
 import java.util.Collections;
@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.toryt_II.OLDTorytException;
-import org.toryt_II.contract.AbstractProjectContract;
-import org.toryt_II.contract.PackageContract;
+import org.toryt_II.OLDcontract.AbstractProjectContract;
+import org.toryt_II.OLDcontract.PackageContract;
 
 
 /**

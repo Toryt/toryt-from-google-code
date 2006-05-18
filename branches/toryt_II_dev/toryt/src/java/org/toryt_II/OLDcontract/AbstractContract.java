@@ -1,4 +1,4 @@
-package org.toryt_II.contract;
+package org.toryt_II.OLDcontract;
 
 
 import java.util.ArrayList;
@@ -6,9 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.toryt.support.straightlist.ConcatStraightList;
-import org.toryt.support.straightlist.ListWrapperStraightList;
-import org.toryt.support.straightlist.StraightList;
+import org.toryt_I.support.straightlist.ConcatStraightList;
+import org.toryt_I.support.straightlist.ListWrapperStraightList;
+import org.toryt_I.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.test.Test;
 

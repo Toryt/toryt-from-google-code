@@ -1,15 +1,15 @@
-package org.toryt_II.contract;
+package org.toryt_II.OLDcontract;
 
-
-import java.lang.reflect.Constructor;
+import org.toryt_II.OLDcontract.hard.HardTypeContract;
 
 
 /**
- * @author Jan Dockx
+ * The contract of an interface. A {@link HardTypeContract} for types that
+ * are interfaces.
  * 
- * @invar getMember() instanceof Constructor;
+ * @invar getType().isInterface();
  */
-public interface ConstructorContract extends MethodContract {
+public interface InterfaceContract extends TypeContract {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -22,14 +22,5 @@ public interface ConstructorContract extends MethodContract {
   /** {@value} */
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
-
-  
-  
-
-  
-  /**
-   * @return getMember();
-   */
-  public Constructor getConstructor();
 
 }
