@@ -17,14 +17,14 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface Test<_SubjectType_> {
+public interface Test<_Subject_> {
 
   /**
    * The object under test (a project, package, class, method, ...).
    *
    * @basic
    */
-  _SubjectType_ getSubject();
+  _Subject_ getSubject();
 
   /**
    * All resources for running the test are in place.

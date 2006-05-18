@@ -19,7 +19,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractTest<_SubjectType_> implements Test<_SubjectType_> {
+public abstract class AbstractTest<_Subject_> implements Test<_Subject_> {
 
   private final static Log LOG = LogFactory.getLog(AbstractTest.class);
 
@@ -28,21 +28,21 @@ public abstract class AbstractTest<_SubjectType_> implements Test<_SubjectType_>
   /*<property name="subject">*/
   //------------------------------------------------------------------
 
-  public final _SubjectType_ getSubject() {
+  public final _Subject_ getSubject() {
     return $subject;
   }
 
   /**
    * @post new.getSubject() == subject;
    */
-  public void setSubject(_SubjectType_ subject) {
+  public void setSubject(_Subject_ subject) {
     $subject = subject;
   }
 
   /**
    * @invar $subject != null;
    */
-  private _SubjectType_ $subject;
+  private _Subject_ $subject;
 
   /*</property>*/
 
