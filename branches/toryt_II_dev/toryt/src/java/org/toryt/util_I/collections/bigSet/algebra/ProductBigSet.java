@@ -201,7 +201,9 @@ public class ProductBigSet<_Label_, _ResultMapElement_>
   public Iterator<Map<_Label_, _ResultMapElement_>> iterator() {
     return new AbstractLockedCollectionIterator() {
 
-      private final int dim = $factorBigSets.length;
+      private int getNumberOfFactors() {
+        return $factorBigSets.length;
+      }
 
       /**
        * This is null if there is no next.
@@ -216,17 +218,18 @@ public class ProductBigSet<_Label_, _ResultMapElement_>
         if (! isEmpty()) {
           // prepare iterators
           @SuppressWarnings("unchecked") Iterator<? extends _ResultMapElement_>[] iterators =
-              (Iterator<? extends _ResultMapElement_>[])new Iterator<?>[dim];
+              (Iterator<? extends _ResultMapElement_>[])new Iterator<?>[getNumberOfFactors()];
           $iterators = iterators;
-          for (int i = 0; i < dim; i++) {
+          for (int i = 0; i < getNumberOfFactors(); i++) {
             assert $factorBigSets[i] != null : "cannot be null because we are not empty";
             $iterators[i] = $factorBigSets[i].iterator();
             assert $iterators[i].hasNext() : "at least 1 element, because we are not empty";
           }
           // prepare first element
-          @SuppressWarnings("unchecked") _ResultMapElement_[] elements = (_ResultMapElement_[])new Object[dim];
+          @SuppressWarnings("unchecked") _ResultMapElement_[] elements =
+              (_ResultMapElement_[])new Object[getNumberOfFactors()];
           $elements = elements;
-          for (int j = dim - 1; j >= 0; j--) {
+          for (int j = getNumberOfFactors() - 1; j >= 0; j--) {
             assert ($iterators[j] != null) && ($iterators[j].hasNext());
             $elements[j] = $iterators[j].next();
           }
@@ -249,7 +252,7 @@ public class ProductBigSet<_Label_, _ResultMapElement_>
                                           return (o != null) && (! o.isEmpty());
                                         }
                                       });
-        int i = dim - 1; // last index
+        int i = getNumberOfFactors() - 1; // last index
         // prepare iterators, so they have a next
         while (i >= 0) {
           if (! $iterators[i].hasNext()) {
@@ -272,7 +275,7 @@ public class ProductBigSet<_Label_, _ResultMapElement_>
         }
         else {
           // take next at index i, and first elements at later indices
-          for (int j = i; j < dim; j++) {
+          for (int j = i; j < getNumberOfFactors(); j++) {
             assert $iterators[j].hasNext();
             $elements[j] = $iterators[j].next();
           }
