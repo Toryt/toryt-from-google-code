@@ -42,7 +42,7 @@ public class _TOF_PL_Double extends ConstantTestObjectFactoryPriorityList<Double
   }
 
   public void addDouble(int priority, double testObject) {
-    addImmutableTestObject(priority, new Double(testObject));
+    addImmutableTestObject(priority, Double.valueOf(testObject));
   }
 
 }

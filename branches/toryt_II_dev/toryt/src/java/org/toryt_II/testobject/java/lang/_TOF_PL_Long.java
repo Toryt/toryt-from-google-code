@@ -36,7 +36,7 @@ public class _TOF_PL_Long extends ConstantTestObjectFactoryPriorityList<Long> {
   }
 
   public void addLong(int priority, long testObject) {
-    addImmutableTestObject(priority, new Long(testObject));
+    addImmutableTestObject(priority, Long.valueOf(testObject));
   }
 
 }

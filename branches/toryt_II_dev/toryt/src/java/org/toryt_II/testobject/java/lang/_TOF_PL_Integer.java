@@ -34,7 +34,7 @@ public class _TOF_PL_Integer extends ConstantTestObjectFactoryPriorityList<Integ
   }
 
   public void addInteger(int priority, int testObject) {
-    addImmutableTestObject(priority, new Integer(testObject));
+    addImmutableTestObject(priority, Integer.valueOf(testObject));
   }
 
 }
