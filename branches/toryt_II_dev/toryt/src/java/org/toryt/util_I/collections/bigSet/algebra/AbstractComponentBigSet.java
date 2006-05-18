@@ -117,9 +117,7 @@ public abstract class AbstractComponentBigSet<_ResultElement_, _ComponentElement
     }
     else {
       // fallback; very possibly expensive, and stupid for a lazy set
-      return getBigSize().equals(((BigSet<?>)o).getBigSize()) &&
-             containsAll((BigSet<?>)o) &&
-             ((BigSet<?>)o).containsAll(this);
+      return super.equals(o);
     }
   }
 
