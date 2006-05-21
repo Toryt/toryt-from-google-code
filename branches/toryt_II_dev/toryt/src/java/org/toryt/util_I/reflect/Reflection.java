@@ -364,7 +364,36 @@ public class Reflection {
     INSTANCE_MUTATOR,
     INSTANCE_INSPECTOR,
     CLASS_MUTATOR,
-    CLASS_INSPECTOR
+    CLASS_INSPECTOR;
+
+    /**
+     * @return (this == INSTANCE_INSPECTOR) || (this == INSTANCE_MUTATOR);
+     */
+    public final boolean isInstanceMethod() {
+      return (this == INSTANCE_INSPECTOR) || (this == INSTANCE_MUTATOR);
+    }
+
+    /**
+     * @return (this == CLASS_INSPECTOR) || (this == CLASS_MUTATOR);
+     */
+    public final boolean isClassMethod() {
+      return (this == CLASS_INSPECTOR) || (this == CLASS_MUTATOR);
+    }
+
+    /**
+     * @return (this == INSTANCE_MUTATOR) || (this == CLASS_MUTATOR);
+     */
+    public final boolean isMutator() {
+      return (this == INSTANCE_MUTATOR) || (this == CLASS_MUTATOR);
+    }
+
+    /**
+     * @return (this == INSTANCE_INSPECTOR) || (this == CLASS_INSPECTOR);
+     */
+    public final boolean isInspector() {
+      return (this == INSTANCE_INSPECTOR) || (this == CLASS_INSPECTOR);
+    }
+
   }
 
   /**
