@@ -19,10 +19,7 @@ package org.toryt_II.contract.bean;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import org.toryt.patterns_I.Assertion;
@@ -30,9 +27,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.algebra.UnionSet;
 import org.toryt.util_I.collections.lockable.LockableMap;
 import org.toryt.util_I.collections.lockable.LockableSet;
+import org.toryt.util_I.collections.lockable.MapBackedLockableMap;
 import org.toryt.util_I.collections.lockable.SetBackedLockableSet;
-import org.toryt_II.contract.ContractIsClosedException;
-import org.toryt_II.contract.MethodContract;
 import org.toryt_II.contract.NonConstructorInstanceMethodContract;
 import org.toryt_II.contract.TypeContract;
 import org.toryt_II.contract.condition.Condition;
@@ -248,9 +244,10 @@ public class NonConstructorInstanceMethodContractBean<_ImplicitArgument_,
    *
    * @basic
    */
+  @Override
   public final LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> getExceptionConditions() {
-    LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> result =
-        new HashMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>>();
+    MapBackedLockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> result =
+        new MapBackedLockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>>(false);
     LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> superMap =
         super.getExceptionConditions();
     for (Class<? extends Throwable> et : getExceptionTypes()) {
