@@ -21,6 +21,7 @@ import java.lang.reflect.Member;
 import java.util.Map;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.toryt.util_I.collections.lockable.LockableMap;
 import org.toryt.util_I.collections.lockable.LockableSet;
 import org.toryt_II.contract.condition.Condition;
 import org.toryt_II.contract.condition.ExceptionCondition;
@@ -110,7 +111,7 @@ public interface MethodContract<_Subject_ extends Member>
    *
    * @basic
    */
-  Map<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> getExceptionConditions();
+  LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> getExceptionConditions();
 
   /*</property>*/
 
