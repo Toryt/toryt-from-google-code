@@ -42,6 +42,16 @@ public class CollectionBackedLockableCollection<_Element_, _BackingCollection_ e
     $nullAllowed = nullAllowed;
   }
 
+  /**
+   * @post new.isNullAllowed() == nullAllowed;
+   * @post ! new.isLocked();
+   */
+  public CollectionBackedLockableCollection(boolean nullAllowed) {
+    this((_BackingCollection_)new ArrayList<_Element_>(), nullAllowed);
+    /* I don't understand this warning */
+    $nullAllowed = nullAllowed;
+  }
+
   @Override
   @SuppressWarnings("unchecked")
   protected _BackingCollection_ backingCollectionClone(_BackingCollection_ backingCollection) {

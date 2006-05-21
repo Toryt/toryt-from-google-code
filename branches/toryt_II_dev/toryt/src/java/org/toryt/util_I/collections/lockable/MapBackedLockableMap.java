@@ -2,6 +2,7 @@ package org.toryt.util_I.collections.lockable;
 
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -39,6 +40,14 @@ public class MapBackedLockableMap<_Key_, _Value_>
   protected MapBackedLockableMap(Map<_Key_, _Value_> backingMap, boolean nullAllowed) {
     super(backingMap);
     $nullAllowed = nullAllowed;
+  }
+
+  /**
+   * @post new.isNullAllowed() == nullAllowed;
+   * @post ! new.isLocked();
+   */
+  public MapBackedLockableMap(boolean nullAllowed) {
+    this(new HashMap<_Key_, _Value_>(), nullAllowed);
   }
 
   /*</construction>*/
