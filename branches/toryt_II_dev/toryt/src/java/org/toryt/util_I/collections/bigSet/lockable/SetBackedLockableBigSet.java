@@ -34,6 +34,8 @@ public class SetBackedLockableBigSet<_Element_>
     super(nullAllowed);
   }
 
+  // no need to override clone: there are no extra instance variables here
+
   public final BigInteger getBigSize() {
     return BigInteger.valueOf(size());
   }

@@ -38,6 +38,8 @@ public abstract class AbstractLockedPriorityList<_PriorityElement_>
     $cardinality = cardinality;
   }
 
+  // overriding clone is not necessary: there are no instance variable here that need to be copied
+
 
 
   /* <property name="nullPriorityElementAllowed"> */

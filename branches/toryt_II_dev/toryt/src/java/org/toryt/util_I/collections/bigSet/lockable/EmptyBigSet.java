@@ -24,6 +24,8 @@ public class EmptyBigSet<_Element_> extends AbstractLockedBigSet<_Element_> {
     super(false, BigInteger.ZERO);
   }
 
+  // overriding clone is not necessary: there are no instance variable here
+
   public final boolean isEmpty() {
     return true;
   }

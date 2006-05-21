@@ -69,6 +69,8 @@ public class UnionPriorityList<_PriorityElement_>
     return max;
   }
 
+  // overriding clone is not necessary: there are no instance variable here that need to be copied
+
   /**
    * Contains an equal {@link LockableBigSet}.
    *

@@ -48,6 +48,8 @@ public class ConcatPriorityList<_PriorityElement_>
     return acc;
   }
 
+  // overriding clone is not necessary: there are no instance variable here that need to be copied
+
   @Override
   public final boolean contains(final Object o) {
     return Collections.exists(getComponents(),

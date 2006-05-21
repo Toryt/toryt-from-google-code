@@ -94,6 +94,8 @@ public class ArrayHashPriorityList<_PriorityElement_>
     $nullPriorityElementAllowed = nullAllowed;
   }
 
+  // overriding clone is not necessary: there are no instance variable here that need to be copied
+
 
 
   /* <property name="nullPriorityElementAllowed"> */

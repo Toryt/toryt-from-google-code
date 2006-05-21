@@ -22,7 +22,12 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LockableCollection<_Element_> extends Collection<_Element_> {
+public interface LockableCollection<_Element_> extends Collection<_Element_>, Cloneable {
+
+  /**
+   * Clone method must be public.
+   */
+  Object clone();
 
   /**
    * Is <code>null</code> allowed as element in this collection?

@@ -30,6 +30,17 @@ public abstract class AbstractLockedCollection<_Element_>
     $nullAllowed = nullAllowed;
   }
 
+  @Override
+  public Object clone() {
+    try {
+      return super.clone();
+    }
+    catch (CloneNotSupportedException cnsExc) {
+      assert false : "CloneNotSupportedException should not happen: " + cnsExc;
+      return null; // keep compiler happy
+    }
+  }
+
 
 
   /* <property name="null allowed"> */

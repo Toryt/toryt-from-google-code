@@ -29,6 +29,8 @@ public final class EmptyPriorityList<_PriorityElement_>
     super(BigInteger.ZERO, false);
   }
 
+  // overriding clone is not necessary: there are no instance variable here that are mutable
+
   private EmptyBigSet<_PriorityElement_> $ebs = new EmptyBigSet<_PriorityElement_>();
 
   @Override

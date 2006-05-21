@@ -47,6 +47,11 @@ public class ListBackedLockableList<_Element_>
     this(new ArrayList<_Element_>(), nullAllowed);
   }
 
+  @Override
+  protected List<_Element_> backingCollectionClone(List<_Element_> backingCollection) {
+    return new ArrayList<_Element_>(backingCollection);
+  }
+
 
 
   /* <section name="Inspectors"> */

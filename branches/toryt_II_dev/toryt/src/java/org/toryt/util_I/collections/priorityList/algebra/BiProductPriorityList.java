@@ -66,6 +66,8 @@ public class BiProductPriorityList<_Label_, _ResultMapElement_>
     this(factors, 0, baseSize(factors));
   }
 
+  // overriding clone is not necessary: there are no instance variable here that need to be copied
+
   /*</construction>*/
 
 

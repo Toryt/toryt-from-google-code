@@ -32,6 +32,8 @@ public final class NullSingletonPriorityList<_PriorityElement_>
     $lbs = new NullSingletonBigSet<_PriorityElement_>();
   }
 
+  // overriding clone is not necessary: there are no instance variable here that are mutable
+
   /**
    * @invar $lbs != null;
    */

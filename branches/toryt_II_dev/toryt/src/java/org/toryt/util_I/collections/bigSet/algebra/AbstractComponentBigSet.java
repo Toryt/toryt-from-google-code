@@ -68,6 +68,10 @@ public abstract class AbstractComponentBigSet<_ResultElement_, _ComponentElement
     $components = (LockableBigSet<? extends _ComponentElement_>[])ArrayUtils.clone(components);
   }
 
+  /* Since components are locked, and the array of components is fixed after construction,
+   * there is no need to override clone.
+   */
+
 
 
   /* <property name="components"> */
@@ -85,7 +89,7 @@ public abstract class AbstractComponentBigSet<_ResultElement_, _ComponentElement
    * @invar (forall int i; (i >= 0) && (i < $components.length);
    *          ($components[i] != null) ? $components[i].isLocked());
    */
-  private final LockableBigSet<? extends _ComponentElement_>[] $components;
+  protected final LockableBigSet<? extends _ComponentElement_>[] $components;
 
   /*</property>*/
 

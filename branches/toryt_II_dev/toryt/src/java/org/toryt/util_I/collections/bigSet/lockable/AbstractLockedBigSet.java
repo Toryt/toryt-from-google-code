@@ -31,6 +31,7 @@ public abstract class AbstractLockedBigSet<_Element_> extends AbstractLockedSet<
     $bigSize = bigSize;
   }
 
+  // no need to override clone: there are no extra instance variables here that are mutable
 
 
   /* <property name="size"> */

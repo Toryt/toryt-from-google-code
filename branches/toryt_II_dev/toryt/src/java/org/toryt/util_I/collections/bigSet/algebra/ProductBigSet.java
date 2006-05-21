@@ -92,6 +92,8 @@ public class ProductBigSet<_Label_, _ResultMapElement_>
     return result;
   }
 
+  // no need to override clone: there are no extra instance variables here
+
   /**
    * @return (product getFactors().getBigSize());
    *

@@ -1595,5 +1595,86 @@ Then <code>&exist; u &isin; 0..n-1</sub>, (k<sub>u</sub><sup>b</sup> = k<sub>u</
   That commbination element is in the combination bucket with priority <code>np</code>.
   When we take into account the lenght of the component lists, the formula
   is <code>&Sigma;<sub>i &isin; 0..n-1</sub>min(p, l<sub>i</sub>)</code>.</p>
+<h1>Currying</h1>
+<p>From tests (see unit test) it shows consistently that tree currying
+  is by far faster than left currying, which is a little bit faster than
+  right currying. This is not proven, so not sure. Multi-product thus implements
+  tree currying, with preference for the left subtree.</p>
+<p>With <code>n</code> lists, the factors are kept in an array. With <code>n
+    = 13</code>, this gives:  </p>
+<table border="1">
+  <tr>
+    <td>0</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
+    <td>7</td>
+    <td>8</td>
+    <td>9</td>
+    <td>10</td>
+    <td>11</td>
+    <td>12</td>
+  </tr>
+</table>
+<p>The split point of the tree (last element of left list) is <code>n div
+    2</code>,
+  for each level. This gives:</p>
+<table border="1">
+  <tr>
+    <td>6</td>
+    <td colspan="13">(0,1,2,3,4,5,6,7,8,9,10,11,12)</td>
+  </tr>
+  <tr>
+    <td>3/9</td>
+    <td colspan="7">(0,1,2,3,4,5,6)</td>
+    <td colspan="6">(7,8,9,10,11,12)</td>
+  </tr>
+  <tr>
+    <td>1/5/8/11</td>
+    <td colspan="4">(0,1,2,3)</td>
+    <td colspan="3">(4,5,6)</td>
+    <td colspan="3">(7,8,9)</td>
+    <td colspan="3">(10,11,12)</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td colspan="2">(0,1)</td>
+    <td colspan="2">(2,3)</td>
+    <td colspan="2">(4,5)</td>
+    <td>&nbsp;</td>
+    <td colspan="2">(7,8)</td>
+    <td>&nbsp;</td>
+    <td colspan="2">(10, 11)</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>0</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
+    <td>7</td>
+    <td>8</td>
+    <td>9</td>
+    <td>10</td>
+    <td>11</td>
+    <td>12</td>
+  </tr>
+</table>
+<p>We return the UnionBigSet<sub>(i, j) in bucket combinations</sub>(ProductBigSet(Map(i,
+  j))) for the bi-product. For the multi-product, we have to return the
+  UnionBigSet<sub>(ik) in bucket combinations</sub>(ProductBigSet(Map(i<sub>k</sub>)).
+  Thus, we need to create an array of ProductBigSets for the UnionBigSet,
+  one for each combination. For each combination, we need to create a Map,
+  and the Map has <code>n</code> entries.</p>
+<p>&nbsp;</p>
+<p>&nbsp; </p>
+<p>&nbsp; </p>
 </body>
 </html>

@@ -24,8 +24,6 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
  * @author Jan Dockx
  *
  * @invar (forall int i; (i >= 0) && (i < getComponents().length);
- *          getElementType().isAssignableFrom(getComponents()[i].getElementType()));
- * @invar (forall int i; (i >= 0) && (i < getComponents().length);
  *          (forall int j; (j >= 0) && (j < getComponents().length) && (j != i);
  *            (forall Object o; getComponents()[i].contains(o);
  *              ! getComponents()[j].contains(o)));
@@ -67,6 +65,8 @@ public class UnionBigSet<_Element_> extends AbstractComponentBigSet<_Element_, _
     return result;
   }
 
+  // no need to override clone: there are no extra instance variables here
+
   /**
    * @return (sum int i; (i >=0 ) && (i < getComponents().length);
    *            getComponents()[i].getBigSize());
@@ -76,7 +76,7 @@ public class UnionBigSet<_Element_> extends AbstractComponentBigSet<_Element_, _
 
   @Override
   public final boolean contains(final Object o) {
-    return Collections.exists(getComponents(),
+    return Collections.exists($components,
                               new Assertion<LockableBigSet<? extends _Element_>>() {
 
                                     public boolean isTrueFor(LockableBigSet<? extends _Element_> s) {
@@ -91,7 +91,7 @@ public class UnionBigSet<_Element_> extends AbstractComponentBigSet<_Element_, _
    *            getComponents()[i].isEmpty());
    */
   public final boolean isEmpty() {
-    return Collections.forAll(getComponents(),
+    return Collections.forAll($components,
                               new Assertion<LockableBigSet<? extends _Element_>>() {
 
                                     public boolean isTrueFor(LockableBigSet<? extends _Element_> o) {
@@ -103,8 +103,6 @@ public class UnionBigSet<_Element_> extends AbstractComponentBigSet<_Element_, _
 
   public Iterator<_Element_> iterator() {
     return new AbstractLockedCollectionIterator() {
-
-      private final LockableBigSet<? extends _Element_>[] $components = getComponents();
 
       private int $componentIndex = -1;
 

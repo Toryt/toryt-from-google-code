@@ -21,8 +21,11 @@ import org.toryt.util_I.collections.AbstractCollectionBackedCollection;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractCollectionBackedLockableCollection<_Element_, _BackingCollection_ extends Collection<_Element_>>
-    extends AbstractCollectionBackedCollection<_Element_>
+    extends AbstractCollectionBackedCollection<_Element_, _BackingCollection_>
     implements LockableCollection<_Element_> {
+
+  /*<construction>*/
+  //------------------------------------------------------------------
 
   /**
    * The <code>backingCollection</code> should not be exposed to protect integrity
@@ -34,20 +37,9 @@ public abstract class AbstractCollectionBackedLockableCollection<_Element_, _Bac
    * @post ! new.isLocked();
    */
   protected AbstractCollectionBackedLockableCollection(_BackingCollection_ backingCollection, boolean nullAllowed) {
-    assert backingCollection != null;
+    super(backingCollection);
     $nullAllowed = nullAllowed;
-    $backingCollection = backingCollection;
   }
-
-  @Override
-  protected final _BackingCollection_ getBackingCollection() {
-    return $backingCollection;
-  }
-
-  /**
-   * @invar $backingCollection != null;
-   */
-  private _BackingCollection_ $backingCollection;
 
 
   /* <property name="null allowed"> */

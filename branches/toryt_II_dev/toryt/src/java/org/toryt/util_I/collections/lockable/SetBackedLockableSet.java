@@ -36,6 +36,11 @@ public class SetBackedLockableSet<_Element_>
     super(backingSet, nullAllowed);
   }
 
+  @Override
+  protected Set<_Element_> backingCollectionClone(Set<_Element_> backingCollection) {
+    return new HashSet<_Element_>(backingCollection);
+  }
+
   /**
    * Create an instance backed by a fresh {@link HashSet}.
    */
@@ -58,5 +63,4 @@ public class SetBackedLockableSet<_Element_>
 
     };
   }
-
 }

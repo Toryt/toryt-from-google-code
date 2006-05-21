@@ -124,6 +124,10 @@ public abstract class AbstractProductPriorityList<_Label_, _ResultMapElement_>
     return result;
   }
 
+  /* overriding clone is not necessary: there are no instance variable here that need to be copied;
+   * the component structure (factors) can be share, because they will not change after construction!
+   */
+
   /*</construction>*/
 
 
