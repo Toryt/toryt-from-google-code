@@ -14,9 +14,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar toryt:cC org.toryt.patterns_I.Collections;
- * @invar getElementType() !=  null;
- * @invar cC:noNull(this);
- * @invar cC:instanceOf(this, getElementType());
+ * @invar (! isNullAllowed()) ? cC:noNull(this);
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

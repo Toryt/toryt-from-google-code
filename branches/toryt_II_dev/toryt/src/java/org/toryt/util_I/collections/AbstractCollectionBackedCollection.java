@@ -15,11 +15,54 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractCollectionBackedCollection<_Element_>
-    implements Collection<_Element_> {
+public abstract class AbstractCollectionBackedCollection<_Element_, _BackingCollection_ extends Collection<_Element_>>
+    implements Collection<_Element_>, Cloneable {
 
-  protected abstract <_BackingCollection_ extends Collection<_Element_>>
-      _BackingCollection_ getBackingCollection();
+  /*<construction>*/
+  //------------------------------------------------------------------
+
+  /**
+   * The <code>backingCollection</code> should not be exposed to protect integrity.
+   *
+   * @pre backingCollection != null;
+   * @post new.getBackingCollection() == backingCollection;
+   */
+  protected AbstractCollectionBackedCollection(_BackingCollection_ backingCollection) {
+    assert backingCollection != null;
+    $backingCollection = backingCollection;
+  }
+
+  /**
+   * This method makes a deep copy of the backing collection.
+   */
+  @Override
+  public Object clone() {
+    try {
+      @SuppressWarnings("unchecked") AbstractCollectionBackedCollection<_Element_, _BackingCollection_> result =
+          (AbstractCollectionBackedCollection<_Element_, _BackingCollection_>)super.clone();
+      result.$backingCollection = backingCollectionClone($backingCollection);
+      return result;
+    }
+    catch (CloneNotSupportedException cnsExc) {
+      assert false : "CloneNotSupportedException should not happen: " + cnsExc;
+      return null; // keep compiler happy
+    }
+  }
+
+  protected abstract _BackingCollection_ backingCollectionClone(_BackingCollection_ backingCollection);
+
+  /*</construction>*/
+
+
+
+  protected final _BackingCollection_ getBackingCollection() {
+    return $backingCollection;
+  }
+
+  /**
+   * @invar $backingCollection != null;
+   */
+  private _BackingCollection_ $backingCollection;
 
 
 
