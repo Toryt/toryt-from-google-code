@@ -24,7 +24,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class ListBackedLockableList<_Element_>
-    extends AbstractCollectionBackedLockableCollection<_Element_, List<_Element_>>
+    extends CollectionBackedLockableCollection<_Element_, List<_Element_>>
     implements LockableList<_Element_> {
 
   /**

@@ -19,7 +19,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class SetBackedLockableSet<_Element_>
-    extends AbstractCollectionBackedLockableCollection<_Element_, Set<_Element_>>
+    extends CollectionBackedLockableCollection<_Element_, Set<_Element_>>
     implements LockableSet<_Element_> {
 
   /**

@@ -21,7 +21,7 @@ import org.toryt.util_I.collections.AbstractCollectionBackedCollection;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class AbstractCollectionBackedLockableCollection<_Element_, _BackingCollection_ extends Collection<_Element_>>
+public class CollectionBackedLockableCollection<_Element_, _BackingCollection_ extends Collection<_Element_>>
     extends AbstractCollectionBackedCollection<_Element_, _BackingCollection_>
     implements LockableCollection<_Element_> {
 
@@ -37,7 +37,7 @@ public class AbstractCollectionBackedLockableCollection<_Element_, _BackingColle
    * @post new.getBackingCollection() == backingCollection;
    * @post ! new.isLocked();
    */
-  protected AbstractCollectionBackedLockableCollection(_BackingCollection_ backingCollection, boolean nullAllowed) {
+  protected CollectionBackedLockableCollection(_BackingCollection_ backingCollection, boolean nullAllowed) {
     super(backingCollection);
     $nullAllowed = nullAllowed;
   }

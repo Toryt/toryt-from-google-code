@@ -99,8 +99,8 @@ public class MapBackedLockableMap<_Key_, _Value_>
 
 
   public LockableCollection<_Value_> values() {
-    AbstractCollectionBackedLockableCollection<_Value_, Collection<_Value_>> result =
-        new AbstractCollectionBackedLockableCollection<_Value_, Collection<_Value_>>(getBackingMap().values(), false);
+    CollectionBackedLockableCollection<_Value_, Collection<_Value_>> result =
+        new CollectionBackedLockableCollection<_Value_, Collection<_Value_>>(getBackingMap().values(), false);
     if (isLocked()) {
       result.lock();
     }
