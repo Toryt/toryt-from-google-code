@@ -32,6 +32,7 @@ import org.toryt.util_I.collections.lockable.LockableMap;
 import org.toryt.util_I.collections.lockable.LockableSet;
 import org.toryt.util_I.collections.lockable.SetBackedLockableSet;
 import org.toryt_II.contract.ContractIsClosedException;
+import org.toryt_II.contract.MethodContract;
 import org.toryt_II.contract.NonConstructorInstanceMethodContract;
 import org.toryt_II.contract.TypeContract;
 import org.toryt_II.contract.condition.Condition;
@@ -52,7 +53,7 @@ import org.toryt_II.contract.condition.ExceptionCondition;
          state    = "$State$",
          tag      = "$Name$")
 public class NonConstructorInstanceMethodContractBean<_ImplicitArgument_,
-                                                      _SuperContract_ extends NonConstructorInstanceMethodContract<? super _ImplicitArgument_, ?>>
+                                                      _SuperContract_ extends NonConstructorInstanceMethodContract<?, ?>>
     extends InstanceMethodContractBean<_ImplicitArgument_, Method>
     implements NonConstructorInstanceMethodContract<_ImplicitArgument_, _SuperContract_> {
 
@@ -189,23 +190,23 @@ public class NonConstructorInstanceMethodContractBean<_ImplicitArgument_,
    */
   @Override
   public final LockableSet<Condition> getPostconditions() {
-    Set<_SuperContract_> transitiveClosure = new HashSet<_SuperContract_>();
+    Set<NonConstructorInstanceMethodContract<?, ?>> transitiveClosure = new HashSet<NonConstructorInstanceMethodContract<?, ?>>();
     transitiveClosure(this, transitiveClosure);
     @SuppressWarnings("unchecked") LockableSet<? extends Condition>[] components =
         (LockableSet<? extends Condition>[])new LockableSet<?>[transitiveClosure.size() + 1];
     int i = 0;
-    for (_SuperContract_ c : transitiveClosure) {
+    for (NonConstructorInstanceMethodContract<?, ?> c : transitiveClosure) {
       components[i] = c.getPostconditions();
       i++;
     }
-    components[i] = super.getPostconditions();
+    components[i] = super.getPostconditions(); // locked or cloned and locked by super
     return new UnionSet<Condition>(false, components);
   }
 
-  private void transitiveClosure(_SuperContract_ c, Set<_SuperContract_> acc) {
+  private static void transitiveClosure(NonConstructorInstanceMethodContract<?, ?> c, Set<NonConstructorInstanceMethodContract<?, ?>> acc) {
     if (! acc.contains(c)) {
       acc.add(c);
-      for (_SuperContract_ sc : c.getDirectSuperContracts()) {
+      for (NonConstructorInstanceMethodContract<?, ?> sc : c.getDirectSuperContracts()) {
         transitiveClosure(sc, acc);
       }
     }

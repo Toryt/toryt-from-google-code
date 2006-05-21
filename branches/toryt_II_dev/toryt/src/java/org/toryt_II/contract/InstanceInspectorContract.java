@@ -33,7 +33,12 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface InstanceInspectorContract<_ImplicitArgument_>
-    extends NonConstructorInstanceMethodContract<_ImplicitArgument_, InstanceInspectorContract<? super _ImplicitArgument_>> {
+    extends NonConstructorInstanceMethodContract<_ImplicitArgument_, InstanceInspectorContract<?>> {
+
+  /* Considered "InstanceInspectorContract<? super _ImplicitArgument_>"
+   * instead of "InstanceInspectorContract<?>", but the _ImplicitArgument_
+   * of the super contracts in the set getDirectSuperContracts() is possibly different for each element of that set.
+   */
 
   // NOP
 

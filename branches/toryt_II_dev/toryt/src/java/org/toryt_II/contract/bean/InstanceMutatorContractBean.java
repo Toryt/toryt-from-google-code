@@ -39,7 +39,7 @@ import org.toryt_II.contract.TypeContract;
          state    = "$State$",
          tag      = "$Name$")
 public class InstanceMutatorContractBean<_ImplicitArgument_>
-    extends NonConstructorInstanceMethodContractBean<_ImplicitArgument_, InstanceMutatorContract<? super _ImplicitArgument_>>
+    extends NonConstructorInstanceMethodContractBean<_ImplicitArgument_, InstanceMutatorContract<?>>
     implements InstanceMutatorContract<_ImplicitArgument_> {
 
   /*<construction>*/
@@ -62,7 +62,7 @@ public class InstanceMutatorContractBean<_ImplicitArgument_>
    */
   public InstanceMutatorContractBean(Method subject,
                                      TypeContract<_ImplicitArgument_> typeContract,
-                                     Set<InstanceMutatorContract<? super _ImplicitArgument_>> superContracts) {
+                                     Set<InstanceMutatorContract<?>> superContracts) {
     super(subject, typeContract, superContracts);
     assert Reflection.methodKind(subject) == INSTANCE_MUTATOR;
   }

@@ -50,8 +50,16 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface NonConstructorInstanceMethodContract<_ImplicitArgument_,
-                                                      _SuperContract_ extends NonConstructorInstanceMethodContract<? super _ImplicitArgument_, ?>>
+                                                      _SuperContract_ extends NonConstructorInstanceMethodContract<?, ?>>
     extends InstanceMethodContract<_ImplicitArgument_, Method> {
+  /* Considered "_SuperContract_ extends NonConstructorInstanceMethodContract<? super _ImplicitArgument_, ?>>"
+   * instead of "_SuperContract_ extends NonConstructorInstanceMethodContract<?, ?>>", but the _ImplicitArgument_
+   * of the super contracts in the set getDirectSuperContracts() is possibly different for each element of that set.
+   * They all have to be super of this _ImplicitArgument_, but not all the same. That we cannot express with
+   * generic parameter bounds. The set might contain, e.g., an InstanceInspectorContract<Object, ?>> and an
+   * InstanceInspectorContract<Person, ?>>.
+   */
+
 
   /*<property name="super contracts">*/
   //------------------------------------------------------------------

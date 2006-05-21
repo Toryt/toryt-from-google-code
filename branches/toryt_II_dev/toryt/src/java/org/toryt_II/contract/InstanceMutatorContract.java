@@ -32,7 +32,12 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface InstanceMutatorContract<_ImplicitArgument_>
-    extends NonConstructorInstanceMethodContract<_ImplicitArgument_, InstanceMutatorContract<? super _ImplicitArgument_>> {
+    extends NonConstructorInstanceMethodContract<_ImplicitArgument_, InstanceMutatorContract<?>> {
+
+  /* Considered "InstanceMutatorContract<? super _ImplicitArgument_>"
+   * instead of "InstanceMutatorContract<?>", but the _ImplicitArgument_
+   * of the super contracts in the set getDirectSuperContracts() is possibly different for each element of that set.
+   */
 
   // NOP
 

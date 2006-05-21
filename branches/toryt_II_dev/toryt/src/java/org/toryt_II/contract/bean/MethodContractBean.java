@@ -31,6 +31,7 @@ import org.toryt.patterns_I.Assertion;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.lockable.LockableMap;
 import org.toryt.util_I.collections.lockable.LockableSet;
+import org.toryt.util_I.collections.lockable.MapBackedLockableMap;
 import org.toryt.util_I.collections.lockable.SetBackedLockableSet;
 import org.toryt_II.contract.AbstractMethodContract;
 import org.toryt_II.contract.ContractIsClosedException;
@@ -71,6 +72,7 @@ public abstract class MethodContractBean<_Subject_ extends Member>
     super.close();
     $preconditions.lock();
     $postconditions.lock();
+    $exceptionConditions.lock();
   }
 
 
@@ -167,17 +169,20 @@ public abstract class MethodContractBean<_Subject_ extends Member>
    *
    * @basic
    */
-  public Map<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> getExceptionConditions() {
-    //unmodifiable map of unmodifiable sets of exception conditions
-    Map<Class<? extends Throwable>, Set<ExceptionCondition<?>>> result =
-        new HashMap<Class<? extends Throwable>, Set<ExceptionCondition<?>>>();
-    Iterator<Map.Entry<Class<? extends Throwable>, Set<ExceptionCondition<?>>>> iter =
-        $exceptionConditions.entrySet().iterator();
-    while (iter.hasNext()) {
-      Map.Entry<Class<? extends Throwable>, Set<ExceptionCondition<?>>> entry = iter.next();
-      result.put(entry.getKey(), Collections.unmodifiableSet(entry.getValue()));
+  public LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> getExceptionConditions() {
+    if (isClosed()) {
+      return $exceptionConditions;
     }
-    return Collections.unmodifiableMap(result);
+    else {
+      LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> result =
+          new MapBackedLockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>>(false);
+      for (Map.Entry<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> e : $exceptionConditions.entrySet()) {
+        @SuppressWarnings("unchecked") LockableSet<ExceptionCondition<?>> clone =
+            (LockableSet<ExceptionCondition<?>>)e.getValue().clone();
+        result.put(e.getKey(), clone);
+      }
+      return result;
+    }
   }
 
   /**
@@ -200,10 +205,9 @@ public abstract class MethodContractBean<_Subject_ extends Member>
     if (! exceptionTypeDeclaredInThrowsClause(condition.getExceptionType(), getSubject())) {
       throw new ExceptionTypeNotDeclaredInThrowsClauseException(this, condition.getExceptionType());
     }
-    Set<ExceptionCondition<?>> exceptionConditionSet =
-        $exceptionConditions.get(condition.getExceptionType());
+    LockableSet<ExceptionCondition<? extends Throwable>> exceptionConditionSet = $exceptionConditions.get(condition.getExceptionType());
     if (exceptionConditionSet == null) {
-      exceptionConditionSet = new HashSet<ExceptionCondition<?>>();
+      exceptionConditionSet = new SetBackedLockableSet<ExceptionCondition<? extends Throwable>>(false); // ? is condition.getExceptionType()
       $exceptionConditions.put(condition.getExceptionType(), exceptionConditionSet);
     }
     exceptionConditionSet.add(condition);
@@ -211,7 +215,7 @@ public abstract class MethodContractBean<_Subject_ extends Member>
 
   // MUDO move to reflection
   private boolean exceptionTypeDeclaredInThrowsClause(final Class<? extends Throwable> exceptionType, Member subject) {
-    Class<? extends Throwable>[] declaredExceptionType = getExceptionType();
+    Class<? extends Throwable>[] declaredExceptionType = getExceptionTypes();
     return isSubtypeOfOneOf(exceptionType, declaredExceptionType);
   }
 
@@ -232,8 +236,8 @@ public abstract class MethodContractBean<_Subject_ extends Member>
    * @invar Collections.noNull($exceptionConditions);
    * @invar (forall Set s : $exceptionConditions.values() {Collections.noNull(s)});
    */
-  private final Map<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> $exceptionConditions =
-        new Map<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>>;
+  private final MapBackedLockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<? extends Throwable>>> $exceptionConditions =
+        new MapBackedLockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<? extends Throwable>>>(false);
 
   /*</property>*/
 
