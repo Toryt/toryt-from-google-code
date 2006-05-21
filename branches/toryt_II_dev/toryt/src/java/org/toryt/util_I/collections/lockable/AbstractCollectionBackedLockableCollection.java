@@ -1,6 +1,7 @@
 package org.toryt.util_I.collections.lockable;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -20,7 +21,7 @@ import org.toryt.util_I.collections.AbstractCollectionBackedCollection;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractCollectionBackedLockableCollection<_Element_, _BackingCollection_ extends Collection<_Element_>>
+public class AbstractCollectionBackedLockableCollection<_Element_, _BackingCollection_ extends Collection<_Element_>>
     extends AbstractCollectionBackedCollection<_Element_, _BackingCollection_>
     implements LockableCollection<_Element_> {
 
@@ -39,6 +40,12 @@ public abstract class AbstractCollectionBackedLockableCollection<_Element_, _Bac
   protected AbstractCollectionBackedLockableCollection(_BackingCollection_ backingCollection, boolean nullAllowed) {
     super(backingCollection);
     $nullAllowed = nullAllowed;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  protected _BackingCollection_ backingCollectionClone(_BackingCollection_ backingCollection) {
+    return (_BackingCollection_)new ArrayList<_Element_>(backingCollection);
   }
 
 
@@ -185,6 +192,23 @@ public abstract class AbstractCollectionBackedLockableCollection<_Element_, _Bac
       throw new UnsupportedOperationException("Collection is locked");
     }
     getBackingCollection().clear();
+  }
+
+
+  public Iterator<_Element_> iterator() {
+    return new CollectionBackedLockedIterator() {
+
+      /**
+       * @invar $backingIterator != null;
+       */
+      private final Iterator<_Element_> $iterator = getBackingCollection().iterator();
+
+      @Override
+      protected Iterator<_Element_> getBackingIterator() {
+        return $iterator;
+      }
+
+    };
   }
 
   /*</section>*/

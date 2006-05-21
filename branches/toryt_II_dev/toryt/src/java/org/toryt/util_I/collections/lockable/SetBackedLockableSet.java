@@ -2,7 +2,6 @@ package org.toryt.util_I.collections.lockable;
 
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -48,19 +47,4 @@ public class SetBackedLockableSet<_Element_>
     this(new HashSet<_Element_>(), nullAllowed);
   }
 
-  public final Iterator<_Element_> iterator() {
-    return new CollectionBackedLockedIterator() {
-
-      /**
-       * @invar $backingIterator != null;
-       */
-      private final Iterator<_Element_> $iterator = getBackingCollection().iterator();
-
-      @Override
-      protected Iterator<_Element_> getBackingIterator() {
-        return $iterator;
-      }
-
-    };
-  }
 }

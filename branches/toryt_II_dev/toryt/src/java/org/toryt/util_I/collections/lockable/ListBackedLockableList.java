@@ -152,6 +152,7 @@ public class ListBackedLockableList<_Element_>
 
   }
 
+  @Override
   public final Iterator<_Element_> iterator() {
     return listIterator();
   }
