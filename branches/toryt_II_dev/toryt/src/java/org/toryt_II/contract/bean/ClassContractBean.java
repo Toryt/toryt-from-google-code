@@ -58,6 +58,15 @@ public class ClassContractBean<_Class_> extends TypeContractBean<_Class_>
 
 
 
+  @Override
+  public void close() {
+    super.close();
+    $classInvariantConditions.lock();
+    $basicClassInspectors.lock();
+  }
+
+
+
   /*<property name="direct super class contract">*/
   //------------------------------------------------------------------
 
@@ -72,7 +81,8 @@ public class ClassContractBean<_Class_> extends TypeContractBean<_Class_>
    * @pre (getSubject() == Object.class) ?
    *        directSuperClassContract == null : directSuperClassContract != null;
    * @pre (getSubject() != Object.class) ?
-             directSuperClassContract.getSubject() == getSubject().getSuperclass();
+   *         directSuperClassContract.getSubject() == getSubject().getSuperclass();
+   * @pre directSuperClassContract != null ? directSuperClassContract.isClosed();
    * @post new.getDirectSuperClassContract() == directSuperClassContract;
    */
   public final void setDirectSuperClassContract(ClassContract<? super _Class_> directSuperClassContract) {
@@ -80,6 +90,7 @@ public class ClassContractBean<_Class_> extends TypeContractBean<_Class_>
              directSuperClassContract == null : directSuperClassContract != null;
     assert (getSubject() != Object.class) ?
              directSuperClassContract.getSubject() == getSubject().getSuperclass() : true;
+    assert directSuperClassContract != null ? directSuperClassContract.isClosed() : true;
     $directSuperClassContract = directSuperClassContract;
   }
 
@@ -139,11 +150,11 @@ public class ClassContractBean<_Class_> extends TypeContractBean<_Class_>
    */
   public final LockableSet<Method> getBasicClassInspectors() {
     if (isClosed()) {
-      return $basicInspectors;
+      return $basicClassInspectors;
     }
     else {
       @SuppressWarnings("unchecked") LockableSet<Method> result =
-          (LockableSet<Method>)$basicInspectors.clone();
+          (LockableSet<Method>)$basicClassInspectors.clone();
       return result;
     }
   }
@@ -162,14 +173,14 @@ public class ClassContractBean<_Class_> extends TypeContractBean<_Class_>
     if (isClosed()) {
       throw new ContractIsClosedException(this, basicInspector, "basic class inspectors");
     }
-    $basicInspectors.add(basicInspector);
+    $basicClassInspectors.add(basicInspector);
   }
 
   /**
-   * @invar $basicInspectors != null;
-   * @invar ! $basicInspectors.isNullAllowed();
+   * @invar $basicClassInspectors != null;
+   * @invar ! $basicClassInspectors.isNullAllowed();
    */
-  private final SetBackedLockableSet<Method> $basicInspectors =
+  private final SetBackedLockableSet<Method> $basicClassInspectors =
       new SetBackedLockableSet<Method>(false);
 
   /*</property>*/

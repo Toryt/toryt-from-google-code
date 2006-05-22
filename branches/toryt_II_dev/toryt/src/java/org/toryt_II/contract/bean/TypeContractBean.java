@@ -86,14 +86,16 @@ public abstract class TypeContractBean<_Type_>
   }
 
   /**
-   * @pre condition != null;
-   * @post getDirectSuperInterfaceContracts().contains(condition);
+   * @pre interfaceContract != null;
+   * @pre interfaceContract.isClosed();
+   * @post getDirectSuperInterfaceContracts().contains(interfaceContract);
    * @throws ContractIsClosedException
    *         isClosed();
    */
   public final void addDirectSuperInterfaceContract(InterfaceContract<? super _Type_> interfaceContract)
       throws ContractIsClosedException {
     assert interfaceContract != null;
+    assert interfaceContract.isClosed();
     if (isClosed()) {
       throw new ContractIsClosedException(this, interfaceContract, "direct super interface contracts");
     }
