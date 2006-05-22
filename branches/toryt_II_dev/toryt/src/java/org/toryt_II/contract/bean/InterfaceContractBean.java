@@ -14,24 +14,35 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.toryt_II.contract;
+package org.toryt_II.contract.bean;
+
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt_II.OLDcontract.hard.HardTypeContract;
+import org.toryt_II.contract.InterfaceContract;
 
 
 /**
- * The contract of an interface. A {@link HardTypeContract} for types that
- * are interfaces.
- *
- * @invar getSubject().isInterface();
+ * Build type contracts JavaBean style. Construct an instance,
+ * add conditions, and close.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface InterfaceContract<_Interface_> extends TypeContract<_Interface_> {
+public class InterfaceContractBean<_Interface_> extends TypeContractBean<_Interface_>
+    implements InterfaceContract<_Interface_> {
 
-  // NOP
+  /*<construction>*/
+  //------------------------------------------------------------------
+
+  /**
+   * @pre subject != null;
+   * @post new.getSubject() == subject;
+   */
+  public InterfaceContractBean(Class<_Interface_> subject) {
+    super(subject);
+  }
+
+  /*</construction>*/
 
 }

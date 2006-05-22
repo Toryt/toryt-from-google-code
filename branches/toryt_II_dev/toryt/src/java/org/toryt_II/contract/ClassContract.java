@@ -16,15 +16,22 @@ limitations under the License.
 
 package org.toryt_II.contract;
 
+import java.lang.reflect.Method;
+import java.util.Set;
+
 import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.toryt_II.contract.condition.Condition;
 
 
 /**
  * The contract of a class.
  *
  * @invar ! getSubject().isInterface();
- * @invar (getType() == Object.class) ? (getDirectSuperClassContract() == null);
- * @invar (getType() != Object.class) ? (getDirectSuperClassContract() != null);
+ * @invar (getSubject() == Object.class) ?
+ *          (getDirectSuperClassContract() == null) : (getDirectSuperClassContract() != null);
+ * @invar (getSubject() != Object.class) ?
+ *          (getDirectSuperClassContract().getSubject() == getSubject().getSuperclass());
+ * @invar getClassInvariantConditions() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -32,16 +39,51 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public interface ClassContract<_Class_> extends TypeContract<_Class_> {
 
+  /*<property name="direct super class contract">*/
+  //------------------------------------------------------------------
+
   /**
    * The contract of the direct superclass.
-   * All classes have a direct superclass, except {@link Object}.
+   * All classes have a direct superclass, except {@link Object}, for which
+   * this method returns <code>null</code>.
    * Since overridden methods must also adhere to the contract of that method
-   * in the superclass, we also need to test that contract. If there is no
-   * contract for the superclass, this is logged as a test failure.
-   * @mudo or a warning or something
+   * in the superclass, we also need to test that contract.
    *
    * @basic
    */
-  ClassContract<_Class_> getDirectSuperClassContract();
+  ClassContract<? super _Class_> getDirectSuperClassContract();
+
+  /*</property>*/
+
+
+
+  /*<property name="class invariant conditions">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Invariants of the class state. These are conditions
+   * that do not involve an instance, but only
+   * class inspectors. They need to be valid after all
+   * methods, both class methods and instance methods.
+   *
+   * @basic
+   */
+  Set<Condition> getClassInvariantConditions();
+
+  /*</property>*/
+
+
+
+  /*<property name="basic class inspectors">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   *
+   * @mudo shouldn't we have instead basic inspector contracts?
+   */
+  Set<Method> getBasicClassInspectors();
+
+  /*</property>*/
 
 }
