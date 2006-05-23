@@ -35,7 +35,7 @@ public class TestUnionBigSet extends TestCase {
 
   private void fillSet(SetBackedLockableBigSet<Integer> lbs, int factor) {
     for (int i = 0; i < 3; i++) {
-      lbs.add(new Integer((i + 1) * factor));
+      lbs.add(Integer.valueOf((i + 1) * factor));
     }
     lbs.lock();
   }
