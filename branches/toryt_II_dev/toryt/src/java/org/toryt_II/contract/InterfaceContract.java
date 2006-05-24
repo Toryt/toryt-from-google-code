@@ -24,6 +24,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * The contract of an interface.
  *
  * @invar getSubject().isInterface();
+ * @invar getSuperTypeContracts().equals(getSuperInterfaceContracts());
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

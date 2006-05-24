@@ -27,7 +27,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   are regular objects of that type. Constructors are considered instance methods
  *   (because they also need acces to their {@link #getTypeContract()}.</p>
  * <p>An instance method contract needs a {@link #getTypeContract() type contract},
- *   so it can access applicable {@link TypeContract#getInstanceInvariantConditions()
+ *   so it can access applicable {@link TypeContract#getDeclaredInstanceInvariantConditions()
  *   type invariants}.</p>
  *
  * @param <_ImplicitArgument_>

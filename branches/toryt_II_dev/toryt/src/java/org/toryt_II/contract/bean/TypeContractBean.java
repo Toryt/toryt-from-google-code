@@ -20,6 +20,8 @@ package org.toryt_II.contract.bean;
 import static org.toryt.util_I.reflect.Reflection.MethodKind.INSTANCE_INSPECTOR;
 
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.lockable.LockableSet;
@@ -62,27 +64,39 @@ public abstract class TypeContractBean<_Type_>
   @Override
   public void close() {
     super.close();
-    $instanceInvariantConditions.lock();
-    $directSuperInterfaceContracts.lock();
+    $declaredInstanceInvariantConditions.lock();
+    $declaredSuperInterfaceContracts.lock();
   }
 
 
 
-  /*<property name="postconditions">*/
+  /*<section name="super type contracts">*/
   //------------------------------------------------------------------
 
-  /**
-   * @basic
-   */
-  public final LockableSet<InterfaceContract<? super _Type_>> getDirectSuperInterfaceContracts() {
+  public final LockableSet<InterfaceContract<? super _Type_>> getDeclaredSuperInterfaceContracts() {
     if (isClosed()) {
-      return $directSuperInterfaceContracts;
+      return $declaredSuperInterfaceContracts;
     }
     else {
       @SuppressWarnings("unchecked") LockableSet<InterfaceContract<? super _Type_>> result =
-          (LockableSet<InterfaceContract<? super _Type_>>)$directSuperInterfaceContracts.clone();
+          (LockableSet<InterfaceContract<? super _Type_>>)$declaredSuperInterfaceContracts.clone();
       return result;
     }
+  }
+
+  public final Set<InterfaceContract<? super _Type_>> getSuperInterfaceContracts() {
+    Set<InterfaceContract<? super _Type_>> result = $superInterfaceContractsCache;
+    if (result == null) {
+      result = new HashSet<InterfaceContract<? super _Type_>>();
+      for (InterfaceContract<? super _Type_> ic : $declaredSuperInterfaceContracts) {
+        result.add(ic);
+        result.addAll(ic.getSuperInterfaceContracts());
+      }
+      if (isClosed()) { // cache
+        $superInterfaceContractsCache = result;
+      }
+    }
+    return result;
   }
 
   /**
@@ -92,42 +106,60 @@ public abstract class TypeContractBean<_Type_>
    * @throws ContractIsClosedException
    *         isClosed();
    */
-  public final void addDirectSuperInterfaceContract(InterfaceContract<? super _Type_> interfaceContract)
+  public final void addDeclaredSuperInterfaceContract(InterfaceContract<? super _Type_> interfaceContract)
       throws ContractIsClosedException {
     assert interfaceContract != null;
     assert interfaceContract.isClosed();
     if (isClosed()) {
       throw new ContractIsClosedException(this, interfaceContract, "direct super interface contracts");
     }
-    $directSuperInterfaceContracts.add(interfaceContract);
+    $declaredSuperInterfaceContracts.add(interfaceContract);
   }
 
   /**
-   * @invar $directSuperInterfaceContracts != null;
-   * @invar ! $directSuperInterfaceContracts.isNullAllowed();
+   * @invar $declaredSuperInterfaceContracts != null;
+   * @invar ! $declaredSuperInterfaceContracts.isNullAllowed();
    */
-  private final SetBackedLockableSet<InterfaceContract<? super _Type_>> $directSuperInterfaceContracts =
+  private final SetBackedLockableSet<InterfaceContract<? super _Type_>> $declaredSuperInterfaceContracts =
       new SetBackedLockableSet<InterfaceContract<? super _Type_>>(false);
 
-  /*</property>*/
+  /**
+   * @invar ! isClosed() ? $superInterfaceContractsCache == null;
+   */
+  private Set<InterfaceContract<? super _Type_>> $superInterfaceContractsCache;
+
+  /*</section>*/
 
 
 
-  /*<property name="instance invariant conditions">*/
+  /*<section name="instance invariant conditions">*/
   //------------------------------------------------------------------
 
-  /**
-   * @basic
-   */
-  public final LockableSet<Condition> getInstanceInvariantConditions() {
+  public final LockableSet<Condition> getDeclaredInstanceInvariantConditions() {
     if (isClosed()) {
-      return $instanceInvariantConditions;
+      return $declaredInstanceInvariantConditions;
     }
     else {
       @SuppressWarnings("unchecked") LockableSet<Condition> result =
-          (LockableSet<Condition>)$instanceInvariantConditions.clone();
+          (LockableSet<Condition>)$declaredInstanceInvariantConditions.clone();
       return result;
     }
+  }
+
+  public final Set<Condition> getInstanceInvariantConditions() {
+    Set<Condition> result = $instanceInvariantConditionsCache;
+    if (result == null) {
+      result = new HashSet<Condition>();
+      result.addAll(getDeclaredInstanceInvariantConditions());
+      for (InterfaceContract<? super _Type_> ic : $declaredSuperInterfaceContracts) {
+        result.addAll(ic.getInstanceInvariantConditions());
+      }
+      if (isClosed()) { // cache
+        $instanceInvariantConditionsCache = result;
+      }
+    }
+    return result;
+
   }
 
   /**
@@ -136,22 +168,28 @@ public abstract class TypeContractBean<_Type_>
    * @throws ContractIsClosedException
    *         isClosed();
    */
-  public final void addInstanceInvariantCondition(Condition condition)
+  public final void addDeclaredInstanceInvariantCondition(Condition condition)
       throws ContractIsClosedException {
     assert condition != null;
     if (isClosed()) {
       throw new ContractIsClosedException(this, condition, "instance invariant conditions");
     }
-    $instanceInvariantConditions.add(condition);
+    $declaredInstanceInvariantConditions.add(condition);
   }
 
   /**
-   * @invar $instanceInvariantConditions != null;
-   * @invar ! $instanceInvariantConditions.isNullAllowed();
+   * @invar $declaredInstanceInvariantConditions != null;
+   * @invar ! $declaredInstanceInvariantConditions.isNullAllowed();
    */
-  private final SetBackedLockableSet<Condition> $instanceInvariantConditions = new SetBackedLockableSet<Condition>(false);
+  private final SetBackedLockableSet<Condition> $declaredInstanceInvariantConditions =
+      new SetBackedLockableSet<Condition>(false);
 
-  /*</property>*/
+  /**
+   * @invar ! isClosed() ? $instanceInvariantConditionsCache == null;
+   */
+  private Set<Condition> $instanceInvariantConditionsCache;
+
+  /*</section>*/
 
 
 

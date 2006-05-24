@@ -16,6 +16,7 @@ limitations under the License.
 
 package org.toryt_II.contract;
 
+
 import java.lang.reflect.Method;
 import java.util.Set;
 
@@ -28,9 +29,9 @@ import org.toryt_II.contract.condition.Condition;
  *
  * @invar ! getSubject().isInterface();
  * @invar (getSubject() == Object.class) ?
- *          (getDirectSuperClassContract() == null) : (getDirectSuperClassContract() != null);
+ *          (getDeclaredSuperClassContract() == null) : (getDeclaredSuperClassContract() != null);
  * @invar (getSubject() != Object.class) ?
- *          (getDirectSuperClassContract().getSubject() == getSubject().getSuperclass());
+ *          (getDeclaredSuperClassContract().getSubject() == getSubject().getSuperclass());
  * @invar getClassInvariantConditions() != null;
  */
 @CvsInfo(revision = "$Revision$",
@@ -51,7 +52,7 @@ public interface ClassContract<_Class_> extends TypeContract<_Class_> {
    *
    * @basic
    */
-  ClassContract<? super _Class_> getDirectSuperClassContract();
+  ClassContract<? super _Class_> getDeclaredSuperClassContract();
 
   /*</property>*/
 
@@ -68,7 +69,7 @@ public interface ClassContract<_Class_> extends TypeContract<_Class_> {
    *
    * @basic
    */
-  Set<Condition> getClassInvariantConditions();
+  Set<Condition> getDeclaredClassInvariantConditions();
 
   /*</property>*/
 

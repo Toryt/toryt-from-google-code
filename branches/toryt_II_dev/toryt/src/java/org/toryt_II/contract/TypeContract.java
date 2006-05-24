@@ -25,15 +25,15 @@ import org.toryt_II.contract.condition.Condition;
 
 
 /**
- * The contract of a type. This features iinvariants, method contracts
- * for all the methods defined in the type, nested class contracts, and extra tests.
- * Furthermore, there are references to all contracts for all direct supertypes.
+ * The contract of a type. In type contracts, invariants are gathered, and references
+ * to the contracts of all supertypes. A type contract also lists which methods
+ * are basic inspectors, for which there is no contract and no tests are possible.
  *
- * @invar getDirectSuperInterfaceContracts() != null;
- * @invar ! getDirectSuperInterfaceContracts().contains(null);
- * @invar (forall InterfaceContract ic : getDirectSuperInterfaceContracts() {
+ * @invar getDeclaredSuperInterfaceContracts() != null;
+ * @invar ! getDeclaredSuperInterfaceContracts().contains(null);
+ * @invar (forall InterfaceContract ic : getDeclaredSuperInterfaceContracts() {
  *          ic.getSubject() in getSubject().getInterfaces()});
- * @invar getInstanceInvariantConditions() != null;
+ * @invar getDeclaredInstanceInvariantConditions() != null;
  * @invar getBasicInspectors() != null;
  * @invar ! getBasicInspectors().contains(null);
  * @invar (forall Method m; getBasicInspectors().contains(m);
@@ -45,31 +45,64 @@ import org.toryt_II.contract.condition.Condition;
          tag      = "$Name$")
 public interface TypeContract<_Type_> extends Contract<Class<_Type_>> {
 
-  /*<property name="direct super interface contracts">*/
+  /*<section name="super type contracts">*/
   //------------------------------------------------------------------
 
   /**
+   * The contracts of the super interfaces which are declared for this type,
+   * i.e., the direct super interfaces, retrieved with
+   * {@link Class#getInterfaces()}.
+   *
    * @basic
    */
-  Set<InterfaceContract<? super _Type_>> getDirectSuperInterfaceContracts();
+  Set<InterfaceContract<? super _Type_>> getDeclaredSuperInterfaceContracts();
 
-  /*</property>*/
+  /**
+   * The contracts of all interfaces this type implements. This is the
+   * transitive closure of applying {@link #getDeclaredInstanceInvariantConditions()}
+   * recursively.
+   *
+   * @result result.containsAll(getDeclaredSuperInterfaceContracts().getSuperInterfaceContracts());
+   * @result (forall InterfaceContract ic {
+   *            ! getDeclaredSuperInterfaceContracts().getSuperInterfaceContracts().contains(ic) ?
+   *              ! result.contains(ic)});
+   */
+  Set<InterfaceContract<? super _Type_>> getSuperInterfaceContracts();
+
+  /**
+   * The contracts of all the super types of this type.
+   *
+   * @result result.containsAll(getSuperInterfaceContracts());
+   */
+  Set<? extends TypeContract<? super _Type_>> getSuperTypeContracts();
+
+  /*</section>*/
 
 
 
-  /*<property name="instance invariant conditions">*/
+  /*<section name="instance invariant conditions">*/
   //------------------------------------------------------------------
 
   /**
    * Invariants of the instance state for all instances of this type.
    * These invariant conditions need to be valid after all instance
-   * metods.
+   * methods. These are the invariants declared for this type
+   * specifically.
    *
    * @basic
    */
+  Set<Condition> getDeclaredInstanceInvariantConditions();
+
+  /**
+   * Instance invariant conditions declared for this type
+   * or any of its super types.
+   *
+   * @return union(getDeclaredInstanceInvariantConditions(),
+   *               union(getSuperTypeContracts()..getDeclaredInstanceInvariantConditions()));
+   */
   Set<Condition> getInstanceInvariantConditions();
 
-  /*</property>*/
+  /*</section>*/
 
 
 

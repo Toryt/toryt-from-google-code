@@ -17,8 +17,11 @@ limitations under the License.
 package org.toryt_II.contract.bean;
 
 
+import java.util.Set;
+
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt_II.contract.InterfaceContract;
+import org.toryt_II.contract.TypeContract;
 
 
 /**
@@ -44,5 +47,16 @@ public class InterfaceContractBean<_Interface_> extends TypeContractBean<_Interf
   }
 
   /*</construction>*/
+
+
+
+  /*<section name="super type contracts">*/
+  //------------------------------------------------------------------
+
+  public final Set<? extends TypeContract<? super _Interface_>> getSuperTypeContracts() {
+    return getSuperInterfaceContracts();
+  }
+
+  /*</section>*/
 
 }

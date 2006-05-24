@@ -73,7 +73,7 @@ public class ClassContractBean<_Class_> extends TypeContractBean<_Class_>
   /**
    * @basic
    */
-  public final ClassContract<? super _Class_> getDirectSuperClassContract() {
+  public final ClassContract<? super _Class_> getDeclaredSuperClassContract() {
     return $directSuperClassContract;
   }
 
@@ -106,7 +106,7 @@ public class ClassContractBean<_Class_> extends TypeContractBean<_Class_>
   /**
    * @basic
    */
-  public final LockableSet<Condition> getClassInvariantConditions() {
+  public final LockableSet<Condition> getDeclaredClassInvariantConditions() {
     if (isClosed()) {
       return $classInvariantConditions;
     }

@@ -83,4 +83,10 @@ public abstract class AbstractContract<_Subject_> implements Contract<_Subject_>
 
   /*</property>*/
 
+
+
+  public final boolean equals(Contract<_Subject_> other) {
+    return (other != null) && (getSubject() == other.getSubject());
+  }
+
 }

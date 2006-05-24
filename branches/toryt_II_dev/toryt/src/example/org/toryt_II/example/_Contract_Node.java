@@ -49,31 +49,31 @@ public class _Contract_Node extends ClassContractBean<Node> {
       addBasicClassInspector(Reflection.findMethod(Node.class, "getGroup()"));
 
       // type invariants
-      addInstanceInvariantCondition(new Condition() {
+      addDeclaredInstanceInvariantCondition(new Condition() {
         public boolean validate(Map context) {
           Node subject = (Node)context.get(THIS);
           return subject.getTitle() != null;
         }
       });
-      addInstanceInvariantCondition(new Condition() {
+      addDeclaredInstanceInvariantCondition(new Condition() {
         public boolean validate(Map context) {
           Node subject = (Node)context.get(THIS);
           return subject.getDescription() != null;
         }
       });
-      addInstanceInvariantCondition(new Condition() {
+      addDeclaredInstanceInvariantCondition(new Condition() {
         public boolean validate(Map context) {
           Node subject = (Node)context.get(THIS);
           return ! Double.isNaN(subject.getRating()) ? (subject.getRating() >= 0) : true;
         }
       });
-      addInstanceInvariantCondition(new Condition() {
+      addDeclaredInstanceInvariantCondition(new Condition() {
         public boolean validate(Map context) {
           Node subject = (Node)context.get(THIS);
           return ! Double.isNaN(subject.getRating()) ? (subject.getRating() <= 10) : true;
         }
       });
-      addInstanceInvariantCondition(new Condition() {
+      addDeclaredInstanceInvariantCondition(new Condition() {
         public boolean validate(Map context) {
           Node subject = (Node)context.get(THIS);
           return (subject.getGroup() != null)

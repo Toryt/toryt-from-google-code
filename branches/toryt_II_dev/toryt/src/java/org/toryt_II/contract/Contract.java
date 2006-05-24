@@ -53,4 +53,12 @@ public interface Contract<_Subject_> {
    */
   boolean isClosed();
 
+  /**
+   * Contracts {@link Object#equals(java.lang.Object) are equal} if
+   * they have the same subject.
+   *
+   * @return getSubject() == other.getSubject();
+   */
+  boolean equals(Contract<_Subject_> other);
+
 }
