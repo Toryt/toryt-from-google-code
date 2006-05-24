@@ -30,7 +30,7 @@ import org.toryt_II.contract.ContractException;
  *
  * @invar getExceptionType() != null;
  */
-public class ExceptionTypeNotDeclaredInThrowsClauseException extends ContractException {
+public class ExceptionNotDeclaredException extends ContractException {
 
   /**
    * @pre contract != null;
@@ -40,7 +40,7 @@ public class ExceptionTypeNotDeclaredInThrowsClauseException extends ContractExc
    * @post new.getMessage() == null;
    * @post new.getCause() == null;
    */
-  public ExceptionTypeNotDeclaredInThrowsClauseException(Contract<?> contract, Class<? extends Throwable> exceptionType) {
+  public ExceptionNotDeclaredException(Contract<?> contract, Class<? extends Throwable> exceptionType) {
     super(contract);
     assert exceptionType != null;
     $exceptionType = exceptionType;

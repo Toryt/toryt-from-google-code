@@ -190,13 +190,13 @@ public abstract class MethodContractBean<_Subject_ extends Member>
    *         isClosed();
    */
   public final void addExceptionCondition(ExceptionCondition<?> condition)
-      throws ContractIsClosedException, ExceptionTypeNotDeclaredInThrowsClauseException {
+      throws ContractIsClosedException, ExceptionNotDeclaredException {
     assert condition != null;
     if (isClosed()) {
       throw new ContractIsClosedException(this, condition, "postconditions");
     }
     if (! exceptionTypeDeclaredInThrowsClause(condition.getExceptionType(), getSubject())) {
-      throw new ExceptionTypeNotDeclaredInThrowsClauseException(this, condition.getExceptionType());
+      throw new ExceptionNotDeclaredException(this, condition.getExceptionType());
     }
     SetBackedLockableSet<ExceptionCondition<?>> exceptionConditionSet = $exceptionConditions.get(condition.getExceptionType());
     if (exceptionConditionSet == null) {
