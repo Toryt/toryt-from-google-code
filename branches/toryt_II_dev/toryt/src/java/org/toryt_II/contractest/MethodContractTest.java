@@ -24,26 +24,27 @@ import org.toryt_II.contract.condition.Condition;
 import org.toryt_II.contract.condition.ExceptionCondition;
 import org.toryt_II.contract.hard.HardTypeContract;
 import org.toryt_II.test.AbstractTest;
+import org.toryt_II.test.TestOutcome;
 
 
 /**
  * <p>An actual instance of a test of a method. This is a test with actual
- *   test arguments. To be ready, the test needs to have a {@link #getSubject()},
- *   a {@link #getContract()} and a {@link #getCase()}.
+ *   test arguments. To be ready, the test needs to have a {@link #getSubject() subject},
+ *   a {@link #getContract() contract} and a {@link #getCase() case}.</p>
  * <p>This class is abstract: you should use
  *   one of the more specific subclasses for different kinds of methods
- *   instead. <code>_SubjectType_</code> is still unbound, because in Java
+ *   instead. <code>_Subject_</code> is still unbound, because in Java
  *   reflection {@link java.lang.reflect.Method} and
  *   {@link java.lang.reflect.Constructor} are unrelated types.</p>
  *
- * @invar getContract() != null;
+ * @invar getMethodContract() != null;
  * @invar getContext() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class MethodContractTest<_SubjectType_ extends Member> extends AbstractTest<_SubjectType_> {
+public abstract class MethodContractTest<_Subject_ extends Member> extends AbstractTest<_Subject_> {
 
   private final static Log LOG = LogFactory.getLog(MethodContractTest.class);
 
@@ -52,7 +53,7 @@ public abstract class MethodContractTest<_SubjectType_ extends Member> extends A
   /*<property name="methodContract">*/
   //------------------------------------------------------------------
 
-  public final MethodContract getMethodContract() {
+  public final MethodContract<_Subject_> getMethodContract() {
     return $methodContract;
   }
 
@@ -63,7 +64,7 @@ public abstract class MethodContractTest<_SubjectType_ extends Member> extends A
   /**
    * @invar $methodContract != null;
    */
-  private MethodContract $methodContract;
+  private MethodContract<_Subject_> $methodContract;
 
   /*</property>*/
 
@@ -156,7 +157,7 @@ public abstract class MethodContractTest<_SubjectType_ extends Member> extends A
    *
    * @post new.hasRun();
    */
-  protected final TestResult runImplementation() {
+  protected final TestOutcome runImplementation() {
     try {
       getMethodContract().recordState(this); // TODO legacy, until a Case can record state itself
       methodCall();

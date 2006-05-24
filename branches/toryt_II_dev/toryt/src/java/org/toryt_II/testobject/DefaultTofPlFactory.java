@@ -16,7 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.reflect.CannotCreateInstanceException;
 import org.toryt.util_I.reflect.Reflection;
-import org.toryt_II.OLDcontract.Contract;
+import org.toryt_II.contract.Contract;
 
 
 /**

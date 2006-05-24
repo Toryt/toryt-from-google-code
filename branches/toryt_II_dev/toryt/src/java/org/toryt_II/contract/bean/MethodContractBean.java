@@ -17,15 +17,8 @@ limitations under the License.
 package org.toryt_II.contract.bean;
 
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.toryt.patterns_I.Assertion;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -169,14 +162,14 @@ public abstract class MethodContractBean<_Subject_ extends Member>
    *
    * @basic
    */
-  public LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> getExceptionConditions() {
+  public LockableMap<Class<? extends Throwable>, ? extends LockableSet<ExceptionCondition<?>>> getExceptionConditions() {
     if (isClosed()) {
       return $exceptionConditions;
     }
     else {
       LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> result =
           new MapBackedLockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>>(false);
-      for (Map.Entry<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> e : $exceptionConditions.entrySet()) {
+      for (Map.Entry<Class<? extends Throwable>, SetBackedLockableSet<ExceptionCondition<?>>> e : $exceptionConditions.entrySet()) {
         @SuppressWarnings("unchecked") LockableSet<ExceptionCondition<?>> clone =
             (LockableSet<ExceptionCondition<?>>)e.getValue().clone();
         result.put(e.getKey(), clone);
@@ -205,11 +198,19 @@ public abstract class MethodContractBean<_Subject_ extends Member>
     if (! exceptionTypeDeclaredInThrowsClause(condition.getExceptionType(), getSubject())) {
       throw new ExceptionTypeNotDeclaredInThrowsClauseException(this, condition.getExceptionType());
     }
-    LockableSet<ExceptionCondition<? extends Throwable>> exceptionConditionSet = $exceptionConditions.get(condition.getExceptionType());
+    SetBackedLockableSet<ExceptionCondition<?>> exceptionConditionSet = $exceptionConditions.get(condition.getExceptionType());
     if (exceptionConditionSet == null) {
-      exceptionConditionSet = new SetBackedLockableSet<ExceptionCondition<? extends Throwable>>(false); // ? is condition.getExceptionType()
+      exceptionConditionSet = new SetBackedLockableSet<ExceptionCondition<?>>(false); // ? is condition.getExceptionType()
       $exceptionConditions.put(condition.getExceptionType(), exceptionConditionSet);
     }
+    /**
+     * eclipse 3.1 compiler bug
+//  exceptionConditionSet.add(condition);
+     * The method add(ExceptionCondition<?>) is ambiguous for the type LockableSet<ExceptionCondition<?>>
+     *
+     * Fixed by using SetBackedLockableSet<ExceptionCondition<?>> everywhere, instead of
+     * LockableSet<ExceptionCondition<?>>.
+     */
     exceptionConditionSet.add(condition);
   }
 
@@ -236,8 +237,8 @@ public abstract class MethodContractBean<_Subject_ extends Member>
    * @invar Collections.noNull($exceptionConditions);
    * @invar (forall Set s : $exceptionConditions.values() {Collections.noNull(s)});
    */
-  private final MapBackedLockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<? extends Throwable>>> $exceptionConditions =
-        new MapBackedLockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<? extends Throwable>>>(false);
+  private final MapBackedLockableMap<Class<? extends Throwable>, SetBackedLockableSet<ExceptionCondition<?>>> $exceptionConditions =
+        new MapBackedLockableMap<Class<? extends Throwable>, SetBackedLockableSet<ExceptionCondition<?>>>(false);
 
   /*</property>*/
 

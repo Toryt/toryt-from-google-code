@@ -15,7 +15,7 @@ import org.toryt_II.testobject.TestObjectFactory;
  * Test class for non-constructor methods, i.e., instance methods
  * and non-constructor class methods.
  *
- * @invar getContract() instanceof NonConstructorMethodContract;
+ * @invar getContract() instanceof NonConstructorInstanceMethodContract;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

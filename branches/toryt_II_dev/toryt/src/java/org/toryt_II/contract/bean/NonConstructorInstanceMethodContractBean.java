@@ -245,20 +245,25 @@ public class NonConstructorInstanceMethodContractBean<_ImplicitArgument_,
    * @basic
    */
   @Override
-  public final LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> getExceptionConditions() {
+  public final LockableMap<Class<? extends Throwable>, ? extends LockableSet<ExceptionCondition<?>>> getExceptionConditions() {
     MapBackedLockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> result =
         new MapBackedLockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>>(false);
-    LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> superMap =
+    LockableMap<Class<? extends Throwable>, ? extends LockableSet<ExceptionCondition<?>>> superMap =
         super.getExceptionConditions();
     for (Class<? extends Throwable> et : getExceptionTypes()) {
       LockableSet<ExceptionCondition<?>> etConditions = getExceptionConditionsFor(superMap, et);
+      /*
+       * The method getExceptionConditionsFor(LockableMap<Class<? extends Throwable>,LockableSet<ExceptionCondition<?>>>, Class<? extends Throwable>)
+       * in the type NonConstructorInstanceMethodContractBean<_ImplicitArgument_,_SuperContract_> is not applicable for the arguments
+       * (LockableMap<Class<? extends Throwable>,capture-of ? extends LockableSet<ExceptionCondition<?>>>, Class<capture-of ? extends Throwable>)
+       */
       result.put(et, etConditions);
     }
     result.lock();
     return result;
   }
 
-  private LockableSet<ExceptionCondition<?>> getExceptionConditionsFor(LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> superMap,
+  private LockableSet<ExceptionCondition<?>> getExceptionConditionsFor(LockableMap<Class<? extends Throwable>, ? extends LockableSet<ExceptionCondition<?>>> superMap,
                                                                        Class<? extends Throwable> exceptionType) {
     LockableSet<ExceptionCondition<?>> result = superMap.get(exceptionType);
         // is locked by super or cloned if needed

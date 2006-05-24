@@ -111,7 +111,11 @@ public interface MethodContract<_Subject_ extends Member>
    *
    * @basic
    */
-  LockableMap<Class<? extends Throwable>, LockableSet<ExceptionCondition<?>>> getExceptionConditions();
+  LockableMap<Class<? extends Throwable>, ? extends LockableSet<ExceptionCondition<?>>> getExceptionConditions();
+  /* IDEA I don't know what I'm saying here: ? extends LockableSet<ExceptionCondition<?>>; see MethodContractBean,
+   * revision 1.1.2.2. and next for note on possible eclipse 3.1 compiler bug; with this, there is no error; was this a bug,
+   * or real?
+   */
 
   /*</property>*/
 

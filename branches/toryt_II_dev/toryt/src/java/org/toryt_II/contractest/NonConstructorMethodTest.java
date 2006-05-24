@@ -12,7 +12,7 @@ import org.toryt_II.OLDcontract.NonConstructorMethodContract;
  * Test class for non-constructor methods, i.e., instance methods
  * and non-constructor class methods.
  * 
- * @invar getContract() instanceof NonConstructorMethodContract;
+ * @invar getContract() instanceof NonConstructorInstanceMethodContract;
  */
 public class NonConstructorMethodTest extends MethodContractTest {
 

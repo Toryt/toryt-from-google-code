@@ -1,8 +1,8 @@
 package org.toryt_II.cases;
 
 
-import org.toryt.support.straightlist.NullFirstStraightList;
-import org.toryt.support.straightlist.StraightList;
+import org.toryt_I.support.straightlist.NullFirstStraightList;
+import org.toryt_I.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
 
 

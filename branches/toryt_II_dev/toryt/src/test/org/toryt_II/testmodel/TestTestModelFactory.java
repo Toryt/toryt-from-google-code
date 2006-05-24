@@ -4,7 +4,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 
-import org.toryt.example.Bookmark;
+import org.toryt_II.example.Bookmark;
 
 
 
@@ -26,7 +26,7 @@ public class TestTestModelFactory extends TestCase {
 
   public static final Class<Bookmark> CLASS_UNDER_TEST = Bookmark.class;
 
-  public static final String PACKAGE_NAME_UNDER_TEST_1 = "org.toryt.example";
+  public static final String PACKAGE_NAME_UNDER_TEST_1 = "org.toryt_II.example";
 
   public static final String PACKAGE_NAME_UNDER_TEST_2 = "org";
 

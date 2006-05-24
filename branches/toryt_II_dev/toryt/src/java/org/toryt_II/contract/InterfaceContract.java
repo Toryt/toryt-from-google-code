@@ -16,13 +16,12 @@ limitations under the License.
 
 package org.toryt_II.contract;
 
+
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt_II.OLDcontract.hard.HardTypeContract;
 
 
 /**
- * The contract of an interface. A {@link HardTypeContract} for types that
- * are interfaces.
+ * The contract of an interface.
  *
  * @invar getSubject().isInterface();
  */

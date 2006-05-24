@@ -1,4 +1,4 @@
-package org.toryt.example;
+package org.toryt_I.example;
 
 
 import org.toryt.TorytException;
@@ -19,7 +19,7 @@ public class _Contract_Bookmark extends ClassContract {
         // TODO Auto-generated method stub
         return null;
       }
-      
+
     });
 
     addConstructorContract(new ConstructorContract(this, Bookmark.class, "Bookmark(String, String, String, int, Group)") {
@@ -28,7 +28,7 @@ public class _Contract_Bookmark extends ClassContract {
         // TODO Auto-generated method stub
         return null;
       }
-      
+
                                 });
     addInstanceMethodContract(new MutatorContract(this, Bookmark.class, "setUrl(String)") {
 
@@ -36,7 +36,7 @@ public class _Contract_Bookmark extends ClassContract {
         // TODO Auto-generated method stub
         return null;
       }
-      
+
                                   });
     addInstanceMethodContract(new MutatorContract(this, Bookmark.class, "clicked()") {
 
@@ -44,7 +44,7 @@ public class _Contract_Bookmark extends ClassContract {
         // TODO Auto-generated method stub
         return null;
       }
-      
+
                                   });
     addInstanceMethodContract(new MutatorContract(this, Bookmark.class, "setRating(int)") {
 
@@ -52,7 +52,7 @@ public class _Contract_Bookmark extends ClassContract {
         // TODO Auto-generated method stub
         return null;
       }
-      
+
                                   });
     addBasicInspector("getUrl()");
     addBasicInspector("getNumberOfClicks()");
@@ -69,5 +69,5 @@ public class _Contract_Bookmark extends ClassContract {
     // TODO Auto-generated method stub
     return null;
   }
-  
+
 }

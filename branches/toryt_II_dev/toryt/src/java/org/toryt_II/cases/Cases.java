@@ -7,9 +7,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.toryt.support.straightlist.ArrayStraightList;
-import org.toryt.support.straightlist.StraightList;
 import org.toryt.util_I.reflect.Reflection;
+import org.toryt_I.support.straightlist.ArrayStraightList;
+import org.toryt_I.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
 
 
