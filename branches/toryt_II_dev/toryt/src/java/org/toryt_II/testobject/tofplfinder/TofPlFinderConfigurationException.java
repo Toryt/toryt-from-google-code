@@ -1,0 +1,52 @@
+/*<license>
+Copyright 2006 - $Date$ by the authors mentioned below.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</license>*/
+
+package org.toryt_II.testobject.tofplfinder;
+
+
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
+
+/**
+ * Signals that we could not return a requested
+ * {@link org.toryt_II.testobject.TestObjectFactoryPriorityList} because
+ * of a configuration error. This means that we were committed to a certain
+ * strategy to retrieve a {@link org.toryt_II.testobject.TestObjectFactoryPriorityList},
+ * but could not complete it because some error in configuration. More precise
+ * information is given in English in the message. This is a technical exception,
+ * from which we cannot recover.
+ *
+ * @author Jan Dockx
+ * @idea Then should'nt this be an Error?
+ */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
+public class TofPlFinderConfigurationException extends TofPlFinderException {
+
+  /**
+   * @pre tofPlFinder != null;
+   * @pre forClass != null;
+   * @post new.getTofPlFinder() == tofPlFinder;
+   * @post new.getForClass() == forClass;
+   * @post (message != null) ? new.getMessage().equals(message) : new.getMessage() == message;
+   */
+  public TofPlFinderConfigurationException(TofPlFinder tofPlFinder, Class<?> forClass, String message) {
+    super(tofPlFinder, forClass, message);
+  }
+
+}
