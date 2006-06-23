@@ -120,20 +120,20 @@ public class Associations {
    *            The type on the many side of the one-to-many association.
    * @param     toOneReferencePropertyName
    *            The name of the property that holds the to-one reference
-   *            on instances of <code>manyType</code> in <code>manySet</code>.
+   *            on instances of <code>manyType</code> in <code>manyCollection</code>.
    *            This property should refer to <code>oneObject</code>.
    *            <code>manyType</code> must have a getter for this property
    *            that returns a reference to an instance of the type of
    *            <code>oneObject</code>.
    * @param     oneObject
    *            The instance on the one-side of the one-to-many association,
-   *            that owns <code>manySet</code>.
+   *            that owns <code>manyCollection</code>.
    * @pre       manyType != null;
    * @pre       Beans.hasPropertyReadMethod(manyType, toOneReferenceProperty);
-   * @return    (manySet != null)
-   *            && cC:noNull(manySet)
+   * @return    (manyCollection != null)
+   *            && cC:noNull(manyCollection)
    *            && cC:instanceOf(manyType)
-   *            && (forall Object o; manySet.contains(o);
+   *            && (forall Object o; manyCollection.contains(o);
    *                    o[toOneReferencePropertyName] == oneObject);
    */
   public static final boolean bidir1ToN(final Collection manyCollection,
