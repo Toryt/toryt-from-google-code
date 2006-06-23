@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.toryt.support.Reflection;
+import org.toryt_II.contract.Collections;
 
 
 /**
@@ -132,7 +133,7 @@ public class Associations {
    * @pre       Beans.hasPropertyReadMethod(manyType, toOneReferenceProperty);
    * @return    (manyCollection != null)
    *            && cC:noNull(manyCollection)
-   *            && cC:instanceOf(manyType)
+   *            && cC:instanceOf(manyCollection, manyType)
    *            && (forall Object o; manyCollection.contains(o);
    *                    o[toOneReferencePropertyName] == oneObject);
    */
@@ -141,36 +142,36 @@ public class Associations {
                                         final String toOneReferencePropertyName,
                                         final Object oneObject) {
     assert manyType != null;
-    boolean result = (manyCollection != null) && (!manyCollection.contains(null));
+    boolean result = (manyCollection != null) && 
+                     Collections.noNull(manyCollection) &&
+                     Collections.instanceOf(manyCollection, manyType);
     if (result) {
       Iterator iter = manyCollection.iterator();
       while (iter.hasNext()) {
         Object manyObject = iter.next();
         try {
-          if ((!manyType.isInstance(manyObject))
-              || (Reflection.getPropertyValue(manyObject, toOneReferencePropertyName)
-                      != oneObject)) {
+          if (Reflection.getPropertyValue(manyObject, toOneReferencePropertyName) != oneObject) {
             return false; // break
           }
           // else continue
         }
         catch (NullPointerException npExc) {
-          assert false : "NullPointerExceptionshould not happen: " + npExc; //$NON-NLS-1$
+          assert false : "NullPointerException should not happen: " + npExc; //$NON-NLS-1$
         }
         catch (IntrospectionException iExc) {
-          assert false : "IntrospectionExceptionshould not happen: " + iExc; //$NON-NLS-1$
+          assert false : "IntrospectionException should not happen: " + iExc; //$NON-NLS-1$
         }
         catch (NoSuchMethodException nsmExc) {
-          assert false : "NoSuchMethodExceptionshould not happen: " + nsmExc; //$NON-NLS-1$
+          assert false : "NoSuchMethodException should not happen: " + nsmExc; //$NON-NLS-1$
         }
         catch (IllegalArgumentException iaExc) {
-          assert false : "IllegalArgumentExceptionshould not happen: " + iaExc; //$NON-NLS-1$
+          assert false : "IllegalArgumentException should not happen: " + iaExc; //$NON-NLS-1$
         }
         catch (IllegalAccessException iaExc) {
-          assert false : "IllegalAccessExceptionshould not happen: " + iaExc; //$NON-NLS-1$
+          assert false : "IllegalAccessException should not happen: " + iaExc; //$NON-NLS-1$
         }
         catch (InvocationTargetException itExc) {
-          assert false : "InvocationTargetExceptionshould not happen: " + itExc; //$NON-NLS-1$
+          assert false : "InvocationTargetException should not happen: " + itExc; //$NON-NLS-1$
         }
       }
       // else result is still true
