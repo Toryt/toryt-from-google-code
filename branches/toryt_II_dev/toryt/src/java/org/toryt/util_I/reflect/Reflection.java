@@ -2,6 +2,7 @@ package org.toryt.util_I.reflect;
 
 
 import java.beans.BeanInfo;
+import java.beans.Beans;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -92,15 +93,14 @@ public class Reflection {
    *        the prefixed class name from.
    * @throws CannotCreateInstanceException
    */
-  public static <_Instance_> _Instance_ instantiatePrefixed(ClassLoader cl,
-                                                            final String prefix,
-                                                            final String fqcn)
+  public static Object instantiatePrefixed(ClassLoader cl,
+                                           final String prefix,
+                                           final String fqcn)
       throws CannotCreateInstanceException {
     try {
       String prefixedFqcn = prefixedFqcn(prefix, fqcn);
       try {
-        @SuppressWarnings("unchecked") _Instance_ result =
-          (_Instance_)java.beans.Beans.instantiate(cl, prefixedFqcn);
+        Object result = Beans.instantiate(cl, prefixedFqcn);
         return result;
       }
       catch (ClassNotFoundException cnfExc) {
