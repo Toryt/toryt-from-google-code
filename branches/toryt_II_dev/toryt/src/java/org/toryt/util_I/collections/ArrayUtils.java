@@ -2,7 +2,11 @@ package org.toryt.util_I.collections;
 
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -62,6 +66,26 @@ public abstract class ArrayUtils {
         flattenHelper((Object[])firstLevel, acc);
       }
     }
+  }
+
+  /**
+   * {@link Arrays#asList} returns a dynamic list (changes in the array are seen in the
+   * list, and vice versa. This does the same, but returns a new list, uncoupled with
+   * the array. The result is unmodifiable.
+   *
+   * @result result.equals(Arrays.asList(a));
+   * @throws NullPointerException
+   *         a == null;
+   */
+  public static <T> List<T> asFreshList(T... a) throws NullPointerException {
+    if (a == null) {
+      throw new NullPointerException();
+    }
+    List<T> result = new ArrayList<T>(a.length);
+    for (T t : a) {
+      result.add(t);
+    }
+    return Collections.unmodifiableList(result);
   }
 
 }
