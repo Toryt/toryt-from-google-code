@@ -1,0 +1,165 @@
+<?xml version='1.0'?>
+<html>
+
+  <head>
+
+    <title>Bean Finder</title>
+
+  </head>
+
+  <body>
+
+    <p>Strategies to find bean instances needed for a given object.</p>
+
+    <p>These strategies are difficult with respect to generics. This 
+    code started out as a <em>generic method</em> to load a 
+    <code>TestObjectFactoryPriorityList</code> for a given class:</p>
+
+    <pre>  &lt;_ForClass_&gt; TestObjectFactoryPriorityList&lt;_ForClass_&gt; getTofPl(Class&lt;_ForClass_&gt; forClass);</pre>
+    <p>This signature has the effect that, at compile time, we 
+    guarantee that the resulting 
+    <code>TestObjectFactoryPriorityList</code> is for the requested 
+    class.</p>
+
+    <p>We want to generalize this to strategies to load beans for a 
+    given <em>argument</em>, because the loading strategies are the 
+    same for multiple different kinds of objects to load in Toryt (find 
+    in a {@link java.util.HashMap}, instantiate a class with a special 
+    name, derived from the <em>argument</em>, loading a serialized bean 
+    with a special name, derived from the <em>argument</em>, finding an 
+    entry in a property of a special bean, etcetera, for 
+    <code>TestObjectFactoryPriorityList</code>, 
+    <code>TypeContracts</code> and <code>MethodContracts</code>, 
+    <code>Tests</code>, etcetera).</p>
+
+    <p>The generalized method would have the following signature:</p>
+
+    <pre>  public interface BeanFinder&lt;_Bean_, _Argument_&gt; {
+
+    _Bean_ findFor(_Argument_ argument);
+
+  }</pre>
+    <p>
+
+      Instances of this type would load instances of type 
+      <code>_Bean_</code>
+       for an argument of type 
+      <code>_Argument_</code>
+      . Some strategies could be implemented with this level of 
+      genericity (e.g., finding an entry in a {@link 
+      java.util.HashMap}), others would need to be aware of a more 
+      specific kind of argument (if the strategy, e.g., wants to 
+      instantiate a class whose FQCN is based on the FQCN of the 
+      argument, the argument must be a 
+      <code>Class</code>
+      ). We want to validate that the instance we will be returning is 
+      what is expected in the methods implementation, to save the user 
+      from the burden. We want to throw simple, general exceptions, to 
+      simply signal failure in loading to the caller.
+      <br />
+
+      In the first example, the exact return type would coincide with 
+      the type of the values of the {@link java.util.HashMap}, which 
+      the implementation would get elsewhere. In the second example, 
+      the exact return type has to match the type of the class with the 
+      FQCN derived from the argument class.
+    </p>
+
+    <p>
+
+      The problem in the latter case is, that the actual type of the 
+      class with the FQCN derived from the argument class can only be 
+      known 
+      <em>at runtime</em>
+      . At runtime, we cannot compare the type of the loaded class with 
+      the expected type.
+      <br />
+
+      We could try to do an explicit cast to the expected type, but we 
+      only know that in a generic way (
+      <code>_Bean_</code>
+      ). Any cast to a generic type is, at runtime, replaced with a 
+      cast to 
+      <code>Object</code>
+      , which obviously wouldn&apos;t raise the necessary 
+      <code>ClassCastException</code>
+      , which we could catch and replace by the simple, general 
+      exception we want to throw. The caller of the 
+      <code>findFor</code>
+       method would get the 
+      <code>ClassCastException</code>
+      , because the actual cast to the actual expected type (e.g., 
+      <code>TestObjectFactoryPriorityList</code>
+      ) is done by the code generated from generics at the moment of 
+      return, too late for us to intervene.
+      <br />
+
+      A selection structure, with an actual comparison of the type of 
+      the candidate instance and the expected type (
+      <code>result instanceof _Bean_</code>
+      ) is not possible, because, obviously, we cannot use a generic 
+      parameter type as the right-hand-side in an 
+      <code>instanceof</code>
+      -comparison.
+      <br />
+
+      For it to be possible to do such validation, to protect the 
+      caller from the trouble of a possible 
+      <code>ClassCastException</code>
+      , we need a reference to the expected type, for validation 
+      through 
+      <em>reflection</em>
+       at runtime. Generics will not help.
+      <br />
+
+      The question then is to provide this instance for all 
+      <code>BeanFinders</code>
+       (extend the interface with an inspector 
+      <code>Class&lt;_Bean_&gt; getBeanType(_Argument_ argument);</code>
+      ), or have subtypes introduce it if they need it.
+    </p>
+
+    <p>
+
+      In both cases we have a problem with giving the same 
+      functionality as we had with the generic method. With the generic 
+      method, as a user and an implementer, we have the 
+      compiler-validated certainty at compile time, that the returned 
+      <code>TestObjectFactoryPriorityList&lt;_ForClass_&gt;</code>
+       has the expected actual generic parameter, i.e., the type of the 
+      parameter 
+      <code>Class&lt;_ForClass_&gt; forClass</code>
+      . This means, no cast is necessary on the result, also in 
+      specific calls. With the 
+      <code>findFor</code>
+       method of the interface, the types are bound 
+      <em>on the level of the class</em>
+      . The method is not generic. This means the actual generic 
+      parameters can only be 
+      <code>_Bean_ == TestObjectFactoryPriorityList&lt;?&gt;</code>
+       and 
+      <code>_Argument_ == Class&lt;?&gt;</code>
+      . Obviously, the method, in this case, must work for different 
+      classes, so we cannot make the actual arguments the completeley 
+      de-genericized types. If the method returns 
+      <code>TestObjectFactoryPriorityList&lt;?&gt;</code>
+      , a cast is still necessary for specific uses of the result.
+      <br />
+
+      On the other hand, it is not really possible to make the method 
+      in the 
+      <code>BeanFinder</code>
+       interface generic, because then we would have to limit the 
+      arguments to 
+      <code>Class</code>
+       for all implementations. Making the method a generic method in 
+      subtypes where we know the argument is of type 
+      <code>Class</code>
+      is not possible either, since we cannot make a regular method 
+      into a generic method by overriding (that would be overloading).
+    </p>
+
+  </body>
+
+</html>
+

@@ -14,20 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.toryt_II.testobject.tofplfinder;
+package org.toryt.util_I.beanfinder;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * Signals that we could not return a requested
- * {@link org.toryt_II.testobject.TestObjectFactoryPriorityList} because
+ * Signals that we could not return a requested bean because
  * of a configuration error. This means that we were committed to a certain
- * strategy to retrieve a {@link org.toryt_II.testobject.TestObjectFactoryPriorityList},
- * but could not complete it because some error in configuration. More precise
- * information is given in English in the message. This is a technical exception,
- * from which we cannot recover.
+ * strategy to retrieve a bean but could not complete it because some error
+ * in configuration. More precise information is given in English in the message.
+ * This is a technical exception, from which we cannot recover.
  *
  * @author Jan Dockx
  * @idea Then should'nt this be an Error?
@@ -36,17 +34,18 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TofPlFinderConfigurationException extends TofPlFinderException {
+public class BeanFinderConfigurationException extends BeanFinderException {
 
   /**
-   * @pre tofPlFinder != null;
-   * @pre forClass != null;
-   * @post new.getTofPlFinder() == tofPlFinder;
-   * @post new.getForClass() == forClass;
+   * @pre beanFinder != null;
+   * @pre argument != null;
+   * @post new.getBeanFinder() == beanFinder;
+   * @post new.getArgument() == argument;
    * @post (message != null) ? new.getMessage().equals(message) : new.getMessage() == message;
+   * @post new.getCause() == cause;
    */
-  public TofPlFinderConfigurationException(TofPlFinder tofPlFinder, Class<?> forClass, String message) {
-    super(tofPlFinder, forClass, message);
+  public BeanFinderConfigurationException(BeanFinder beanFinder, Object argument, String message, Throwable cause) {
+    super(beanFinder, argument, message, cause);
   }
 
 }

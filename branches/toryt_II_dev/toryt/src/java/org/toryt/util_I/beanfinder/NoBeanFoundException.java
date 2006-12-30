@@ -14,15 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.toryt_II.testobject.tofplfinder;
+package org.toryt.util_I.beanfinder;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * Signals that no <acronym title="Test Object Factory Priority List">TOF PL</acronym>
- * could be instantiated for class {@link #getForClass()}.
+ * Signals that no bean could be found or instantiated for
+ * argument {@link #getArgument()} by bean finder {@link #getBeanFinder()}.
  *
  * @author Jan Dockx
  */
@@ -30,16 +30,16 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class NoTofPlFoundException extends TofPlFinderException {
+public class NoBeanFoundException extends BeanFinderException {
 
   /**
-   * @pre tofPlFinder != null;
-   * @pre forClass != null;
-   * @post new.getTofPlFinder() == tofPlFinder;
-   * @post new.getForClass() == forClass;
+   * @pre beanFinder != null;
+   * @pre argument != null;
+   * @post new.getBeanFinder() == beanFinder;
+   * @post new.getArgument() == argument;
    */
-  public NoTofPlFoundException(TofPlFinder tofPlFinder, Class<?> forClass) {
-    super(tofPlFinder, forClass);
+  public NoBeanFoundException(BeanFinder beanFinder, Object argument) {
+    super(beanFinder, argument);
   }
 
 }

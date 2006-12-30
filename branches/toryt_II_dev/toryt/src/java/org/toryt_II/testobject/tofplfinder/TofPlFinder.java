@@ -18,35 +18,36 @@ package org.toryt_II.testobject.tofplfinder;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.toryt.util_I.beanfinder.BeanFinder;
 import org.toryt_II.testobject.TestObjectFactoryPriorityList;
 
 
 /**
  * <p>Instances of this type find (or create) a {@link TestObjectFactoryPriorityList}
  *   for a given type.</p>
+ * <p>We would like to say that the type instances of this finder
+ *   return are {@code TestObjectFactoryPriorityList<argument.class>.class},
+ *   but sadly that is impossible.</p>
  *
  * @author Jan Dockx
+ *
+ * @invar getBeanType() == TestObjectFactoryPriorityList.class;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface TofPlFinder {
+public interface TofPlFinder extends BeanFinder<Class<?>> {
+
+  // NOP
 
   /**
-   * Return a {@link TestObjectFactoryPriorityList} for class
-   * <code>forClass</code>.
-   * If this finder is not capable of doing so, it should throw a
-   * {@link NoTofPlFoundException}. This method never returns <code>null</code>.
+   * <p>The prefix for class names that are
+   *   <acronym title="Test Object Factory Priority List">TOF PL</acronym>s
+   *   in the same package as the type they serve.</p>
    *
-   * @pre forClass != null;
-   * @result result != null;
-   * @throws NoTofPlFoundException
-   *         ; Could not return a {@link TestObjectFactoryPriorityList} for
-   *         <code>forClass</code>.
+   * <p><strong>= {@value}</strong></p>
    */
-  <_ForClass_> TestObjectFactoryPriorityList<_ForClass_>
-      findTofPlFor(Class<_ForClass_> forClass)
-      throws TofPlFinderConfigurationException, NoTofPlFoundException;
+  public static final String FQCN_PREFIX = "_TOF_PL_";
 
 }
