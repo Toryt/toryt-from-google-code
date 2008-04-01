@@ -63,7 +63,7 @@ public class TorytPackageTofPlFinder
    * ({@code argument} certainly exists).
    */
   @Override
-  public String fqcn2(Class<?> argument) {
+  public String fqcn(Class<?> argument) {
     assert argument != null;
     return TORYT_TOF_PL_PACKAGE + DOT +
            Reflection.prefixedFqcn(FQCN_PREFIX, argument.getName());

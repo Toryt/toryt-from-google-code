@@ -91,7 +91,7 @@ public abstract class SystemPropertyFqcnBeanFinder<_Argument_>
    *         System.getProperties().get(systemPropertyKey(argument)) == null;
    */
   @Override
-  public final String fqcn2(_Argument_ argument) throws NoBeanFoundException {
+  public final String fqcn(_Argument_ argument) throws NoBeanFoundException {
     assert argument != null;
     _LOG.debug("trying to find fqcn for argument " + argument + " in system property");
     String key = systemPropertyKey(argument);

@@ -17,6 +17,7 @@ limitations under the License.
 package org.toryt_II.testobject.tofplfinder;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.toryt.patterns_I.Collections;
@@ -69,14 +70,16 @@ public class DefaultTofPlFinder extends CacheBeanFinder<Class<?>> implements Tof
   public final static String SYSTEM_PROPERTY_KEY_PREFIX = "org.toryt.tofpl";
 
   public DefaultTofPlFinder() {
-    super(TestObjectFactoryPriorityList.class,
-          new ChainedBeanFinder<Class<?>>(TestObjectFactoryPriorityList.class,
-              new SystemPropertyTofPlFinder(), // TODO deprecated; replace with following with IoC
-//              $fqcnMapBeanFinder,
-              new SamePackageTofPlFinder(),
-              new TorytPackageTofPlFinder()));
+    super(TestObjectFactoryPriorityList.class);
+    ChainedBeanFinder<Class<?>> chainedBeanFinder =
+      new ChainedBeanFinder<Class<?>>(TestObjectFactoryPriorityList.class);
+    chainedBeanFinder.addActualBeanFinder(new SystemPropertyTofPlFinder()); // TODO deprecated; replace with following with IoC
+    chainedBeanFinder.addActualBeanFinder($fqcnMapBeanFinder);
+    chainedBeanFinder.addActualBeanFinder(new SamePackageTofPlFinder());
+    chainedBeanFinder.addActualBeanFinder($packagesLookupBeanFinder);
+    chainedBeanFinder.addActualBeanFinder(new TorytPackageTofPlFinder()); // TODO in packages lookup ...
+    setActualBeanFinder(chainedBeanFinder);
   }
-
 
 
   /*<property name="fqcn map">*/
@@ -93,7 +96,7 @@ public class DefaultTofPlFinder extends CacheBeanFinder<Class<?>> implements Tof
 
   /**
    * @pre fqcnMap != null ? Collections.noNull(fqcnMap);
-   * @pre fqcnMap != null ? ! fqcnMap.containsValue(EMPTY);
+   * @pre fqcnMap != null ? ! fqcnMap.containsValue(EMPTY); // MUDO problem: what if, afterwards, this is added to the map?
    * @post getFqcnMap() == fqcnMap;
    */
   public final void setFqcnMap(Map<Class<?>, String> fqcnMap) {
@@ -105,6 +108,38 @@ public class DefaultTofPlFinder extends CacheBeanFinder<Class<?>> implements Tof
    */
   private FqcnMapBeanFinder<Class<?>> $fqcnMapBeanFinder =
     new FqcnMapBeanFinder<Class<?>>(TestObjectFactoryPriorityList.class);
+
+  /*</property>*/
+
+
+
+  /*<property name="lookup package list">*/
+  //------------------------------------------------------------------
+
+  // this should be filled (IoC) from config file and/or prefixed system properties
+
+  /**
+   * @basic
+   */
+  public final List<String> getLookupPackageList() {
+    return $packagesLookupBeanFinder.getLookupPackageList();
+  }
+
+  /**
+   * @pre lookupPackageName != null;
+   * @pre ! EMPTY.equals(lookupPackageName);
+   * @post getLookupPackageList().size() = getLookupPackageList()'size() + 1;
+   * @post getLookupPackageList().get(getLookupPackageList().size() - 1).equals(lookupPackageName);
+   */
+  public final void addLookupPackage(String lookupPackageName) {
+    $packagesLookupBeanFinder.addLookupPackage(lookupPackageName);
+  }
+
+  /**
+   * @invar $packagesLookupBeanFinder != null;
+   */
+  private PackagesLookupBeanFinder<Class<?>> $packagesLookupBeanFinder =
+    new PackagesLookupBeanFinder<Class<?>>(TestObjectFactoryPriorityList.class);
 
   /*</property>*/
 

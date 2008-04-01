@@ -50,7 +50,7 @@ public class SamePackageTofPlFinder
    * ({@code argument} certainly exists).
    */
   @Override
-  public String fqcn2(Class<?> argument) {
+  public String fqcn(Class<?> argument) {
     assert argument != null;
     return Reflection.prefixedFqcn(FQCN_PREFIX, argument.getName());
   }

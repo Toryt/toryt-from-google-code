@@ -35,8 +35,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *
  * @author Jan Dockx
  *
- * @invar getActualBeanFinder() != null;
- * @invar getBeanType().isAssignableFrom(getActualBeanFinder.getBeanType());
+ * @invar getActualBeanFinder() != null ?
+ *          getBeanType().isAssignableFrom(getActualBeanFinder.getBeanType());
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -53,16 +53,11 @@ public class CacheBeanFinder<_Argument_>
 
   /**
    * @pre beanType != null;
-   * @pre actualBeanFinder != null;
-   * @pre beanType.isAssignableFrom(actualBeanFinder.getBeanType());
    * @post getBeanType() != beanType;
-   * @post getActualBeanFinder() == actualBeanFinder;
+   * @post getActualBeanFinder() == null;
    */
-  public CacheBeanFinder(Class<?> beanType, BeanFinder<_Argument_> actualBeanFinder) {
+  public CacheBeanFinder(Class<?> beanType) {
     super(beanType);
-    assert actualBeanFinder != null;
-    assert beanType.isAssignableFrom(actualBeanFinder.getBeanType());
-    $actualBeanFinder = actualBeanFinder;
   }
 
   /*</property>*/
@@ -77,6 +72,18 @@ public class CacheBeanFinder<_Argument_>
    */
   public final BeanFinder<_Argument_> getActualBeanFinder() {
     return $actualBeanFinder;
+  }
+
+  /**
+   * @pre actualBeanFinder != null ?
+   *        getBeanType().isAssignableFrom(actualBeanFinder.getBeanType());
+   * @post getActualBeanFinder() == actualBeanFinder;
+   */
+  public final void setActualBeanFinder(BeanFinder<_Argument_> actualBeanFinder) {
+    assert actualBeanFinder != null ?
+             getBeanType().isAssignableFrom(actualBeanFinder.getBeanType()) :
+             true;
+    $actualBeanFinder = actualBeanFinder;
   }
 
   /**
@@ -98,11 +105,17 @@ public class CacheBeanFinder<_Argument_>
     else {
       _LOG.debug("no bean found in cache for argument \"" + argument + "\";" +
             " trying actual bean finder");
-      bean = getActualBeanFinder().findFor(argument);
-        // throws BeanFinderConfigurationException, NoBeanFoundException
-      _LOG.debug("actual bean finder found bean \"" + bean + "\"" +
-            " for argument \"" + argument + "\"; adding to cache");
-      $cache.put(argument, bean);
+      if (getActualBeanFinder() == null) {
+        _LOG.debug("there is no actual bean finder; we consider this as no bean found");
+        throw new NoBeanFoundException(this, argument);
+      }
+      else {
+        bean = getActualBeanFinder().findFor(argument);
+          // throws BeanFinderConfigurationException, NoBeanFoundException
+        _LOG.debug("actual bean finder found bean \"" + bean + "\"" +
+              " for argument \"" + argument + "\"; adding to cache");
+        $cache.put(argument, bean);
+      }
     }
     return bean;
   }

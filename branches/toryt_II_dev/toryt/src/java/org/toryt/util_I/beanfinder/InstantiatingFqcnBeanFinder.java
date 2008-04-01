@@ -66,12 +66,14 @@ public abstract class InstantiatingFqcnBeanFinder<_Argument_>
   //------------------------------------------------------------------
 
   /**
+   * Might be null, EMPTY, or any string.
+   *
    * @pre argument != null;
    * @basic
    * @throws NoBeanFoundException
    *         ; No FQCN defined or possible for {@code argument}
    */
-  public abstract String fqcn2(_Argument_ argument) throws NoBeanFoundException;
+  public abstract String fqcn(_Argument_ argument) throws NoBeanFoundException;
 
   /*</property>*/
 
@@ -81,10 +83,10 @@ public abstract class InstantiatingFqcnBeanFinder<_Argument_>
   //------------------------------------------------------------------
 
   /**
-   * Returns {@code true} is the {@link #fqcn2(Object)} is final.
+   * Returns {@code true} is the {@link #fqcn(Object)} is final.
    * This means that, if a class with this name is not found, this
    * is a {@link BeanFinderConfigurationException}. If the
-   * {@link #fqcn2(Object)} is not final, a {@link NoBeanFoundException}
+   * {@link #fqcn(Object)} is not final, a {@link NoBeanFoundException}
    * is thrown.
    *
    * @basic
@@ -102,7 +104,7 @@ public abstract class InstantiatingFqcnBeanFinder<_Argument_>
   public final Object findFor(_Argument_ argument)
       throws BeanFinderConfigurationException, NoBeanFoundException {
     assert argument != null;
-    String fqcn = fqcn2(argument); // throws NoBeanFoundException
+    String fqcn = fqcn(argument); // throws NoBeanFoundException
     _LOG.debug("  trying to instantiate class with FQCN " + fqcn + " with default constructor");
     Object bean = null;
     try {
@@ -112,21 +114,20 @@ public abstract class InstantiatingFqcnBeanFinder<_Argument_>
         ClassCastException ccExc = new ClassCastException(bean +
                                                           " cannot be cast to type " +
                                                           getBeanType());
-        logInstantiationProblem(argument, fqcn, ccExc);
+        logInstantiationProblem1(argument, fqcn, ccExc);
       }
       _LOG.debug("Created bean for argument " + argument +
                 " from class " + fqcn);
     }
     catch (IOException ioExc) {
-      logInstantiationProblem(argument, fqcn, ioExc); // throws exception
+      logInstantiationProblem1(argument, fqcn, ioExc); // throws exception
+    }
+    catch (NullPointerException npExc) {
+      // undocumented; if fqcn is null
+      logInstantiationProblem2(argument, fqcn, npExc); // throws exception
     }
     catch (ClassNotFoundException cnfExc) {
-      if (isFqcnFinal()) {
-        logInstantiationProblem(argument, fqcn, cnfExc); // throws exception
-      }
-      else {
-        throw new NoBeanFoundException(this, argument);
-      }
+      logInstantiationProblem2(argument, fqcn, cnfExc);
     }
     /* it is weird that we cannot get other exceptions here, according to the Beans.instantiate
      * Javadoc: how about exceptions in the constructor, having no default constructor, etc.
@@ -137,7 +138,19 @@ public abstract class InstantiatingFqcnBeanFinder<_Argument_>
     return bean;
   }
 
-  private void logInstantiationProblem(_Argument_ argument,
+  private void logInstantiationProblem2(_Argument_ argument,
+                                        String fqcn,
+                                        Exception cnfExc)
+      throws BeanFinderConfigurationException, NoBeanFoundException {
+    if (isFqcnFinal()) {
+      logInstantiationProblem1(argument, fqcn, cnfExc); // throws exception
+    }
+    else {
+      throw new NoBeanFoundException(this, argument);
+    }
+  }
+
+  private void logInstantiationProblem1(_Argument_ argument,
                                        String fqcn,
                                        Exception exc)
       throws BeanFinderConfigurationException {

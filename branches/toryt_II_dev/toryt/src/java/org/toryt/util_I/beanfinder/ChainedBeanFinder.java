@@ -17,15 +17,13 @@ limitations under the License.
 package org.toryt.util_I.beanfinder;
 
 
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.toryt.patterns_I.Assertion;
-import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.collections.ArrayUtils;
 
 
 /**
@@ -61,25 +59,11 @@ public class ChainedBeanFinder<_Argument_>
 
   /**
    * @pre beanType != null;
-   * @pre Collections.noNull(actualBeanFinders);
-   * @pre (forall BeanFinder<_Argument_> bf : actualBeanFinders;
-   *           getBeanType().isAssignableFrom(bf.getBeanType()));
-   * @post getBeanType() != beanType;
-   * @post getActualBeanFinders().equals(beanFinders);
+   * @post getBeanType() == beanType;
+   * @post getActualBeanFinders().isEmpty;
    */
-  public ChainedBeanFinder(final Class<?> beanType, BeanFinder<_Argument_> ... actualBeanFinders) {
+  public ChainedBeanFinder(final Class<?> beanType) {
     super(beanType);
-    assert Collections.noNull(actualBeanFinders);
-    assert Collections.forAll(actualBeanFinders,
-             new Assertion<BeanFinder<_Argument_>>() {
-
-                    public boolean isTrueFor(BeanFinder<_Argument_> bf) {
-                      return beanType.isAssignableFrom(bf.getBeanType());
-                    }
-
-                  });
-    $actualBeanFinders = ArrayUtils.asFreshList(actualBeanFinders);
-      // is unmodifiable
   }
 
   /*</property>*/
@@ -93,7 +77,19 @@ public class ChainedBeanFinder<_Argument_>
    * @basic
    */
   public final List<BeanFinder<_Argument_>> getActualBeanFinders() {
-    return $actualBeanFinders;
+    return Collections.unmodifiableList($actualBeanFinders);
+  }
+
+  /**
+   * @pre actualBeanFinder != null;
+   * @pre getBeanType().isAssignableFrom(actualBeanFinder.getBeanType()));
+   * @post getActualBeanFinders().size() == getActualBeanFinders()'size() + 1;
+   * @post getActualBeanFinders().get(getActualBeanFinders().size() - 1) == actualBeanFinder;
+   */
+  public final void addActualBeanFinder(BeanFinder<_Argument_> actualBeanFinder) {
+    assert actualBeanFinder != null;
+    assert getBeanType().isAssignableFrom(actualBeanFinder.getBeanType());
+    $actualBeanFinders.add(actualBeanFinder);
   }
 
   /**

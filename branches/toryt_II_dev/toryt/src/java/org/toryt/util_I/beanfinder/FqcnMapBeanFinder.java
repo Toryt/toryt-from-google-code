@@ -40,13 +40,13 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   If the {@code argument} is not found in the map, a
  *   {@link NoBeanFoundException} is thrown.</p>
  * <p>The map is exposed to the user, and can be changed at will.
- *   Initially, there is no map.</p>
+ *   Initially, there is no map. The map can contain anything,
+ *   but a string that is not a FQCN will result in an
+ *   {@link BeanFinderConfigurationException}.</p>
  *
  * @author Jan Dockx
  *
  * @invar isFqcnFinal();
- * @invar getFqcnMap() != null ? Collections.noNull(getFqcnMap());
- * @invar getFqcnMap() != null ? ! getFqcnMap().containsValue(EMPTY);
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -89,20 +89,12 @@ public class FqcnMapBeanFinder<_Argument_>
   }
 
   /**
-   * @pre fqcnMap != null ? Collections.noNull(fqcnMap);
-   * @pre fqcnMap != null ? ! fqcnMap.containsValue(EMPTY);
    * @post getFqcnMap() == fqcnMap;
    */
   public final void setFqcnMap(Map<_Argument_, String> fqcnMap) {
-    assert fqcnMap != null ? Collections.noNull(fqcnMap) : true;
-    assert fqcnMap != null ? ! fqcnMap.containsValue(EMPTY) : true;
     $fqcnMap = fqcnMap;
   }
 
-  /**
-   * @invar $fqcnMap != null ? Collections.noNull($fqcnMap);
-   * @invar $fqcnMap != null ? ! $fqcnMap.containsValue(EMPTY);
-   */
   private Map<_Argument_, String> $fqcnMap;
 
   /*</property>*/
@@ -119,7 +111,7 @@ public class FqcnMapBeanFinder<_Argument_>
    *         ! getFqcnMap().containsKey(argument);
    */
   @Override
-  public final String fqcn2(_Argument_ argument) throws NoBeanFoundException {
+  public final String fqcn(_Argument_ argument) throws NoBeanFoundException {
     assert argument != null;
     _LOG.debug("trying to find fqcn for argument " + argument + " in map");
     String fqcn = null;
