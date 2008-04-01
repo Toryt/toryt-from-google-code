@@ -16,8 +16,6 @@ import org.toryt_II.TorytException;
          tag      = "$Name$")
 public abstract class ReflectionException extends TorytException {
 
-
-
   /**
    * @post new.getMessage() == null;
    * @post new.getCause() == cause;
