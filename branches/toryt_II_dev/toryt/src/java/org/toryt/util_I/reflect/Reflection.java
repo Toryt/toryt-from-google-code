@@ -166,7 +166,7 @@ public class Reflection {
   public static <_ConstantValue_> _ConstantValue_ constant(final String fqClassName,
                                                            final String constantName)
       throws CannotGetClassException, CannotGetValueException {
-    Class clazz = loadForName(fqClassName);
+    Class<?> clazz = loadForName(fqClassName);
     return constant(clazz, constantName);
   }
 
