@@ -20,8 +20,16 @@ public abstract class ReflectionException extends TorytException {
    * @post new.getMessage() == null;
    * @post new.getCause() == cause;
    */
-  public ReflectionException(Throwable cause) {
+  protected ReflectionException(Throwable cause) {
     super(null, cause);
+  }
+
+  /**
+   * @post equalsWithNull(getMessage(), message);
+   * @post new.getCause() == null;
+   */
+  protected ReflectionException(String message) {
+    super(message, null);
   }
 
 }
