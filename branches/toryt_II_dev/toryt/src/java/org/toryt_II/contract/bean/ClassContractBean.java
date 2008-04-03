@@ -17,14 +17,14 @@ limitations under the License.
 package org.toryt_II.contract.bean;
 
 
-import static org.toryt.util_I.reflect.Reflection.MethodKind.CLASS_INSPECTOR;
+import static org.toryt.util_I.reflect.Constants.MethodKind.CLASS_INSPECTOR;
 
 import java.lang.reflect.Method;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.lockable.LockableSet;
 import org.toryt.util_I.collections.lockable.SetBackedLockableSet;
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Methods;
 import org.toryt_II.contract.ClassContract;
 import org.toryt_II.contract.ContractIsClosedException;
 import org.toryt_II.contract.condition.Condition;
@@ -161,7 +161,7 @@ public class ClassContractBean<_Class_> extends TypeContractBean<_Class_>
 
   /**
    * @pre basicInspector != null;
-   * @pre Reflection.methodKind(inspector) == INSTANCE_INSPECTOR;
+   * @pre Constants.methodKind(inspector) == INSTANCE_INSPECTOR;
    * @post getBasicClassInspectors().contains(basicInspector);
    * @throws ContractIsClosedException
    *         isClosed();
@@ -169,7 +169,7 @@ public class ClassContractBean<_Class_> extends TypeContractBean<_Class_>
   public final void addBasicClassInspector(Method basicInspector)
       throws ContractIsClosedException {
     assert basicInspector != null;
-    assert Reflection.methodKind(basicInspector) == CLASS_INSPECTOR;
+    assert Methods.methodKind(basicInspector) == CLASS_INSPECTOR;
     if (isClosed()) {
       throw new ContractIsClosedException(this, basicInspector, "basic class inspectors");
     }

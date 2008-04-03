@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.reflect.CannotGetMethodException;
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Methods;
 import org.toryt_II.contract.ContractIsClosedException;
 import org.toryt_II.contract.InstanceMutatorContract;
 import org.toryt_II.contract.bean.ClassContractBean;
@@ -43,10 +43,10 @@ public class _Contract_Node extends ClassContractBean<Node> {
 
     try {
       // basic inspectors
-      addBasicClassInspector(Reflection.findMethod(Node.class, "getDescription()"));
-      addBasicClassInspector(Reflection.findMethod(Node.class, "getTitle()"));
-      addBasicClassInspector(Reflection.findMethod(Node.class, "getRating()"));
-      addBasicClassInspector(Reflection.findMethod(Node.class, "getGroup()"));
+      addBasicClassInspector(Methods.findMethod(Node.class, "getDescription()"));
+      addBasicClassInspector(Methods.findMethod(Node.class, "getTitle()"));
+      addBasicClassInspector(Methods.findMethod(Node.class, "getRating()"));
+      addBasicClassInspector(Methods.findMethod(Node.class, "getGroup()"));
 
       // type invariants
       addDeclaredInstanceInvariantCondition(new Condition() {
@@ -84,7 +84,7 @@ public class _Contract_Node extends ClassContractBean<Node> {
 
       // instance methods
       InstanceMutatorContractBean<Node> mc1 =
-      new InstanceMutatorContractBean<Node>(Reflection.findMethod(Node.class, "setDescription(java.lang.String)"),
+      new InstanceMutatorContractBean<Node>(Methods.findMethod(Node.class, "setDescription(java.lang.String)"),
                                             this,
                                             new HashSet<InstanceMutatorContract<?>>()) {
 
@@ -107,7 +107,7 @@ public class _Contract_Node extends ClassContractBean<Node> {
       };
 
       InstanceMutatorContractBean<Node> mc2 =
-      new InstanceMutatorContractBean<Node>(Reflection.findMethod(Node.class, "setTitle(java.lang.String)"),
+      new InstanceMutatorContractBean<Node>(Methods.findMethod(Node.class, "setTitle(java.lang.String)"),
                                            this,
                                            new HashSet<InstanceMutatorContract<?>>()) {
 
@@ -129,7 +129,7 @@ public class _Contract_Node extends ClassContractBean<Node> {
       };
 
       InstanceMutatorContractBean<Node> mc3 =
-      new InstanceMutatorContractBean<Node>(Reflection.findMethod(Node.class, "setGroup(org.toryt_II.example.Group)"),
+      new InstanceMutatorContractBean<Node>(Methods.findMethod(Node.class, "setGroup(org.toryt_II.example.Group)"),
                                             this,
                                             new HashSet<InstanceMutatorContract<?>>()) {
 

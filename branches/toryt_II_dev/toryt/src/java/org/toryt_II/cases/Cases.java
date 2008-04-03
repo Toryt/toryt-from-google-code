@@ -7,7 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Classes;
+import org.toryt.util_I.reflect.Constants;
 import org.toryt_I.support.straightlist.ArrayStraightList;
 import org.toryt_I.support.straightlist.StraightList;
 import org.toryt_II.OLDTorytException;
@@ -296,7 +297,7 @@ public final class Cases {
   private static StraightList findTOLClass(String totn)
       throws OLDTorytException {
     try {
-      return (StraightList)Reflection.
+      return (StraightList)Classes.
                   instantiatePrefixed(null, TOL_PREFIX, totn);
     }
     catch (IOException e) {
@@ -319,8 +320,8 @@ public final class Cases {
   private static StraightList findTOLVariable(String totn)
       throws OLDTorytException {
     try {
-      return (StraightList)Reflection.constant(
-                 Reflection.prefixedFqcn(TEST_PREFIX, TOL_CONSTANT_NAME),
+      return (StraightList)Constants.constant(
+                 Classes.prefixedFqcn(TEST_PREFIX, TOL_CONSTANT_NAME),
                  totn);
     }
     catch (NullPointerException e) {

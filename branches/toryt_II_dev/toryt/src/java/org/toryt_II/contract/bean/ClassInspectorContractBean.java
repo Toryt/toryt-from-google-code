@@ -17,12 +17,12 @@ limitations under the License.
 package org.toryt_II.contract.bean;
 
 
-import static org.toryt.util_I.reflect.Reflection.MethodKind.CLASS_INSPECTOR;
+import static org.toryt.util_I.reflect.Constants.MethodKind.CLASS_INSPECTOR;
 
 import java.lang.reflect.Method;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Methods;
 import org.toryt_II.contract.ClassInspectorContract;
 
 
@@ -44,12 +44,12 @@ public class ClassInspectorContractBean extends ClassMethodContractBean
 
   /**
    * @pre subject != null;
-   * @pre Reflection.methodKind(subject) == CLASS_INSPECTOR;
+   * @pre Constants.methodKind(subject) == CLASS_INSPECTOR;
    * @post new.getSubject() == subject;
    */
   public ClassInspectorContractBean(Method subject) {
     super(subject);
-    assert Reflection.methodKind(subject) == CLASS_INSPECTOR;
+    assert Methods.methodKind(subject) == CLASS_INSPECTOR;
   }
 
   /*</construction>*/

@@ -2,7 +2,7 @@ package org.toryt_II.testmodel;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.Reflection.TypeKind;
+import org.toryt.util_I.reflect.Classes.TypeKind;
 
 
 /**

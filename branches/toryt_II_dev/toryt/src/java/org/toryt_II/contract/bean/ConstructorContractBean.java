@@ -43,7 +43,7 @@ public class ConstructorContractBean<_ImplicitArgument_>
 
   /**
    * @pre subject != null;
-   * @pre Reflection.methodKind(subject).isInstanceMethod();
+   * @pre Methods.methodKind(subject).isInstanceMethod();
    * @pre typeContract != null;
    * @post new.getSubject() == subject;
    * @post new.getTypeContract() == typeContract;

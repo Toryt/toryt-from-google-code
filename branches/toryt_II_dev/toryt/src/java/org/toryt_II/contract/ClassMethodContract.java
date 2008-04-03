@@ -28,7 +28,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *
  * @author Jan Dockx
  *
- * @invar Reflection.methodKind(getSubject()).isClassMethod();
+ * @invar Methods.methodKind(getSubject()).isClassMethod();
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

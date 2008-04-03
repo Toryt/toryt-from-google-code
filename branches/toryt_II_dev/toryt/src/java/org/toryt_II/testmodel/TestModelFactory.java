@@ -39,7 +39,7 @@ public interface TestModelFactory {
    * Create an {@link InstanceMutatorTestModel} for <code>instanceMutator</code>.
    *
    * @pre instanceMutator != null;
-   * @pre Reflection.methodKind(instanceMutator) == MethodKind.INSTANCE_MUTATOR;
+   * @pre Methods.methodKind(instanceMutator) == MethodKind.INSTANCE_MUTATOR;
    * @throws TestModelCreationException
    *         Could not create the test model for some reason.
    */
@@ -50,7 +50,7 @@ public interface TestModelFactory {
    * Create an {@link InstanceInspectorTestModel} for <code>instanceInspector</code>.
    *
    * @pre instanceInspector != null;
-   * @pre Reflection.methodKind(instanceInspector) == MethodKind.INSTANCE_INSPECTOR;
+   * @pre Methods.methodKind(instanceInspector) == MethodKind.INSTANCE_INSPECTOR;
    * @throws TestModelCreationException
    *         Could not create the test model for some reason.
    */
@@ -61,7 +61,7 @@ public interface TestModelFactory {
    * Create an {@link ClassMutatorTestModel} for <code>classMutator</code>.
    *
    * @pre classMutator != null;
-   * @pre Reflection.methodKind(classMutator) == MethodKind.CLASS_MUTATOR;
+   * @pre Methods.methodKind(classMutator) == MethodKind.CLASS_MUTATOR;
    * @throws TestModelCreationException
    *         Could not create the test model for some reason.
    */
@@ -72,7 +72,7 @@ public interface TestModelFactory {
    * Create an {@link ClassInspectorTestModel} for <code>classInspector</code>.
    *
    * @pre classInspector != null;
-   * @pre Reflection.methodKind(classInspector) == MethodKind.CLASS_INSPECTOR;
+   * @pre Methods.methodKind(classInspector) == MethodKind.CLASS_INSPECTOR;
    * @throws TestModelCreationException
    *         Could not create the test model for some reason.
    */
@@ -90,7 +90,7 @@ public interface TestModelFactory {
    * <code>innerClazz</code>.
    *
    * @pre innerClazz != null;
-   * @pre Reflection.typeKind(innerClazz) == TypeKind.INNER;
+   * @pre Classes.typeKind(innerClazz) == TypeKind.INNER;
    * @throws TestModelCreationException
    *         Could not create the test model for some reason.
    */
@@ -108,7 +108,7 @@ public interface TestModelFactory {
    * <code>clazz</code>.
    *
    * @pre clazz != null;
-   * @pre Reflection.typeKind(innerClazz) == TypeKind.STATIC;
+   * @pre Classes.typeKind(innerClazz) == TypeKind.STATIC;
    * @throws TestModelCreationException
    *         Could not create the test model for some reason.
    *

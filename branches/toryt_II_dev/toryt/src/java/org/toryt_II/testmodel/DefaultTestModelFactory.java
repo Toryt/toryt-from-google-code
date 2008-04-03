@@ -10,9 +10,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.reflect.CannotGetClassException;
-import org.toryt.util_I.reflect.Reflection;
-import org.toryt.util_I.reflect.Reflection.MethodKind;
-import org.toryt.util_I.reflect.Reflection.TypeKind;
+import org.toryt.util_I.reflect.Classes;
+import org.toryt.util_I.reflect.MethodKind;
+import org.toryt.util_I.reflect.Methods;
+import org.toryt.util_I.reflect.Constants;
+import org.toryt.util_I.reflect.Constants.TypeKind;
 
 
 /**
@@ -42,7 +44,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
 
   public InstanceMutatorTestModel createInstanceMutatorTestModel(Method instanceMutator) {
     assert instanceMutator != null;
-    assert Reflection.methodKind(instanceMutator) == MethodKind.INSTANCE_MUTATOR;
+    assert Methods.methodKind(instanceMutator) == MethodKind.INSTANCE_MUTATOR;
     InstanceMutatorTestModel result = new InstanceMutatorTestModel();
     result.setSubject(instanceMutator);
     return result;
@@ -50,7 +52,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
 
   public InstanceInspectorTestModel createInstanceInspectorTestModel(Method instanceInspector) {
     assert instanceInspector != null;
-    assert Reflection.methodKind(instanceInspector) == MethodKind.INSTANCE_INSPECTOR;
+    assert Methods.methodKind(instanceInspector) == MethodKind.INSTANCE_INSPECTOR;
     InstanceInspectorTestModel result = new InstanceInspectorTestModel();
     result.setSubject(instanceInspector);
     return result;
@@ -58,7 +60,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
 
   public ClassMutatorTestModel createClassMutatorTestModel(Method classMutator) {
     assert classMutator != null;
-    assert Reflection.methodKind(classMutator) == MethodKind.CLASS_MUTATOR;
+    assert Methods.methodKind(classMutator) == MethodKind.CLASS_MUTATOR;
     ClassMutatorTestModel result = new ClassMutatorTestModel();
     result.setSubject(classMutator);
     return result;
@@ -66,7 +68,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
 
   public ClassInspectorTestModel createClassInspectorTestModel(Method classInspector) {
     assert classInspector != null;
-    assert Reflection.methodKind(classInspector) == MethodKind.CLASS_INSPECTOR;
+    assert Methods.methodKind(classInspector) == MethodKind.CLASS_INSPECTOR;
     ClassInspectorTestModel result = new ClassInspectorTestModel();
     result.setSubject(classInspector);
     return result;
@@ -75,7 +77,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
   public <_Subject_> InnerClassTestModel<_Subject_> createInnerClassTestModel(Class<_Subject_>  innerClazz)
       throws TestModelCreationException {
     assert innerClazz != null;
-    assert Reflection.typeKind(innerClazz) == TypeKind.INNER;
+    assert Constants.typeKind(innerClazz) == TypeKind.INNER;
     LOG.debug("Creating InnerClassTestModel for class " + innerClazz);
     InnerClassTestModel<_Subject_> result = new InnerClassTestModel<_Subject_>();
     initClassTestModel(innerClazz, result);
@@ -85,7 +87,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
   public <_Subject_> StaticClassTestModel<_Subject_> createStaticClassTestModel(Class<_Subject_>  clazz)
       throws TestModelCreationException {
     assert clazz != null;
-    assert Reflection.typeKind(clazz) == TypeKind.STATIC;
+    assert Classes.typeKind(clazz) == TypeKind.STATIC;
     LOG.debug("Creating StaticClassTestModel for class " + clazz);
     StaticClassTestModel<_Subject_> result = new StaticClassTestModel<_Subject_>();
     initClassTestModel(clazz, result);
@@ -139,7 +141,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
           // only public methods, but also inherited
       LOG.debug("  there are " + methods.length + " methods");
       for (int i = 0; i < methods.length; i++) {
-        switch (Reflection.methodKind(methods[i])) {
+        switch (Methods.methodKind(methods[i])) {
           case INSTANCE_MUTATOR:
             LOG.debug("    " + methods[i] + " is an instance mutator");
             result.instanceMutatorTestModels.add(createInstanceMutatorTestModel(methods[i]));
@@ -176,7 +178,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
           // only public nested types, but also inherited and interfaces
       for (int i = 0; i < clazzes.length; i++) {
         if (! clazzes[i].isInterface()) { // interfaces cannot be tested
-          switch (Reflection.typeKind(clazz)) {
+          switch (Classes.typeKind(clazz)) {
             case INNER:
               LOG.debug("    " + clazzes[i] + " is an inner class");
               result.innerClassTestModels.add(createInnerClassTestModel(clazzes[i]));
@@ -236,7 +238,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
       LOG.debug("    " + fqcn + " should be an ok class");
       Class<?> clazz;
       try {
-        clazz = Reflection.loadForName(fqcn);
+        clazz = Classes.loadForName(fqcn);
         LOG.debug("    " + clazz + " loaded; creating StaticClassTestModel for this class");
         result.classTestModels.add(createStaticClassTestModel(clazz));
       }

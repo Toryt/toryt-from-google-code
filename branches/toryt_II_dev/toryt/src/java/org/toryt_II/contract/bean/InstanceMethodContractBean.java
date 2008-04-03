@@ -21,7 +21,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Methods;
 import org.toryt_II.contract.InstanceMethodContract;
 import org.toryt_II.contract.TypeContract;
 
@@ -45,14 +45,14 @@ public abstract class InstanceMethodContractBean<_ImplicitArgument_, _Subject_ e
 
   /**
    * @pre subject != null;
-   * @pre (_Subject_ == Method) ? Reflection.methodKind(subject).isInstanceMethod();
+   * @pre (_Subject_ == Method) ? Methods.methodKind(subject).isInstanceMethod();
    * @pre typeContract != null;
    * @post new.getSubject() == subject;
    * @post new.getTypeContract() == typeContract;
    */
   public InstanceMethodContractBean(_Subject_ subject, TypeContract<_ImplicitArgument_> typeContract) {
     super(subject);
-    assert (subject instanceof Method) ? Reflection.methodKind((Method)subject).isInstanceMethod() : true;
+    assert (subject instanceof Method) ? Methods.methodKind((Method)subject).isInstanceMethod() : true;
     assert typeContract != null;
     $typeContract = typeContract;
   }

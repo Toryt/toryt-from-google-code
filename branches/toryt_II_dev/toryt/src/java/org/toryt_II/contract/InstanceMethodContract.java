@@ -38,7 +38,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *
  * @author Jan Dockx
  *
- * @invar (getSubject() instanceof Method) ? Reflection.methodKind(getSubject()).isInstanceMethod();
+ * @invar (getSubject() instanceof Method) ? Methods.methodKind(getSubject()).isInstanceMethod();
  * @invar getTypeContract() != null;
  */
 @CvsInfo(revision = "$Revision$",

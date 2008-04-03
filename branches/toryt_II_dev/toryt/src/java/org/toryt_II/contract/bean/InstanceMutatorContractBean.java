@@ -17,13 +17,13 @@ limitations under the License.
 package org.toryt_II.contract.bean;
 
 
-import static org.toryt.util_I.reflect.Reflection.MethodKind.INSTANCE_MUTATOR;
+import static org.toryt.util_I.reflect.MethodKind.INSTANCE_MUTATOR;
 
 import java.lang.reflect.Method;
 import java.util.Set;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Methods;
 import org.toryt_II.contract.InstanceMutatorContract;
 import org.toryt_II.contract.TypeContract;
 
@@ -52,7 +52,7 @@ public class InstanceMutatorContractBean<_ImplicitArgument_>
    * @pre typeContract != null;
    * @pre (superContracts != null) ? ! superContracts.contains(null);
    * @pre (forall _SuperContract_ : sc {sc.isClosed()});
-   * @pre Reflection.methodKind(subject) == INSTANCE_MUTATOR;
+   * @pre Methods.methodKind(subject) == INSTANCE_MUTATOR;
    * @post new.getSubject() == subject;
    * @post new.getTypeContract() == typeContract;
    * @post (superContracts == null) ?
@@ -64,7 +64,7 @@ public class InstanceMutatorContractBean<_ImplicitArgument_>
                                      TypeContract<_ImplicitArgument_> typeContract,
                                      Set<InstanceMutatorContract<?>> superContracts) {
     super(subject, typeContract, superContracts);
-    assert Reflection.methodKind(subject) == INSTANCE_MUTATOR;
+    assert Methods.methodKind(subject) == INSTANCE_MUTATOR;
   }
 
   /*</construction>*/

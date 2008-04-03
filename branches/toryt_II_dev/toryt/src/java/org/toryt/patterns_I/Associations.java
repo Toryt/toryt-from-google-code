@@ -6,7 +6,7 @@ import java.util.Set;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.reflect.CannotGetPropertyException;
 import org.toryt.util_I.reflect.CannotGetValueException;
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Properties;
 
 
 /**
@@ -72,7 +72,7 @@ public class Associations {
     }
     else { // reference != null
       try {
-        assert Reflection.hasPropertyReadMethod(reference.getClass(),
+        assert Properties.hasPropertyReadMethod(reference.getClass(),
                                                 toManySetPropertyName);
       }
       catch (CannotGetPropertyException e) {
@@ -80,7 +80,7 @@ public class Associations {
       }
       try {
         @SuppressWarnings("unchecked") Set<_Many_> manySet =
-            (Set<_Many_>)Reflection.getPropertyValue(reference, toManySetPropertyName);
+            (Set<_Many_>)Properties.getPropertyValue(reference, toManySetPropertyName);
         result = manySet.contains(manyObject);
       }
       catch (CannotGetValueException e) {
@@ -125,7 +125,7 @@ public class Associations {
     if (result) {
       for (_Many_ manyObject : manySet) {
         try {
-          if (Reflection.getPropertyValue(manyObject, toOneReferencePropertyName) != oneObject) {
+          if (Properties.getPropertyValue(manyObject, toOneReferencePropertyName) != oneObject) {
             return false; // break
           }
           // else continue
@@ -201,7 +201,7 @@ public class Associations {
     if (result && (oldOneObject != null)) {
       try {
         @SuppressWarnings("unchecked") Set<_Many_> oldManySet
-            = (Set<_Many_>)Reflection.getPropertyValue(oldOneObject, manySetPropertyName);
+            = (Set<_Many_>)Properties.getPropertyValue(oldOneObject, manySetPropertyName);
         result &= (! oldManySet.contains(manyObject));
       }
       catch (NullPointerException e) {
@@ -214,7 +214,7 @@ public class Associations {
     if (result && (newOneObject != null)) {
       try {
         @SuppressWarnings("unchecked") Set<_Many_> newManySet
-            = (Set<_Many_>)Reflection.getPropertyValue(newOneObject, manySetPropertyName);
+            = (Set<_Many_>)Properties.getPropertyValue(newOneObject, manySetPropertyName);
         result &= (newManySet.contains(manyObject));
       }
       catch (NullPointerException e) {

@@ -31,7 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.reflect.CannotCreateInstanceException;
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Classes;
 import org.toryt_II.contract.Contract;
 
 
@@ -337,12 +337,12 @@ public class DefaultTofPlFactory implements TofPlFactory {
       String fqcnToPrefix = packageName + "." + forClass.getName();
       try {
         @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClass_> result =
-            (TestObjectFactoryPriorityList<_ForClass_>)Reflection.instantiatePrefixed(null, CLASS_NAME_PREFIX, fqcnToPrefix);
+            (TestObjectFactoryPriorityList<_ForClass_>)Classes.instantiatePrefixed(null, CLASS_NAME_PREFIX, fqcnToPrefix);
         // runtime cannot check against generic type instantiation
         assert result != null; // we only get here if this succeeds
         if (_LOG.isInfoEnabled()) {
           _LOG.info("Created TOF PL for class " + forClass +
-                   " from class " + Reflection.prefixedFqcn(CLASS_NAME_PREFIX, fqcnToPrefix) +
+                   " from class " + Classes.prefixedFqcn(CLASS_NAME_PREFIX, fqcnToPrefix) +
                    " (using base package list)");
         }
         addCachedTofPl(forClass, result);
@@ -354,7 +354,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
       catch (CannotCreateInstanceException cnibExc) {
         if (_LOG.isDebugEnabled()) {
           _LOG.debug("Could not create TOF PL for class " + forClass +
-                    " using FQCN \"" + Reflection.prefixedFqcn(CLASS_NAME_PREFIX, fqcnToPrefix) +
+                    " using FQCN \"" + Classes.prefixedFqcn(CLASS_NAME_PREFIX, fqcnToPrefix) +
                     "\" (using base packages in base package list)", cnibExc);
         }
       }
@@ -376,7 +376,7 @@ public class DefaultTofPlFactory implements TofPlFactory {
 //      contract = Contracts.classContractInstance(forClass);
 //      if (contract != null) {
 //        @SuppressWarnings("unchecked") TestObjectFactoryPriorityList<_ForClass_> result =
-//            (TestObjectFactoryPriorityList<_ForClass_>)Reflection.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
+//            (TestObjectFactoryPriorityList<_ForClass_>)Constants.constant(contract.getClass(), CONTRACT_CONSTANT_NAME);
 //        // runtime cannot check against generic type instantiation
 //        if (result != null) {
 //          if (_LOG.isInfoEnabled()) {

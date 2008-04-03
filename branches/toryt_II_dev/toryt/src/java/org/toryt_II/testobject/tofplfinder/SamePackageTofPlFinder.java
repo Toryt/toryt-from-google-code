@@ -19,7 +19,7 @@ package org.toryt_II.testobject.tofplfinder;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.beanfinder.InstantiatingFqcnBeanFinder;
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Classes;
 import org.toryt_II.testobject.TestObjectFactoryPriorityList;
 
 
@@ -52,7 +52,7 @@ public class SamePackageTofPlFinder
   @Override
   public String fqcn(Class<?> argument) {
     assert argument != null;
-    return Reflection.prefixedFqcn(FQCN_PREFIX, argument.getName());
+    return Classes.prefixedFqcn(FQCN_PREFIX, argument.getName());
   }
 
 }

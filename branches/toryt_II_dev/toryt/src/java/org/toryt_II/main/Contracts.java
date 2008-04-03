@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.toryt.util_I.reflect.CannotCreateInstanceException;
 import org.toryt.util_I.reflect.CannotGetClassException;
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Classes;
 import org.toryt_II.OLDTorytException;
 import org.toryt_II.OLDcontract.ClassContract;
 import org.toryt_II.OLDcontract.PackageContract;
@@ -80,7 +80,7 @@ public class Contracts {
     if (tc == null) {
       ClassLoader cl = type.getClassLoader();
       String cn = type.getName();
-      tc = (TypeContract)Reflection.instantiatePrefixed(cl, TYPE_CONTRACT_NAME_PREFIX, cn);
+      tc = (TypeContract)Classes.instantiatePrefixed(cl, TYPE_CONTRACT_NAME_PREFIX, cn);
       CONTRACT_CACHE.put(type, tc);
     }
     return tc;
@@ -109,7 +109,7 @@ public class Contracts {
   public static ClassContract classContractInstance(String className)
       throws CannotCreateInstanceException, CannotGetClassException {
     assert className != null;
-    Class clazz = Reflection.loadForName(className);
+    Class clazz = Classes.loadForName(className);
     return classContractInstance(clazz);
   }
 

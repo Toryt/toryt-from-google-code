@@ -60,7 +60,7 @@ public class NonConstructorInstanceMethodContractBean<_ImplicitArgument_,
    * @param superContracts
    *        If this is <code>null</code> we treat it the same as the empty set.
    * @pre subject != null;
-   * @pre Reflection.methodKind(subject).isInstanceMethod();
+   * @pre Methods.methodKind(subject).isInstanceMethod();
    * @pre typeContract != null;
    * @pre (superContracts != null) ? ! superContracts.contains(null);
    * @pre (forall _SuperContract_ : sc {sc.isClosed()});

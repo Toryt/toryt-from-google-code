@@ -5,8 +5,8 @@ import java.lang.reflect.Method;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.priorityList.PriorityList;
-import org.toryt.util_I.reflect.Reflection;
-import org.toryt.util_I.reflect.Reflection.MethodKind;
+import org.toryt.util_I.reflect.MethodKind;
+import org.toryt.util_I.reflect.Methods;
 
 
 /**
@@ -20,7 +20,7 @@ import org.toryt.util_I.reflect.Reflection.MethodKind;
  * @invar getTestFactoryList() != null;
  * @invar getTestFactoryList().getElementType() == TestFactory.class;
  * @invar (getNonConstructorMethod() != null) ?
- *          Reflection.methodKind(getNonConstructorMethod()) == getMethodKind();
+ *          Methods.methodKind(getNonConstructorMethod()) == getMethodKind();
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -52,7 +52,7 @@ public abstract class NonConstructorMethodTestModel extends MethodTestModel<Meth
   @Override
   public void setSubject(Method subject) {
     assert (subject != null) ?
-             (Reflection.methodKind(subject) == $methodKind) :
+             (Methods.methodKind(subject) == $methodKind) :
              true;
     super.setSubject(subject);
   }

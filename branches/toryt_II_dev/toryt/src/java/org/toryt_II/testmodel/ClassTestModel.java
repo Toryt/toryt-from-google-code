@@ -2,8 +2,8 @@ package org.toryt_II.testmodel;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.Reflection;
-import org.toryt.util_I.reflect.Reflection.TypeKind;
+import org.toryt.util_I.reflect.Constants;
+import org.toryt.util_I.reflect.Constants.TypeKind;
 
 
 /**
@@ -25,7 +25,7 @@ import org.toryt.util_I.reflect.Reflection.TypeKind;
  * @invar classInspectorTestModels != null;
  * @invar innerClassTestModels != null;
  * @invar (getClazz() != null) ?
- *          Reflection.typeKind(getClazz()) == getTypeKind();
+ *          Classes.typeKind(getClazz()) == getTypeKind();
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -57,7 +57,7 @@ public abstract class ClassTestModel<_Subject_> extends CompoundTestModel<Class<
   @Override
   public void setSubject(Class<_Subject_> subject) {
     assert (subject != null) ?
-             (Reflection.typeKind(subject) == $typeKind) :
+             (Classes.typeKind(subject) == $typeKind) :
              true;
     super.setSubject(subject);
   }

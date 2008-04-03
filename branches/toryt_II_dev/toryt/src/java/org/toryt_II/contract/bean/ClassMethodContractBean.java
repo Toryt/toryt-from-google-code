@@ -20,7 +20,7 @@ package org.toryt_II.contract.bean;
 import java.lang.reflect.Method;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.Reflection;
+import org.toryt.util_I.reflect.Methods;
 import org.toryt_II.contract.ClassMethodContract;
 
 
@@ -42,12 +42,12 @@ public class ClassMethodContractBean extends MethodContractBean<Method>
 
   /**
    * @pre subject != null;
-   * @pre Reflection.methodKind(subject).isClassMethod();
+   * @pre Constants.methodKind(subject).isClassMethod();
    * @post new.getSubject() == subject;
    */
   public ClassMethodContractBean(Method subject) {
     super(subject);
-    assert Reflection.methodKind(subject).isClassMethod();
+    assert Methods.methodKind(subject).isClassMethod();
   }
 
   /*</construction>*/
