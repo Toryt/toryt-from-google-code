@@ -38,7 +38,7 @@ public class NoBeanFoundException extends BeanFinderException {
    * @post new.getBeanFinder() == beanFinder;
    * @post new.getArgument() == argument;
    */
-  public NoBeanFoundException(BeanFinder beanFinder, Object argument) {
+  public NoBeanFoundException(BeanFinder<?> beanFinder, Object argument) {
     super(beanFinder, argument);
   }
 

@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 

@@ -44,7 +44,7 @@ public class BeanFinderConfigurationException extends BeanFinderException {
    * @post (message != null) ? new.getMessage().equals(message) : new.getMessage() == message;
    * @post new.getCause() == cause;
    */
-  public BeanFinderConfigurationException(BeanFinder beanFinder, Object argument, String message, Throwable cause) {
+  public BeanFinderConfigurationException(BeanFinder<?> beanFinder, Object argument, String message, Throwable cause) {
     super(beanFinder, argument, message, cause);
   }
 

@@ -44,7 +44,7 @@ public class BeanFinderException extends Exception {
    * @post new.getCause() == null;
    * @post new.getMessage() == null;
    */
-  public BeanFinderException(BeanFinder beanFinder, Object argument) {
+  public BeanFinderException(BeanFinder<?> beanFinder, Object argument) {
     super();
     assert beanFinder != null;
     assert argument != null;
@@ -61,7 +61,7 @@ public class BeanFinderException extends Exception {
    * @post (message != null) ? new.getMessage().equals(message) : new.getMessage() == message;
    * @post new.getCause() == cause;
    */
-  public BeanFinderException(BeanFinder beanFinder, Object argument, String message, Throwable cause) {
+  public BeanFinderException(BeanFinder<?> beanFinder, Object argument, String message, Throwable cause) {
     super(message, cause);
     assert beanFinder != null;
     assert argument != null;
@@ -72,14 +72,14 @@ public class BeanFinderException extends Exception {
   /**
    * @basic
    */
-  public BeanFinder getBeanFinder() {
+  public BeanFinder<?> getBeanFinder() {
     return $beanFinder;
   }
 
   /**
    * @invar $beanFinder != null;
    */
-  private final BeanFinder $beanFinder;
+  private final BeanFinder<?> $beanFinder;
 
   /**
    * @basic
