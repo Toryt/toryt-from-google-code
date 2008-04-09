@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.text.StyledEditorKit.UnderlineAction;
+
 import org.toryt.patterns_I.Assertion;
 import org.toryt.patterns_I.Collections;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -32,6 +34,8 @@ import org.toryt.util_I.collections.priorityList.algebra.ProductPriorityList.BiC
  *   <code>null</code>.</p>
  *
  * @author Jan Dockx
+ *
+ * UNDER DEVELOPMENT
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -76,6 +80,8 @@ public class ProductPriorityList<_Label_, _ResultMapElement_>
   /* <section name="curry tree structure"> */
   //------------------------------------------------------------------
 
+  // tests have shown tree curry considerably faster then either left or right curry
+
   private CurryTreeNode $factorCurryTree;
 
   private abstract class CurryTreeNode {
@@ -96,9 +102,8 @@ public class ProductPriorityList<_Label_, _ResultMapElement_>
   private class MultiCurryTreeNode extends CurryTreeNode {
 
     public MultiCurryTreeNode(Map<_Label_, PriorityList<? extends _ResultMapElement_>> factors) {
-      assert 0 <= factors.size();
-      assert factors.size() >= 2;
-      int splitPointExclusive = (factors.size() / 2) + 1;
+      assert factors.size() > 2;
+      int splitPointExclusive = factors.size() / 2;
       Map<_Label_, PriorityList<? extends _ResultMapElement_>> leftMap =
         new HashMap<_Label_, PriorityList<? extends _ResultMapElement_>>(splitPointExclusive);
       Map<_Label_, PriorityList<? extends _ResultMapElement_>> rightMap =
@@ -162,6 +167,7 @@ public class ProductPriorityList<_Label_, _ResultMapElement_>
       Map.Entry<_Label_, PriorityList<? extends _ResultMapElement_>> e = iter.next();
       $leftLabel = e.getKey();
       $leftFactor = e.getValue();
+      e = iter.next();
       $rightLabel = e.getKey();
       $rightFactor = e.getValue();
       $productSize = (($leftFactor == null) || ($rightFactor == null)) ? 0 :

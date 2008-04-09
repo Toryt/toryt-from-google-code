@@ -1,11 +1,15 @@
 package org.toryt.util_I.collections.priorityList.algebra;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.junit.Before;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
 import org.toryt.util_I.collections.priorityList.PriorityList;
@@ -18,6 +22,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
 public class TestBiProductPriorityList extends AbstractTestComponentPriorityList {
 
   @Override
+  @Before
   public void setUp() {
     super.setUp();
     HashMap<String, PriorityList<PriorityElementDummy>> factors = new HashMap<String, PriorityList<PriorityElementDummy>>(2);
@@ -26,6 +31,7 @@ public class TestBiProductPriorityList extends AbstractTestComponentPriorityList
     $subject = new BiProductPriorityList<String, PriorityElementDummy>(factors);
   }
 
+  @SuppressWarnings("unchecked")
   protected int elementSum(Map<String, ?> map) {
     int acc = 0;
     for (Object o : map.values()) {

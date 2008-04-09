@@ -1,13 +1,16 @@
 package org.toryt.util_I.collections.priorityList.algebra.biProductPLCurried;
 
 
+import static org.junit.Assert.assertEquals;
+
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
 import org.toryt.util_I.collections.priorityList.PriorityList;
@@ -19,7 +22,7 @@ import org.toryt.util_I.collections.priorityList.algebra.PriorityElementDummy;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TestTreeVsList extends TestCase {
+public class TestTreeVsList {
 
   protected ArrayHashPriorityList<PriorityElementDummy> $ahplA;
   protected ArrayHashPriorityList<PriorityElementDummy> $ahplB;
@@ -29,7 +32,7 @@ public class TestTreeVsList extends TestCase {
   protected PriorityList<Map<String, Object>> $rightCurry;
   protected PriorityList<Map<String, Object>> $treeCurry;
 
-  @Override
+  @Before
   public void setUp() {
     $ahplA = new ArrayHashPriorityList<PriorityElementDummy>(false);
     fillPriorityList($ahplA, "A", 5, 2);
@@ -68,7 +71,7 @@ public class TestTreeVsList extends TestCase {
     factorsRC_CD_B_A.put("A", $ahplA);
     $rightCurry = new BiProductPriorityList<String, Object>(factorsRC_CD_B_A);
 
-    // left curry
+    // tree curry
     HashMap<String, PriorityList<?>> factorsTC_AB_CD = new HashMap<String, PriorityList<?>>(2);
     factorsTC_AB_CD.put("AB", LCab);
     factorsTC_AB_CD.put("CD", RCcd);
@@ -84,7 +87,7 @@ public class TestTreeVsList extends TestCase {
     ahpl.lock();
   }
 
-  @Override
+  @After
   public void tearDown() {
     $ahplA = null;
     $ahplB = null;
@@ -95,24 +98,29 @@ public class TestTreeVsList extends TestCase {
     $treeCurry = null;
   }
 
+  @Test
   public void testSize() {
     assertEquals($leftCurry.size(), $rightCurry.size());
     assertEquals($treeCurry.size(), $rightCurry.size());
   }
 
+  @Test
   public void testCardinality() {
     assertEquals($leftCurry.getCardinality(), $rightCurry.getCardinality());
     assertEquals($treeCurry.getCardinality(), $rightCurry.getCardinality());
   }
 
+  @Test
   public void testSpeedLC() {
     speedTest("left curry", $leftCurry, true);
   }
 
+  @Test
   public void testSpeedRC() {
     speedTest("right curry", $rightCurry, true);
   }
 
+  @Test
   public void testSpeedTC() {
     speedTest("tree curry", $treeCurry, true);
   }
@@ -143,6 +151,11 @@ public class TestTreeVsList extends TestCase {
     return nanos;
   }
 
+  @Test
+  /**
+   * Tests until now show tree curry faster all the time, while there is little
+   * difference between left and right curry.
+   */
   public void testStatistics() {
     long lc = 0;
     long rc = 0;
@@ -162,7 +175,11 @@ public class TestTreeVsList extends TestCase {
     System.out.println("tree curry: " + ((tc / 100) / 10E6));
   }
 
-//ok, but takes a while
+  /**
+   * This is the main test that proves that left, right and tree curry produce the same result.
+   */
+  // This works, but is commented out, because it takes hours to complete.
+//  @Test
 //  public void testEquals() {
 //    assertTrue(equalsFlattened($leftCurry, $rightCurry));
 //    assertTrue(equalsFlattened($leftCurry, $treeCurry));
@@ -205,6 +222,7 @@ public class TestTreeVsList extends TestCase {
     return false;
   }
 
+  @SuppressWarnings("unchecked")
   private static void flatten(Map<String, ?> map, Map<String, Object> acc) {
     for (Map.Entry<String, ?> e : map.entrySet()) {
       if (e.getValue() instanceof PriorityElementDummy) {

@@ -3,6 +3,7 @@ package org.toryt.util_I.collections.priorityList.algebra.biProductPLCurried;
 
 import java.util.HashMap;
 
+import org.junit.Before;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 import org.toryt.util_I.collections.priorityList.algebra.BiProductPriorityList;
@@ -17,6 +18,7 @@ import org.toryt.util_I.collections.priorityList.algebra.TestBiProductPriorityLi
 public class TestAB_C extends TestBiProductPriorityList {
 
   @Override
+  @Before
   public void setUp() {
     super.setUp();
     HashMap<String, PriorityList<PriorityElementDummy>> factors2 = new HashMap<String, PriorityList<PriorityElementDummy>>(2);

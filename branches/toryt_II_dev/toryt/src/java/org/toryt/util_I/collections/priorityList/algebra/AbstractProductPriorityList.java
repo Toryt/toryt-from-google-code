@@ -152,7 +152,7 @@ public abstract class AbstractProductPriorityList<_Label_, _ResultMapElement_>
    * @invar (forall PriorityList<?> pl : $factors.values(); (pl == null) || pl.isLocked());
    * @invar (forall _Label_ l : $factors.keySet(); Collections.contains($factorLabels, l));
    */
-  protected Map<_Label_, ? extends PriorityList<? extends _ResultMapElement_>> $factors;
+  protected final Map<_Label_, ? extends PriorityList<? extends _ResultMapElement_>> $factors;
 
   /**
    * @invar $factorLabels != null;
@@ -190,20 +190,20 @@ public abstract class AbstractProductPriorityList<_Label_, _ResultMapElement_>
   /**
    * @invar $baseSize >= 0;
    */
-  private int $baseSize;
+  private final int $baseSize;
 
   /**
    * @invar $fromInclusive >= 0;
    * @invar $fromInclusive < $baseSize;
    * @invar $fromInclusive <= $toExclusive;
    */
-  protected int $fromInclusive;
+  protected final int $fromInclusive;
 
   /**
    * @invar $toExclusive >= 0;
    * @invar $toExclusive <= $baseSize;
    */
-  protected int $toExclusive;
+  protected final int $toExclusive;
 
   /*</section>*/
 

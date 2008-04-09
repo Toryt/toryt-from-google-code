@@ -1,12 +1,15 @@
 package org.toryt.util_I.collections.priorityList.algebra;
 
 
+import static org.junit.Assert.assertEquals;
+
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
 import org.toryt.util_I.collections.priorityList.PriorityList;
@@ -16,7 +19,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class AbstractTestComponentPriorityList extends TestCase {
+public abstract class AbstractTestComponentPriorityList {
 
   protected ArrayHashPriorityList<PriorityElementDummy> $ahplA;
   protected ArrayHashPriorityList<PriorityElementDummy> $ahplB;
@@ -24,7 +27,7 @@ public class AbstractTestComponentPriorityList extends TestCase {
   protected ArrayHashPriorityList<PriorityElementDummy> $ahplD;
   protected PriorityList<?> $subject;
 
-  @Override
+  @Before
   public void setUp() {
     $ahplA = new ArrayHashPriorityList<PriorityElementDummy>(false);
     fillPriorityList($ahplA, "A", 5, 2);
@@ -45,7 +48,7 @@ public class AbstractTestComponentPriorityList extends TestCase {
     ahpl.lock();
   }
 
-  @Override
+  @After
   public void tearDown() {
     $ahplA = null;
     $ahplB = null;
@@ -54,6 +57,7 @@ public class AbstractTestComponentPriorityList extends TestCase {
     $subject = null;
   }
 
+  @Test
   public void testToString() {
 //    System.out.println($ahpl1.toString());
 //    System.out.println();
@@ -67,6 +71,7 @@ public class AbstractTestComponentPriorityList extends TestCase {
     System.out.println();
   }
 
+  @Test
   public void testIteration() {
     int counter = 0;
     ListIterator<?> iter = $subject.listIterator();
@@ -79,6 +84,7 @@ public class AbstractTestComponentPriorityList extends TestCase {
     assertEquals($subject.size(), counter);
   }
 
+  @Test
   public void testPriorityElementIteration() {
     int counter = 0;
     Iterator<?> iter = $subject.priorityElementIterator();

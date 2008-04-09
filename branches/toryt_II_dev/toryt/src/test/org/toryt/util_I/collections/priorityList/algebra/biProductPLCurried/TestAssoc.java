@@ -1,13 +1,17 @@
 package org.toryt.util_I.collections.priorityList.algebra.biProductPLCurried;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.priorityList.ArrayHashPriorityList;
 import org.toryt.util_I.collections.priorityList.PriorityList;
@@ -19,7 +23,7 @@ import org.toryt.util_I.collections.priorityList.algebra.PriorityElementDummy;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TestAssoc extends TestCase {
+public class TestAssoc {
 
   protected ArrayHashPriorityList<PriorityElementDummy> $ahplA;
   protected ArrayHashPriorityList<PriorityElementDummy> $ahplB;
@@ -28,7 +32,7 @@ public class TestAssoc extends TestCase {
   protected PriorityList<Map<String, Object>> $leftCurry;
   protected PriorityList<Map<String, Object>> $rightCurry;
 
-  @Override
+  @Before
   public void setUp() {
     $ahplA = new ArrayHashPriorityList<PriorityElementDummy>(false);
     fillPriorityList($ahplA, "A", 5, 2);
@@ -65,7 +69,7 @@ public class TestAssoc extends TestCase {
     ahpl.lock();
   }
 
-  @Override
+  @After
   public void tearDown() {
     $ahplA = null;
     $ahplB = null;
@@ -75,14 +79,17 @@ public class TestAssoc extends TestCase {
     $rightCurry = null;
   }
 
+  @Test
   public void testSize() {
     assertEquals($leftCurry.size(), $rightCurry.size());
   }
 
+  @Test
   public void testCardinality() {
     assertEquals($leftCurry.getCardinality(), $rightCurry.getCardinality());
   }
 
+  @Test
   public void testEquals() {
     assertTrue(equalsFlattened($leftCurry, $rightCurry));
   }
@@ -124,6 +131,7 @@ public class TestAssoc extends TestCase {
     return false;
   }
 
+  @SuppressWarnings("unchecked")
   private static void flatten(Map<String, ?> map, Map<String, Object> acc) {
     for (Map.Entry<String, ?> e : map.entrySet()) {
       if (e.getValue() instanceof PriorityElementDummy) {
