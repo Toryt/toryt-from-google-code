@@ -1,11 +1,15 @@
 package org.toryt.util_I.collections.bigSet.algebra;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigInteger;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
 
@@ -14,9 +18,9 @@ import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TestUnionBigSet extends TestCase {
+public class TestUnionBigSet {
 
-  @Override
+  @Before
   @SuppressWarnings("unchecked")
   public void setUp() {
     SetBackedLockableBigSet<Integer> component1 = new SetBackedLockableBigSet<Integer>(false);
@@ -28,7 +32,7 @@ public class TestUnionBigSet extends TestCase {
     $subject = new UnionBigSet<Integer>(false, component1, component2, component3);
   }
 
-  @Override
+  @After
   public void tearDown() {
     $subject = null;
   }
@@ -42,14 +46,17 @@ public class TestUnionBigSet extends TestCase {
 
   private UnionBigSet<Integer> $subject;
 
+  @Test
   public void testEmpty() {
     assertTrue(! ($subject.isEmpty()));
   }
 
+  @Test
   public void testBigSize() {
     assertEquals(BigInteger.valueOf(9), $subject.getBigSize());
   }
 
+  @Test
   public void testIterator() {
     Iterator<Integer> iter = $subject.iterator();
     while (iter.hasNext()) {

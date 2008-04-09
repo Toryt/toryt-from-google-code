@@ -1,13 +1,17 @@
 package org.toryt.util_I.collections.bigSet.algebra;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
 
@@ -17,9 +21,9 @@ import org.toryt.util_I.collections.bigSet.lockable.SetBackedLockableBigSet;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TestProductBigSet extends TestCase {
+public class TestProductBigSet {
 
-  @Override
+  @Before
   public void setUp() {
     SetBackedLockableBigSet<Integer> factor1 = new SetBackedLockableBigSet<Integer>(false);
     fillSet(factor1, 10);
@@ -34,7 +38,7 @@ public class TestProductBigSet extends TestCase {
     $subject = new ProductBigSet<String, Number>(factors);
   }
 
-  @Override
+  @After
   public void tearDown() {
     $subject = null;
   }
@@ -48,14 +52,17 @@ public class TestProductBigSet extends TestCase {
 
   private ProductBigSet<String, Number> $subject;
 
+  @Test
   public void testEmpty() {
     assertTrue(! ($subject.isEmpty()));
   }
 
+  @Test
   public void testBigSize() {
     assertEquals(BigInteger.valueOf(27), $subject.getBigSize());
   }
 
+  @Test
   public void testIterator() {
     Iterator<Map<String, Number>> iter = $subject.iterator();
     while (iter.hasNext()) {
