@@ -22,7 +22,6 @@ import org.toryt.util_I.reflect.Methods;
 import org.toryt_II.testmodel.ClassTestModel;
 import org.toryt_II.testmodel.DefaultTestModelFactory;
 import org.toryt_II.testmodel.NonConstructorMethodTestModel;
-import org.toryt_II.testmodel.StaticClassTestModel;
 import org.toryt_II.testmodel.TestModel;
 import org.toryt_II.testmodel.TestModelCreationException;
 import org.toryt_II.testmodel.TestModelFactory;
@@ -66,7 +65,7 @@ public class Cli {
       System.exit(0);
     }
     TestModelFactory testModelFactory = createTestModelFactory(cl);
-    TestModel testModel = createTestModel(cl, testModelFactory);
+    TestModel<?> testModel = createTestModel(cl, testModelFactory);
     testModel.printStructure(System.out);
     System.out.println("Starting tests.");
     System.out.println(new Date());
@@ -96,7 +95,7 @@ public class Cli {
     return OptionBuilder.create(SHORT_VERSION_OPTION);
   }
 
-  public static Class DEFAULT_TEST_MODEL_FACTORY = DefaultTestModelFactory.class;
+  public static Class<DefaultTestModelFactory> DEFAULT_TEST_MODEL_FACTORY = DefaultTestModelFactory.class;
 
   public static String SHORT_TEST_MODEL_FACTORY_OPTION = "f";
 
@@ -210,10 +209,10 @@ public class Cli {
   }
 
   private static TestModelFactory createTestModelFactory(CommandLine cl) {
-    Class testModelFactoryClass = loadTestModelFactoryClass(cl);
+    Class<? extends TestModelFactory> testModelFactoryClass = loadTestModelFactoryClass(cl);
     TestModelFactory testModelFactory = null;
     try {
-      testModelFactory = (TestModelFactory)testModelFactoryClass.newInstance();
+      testModelFactory = testModelFactoryClass.newInstance();
     }
     catch (InstantiationException iExc) {
       System.err.println("Cannot instantiate " + testModelFactoryClass + "as TestModelFactory");
@@ -244,11 +243,13 @@ public class Cli {
     return testModelFactory;
   }
 
-  private static Class loadTestModelFactoryClass(CommandLine cl) {
-    Class testModelFactoryClass = null;
+  private static Class<? extends TestModelFactory> loadTestModelFactoryClass(CommandLine cl) {
+    Class<? extends TestModelFactory> testModelFactoryClass = null;
     if (cl.hasOption(SHORT_TEST_MODEL_FACTORY_OPTION)) {
       String testModelFactoryClassName = cl.getOptionValue(SHORT_TEST_MODEL_FACTORY_OPTION);
-      testModelFactoryClass = loadSimpleClass(testModelFactoryClassName);
+      @SuppressWarnings("unchecked")
+      Class<? extends TestModelFactory> loadSimpleClass = (Class<? extends TestModelFactory>)loadSimpleClass(testModelFactoryClassName);
+      testModelFactoryClass = loadSimpleClass;
     }
     else {
       testModelFactoryClass = DEFAULT_TEST_MODEL_FACTORY;
@@ -412,10 +413,10 @@ public class Cli {
    * @pre classNames.length > 0;
    * @result != null;
    */
-  private static Class loadClass(String[] classNames) {
+  private static Class<?> loadClass(String[] classNames) {
     assert classNames != null;
     assert classNames.length > 0;
-    Class result = loadSimpleClass(classNames[0]);
+    Class<?> result = loadSimpleClass(classNames[0]);
     for (int i = 1; i < classNames.length; i++) {
       try {
         result = getNestedClass(result, classNames[i]);
@@ -430,8 +431,8 @@ public class Cli {
     return result;
   }
 
-  private static Class loadSimpleClass(String className) {
-    Class result = null;
+  private static Class<?> loadSimpleClass(String className) {
+    Class<?> result = null;
     try {
       result = Class.forName(className);
     }
@@ -454,9 +455,9 @@ public class Cli {
     return result;
   }
 
-  private static Class getNestedClass(Class outerClass, String innerClassName) throws ClassNotFoundException {
+  private static Class<?> getNestedClass(Class<?> outerClass, String innerClassName) throws ClassNotFoundException {
     assert outerClass != null;
-    Class[] nested = outerClass.getClasses();
+    Class<?>[] nested = outerClass.getClasses();
     for (int j = 0; j < nested.length; j++) {
       if (nested[j].getName().equals(innerClassName)) {
         return nested[j];
