@@ -15,6 +15,15 @@ import org.toryt.util_I.collections.bigSet.lockable.LockableBigSet;
  * <p>A lazy big set, wrapped around another {@link LockableBigSet},
  *   that presents the elements of the wrapped big set mapped using
  *   a {@link Mapping}.</p>
+ * <p>Since a mapping can do anything, we are not sure the result is a
+ *   set, nor that it will or will not contain {@code null}. In general,
+ *   the result is a collection, and could always contain {@code null}.</p>
+ *
+ * @mudo This this should be a collection, and not a set, should inherit
+ *       differently, be in a different package, and have another name.
+ *       However, since this class is not used in this project at the
+ *       moment, we will not bother with that now.
+ *
  *
  * @author Jan Dockx
  *
@@ -36,7 +45,7 @@ public class MappedBigSet<_WrappedElement_, _ResultElement_>
    * @post new.getWrapped() == wrapped.
    */
   public MappedBigSet(LockableBigSet<? extends _WrappedElement_> wrapped, Mapping<_WrappedElement_, _ResultElement_> mapping) {
-    super(nullAllowed, wrapped.getBigSize());
+    super(true, wrapped.getBigSize());
     assert wrapped != null;
     assert wrapped.isLocked();
     assert mapping != null;
