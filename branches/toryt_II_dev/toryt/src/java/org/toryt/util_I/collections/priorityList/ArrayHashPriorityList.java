@@ -189,13 +189,16 @@ public class ArrayHashPriorityList<_PriorityElement_>
     if (isLocked()) {
       throw new UnsupportedOperationException("priority list is locked");
     }
-    SetBackedLockableBigSet<_PriorityElement_> lbs= null;
+    SetBackedLockableBigSet<_PriorityElement_> lbs = null;
     if (priority < size()) {
-      lbs = (SetBackedLockableBigSet<_PriorityElement_>)get(priority);
+      @SuppressWarnings("unchecked")
+      SetBackedLockableBigSet<_PriorityElement_> lbs2 =
+          (SetBackedLockableBigSet<_PriorityElement_>)get(priority);
       /* ok in this implementation: we know this will only contain
        * SetBackedLockableBigSet<_PriorityElementType_> with that precise
        * type in this class (this isn't true for PriorityLists in general).
        */
+      lbs = lbs2;
     }
     if (lbs == null) {
       lbs = fillWithEmptyBucketsUpUntil(priority);

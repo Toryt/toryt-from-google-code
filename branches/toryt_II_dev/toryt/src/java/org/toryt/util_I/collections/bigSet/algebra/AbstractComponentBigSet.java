@@ -65,7 +65,9 @@ public abstract class AbstractComponentBigSet<_ResultElement_, _ComponentElement
                                         return (o == null) || (! o.contains(null));
                                       }
                                     });
-    $components = (LockableBigSet<? extends _ComponentElement_>[])ArrayUtils.clone(components);
+    @SuppressWarnings("unchecked")
+    LockableBigSet<? extends _ComponentElement_>[] clone = (LockableBigSet<? extends _ComponentElement_>[])ArrayUtils.clone(components);
+    $components = clone;
   }
 
   /* Since components are locked, and the array of components is fixed after construction,
@@ -81,7 +83,9 @@ public abstract class AbstractComponentBigSet<_ResultElement_, _ComponentElement
    * @basic
    */
   public final LockableBigSet<? extends _ComponentElement_>[] getComponents() {
-    return (LockableBigSet<? extends _ComponentElement_>[])ArrayUtils.clone($components);
+    @SuppressWarnings("unchecked")
+    LockableBigSet<? extends _ComponentElement_>[] clone = (LockableBigSet<? extends _ComponentElement_>[])ArrayUtils.clone($components);
+    return clone;
   }
 
   /**

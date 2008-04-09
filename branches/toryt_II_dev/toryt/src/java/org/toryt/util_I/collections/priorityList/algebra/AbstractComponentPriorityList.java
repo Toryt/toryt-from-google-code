@@ -69,7 +69,10 @@ public abstract class AbstractComponentPriorityList<_PriorityElement_>
                                     }) :
              true;
     $size = size;
-    $components = (PriorityList<? extends _PriorityElement_>[])ArrayUtils.clone(components);
+    @SuppressWarnings("unchecked")
+    PriorityList<? extends _PriorityElement_>[] clone =
+      (PriorityList<? extends _PriorityElement_>[])ArrayUtils.clone(components);
+    $components = clone;
   }
 
   private static BigInteger calculateCardinality(PriorityList<?>[] components) {
@@ -89,7 +92,10 @@ public abstract class AbstractComponentPriorityList<_PriorityElement_>
    * @basic
    */
   public final PriorityList<? extends _PriorityElement_>[] getComponents() {
-    return (PriorityList<? extends _PriorityElement_>[])ArrayUtils.clone($components);
+    @SuppressWarnings("unchecked")
+    PriorityList<? extends _PriorityElement_>[] clone =
+      (PriorityList<? extends _PriorityElement_>[])ArrayUtils.clone($components);
+    return clone;
   }
 
   /**

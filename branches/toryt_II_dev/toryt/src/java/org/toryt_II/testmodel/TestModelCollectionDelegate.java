@@ -22,7 +22,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TestModelCollectionDelegate<_TestModel_ extends TestModel> {
+public class TestModelCollectionDelegate<_TestModel_ extends TestModel<?>> {
 
   /**
    * @pre compoundTestModel != null;

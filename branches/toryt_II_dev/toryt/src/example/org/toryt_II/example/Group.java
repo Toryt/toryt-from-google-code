@@ -123,9 +123,9 @@ public class Group extends Node {
   @Override
   protected final int getTotalOfRatings() {
     int totalOfRatings = 0;
-    Iterator iterator = $nodes.values().iterator();
+    Iterator<Node> iterator = $nodes.values().iterator();
     while (iterator.hasNext()) {
-      Node node = (Node)iterator.next();
+      Node node = iterator.next();
       totalOfRatings += node.getTotalOfRatings();
     }
     return totalOfRatings;
@@ -134,9 +134,9 @@ public class Group extends Node {
   @Override
   protected final int getNumberOfBookmarks() {
     int numberOfBookmarks = 0;
-    Iterator iterator = $nodes.values().iterator();
+    Iterator<Node> iterator = $nodes.values().iterator();
     while (iterator.hasNext()) {
-      Node node = (Node)iterator.next();
+      Node node = iterator.next();
       numberOfBookmarks += node.getNumberOfBookmarks();
     }
     return numberOfBookmarks;

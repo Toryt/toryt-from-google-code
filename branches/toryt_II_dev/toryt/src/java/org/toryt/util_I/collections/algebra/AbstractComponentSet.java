@@ -61,7 +61,9 @@ public abstract class AbstractComponentSet<_ResultElement_, _ComponentElement_>
                                         return (o == null) || (! o.contains(null));
                                       }
                                     });
-    $components = (LockableSet<? extends _ComponentElement_>[])ArrayUtils.clone(components);
+    @SuppressWarnings("unchecked")
+    LockableSet<? extends _ComponentElement_>[] clone = (LockableSet<? extends _ComponentElement_>[])ArrayUtils.clone(components);
+    $components = clone;
   }
 
   /* Since components are locked, and the array of components is fixed after construction,
@@ -77,7 +79,9 @@ public abstract class AbstractComponentSet<_ResultElement_, _ComponentElement_>
    * @basic
    */
   public final LockableSet<? extends _ComponentElement_>[] getComponents() {
-    return (LockableSet<? extends _ComponentElement_>[])ArrayUtils.clone($components);
+    @SuppressWarnings("unchecked")
+    LockableSet<? extends _ComponentElement_>[] clone = (LockableSet<? extends _ComponentElement_>[])ArrayUtils.clone($components);
+    return clone;
   }
 
   /**
