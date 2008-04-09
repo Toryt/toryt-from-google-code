@@ -1,34 +1,38 @@
 package org.toryt_II.main;
 
 
+import org.junit.Test;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-
-import junit.framework.TestCase;
+import org.toryt.util_I.reflect.CannotGetMethodException;
+import org.toryt_II.testmodel.TestModelCreationException;
 
 
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class TestCli extends TestCase {
+public class TestCli {
 
-//  public final void testMain1() {
+//  @Test
+//  public final void testMain1() throws CannotGetMethodException, SecurityException, TestModelCreationException {
 //    String[] args = new String[] {};
 //    Cli.main(args);
 //    //expect error and usage
 //  }
 
-//  public final void testMain2() {
-//    String[] args = new String[] {"--version"};
-//    Cli.main(args);
-//    //expect version
-//  }
+  @Test
+  public final void testMain2() throws CannotGetMethodException, SecurityException, TestModelCreationException {
+    String[] args = new String[] {"--version"};
+    Cli.main(args);
+    //expect version
+  }
 
-//  public final void testMain3() {
-//    String[] args = new String[] {"-h"};
-//    Cli.main(args);
-//    //expect usage
-//  }
+  @Test
+  public final void testMain3() throws CannotGetMethodException, SecurityException, TestModelCreationException {
+    String[] args = new String[] {"-h"};
+    Cli.main(args);
+    //expect usage
+  }
 
 //  public final void testMain4() {
 //    String[] args = new String[] {"-p"};
@@ -90,7 +94,8 @@ public class TestCli extends TestCase {
 //    //expect error (class doesn't exist) and usage
 //  }
 
-  public final void testMain14() {
+  @Test
+  public final void testMain14() throws CannotGetMethodException, SecurityException, TestModelCreationException {
     String[] args = new String[] {"-c", "org.toryt_II.example.Bookmark"};
     Cli.main(args);
     //expect works
