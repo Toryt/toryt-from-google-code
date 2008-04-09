@@ -2,8 +2,6 @@ package org.toryt_II.testmodel;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.Constants;
-import org.toryt.util_I.reflect.Constants.TypeKind;
 
 
 /**
@@ -35,32 +33,32 @@ public abstract class ClassTestModel<_Subject_> extends CompoundTestModel<Class<
 
 
 
-  protected ClassTestModel(TypeKind typeKind) {
-    $typeKind = typeKind;
-  }
+//  protected ClassTestModel(TypeKind typeKind) {
+//    $typeKind = typeKind;
+//  }
+//
+//
+//
+//  /*<property name="typeKind">*/
+//  //------------------------------------------------------------------
+//
+//  public final TypeKind getTypeKind() {
+//    return $typeKind;
+//  }
+//
+//  private final TypeKind $typeKind;
+//
+//  /*</property>*/
 
 
 
-  /*<property name="typeKind">*/
-  //------------------------------------------------------------------
-
-  public final TypeKind getTypeKind() {
-    return $typeKind;
-  }
-
-  private final TypeKind $typeKind;
-
-  /*</property>*/
-
-
-
-  @Override
-  public void setSubject(Class<_Subject_> subject) {
-    assert (subject != null) ?
-             (Classes.typeKind(subject) == $typeKind) :
-             true;
-    super.setSubject(subject);
-  }
+//  @Override
+//  public void setSubject(Class<_Subject_> subject) {
+//    assert (subject != null) ?
+//             (Classes.typeKind(subject) == $typeKind) :
+//             true;
+//    super.setSubject(subject);
+//  }
 
 
 

@@ -1,8 +1,23 @@
+/*<license>
+Copyright 2006 - $Date$ by Jan Dockx.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</license>*/
+
 package org.toryt_II.testmodel;
 
 
 import java.io.PrintStream;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -19,7 +34,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractTestModel<_Subject_> implements TestModel<_Subject_> {
 
-  /*<property name="typeKind">*/
+
+  /*<property name="subject">*/
   //------------------------------------------------------------------
 
   public final _Subject_ getSubject() {
@@ -33,9 +49,6 @@ public abstract class AbstractTestModel<_Subject_> implements TestModel<_Subject
     $subject = subject;
   }
 
-  /**
-   * @invar $subject != null;
-   */
   private _Subject_ $subject;
 
   /*</property>*/
@@ -58,6 +71,7 @@ public abstract class AbstractTestModel<_Subject_> implements TestModel<_Subject
 
   /**
    * Human-readable name for the {@link #getSubject()}.
+   * &quot;Save&quot; means that {@link #getSubject()} cannot be {@code null}.
    *
    * @basic
    * @pre getSubject() != null;
@@ -163,15 +177,13 @@ public abstract class AbstractTestModel<_Subject_> implements TestModel<_Subject
       $out.println(obj);
     }
 
-    public void printChildren(String sectionHeading, Set testModels) {
+    public void printChildren(String sectionHeading, Set<? extends TestModel<?>> testModels) {
       println(sectionHeading);
       IndentPrinter indent = new IndentPrinter(this, testModels.size());
-      Iterator iter = testModels.iterator();
-      while (iter.hasNext()) {
-        AbstractTestModel tm = (AbstractTestModel)iter.next();
-        tm.printStructure(indent);
+      for (TestModel<?> atm : testModels) {
+        ((AbstractTestModel<?>)atm).printStructure(indent);
+        // MUDO this cast is so incredibly bad ...
       }
-
     }
 
   }

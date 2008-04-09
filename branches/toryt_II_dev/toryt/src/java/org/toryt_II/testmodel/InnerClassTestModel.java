@@ -1,7 +1,7 @@
 package org.toryt_II.testmodel;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.Classes.TypeKind;
+import org.toryt.util_I.reflect.Classes;
 
 
 /**
@@ -9,16 +9,18 @@ import org.toryt.util_I.reflect.Classes.TypeKind;
  *
  * @author Jan Dockx
  *
- * @invar getTypeKind() == TypeKind.INNER;
+ * @invar Classes.isInnerClass(subject);
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class InnerClassTestModel<_Subject_>  extends ClassTestModel<_Subject_>  {
+public class InnerClassTestModel<_Subject_> extends ClassTestModel<_Subject_>  {
 
-  public InnerClassTestModel() {
-    super(TypeKind.INNER);
+  @Override
+  public void setSubject(Class<_Subject_> subject) {
+    assert Classes.isInnerClass(subject);
+    super.setSubject(subject);
   }
 
 }

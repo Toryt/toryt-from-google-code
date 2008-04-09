@@ -10,16 +10,16 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * <p>A model of a method to test.</p>
  * <p>This class is abstract: you should use
  *   one of the more specific subclasses for different kinds of methods
- *   instead. <code>_SubjectType_</code> is still unbound, because in Java
- *   reflection {@link java.lang.reflect.Method} and
- *   {@link java.lang.reflect.Constructor} are unrelated types.</p>
+ *   instead. <code>_Subject_</code> is bound by {@link Member}, because in
+ *   Java reflection that is the closest common subtype of
+ *   {@link java.lang.reflect.Method} and {@link java.lang.reflect.Constructor}.</p>
  *
  * @author Jan Dockx
  *
  * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getTestFactoryList() != null;
  * @invar getTestFactoryList().getElementType() == TestFactory.class;
- * @invar (getMethod() instanceof Method) || (getMethod() instanceof Constructor);
+ * @invar (getSubject() instanceof Method) || (getSubject() instanceof Constructor);
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

@@ -16,8 +16,15 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.toryt.util_I.reflect.CannotGetMethodException;
+import org.toryt.util_I.reflect.Classes;
+import org.toryt.util_I.reflect.Methods;
+import org.toryt_II.testmodel.ClassTestModel;
 import org.toryt_II.testmodel.DefaultTestModelFactory;
+import org.toryt_II.testmodel.NonConstructorMethodTestModel;
+import org.toryt_II.testmodel.StaticClassTestModel;
 import org.toryt_II.testmodel.TestModel;
+import org.toryt_II.testmodel.TestModelCreationException;
 import org.toryt_II.testmodel.TestModelFactory;
 
 
@@ -39,7 +46,7 @@ public class Cli {
   /*</section>*/
 
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws SecurityException, TestModelCreationException, CannotGetMethodException {
     CommandLine cl = null;
     { // Parsing
       CommandLineParser clParser = new PosixParser();
@@ -251,7 +258,7 @@ public class Cli {
     return testModelFactoryClass;
   }
 
-  private static TestModel createTestModel(CommandLine cl, TestModelFactory testModelFactory) throws SecurityException {
+  private static TestModel<?> createTestModel(CommandLine cl, TestModelFactory testModelFactory) throws SecurityException, TestModelCreationException, CannotGetMethodException {
     if ((! cl.hasOption(SHORT_PROJECT_OPTION)) &&
         (! cl.hasOption(SHORT_PACKAGE_OPTION)) &&
         (! cl.hasOption(SHORT_CLASS_OPTION)) &&
@@ -261,7 +268,7 @@ public class Cli {
                           "(except when called with option --help)\n");
       printHelp(-100, System.err); // exit
     }
-    TestModel testModel = null;
+    TestModel<?> testModel = null;
     if (cl.hasOption(SHORT_PROJECT_OPTION) || cl.hasOption(SHORT_PACKAGE_OPTION)) {
       // we need a class directory
       if (! cl.hasOption(SHORT_DIRECTORY_OPTION)) {
@@ -297,9 +304,9 @@ public class Cli {
       // we do not need a class directory; reflection does the job
       if (cl.hasOption(SHORT_CLASS_OPTION)) {
         String className = cl.getOptionValue(SHORT_CLASS_OPTION);
-        Class classToTest = loadClass(className.split(MEMBER_SEPARATOR));
+        Class<?> classToTest = loadClass(className.split(MEMBER_SEPARATOR));
         // MUDO different for nested classes
-        testModel = testModelFactory.createClassTestModel(classToTest);
+        testModel = createClassTestModel(testModelFactory, classToTest);
       }
       else if (cl.hasOption(SHORT_METHOD_OPTION)) {
         String methodName = cl.getOptionValue(SHORT_METHOD_OPTION);
@@ -309,44 +316,93 @@ public class Cli {
           System.err.println("--method argument value \"" +
                              methodName +
                              "\" does not contain # separator");
-          printHelp(-320, System.err); // exit
+          printHelp(-420, System.err); // exit
         }
         String[] className = new String[names.length - 1];
         System.arraycopy(names, 0, className, 0, className.length);
-        Class methodHolder = loadClass(className);
-        Object method = getMethod(methodHolder, names[names.length - 1]);
-        if (method == null) {
-          System.err.println("no method " + methodName + " found");
-          printHelp(-321, System.err); // exit
+        Class<?> methodHolder = loadClass(className);
+        Method method = Methods.findMethod(methodHolder, names[names.length - 1]);
+        if (method != null) {
+          System.out.println("Method: " + method);
+          testModel = createNonConstructorMethodTestModel(testModelFactory, method);
         }
-        System.out.println("Method: " + method);
-        testModel = testModelFactory.createMethodTestModel(method);
+        else {
+          Constructor<?> constructor = Methods.findConstructor(methodHolder, names[names.length - 1]);
+          if (method == null) {
+            System.err.println("no method " + methodName + " found");
+            printHelp(-421, System.err); // exit
+          }
+          System.out.println("Method: " + constructor);
+          testModel = testModelFactory.createConstructorTestModel(constructor);
+        }
       }
     }
     assert testModel != null;
     return testModel;
   }
 
-  /**
-   * @result (result instanceof Method) || (result instanceof Constructor) || null;
-   * @mudo DOESN"T WORK
-   */
-  private static Object getMethod(Class methodHolder, String methodSig) {
-    assert methodHolder != null;
-    Method[] methods = methodHolder.getMethods();
-    for (int i = 0; i < methods.length; i++) {
-      if (methods[i].toString().equals(methodSig)) {
-        return methods[i];
-      }
+  private static ClassTestModel<?> createClassTestModel(TestModelFactory tmf, Class<?> c) throws TestModelCreationException {
+    assert tmf != null;
+    assert c != null;
+    if (c.isInterface()) {
+      System.err.println("interfaces cannot be tested and " + c + " is an interface");
+      printHelp(-301, System.err);
     }
-    Constructor[] constructors = methodHolder.getConstructors();
-    for (int i = 0; i < constructors.length; i++) {
-      if (constructors[i].toString().equals(methodSig)) {
-        return constructors[i];
-      }
+    ClassTestModel<?> result = null;
+    if (Classes.isInnerClass(c)) {
+      result = tmf.createInnerClassTestModel(c);
     }
-    return null;
+    else if (c.getDeclaringClass() == c) {
+      result = tmf.createStaticClassTestModel(c);
+    }
+    return result;
   }
+
+  private static NonConstructorMethodTestModel createNonConstructorMethodTestModel(TestModelFactory tmf, Method m) throws TestModelCreationException {
+    assert tmf != null;
+    assert m != null;
+    NonConstructorMethodTestModel result = null;
+    switch (Methods.methodKind(m)) {
+      case INSTANCE_MUTATOR:
+        result = tmf.createInstanceMutatorTestModel(m);
+        break;
+      case INSTANCE_INSPECTOR:
+        // MUDO remove basic inspectors
+        result = tmf.createInstanceInspectorTestModel(m);
+        break;
+      case CLASS_MUTATOR:
+        result = tmf.createClassMutatorTestModel(m);
+        break;
+      case CLASS_INSPECTOR:
+        // MUDO remove basic inspectors
+        result = tmf.createClassInspectorTestModel(m);
+        break;
+      default:
+        assert false;
+    }
+    return result;
+  }
+
+//  /**
+//   * @result (result instanceof Method) || (result instanceof Constructor) || null;
+//   * @mudo DOESN"T WORK
+//   */
+//  private static Object getMethod(Class methodHolder, String methodSig) {
+//    assert methodHolder != null;
+//    Method[] methods = methodHolder.getMethods();
+//    for (int i = 0; i < methods.length; i++) {
+//      if (methods[i].toString().equals(methodSig)) {
+//        return methods[i];
+//      }
+//    }
+//    Constructor[] constructors = methodHolder.getConstructors();
+//    for (int i = 0; i < constructors.length; i++) {
+//      if (constructors[i].toString().equals(methodSig)) {
+//        return constructors[i];
+//      }
+//    }
+//    return null;
+//  }
 
   /**
    * An array of class names, takes into account nested classes.

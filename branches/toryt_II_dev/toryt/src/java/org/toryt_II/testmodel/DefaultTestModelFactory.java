@@ -13,8 +13,6 @@ import org.toryt.util_I.reflect.CannotGetClassException;
 import org.toryt.util_I.reflect.Classes;
 import org.toryt.util_I.reflect.MethodKind;
 import org.toryt.util_I.reflect.Methods;
-import org.toryt.util_I.reflect.Constants;
-import org.toryt.util_I.reflect.Constants.TypeKind;
 
 
 /**
@@ -77,7 +75,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
   public <_Subject_> InnerClassTestModel<_Subject_> createInnerClassTestModel(Class<_Subject_>  innerClazz)
       throws TestModelCreationException {
     assert innerClazz != null;
-    assert Constants.typeKind(innerClazz) == TypeKind.INNER;
+    assert Classes.isInnerClass(innerClazz);
     LOG.debug("Creating InnerClassTestModel for class " + innerClazz);
     InnerClassTestModel<_Subject_> result = new InnerClassTestModel<_Subject_>();
     initClassTestModel(innerClazz, result);
@@ -87,7 +85,7 @@ public class DefaultTestModelFactory implements TestModelFactory {
   public <_Subject_> StaticClassTestModel<_Subject_> createStaticClassTestModel(Class<_Subject_>  clazz)
       throws TestModelCreationException {
     assert clazz != null;
-    assert Classes.typeKind(clazz) == TypeKind.STATIC;
+    assert ! Classes.isInnerClass(clazz);
     LOG.debug("Creating StaticClassTestModel for class " + clazz);
     StaticClassTestModel<_Subject_> result = new StaticClassTestModel<_Subject_>();
     initClassTestModel(clazz, result);
@@ -178,26 +176,20 @@ public class DefaultTestModelFactory implements TestModelFactory {
           // only public nested types, but also inherited and interfaces
       for (int i = 0; i < clazzes.length; i++) {
         if (! clazzes[i].isInterface()) { // interfaces cannot be tested
-          switch (Classes.typeKind(clazz)) {
-            case INNER:
-              LOG.debug("    " + clazzes[i] + " is an inner class");
-              result.innerClassTestModels.add(createInnerClassTestModel(clazzes[i]));
-              break;
-            case STATIC:
-              if (clazzes[i].getDeclaringClass() == clazz) {
-                // static nested classes only need to be added to the declaring class test model
-                LOG.debug("    " + clazzes[i] + " is an static nested class");
-                try {
-                  ((StaticClassTestModel<_Subject_>)result).staticNestedClassTestModels.add(createStaticClassTestModel(clazzes[i]));
-                }
-                catch (ClassCastException ccExc) {
-                  // static nested classses can only be nested in static classes
-                  assert false : "static nested classses can only be nested in static classes";
-                }
-              }
-              break;
-            default:
-              assert false;
+          if (Classes.isInnerClass(clazzes[i])) {
+            LOG.debug("    " + clazzes[i] + " is an inner class");
+            result.innerClassTestModels.add(createInnerClassTestModel(clazzes[i]));
+          }
+          else if (clazzes[i].getDeclaringClass() == clazz) {
+            // static nested classes only need to be added to the declaring class test model
+            LOG.debug("    " + clazzes[i] + " is a static nested class");
+            try {
+              ((StaticClassTestModel<_Subject_>)result).staticNestedClassTestModels.add(createStaticClassTestModel(clazzes[i]));
+            }
+            catch (ClassCastException ccExc) {
+              // static nested classses can only be nested in static classes
+              assert false : "static nested classses can only be nested in static classes";
+            }
           }
         }
       }

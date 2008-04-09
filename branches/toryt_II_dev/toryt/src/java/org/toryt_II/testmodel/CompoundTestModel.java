@@ -19,6 +19,8 @@ import org.toryt.util_I.collections.priorityList.algebra.UnionPriorityList;
  *   The {@link #getTestFactoryList()}
  *   is the union of the test factory lists of the children, and
  *   possibly extra test factories added here.</p>
+ *
+ * @protected
  * <p>Subclasses should define a {@link TestModelCollectionDelegate}
  *   for each kind of child test model, using public delegation.
  *   Each of these delegates should be added
@@ -52,14 +54,14 @@ public abstract class CompoundTestModel<_Subject_> extends AbstractTestModel<_Su
    */
   public final Set<TestModel<?>> getChildTestModels() {
     Set<TestModel<?>> result = new HashSet<TestModel<?>>();
-    for (TestModelCollectionDelegate<? extends TestModel> delegate : $testModelCollectionDelegates.values()) {
+    for (TestModelCollectionDelegate<? extends TestModel<?>> delegate : $testModelCollectionDelegates.values()) {
       result.addAll(delegate.getSet());
     }
     return Collections.unmodifiableSet(result);
   }
 
 
-  protected final void addTestModelCollectionDelegate(String kind, TestModelCollectionDelegate<? extends TestModel> delegate) {
+  protected final void addTestModelCollectionDelegate(String kind, TestModelCollectionDelegate<? extends TestModel<?>> delegate) {
     $testModelCollectionDelegates.put(kind, delegate);
   }
 
@@ -67,8 +69,8 @@ public abstract class CompoundTestModel<_Subject_> extends AbstractTestModel<_Su
    * @invar $testModelCollectionDelegates != null;
    * @invar Collections.noNull($testModelCollectionDelegates);
    */
-  private Map<String, TestModelCollectionDelegate<? extends TestModel>> $testModelCollectionDelegates =
-      new LinkedHashMap<String, TestModelCollectionDelegate<? extends TestModel>>();
+  private Map<String, TestModelCollectionDelegate<? extends TestModel<?>>> $testModelCollectionDelegates =
+      new LinkedHashMap<String, TestModelCollectionDelegate<? extends TestModel<?>>>();
 
   /*</property>*/
 
@@ -117,7 +119,7 @@ public abstract class CompoundTestModel<_Subject_> extends AbstractTestModel<_Su
       childTestFactoryLists[i] = childTestModel.getTestFactoryList();
       i++;
     }
-    return null; //new UnionPriorityList(childTestFactoryLists);
+    return new UnionPriorityList(false, childTestFactoryLists);
   }
 
   /**
@@ -133,7 +135,7 @@ public abstract class CompoundTestModel<_Subject_> extends AbstractTestModel<_Su
     assert out != null;
     out.println(getSubjectDisplayName());
     IndentPrinter sections = new IndentPrinter(out, $testModelCollectionDelegates.size());
-    for (Map.Entry<String, TestModelCollectionDelegate<? extends TestModel>> entry:
+    for (Map.Entry<String, TestModelCollectionDelegate<? extends TestModel<?>>> entry:
           $testModelCollectionDelegates.entrySet()) {
       sections.printChildren(entry.getKey() + ": ", entry.getValue().getSet());
     }

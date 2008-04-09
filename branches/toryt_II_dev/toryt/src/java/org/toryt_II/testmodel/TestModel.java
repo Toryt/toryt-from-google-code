@@ -1,3 +1,19 @@
+/*<license>
+Copyright 2006 - $Date$ by Jan Dockx.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</license>*/
+
 package org.toryt_II.testmodel;
 
 
@@ -7,6 +23,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 import org.toryt.util_I.collections.priorityList.PriorityList;
 
 
+
+
 /**
  * <p>A model of a project entity. Instances of this type deliver
  *   a {@link PriorityList} of {@link TestFactory TestFactories}
@@ -14,7 +32,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  * <p>Implementations should be developed with the IoC-pattern:
  *   test models should not setup their children themselves on
  *   construction. This allows the use of test models in interactive
- *   applications, because children can be added and removed to
+ *   applications, because children can be added to and removed from
  *   existing test models.<br />
  *   To ease creation of test model instances, implementations of
  *   {@link TestModelFactory} can be used. Different implementations
@@ -24,9 +42,7 @@ import org.toryt.util_I.collections.priorityList.PriorityList;
  *
  * @author Jan Dockx
  *
- * @invar toryt:cC org.toryt.patterns_I.Collections;
  * @invar getTestFactoryList() != null;
- * @invar getTestFactoryList().getElementType() == TestFactory.class;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -36,6 +52,10 @@ public interface TestModel<_Subject_> {
 
   /**
    * The subject of the tests this instance models.
+   *
+   * The return type is not bounded, because Java does not offer
+   * an overall supertype for reflection types.
+   *
    * @basic
    */
   _Subject_ getSubject();

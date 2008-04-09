@@ -2,7 +2,7 @@ package org.toryt_II.testmodel;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-import org.toryt.util_I.reflect.Classes.TypeKind;
+import org.toryt.util_I.reflect.Classes;
 
 
 /**
@@ -13,18 +13,25 @@ import org.toryt.util_I.reflect.Classes.TypeKind;
  *
  * @author Jan Dockx
  *
- * @invar getTypeKind() == TypeKind.STATIC;
+ * @invar ! Classes.isInnerClass(subject);
  * @invar staticNestedClassTestModels != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class StaticClassTestModel<_Subject_>  extends ClassTestModel<_Subject_>  {
+public class StaticClassTestModel<_Subject_> extends ClassTestModel<_Subject_>  {
 
-  public StaticClassTestModel() {
-    super(TypeKind.STATIC);
+//  public StaticClassTestModel() {
+//    super(TypeKind.STATIC);
+//  }
+
+  @Override
+  public void setSubject(Class<_Subject_> subject) {
+    assert ! Classes.isInnerClass(subject);
+    super.setSubject(subject);
   }
+
 
   public final TestModelCollectionDelegate<StaticClassTestModel<?>> staticNestedClassTestModels =
     new TestModelCollectionDelegate<StaticClassTestModel<?>>(this);
