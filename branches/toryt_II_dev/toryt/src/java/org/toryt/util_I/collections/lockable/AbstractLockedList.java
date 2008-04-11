@@ -156,7 +156,7 @@ public abstract class AbstractLockedList<_Element_>
     return listIterator(0);
   }
 
-  public abstract class AbstractLockedListIterator
+  protected abstract class AbstractLockedListIterator
       extends AbstractLockedCollectionIterator
       implements ListIterator<_Element_> {
 
@@ -174,6 +174,46 @@ public abstract class AbstractLockedList<_Element_>
     @Deprecated
     public void add(_Element_ o) throws UnsupportedOperationException {
       throw new UnsupportedOperationException("Set is locked");
+    }
+
+  }
+
+  protected final class GetBasedListIterator extends AbstractLockedListIterator {
+
+    private final int $index;
+
+    private int $cursor;
+
+    public GetBasedListIterator(int index) {
+      $index = index;
+      $cursor = $index;
+    }
+
+    public final boolean hasNext() {
+      return $cursor < size();
+    }
+
+    public _Element_ next() {
+      _Element_ result = get($cursor);
+      $cursor++;
+      return result;
+    }
+
+    public boolean hasPrevious() {
+      return $cursor > 0;
+    }
+
+    public _Element_ previous() {
+      $cursor--;
+      return get($cursor);
+    }
+
+    public int nextIndex() {
+      return $cursor;
+    }
+
+    public int previousIndex() {
+      return $cursor - 1;
     }
 
   }

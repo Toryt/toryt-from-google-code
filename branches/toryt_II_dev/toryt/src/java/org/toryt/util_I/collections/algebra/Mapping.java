@@ -24,4 +24,23 @@ public interface Mapping<_From_, _To_> {
    */
   _To_ map(_From_ element);
 
+  /**
+   * This mapping declares it is an injection.
+   *
+   * @return forall (_From_ from1 : _From_) {
+   *           forall (_From_ from2 : _From_) {
+   *             map(from1) == map(from2) ? from1 == from2
+   *           }
+   *         };
+   */
+  boolean isInjection();
+
+  /**
+   * This mapping declares it never returns {@code null} from a
+   * non-{@code null} source.
+   *
+   * @return forall (_From_ from : _From_) {map(from) == null ? from == null};
+   */
+  boolean isNoNewNullMapping();
+
 }

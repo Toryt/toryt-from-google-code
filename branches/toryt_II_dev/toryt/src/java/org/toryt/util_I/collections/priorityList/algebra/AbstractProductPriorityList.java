@@ -310,42 +310,8 @@ public abstract class AbstractProductPriorityList<_Label_, _ResultMapElement_>
 
 
   public final ListIterator<LockableBigSet<? extends Map<_Label_, _ResultMapElement_>>> listIterator(final int index) {
-    return new AbstractLockedListIterator() {
-
-                /* standard, index based implementation */
-
-                private int $cursor = index;
-
-                public final boolean hasNext() {
-                  return $cursor < size();
-                }
-
-                public LockableBigSet<? extends Map<_Label_, _ResultMapElement_>> next() {
-                  LockableBigSet<? extends Map<_Label_, _ResultMapElement_>> result = get($cursor);
-                  $cursor++;
-                  return result;
-                }
-
-                public boolean hasPrevious() {
-                  return $cursor > 0;
-                }
-
-                public LockableBigSet<? extends Map<_Label_, _ResultMapElement_>> previous() {
-                  $cursor--;
-                  return get($cursor);
-                }
-
-                public int nextIndex() {
-                  return $cursor;
-                }
-
-                public int previousIndex() {
-                  return $cursor - 1;
-                }
-
-              };
-
-            }
+    return new GetBasedListIterator(index);
+  }
 
   public final boolean containsPriorityElement(final Object o) throws ClassCastException {
     if (o == null) {
