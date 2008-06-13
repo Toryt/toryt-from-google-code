@@ -16,12 +16,19 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 public interface TestCaseLabels {
 
   /**
+   * Prefix for the labels.
+   *
+   * <strong>= {@value}</strong>
+   */
+  final static String PREFIX = TestCaseLabels.class.getCanonicalName();
+
+  /**
    * Key for the implicit argument of a method call
    * in a context.
    *
    * <strong>= {@value}</strong>
    */
-  final static String THIS = "this";
+  final static String THIS = PREFIX + "." + "THIS";
 
   /**
    * Key for storing the result of a method call in
@@ -29,7 +36,7 @@ public interface TestCaseLabels {
    *
    * <strong>= {@value}</strong>
    */
-  final static String RESULT = "result";
+  final static String RESULT = PREFIX + "." + "RESULT";
 
   /**
    * Key for the exception that might be thrown by
@@ -37,7 +44,7 @@ public interface TestCaseLabels {
    *
    * <strong>= {@value}</strong>
    */
-  final static String EXCEPTION = "thrown";
+  final static String EXCEPTION = PREFIX + "." + "THROWN";
 
   /**
    * Call in <code>new</code> state.
