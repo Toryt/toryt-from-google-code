@@ -142,14 +142,14 @@
 
   <distributionManagement>
     <repository>
-      <id>ppwcodeRepo</id>
+      <id>torytRepo</id>
       <name>Main ppwcode Maven 2 Repository</name>
       <url>scpexe://${ppwcode.mainDistroUrl}/maven2repo</url>
       <uniqueVersion>true</uniqueVersion>
     </repository>
     <!-- snapshot repository == repository -->
     <site>
-      <id>ppwcodeSite</id>
+      <id>torytSite</id>
       <name>ppwcode Project Documentation Site</name>
       <url>scpexe://${ppwcode.mainDistroUrl}/projectdocs/${ppwcode.shortArtifactName}/${ppwcode.markVersion}/${pom.version}</url>
     </site>
