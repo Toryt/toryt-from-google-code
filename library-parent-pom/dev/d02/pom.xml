@@ -1,0 +1,240 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!--
+  $Date: 2007/11/13 13:46:02 $
+  $Revision: 1.12 $
+  $HeadURL$
+
+  Copyright 2007 - $Date: 2007/11/13 13:46:02 $ by PeopleWare n.v.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+
+  <!-- NOTE: you probably have to give Maven more memory:
+             export MAVEN_OPTS=-Xmx1024M -->
+
+  <!--
+    Projects using this pom should fill out, in a child pom:
+
+      artifactId
+      version
+      packaging
+
+      name
+      description
+      inceptionYear, possibly
+
+      ppwcode.shortArtifactName
+      ppwcode.markVersion
+      ppwcode.inRepoLocation
+
+      developers
+
+    Using our parent:
+
+      For our projects, we need to override
+        artifactId
+        version
+        packaging
+
+        name
+        description
+
+        ppwcode.shortArtifactName
+        ppwcode.markVersion
+        ppwcode.inRepoLocation
+
+        ppwcode.mainUrl
+        ppwcode.mainScmUrl
+        ppwcode.mainScmViewUrl
+        ppwcode.mainDistroUrl
+
+        organization
+        licenses
+
+        distribution management
+        issue management
+         mailing lists
+
+        developers
+
+
+      For our projects, we add
+        dependency management
+
+    It will also be necessary to add the ppwcode repo to the pom, to find
+    this parent (bootstrap problem).
+   -->
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.ppwcode</groupId>
+    <artifactId>ppwcode-library-parent-pom</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <properties>
+    <ppwcode.shortArtifactName>library-parent-pom</ppwcode.shortArtifactName>
+    <ppwcode.markVersion></ppwcode.markVersion>
+    <!-- empty mark version results in "double slash in paths", which works -->
+
+    <ppwcode.inRepoLocation>${ppwcode.shortArtifactName}</ppwcode.inRepoLocation>
+
+    <!-- MUDO use ppwcode site for now -->
+
+    <ppwcode.mainUrl>http://www.ppwcode.org/toryt/projectdocs</ppwcode.mainUrl>
+    <ppwcode.mainScmUrl>toryt.googlecode.com/svn</ppwcode.mainScmUrl>
+    <!-- do not add the kind or the protocol here; we assume svn, http for anonymous access, https for developer access -->
+    <ppwcode.mainScmViewUrl>code.google.com/p/toryt/source/browse</ppwcode.mainScmViewUrl>
+    <!-- do not add the kind or the protocol here; we assume http -->
+    <ppwcode.mainDistroUrl>cvs.peopleware.be/ppw/projects/ppwcode/public_html/toryt</ppwcode.mainDistroUrl>
+
+    <!-- MUDO use ppwcode site for now -->
+
+    <!-- do not add the kind or the protocol here; we assume scpexe to a directory, which contains a "maven2repo"
+    subdirectory and a "projectdocs" subdirectory -->
+
+  </properties>
+
+
+  <!-- General information -->
+  <groupId>org.toryt</groupId>
+  <artifactId>Toryt-library-parent-pom</artifactId>
+  <!--
+    artifactId needs to be added explicitly to child pom. add:
+    <artifactId>Toryt-${ppwcode.shortArtifactName}-${ppwcode.markVersion}</artifactId>
+  -->
+  <version>1.0.0-SNAPSHOT</version> <!-- MUDO add Svn release number as implementation version -->
+  <packaging>pom</packaging>
+
+  <name>Toryt library parent pom</name>
+  <description>A parent pom for Toryt libaries.</description>
+
+  <inceptionYear>2008</inceptionYear>
+
+  <organization>
+    <name>Toryt</name>
+    <url>http://www.toryt.org/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>Apache License, version 2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+    <!-- MUDO use ppwcode repo for now -->
+
+  <distributionManagement>
+    <repository>
+      <id>torytRepo</id>
+      <name>Main ppwcode Maven 2 Repository</name>
+      <url>scpexe://${ppwcode.mainDistroUrl}/maven2repo</url>
+      <uniqueVersion>true</uniqueVersion>
+    </repository>
+    <!-- snapshot repository == repository -->
+    <site>
+      <id>torytSite</id>
+      <name>ppwcode Project Documentation Site</name>
+      <url>scpexe://${ppwcode.mainDistroUrl}/projectdocs/${ppwcode.shortArtifactName}/${ppwcode.markVersion}/${pom.version}</url>
+    </site>
+  </distributionManagement>
+
+  <mailingLists>
+    <mailingList>
+      <name>Toryt Announce</name>
+      <subscribe>http://groups.google.com/group/toryt-announce/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/toryt-announce/subscribe</unsubscribe>
+      <post>toryt-announce@googlegroups.com</post>
+      <archive>http://groups.google.com/group/toryt-announce/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Toryt Developers</name>
+      <subscribe>http://groups.google.com/group/toryt-dev/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/toryt-dev/subscribe</unsubscribe>
+      <post>toryt-dev@googlegroups.com</post>
+      <archive>http://groups.google.com/group/toryt-dev/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Toryt Users</name>
+      <subscribe>http://groups.google.com/group/toryt-users/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/toryt-users/subscribe</unsubscribe>
+      <post>toryt-users@googlegroups.com</post>
+      <archive>http://groups.google.com/group/toryt-users/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Toryt Subversion commits</name>
+      <subscribe>http://groups.google.com/group/toryt-svn/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/toryt-svn/subscribe</unsubscribe>
+      <post>toryt-svn@googlegroups.com</post>
+      <archive>http://groups.google.com/group/toryt-svn/topics</archive>
+    </mailingList>
+  </mailingLists>
+
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/toryt/issues/list</url>
+  </issueManagement>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.4</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.ppwcode</groupId>
+        <artifactId>ppwcode-metainfo-I</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jandockx</id>
+      <email>jandockx@gmail.org</email>
+      <timezone>+1</timezone>
+      <organization>Toryt</organization>
+      <organizationUrl>http://www.toryt.org/</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <properties>
+        <aim>jandockx@mac.com</aim>
+        <skype>callto:jandockx</skype>
+      </properties>
+    </developer>
+  </developers>
+  <contributors>
+  </contributors>
+
+  <repositories>
+    <repository>
+      <id>ppwcodeRepo</id>
+      <!-- This needs to be copied in all child poms, to find the parent -->
+      <name>ppwcode Maven 2 repository</name>
+      <url>http://www.ppwcode.org/java/maven2repo</url>
+    </repository>
+  </repositories>
+
+</project>
