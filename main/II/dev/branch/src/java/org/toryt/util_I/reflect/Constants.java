@@ -31,6 +31,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @idea (jand) most methods are also in ppw-bean; consolidate
  *
  * @author Jan Dockx
+ *
+ * @deprecated moved to ppwcode util reflection
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

@@ -39,6 +39,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class Methods {
 
+  /**
+   * @deprecated use ppwcode util reflection
+   */
   private Methods() {
     // NOP
   }
@@ -53,6 +56,8 @@ public class Methods {
    *            method.getReturnType().equals(Void.TYPE);
    * @result ((result == CLASS_INSPECTOR) || (result == INSTANCE_INSPECTOR)) ??
    *            (! method.getReturnType().equals(Void.TYPE));
+   *
+   * @todo move to ppwcode util reflection
    */
   public static MethodKind methodKind(Method method) {
     assert method != null;
@@ -114,6 +119,8 @@ public class Methods {
    *         type.getDeclaredMethod(new MethodSignature(signature).getMethodName(),
    *                                new MethodSignature(signature).getParameterTypes())
    *           throws NoSuchMethodException);
+   *
+   * @deprecated use ppwcode util reflection
    */
   public static Method findMethod(Class<?> type, String signature) throws CannotGetMethodException {
     if (signature == null) {
@@ -138,6 +145,9 @@ public class Methods {
     }
   }
 
+  /**
+   * @deprecated use ppwcode util reflection
+   */
   public static <_T_> Constructor<_T_> findConstructor(Class<_T_> type, String signature)
       throws CannotGetMethodException {
     try {

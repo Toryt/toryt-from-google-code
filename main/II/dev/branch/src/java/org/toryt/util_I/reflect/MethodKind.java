@@ -23,6 +23,8 @@ import java.lang.reflect.Method;
 /**
  * The different kinds of methods that can be instances of
  * {@link Method}.
+ *
+ * @todo move to ppwcode util reflection
  */
 public enum MethodKind {
 

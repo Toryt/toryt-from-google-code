@@ -11,6 +11,8 @@ import org.toryt.patterns_I.Comparisons;
  *
  * @invar getParameterTypes() != null;
  * @invar noNull(getParameterTypes());
+ *
+ * @deprecated use ppwcode util reflection
  */
 public class MethodSignature {
 
