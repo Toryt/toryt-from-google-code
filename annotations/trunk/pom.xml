@@ -26,8 +26,6 @@
   <!-- NOTE: you probably have to give Maven more memory:
              export MAVEN_OPTS=-Xmx1024M -->
 
-  <!-- MUDO add version nr (spec / impl) to manifest -->
-
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -36,19 +34,99 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
+
+
   <properties>
-    <ppwcode.shortArtifactName>annotations</ppwcode.shortArtifactName>
-    <ppwcode.markVersion>I</ppwcode.markVersion>
+    <!-- The short artifact name. The real artifact name is calculated from this short name, and the toryt.markVersion -->
+    <toryt.shortArtifactName>annotations</toryt.shortArtifactName>
+    <!-- The mark version of the artifact. This part of the version becomes part of the artifactId.
+         For this pom, an empty mark version is used, which results in "double slash in paths", which works. -->
+    <toryt.markVersion>I</toryt.markVersion>
   </properties>
 
-  <!-- General information -->
-  <artifactId>Toryt-${ppwcode.shortArtifactName}-${ppwcode.markVersion}</artifactId>
+
+
+  <!-- VERSION, PACKAGING, NAME & DESCRIPTION: OVERWRITE IN THE CHILD POM-->
+  <!-- for Toryt projects, groupId and artifactId are calculated, and used in the magic mantra (see below) -->
+  <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version> <!-- MUDO add Svn release number as implementation version -->
-
   <name>Toryt annotations</name>
-  <description>Annotations contracts to types.</description>
+  <description>Annotations for contracts.</description>
+  <inceptionYear>2008</inceptionYear>
 
+
+
+  <!-- MAGIC MANTRA -->
+  <!-- The following entries need to be repeated, and can not sensibly be inherited.
+       The reason is, sadly, that Maven 2 has a built in, undocumented "feature" that appends the artifact id to a number of URL's and paths
+       if those URL's or paths are inherited. The reasoning behind that is he use of inheritance inside multi-module projects.
+       It seems that if you are using inheritance outside of multi-module projects, you are out of luck.
+       At least, we are :-(.
+       The entries here are calculated in the "calculation properties" higher. To avoid the inheritance
+       trap, the definitions below need to be repeated in each (consecutive) child, as a magic mantra.
+       -->
+  <!-- We cannot use the ppwcode.artifactId here, since we do not have a mark version.
+       This isn't a problem in other places, but for the artifactId, it adds a final "-"
+       that is superfluous
+  <artifactId>${ppwcode.artifactId}</artifactId>
+  -->
+  <groupId>${toryt.groupId}</groupId>
+  <artifactId>${toryt.artifactId}</artifactId>
+  <url>${ppwcode.url}</url>
+  <scm>
+    <connection>${ppwcode.scm.connection}</connection>
+    <developerConnection>${ppwcode.scm.developerConnection}</developerConnection>
+    <url>${ppwcode.scm.url}</url>
+  </scm>
+  <distributionManagement>
+    <!-- The repository and snapshot repository definition can be inherited from the parent pom for Toryt projects. -->
+    <repository>
+      <id>${ppwcode.distributionManagement.repo.id}</id>
+      <name>${ppwcode.distributionManagement.repo.name}</name>
+      <url>${ppwcode.distributionManagement.repo.url}</url>
+      <uniqueVersion>true</uniqueVersion>
+    </repository>
+    <snapshotRepository>
+      <id>${ppwcode.distributionManagement.snapshotrepo.id}</id>
+      <name>${ppwcode.distributionManagement.snapshotrepo.name}</name>
+      <url>${ppwcode.distributionManagement.snapshotrepo.url}</url>
+    </snapshotRepository>
+    <site>
+      <id>${ppwcode.distributionManagement.site.id}</id>
+      <name>${ppwcode.distributionManagement.site.name}</name>
+      <url>${ppwcode.distributionManagement.site.url}</url>
+    </site>
+  </distributionManagement>
+
+
+
+  <!-- DEVELOPERS & CONTRIBUTORS: OVERWRITE IN YOUR CHILD POM -->
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jandockx</id>
+      <email>jandockx@gmail.org</email>
+      <timezone>+1</timezone>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <properties>
+        <aim>jandockx@mac.com</aim>
+        <skype>callto:jandockx</skype>
+      </properties>
+    </developer>
+  </developers>
+  <contributors>
+    <!-- need to add at least 1 contributor, to avoid inheriting contributors of parent -->
+    <contributor>
+      <organization>dummy</organization>
+    </contributor>
+  </contributors>
+
+
+
+  <!-- DEPENDENCIES -->
   <dependencies>
     <dependency>
       <groupId>org.ppwcode</groupId>
@@ -73,12 +151,17 @@
   </reporting>
 -->
 
+  <!-- THIS NEEDS TO BE COPIED IN ALL CHILD POMS, TO FIND THE PARENT POM -->
   <repositories>
     <repository>
       <id>torytRepo</id>
-      <!-- This needs to be copied in all child poms, to find the parent -->
       <name>Toryt Maven 2 repository</name>
       <url>http://www.ppwcode.org/toryt/maven2repo</url>
+    </repository>
+    <repository>
+      <id>torytSnapshotRepo</id>
+      <name>Toryt Maven 2 snapshot repository</name>
+      <url>http://www.ppwcode.org/toryt/maven2snapshotrepo</url>
     </repository>
   </repositories>
 
