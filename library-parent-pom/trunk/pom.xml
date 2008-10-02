@@ -38,7 +38,7 @@
   <!-- VERSION, PACKAGING, NAME & DESCRIPTION: OVERWRITE IN THE CHILD POM-->
   <!-- for Toryt projects, groupId and artifactId are calculated, and used in the magic mantra (see below) -->
   <groupId>org.toryt</groupId> <!-- cannot use calculated value for inherited poms -->
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>pom</packaging>
   <name>Toryt library parent pom</name>
   <description>A parent pom for Toryt libaries.</description>
@@ -357,5 +357,61 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <build>
+    <plugins>
+      <plugin>
+        <!-- the artifacts in which to look for the checkstyle definition and license headers -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.2</version>
+        <dependencies>
+          <dependency>
+            <!-- dependency on the checkstyle resource -->
+            <groupId>org.ppwcode.checkstyle</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+          </dependency>
+          <dependency>
+            <!-- dependency on the license templates --> <!-- MUDO other license !!!! -->
+            <groupId>org.ppwcode.checkstyle</groupId>
+            <artifactId>licenses</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>com.agilejava.docbkx</groupId>
+        <artifactId>docbkx-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate-html</goal>
+            </goals>
+            <phase>pre-site</phase>
+            <configuration>
+              <!-- Copy images so they would be available for the site -->
+              <preProcess>
+                  <copy todir="${site.target.docbooks}/images" failOnError="false">
+                    <fileset dir="src/docbkx/images" />
+                  </copy>
+              </preProcess>
+
+              <targetDirectory>${site.target.docbooks}</targetDirectory>
+              <htmlhelpEnumerateImages>true</htmlhelpEnumerateImages>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.docbook</groupId>
+            <artifactId>docbook-xml</artifactId>
+            <version>4.4</version>
+            <scope>runtime</scope>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
