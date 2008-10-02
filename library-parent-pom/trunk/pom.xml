@@ -37,6 +37,7 @@
 
   <!-- VERSION, PACKAGING, NAME & DESCRIPTION: OVERWRITE IN THE CHILD POM-->
   <!-- for Toryt projects, groupId and artifactId are calculated, and used in the magic mantra (see below) -->
+  <groupId>org.toryt</groupId> <!-- cannot use calculated value for inherited poms -->
   <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>Toryt library parent pom</name>
@@ -178,7 +179,6 @@
        that is superfluous
   <artifactId>${ppwcode.artifactId}</artifactId>
   -->
-  <groupId>${toryt.groupId}</groupId>
   <artifactId>toryt-library-parent-pom</artifactId>
   <url>${ppwcode.url}</url>
   <scm>
