@@ -300,6 +300,7 @@
         <groupId>org.ppwcode</groupId>
         <artifactId>ppwcode-ppwcode-library-parent-pom</artifactId>
         <version>1.6.0</version>
+        <type>pom</type>
         <scope>import</scope>
       </dependency>
       <!--
