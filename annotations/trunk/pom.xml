@@ -31,7 +31,7 @@
   <parent>
     <groupId>org.toryt</groupId>
     <artifactId>Toryt-library-parent-pom</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
 
 
@@ -65,11 +65,6 @@
        The entries here are calculated in the "calculation properties" higher. To avoid the inheritance
        trap, the definitions below need to be repeated in each (consecutive) child, as a magic mantra.
        -->
-  <!-- We cannot use the ppwcode.artifactId here, since we do not have a mark version.
-       This isn't a problem in other places, but for the artifactId, it adds a final "-"
-       that is superfluous
-  <artifactId>${ppwcode.artifactId}</artifactId>
-  -->
   <groupId>${toryt.groupId}</groupId>
   <artifactId>${toryt.artifactId}</artifactId>
   <url>${ppwcode.url}</url>
