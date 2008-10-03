@@ -27,8 +27,19 @@
     <author email="jandockx@gmail.com">Jan Dockx</author>
   </properties>
   <body>
+    <release version="1.0.2" date="2008-10-03" description="version numbers">
+      <action dev="jandockx@gmail.com" type="add">
+        Use ppwcode-library-parent-pom for pwcode version numbers.
+        Snapshot for now.
+      </action>
+    </release>
+    <release version="1.0.1" date="2008-10-02" description="?">
+      <action dev="jandockx@gmail.com" type="add">
+        ?
+      </action>
+    </release>
     <release version="1.0.0" date="2008-10-02" description="First release">
-      <action dev="jand" type="add">
+      <action dev="jandockx@gmail.com" type="add">
         First version, child of ppwcode library-parent-pom
       </action>
     </release>
