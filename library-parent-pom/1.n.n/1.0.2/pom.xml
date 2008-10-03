@@ -1,0 +1,417 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!--
+  $Date: 2007/11/13 13:46:02 $
+  $Revision: 1.12 $
+  $HeadURL$
+
+  Copyright 2007 - $Date: 2007/11/13 13:46:02 $ by Jan Dockx
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+
+  <!-- NOTE: you probably have to give Maven more memory:
+             export MAVEN_OPTS=-Xmx1024M -->
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.ppwcode</groupId>
+    <artifactId>ppwcode-library-parent-pom</artifactId>
+    <version>1.2.0</version>
+  </parent>
+
+
+  <!-- VERSION, PACKAGING, NAME & DESCRIPTION: OVERWRITE IN THE CHILD POM-->
+  <!-- for Toryt projects, groupId and artifactId are calculated, and used in the magic mantra (see below) -->
+  <groupId>org.toryt</groupId> <!-- cannot use calculated value for inherited poms -->
+  <version>1.0.2</version>
+  <packaging>pom</packaging>
+  <name>Toryt library parent pom</name>
+  <description>A parent pom for Toryt libaries.</description>
+  <inceptionYear>2008</inceptionYear>
+
+  <properties>
+
+
+
+    <!-- OVERWRITE THESE PROPERTIES WITH SETTINGS APPROPRIATE TO YOUR PROJECT IN YOUR CHILD POM -->
+
+    <!-- The short artifact name. The real artifact name is calculated from this short name, and the toryt.markVersion -->
+    <toryt.shortArtifactName>library-parent-pom</toryt.shortArtifactName>
+    <!-- The mark version of the artifact. This part of the version becomes part of the artifactId.
+         For this pom, an empty mark version is used, which results in "double slash in paths", which works. -->
+    <toryt.markVersion></toryt.markVersion>
+
+
+
+    <!-- GENERAL TORYT SETTINGS -->
+
+    <!--  ppwcode inherited -->
+
+    <!-- The root of the Toryt project sites for external readers. Do not add the kind or the protocol here: we assume http.
+         This should match ppwcode.mainDistroUrl. -->
+    <ppwcode.mainUrl>www.toryt.org</ppwcode.mainUrl>
+    <!-- The root of you Java http site, where we will upload the artifacts in a "ppwcode.distributionManagement.repo.relativePath" subdirectory,
+         and the project documentation sites, in a "pppwcode.distributionManagement.site.relativePath" subdirectory. Do not add the kind or protocol
+         here. We assumes scpexe. This should match ppwcode.mainUrl-->
+    <!-- MUDO parasitic on ppwcode site for now -->
+    <ppwcode.mainDistroUrl>cvs.peopleware.be/ppw/projects/ppwcode/public_html/toryt</ppwcode.mainDistroUrl>
+
+    <!-- The relative path in the Java http site where the project documentation sites will reside -->
+    <ppwcode.distributionManagement.site.relativePath>projectdocs</ppwcode.distributionManagement.site.relativePath>
+    <!-- the id of the upload place for the documentation site -->
+    <ppwcode.distributionManagement.site.id>torytSite</ppwcode.distributionManagement.site.id>
+    <!-- the name of the upload place for the documentation site -->
+    <ppwcode.distributionManagement.site.name>Toryt Project Documentation Site</ppwcode.distributionManagement.site.name>
+
+    <!-- The relative path in the Java http site where the maven 2 repository will reside -->
+    <ppwcode.distributionManagement.repo.relativePath>maven2repo</ppwcode.distributionManagement.repo.relativePath>
+    <!-- the id of the upload place for the artifacts -->
+    <ppwcode.distributionManagement.repo.id>torytRepo</ppwcode.distributionManagement.repo.id>
+    <!-- the name of the upload place for the artifacts -->
+    <ppwcode.distributionManagement.repo.name>Main Toryt Maven 2 Repository</ppwcode.distributionManagement.repo.name>
+
+    <!-- The relative path in the Java http site where the maven 2 snapshot repository will reside -->
+    <ppwcode.distributionManagement.snapshotrepo.relativePath>maven2snapshotrepo</ppwcode.distributionManagement.snapshotrepo.relativePath>
+    <!-- the id of the upload place for the artifacts -->
+    <ppwcode.distributionManagement.snapshotrepo.id>torytSnapshotRepo</ppwcode.distributionManagement.snapshotrepo.id>
+    <!-- the name of the upload place for the artifacts -->
+    <ppwcode.distributionManagement.snapshotrepo.name>Toryt Maven 2 Snapshot Repository</ppwcode.distributionManagement.snapshotrepo.name>
+
+    <!-- The root of your Subversion repository. Different projects might reside in here. Do not add the
+         protocol here. We assume svn, http for anonymous access, https for developer access. This should match
+         ppwcode.mainScmViewUrl. -->
+    <ppwcode.mainScmUrl>toryt.googlecode.com/svn</ppwcode.mainScmUrl>
+    <!-- The root where external readers can look into your Subversion repository (read-only). Different projects
+         might reside in here. Do not add the kind or the protocol here; we assume http. This should match
+         ppwcode.mainScmUrl -->
+    <ppwcode.mainScmViewUrl>code.google.com/p/toryt/source/browse</ppwcode.mainScmViewUrl>
+
+    <!-- Checkstyle configuration -->
+    <!-- The location of the checkstyle configuration in your build classpath -->
+    <ppwcode.checkstyle.configLocation>org/ppwcode/checkstyle/ppwcode_checks.xml</ppwcode.checkstyle.configLocation>
+    <!-- File describing the project's license template, which must be defined in each text file in your project.
+         Toryt libraries must all carry Apache License 2.0 headers -->
+    <ppwcode.checkstyle.headerLocation>ppwcode_apache_2_0_license.regex</ppwcode.checkstyle.headerLocation>
+    <!-- Suppressions file: is project specific and MUST be defined in child POM -->
+    <ppwcode.checkstyle.suppressionsLocation></ppwcode.checkstyle.suppressionsLocation>
+
+    <!-- Toryt specific -->
+
+    <toryt.groupId>org.toryt</toryt.groupId>
+
+
+
+    <!-- CALCULATIONS -->
+
+    <!-- Calculation of the artifact id (for child poms, not used in this pom) -->
+    <toryt.artifactId>toryt-${toryt.shortArtifactName}-${toryt.markVersion}</toryt.artifactId>
+
+    <!-- The relative path in the Java http site where the project documentation site will reside.
+         For Toryt libraries, we separate the artifact Id in the shortArtifactName and the markVersion,
+         overriding the definition in the parent pom -->
+    <ppwcode.inSiteLocation>${ppwcode.distributionManagement.site.relativePath}/${toryt.shortArtifactName}/${toryt.markVersion}/${pom.version}</ppwcode.inSiteLocation>
+    <!-- The project URL calculation can be inherited, as wel as the upload URL and other site distribution management
+         settings. -->
+
+    <!-- The calculation of the URL for artifact uploads can be inherited. -->
+
+    <!-- The relative path in the Subversion repository where projects will reside. For Toryt libraries, this
+         can be calculated here. -->
+    <ppwcode.inScmLocation>${toryt.shortArtifactName}</ppwcode.inScmLocation>
+    <!-- The SCM URL calculations can be inherited/ -->
+
+  </properties>
+
+
+
+  <!-- DEVELOPERS & CONTRIBUTORS: OVERWRITE IN YOUR CHILD POM -->
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jandockx</id>
+      <email>jandockx@gmail.org</email>
+      <timezone>+1</timezone>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <properties>
+        <aim>jandockx@mac.com</aim>
+        <skype>callto:jandockx</skype>
+      </properties>
+    </developer>
+  </developers>
+  <contributors>
+    <!-- need to add at least 1 contributor, to avoid inheriting contributors of parent -->
+    <contributor>
+      <organization>dummy</organization>
+    </contributor>
+  </contributors>
+
+
+
+  <!-- MAGIC MANTRA -->
+  <!-- The following entries need to be repeated, and can not sensibly be inherited.
+       The reason is, sadly, that Maven 2 has a built in, undocumented "feature" that appends the artifact id to a number of URL's and paths
+       if those URL's or paths are inherited. The reasoning behind that is he use of inheritance inside multi-module projects.
+       It seems that if you are using inheritance outside of multi-module projects, you are out of luck.
+       At least, we are :-(.
+       The entries here are calculated in the "calculation properties" higher. To avoid the inheritance
+       trap, the definitions below need to be repeated in each (consecutive) child, as a magic mantra.
+       -->
+  <!-- We cannot use the ppwcode.artifactId here, since we do not have a mark version.
+       This isn't a problem in other places, but for the artifactId, it adds a final "-"
+       that is superfluous
+  <artifactId>${ppwcode.artifactId}</artifactId>
+  -->
+  <artifactId>toryt-library-parent-pom</artifactId>
+  <url>${ppwcode.url}</url>
+  <scm>
+    <connection>${ppwcode.scm.connection}</connection>
+    <developerConnection>${ppwcode.scm.developerConnection}</developerConnection>
+    <url>${ppwcode.scm.url}</url>
+  </scm>
+  <distributionManagement>
+    <!-- The repository and snapshot repository definition can be inherited from the parent pom for Toryt projects. -->
+    <repository>
+      <id>${ppwcode.distributionManagement.repo.id}</id>
+      <name>${ppwcode.distributionManagement.repo.name}</name>
+      <url>${ppwcode.distributionManagement.repo.url}</url>
+      <uniqueVersion>true</uniqueVersion>
+    </repository>
+    <snapshotRepository>
+      <id>${ppwcode.distributionManagement.snapshotrepo.id}</id>
+      <name>${ppwcode.distributionManagement.snapshotrepo.name}</name>
+      <url>${ppwcode.distributionManagement.snapshotrepo.url}</url>
+    </snapshotRepository>
+    <site>
+      <id>${ppwcode.distributionManagement.site.id}</id>
+      <name>${ppwcode.distributionManagement.site.name}</name>
+      <url>${ppwcode.distributionManagement.site.url}</url>
+    </site>
+  </distributionManagement>
+
+
+
+  <!-- ============================================================================================================ -->
+  <!-- ALL THINGS BELOW THIS MARK SHOULD BE CONSIDERED PART OF THE PARENT POM, AND NOT BE OVERWRITTEN IN CHILD POMS -->
+
+  <!-- ORGANIZATION -->
+  <organization>
+    <name>Toryt.org</name>
+    <url>http://www.toryt.org/</url>
+  </organization>
+
+  <!-- MAILING LISTS -->
+  <mailingLists>
+    <mailingList>
+      <name>Toryt Announce</name>
+      <subscribe>http://groups.google.com/group/toryt-announce/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/toryt-announce/subscribe</unsubscribe>
+      <post>toryt-announce@googlegroups.com</post>
+      <archive>http://groups.google.com/group/toryt-announce/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Toryt Developers</name>
+      <subscribe>http://groups.google.com/group/toryt-dev/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/toryt-dev/subscribe</unsubscribe>
+      <post>toryt-dev@googlegroups.com</post>
+      <archive>http://groups.google.com/group/toryt-dev/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Toryt Users</name>
+      <subscribe>http://groups.google.com/group/toryt-users/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/toryt-users/subscribe</unsubscribe>
+      <post>toryt-users@googlegroups.com</post>
+      <archive>http://groups.google.com/group/toryt-users/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Toryt Subversion commits</name>
+      <subscribe>http://groups.google.com/group/toryt-svn/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/toryt-svn/subscribe</unsubscribe>
+      <post>toryt-svn@googlegroups.com</post>
+      <archive>http://groups.google.com/group/toryt-svn/topics</archive>
+    </mailingList>
+  </mailingLists>
+
+  <!-- ISSUE MANAGEMENT -->
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/toryt/issues/list</url>
+  </issueManagement>
+
+  <!-- LICENSE -->
+  <licenses>
+    <license>
+      <name>Apache License, version 2</name>
+      <url>LICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <!-- MAVEN 2 REPOSITORIES: where mvn should look for dependencies, apart from the global Maven 2 repository -->
+  <repositories>
+    <repository>
+      <id>ppwcodeRepo</id>
+      <name>ppwcode Maven 2 repository</name>
+      <url>http://www.ppwcode.org/java/maven2repo</url>
+    </repository>
+    <repository>
+      <id>ppwcodeSnapshotRepo</id>
+      <name>ppwcode Maven 2 snapshot repository</name>
+      <url>http://www.ppwcode.org/java/maven2snapshotrepo</url>
+    </repository>
+
+    <!-- MUDO use ppwcode site for now -->
+
+    <repository>
+      <id>torytRepo</id>
+      <!-- This needs to be copied in all child poms, to find the parent -->
+      <name>Toryt Maven 2 repository</name>
+      <url>http://www.ppwcode.org/toryt/maven2repo</url>
+    </repository>
+    <repository>
+      <id>torytSnapshotRepo</id>
+      <!-- This needs to be copied in all child poms, to find the parent -->
+      <name>Toryt Maven 2 snapshot repository</name>
+      <url>http://www.ppwcode.org/toryt/maven2snapshotrepo</url>
+    </repository>
+  </repositories>
+
+  <!-- DEPENDENCY MANAGEMENT -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.ppwcode.maven2</groupId>
+        <artifactId>ppwcode-maven2-versionManagement</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!--
+      <dependency>
+        <groupId>org.ppwcode</groupId>
+        <artifactId>ppwcode-metainfo-I</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.ppwcode.vernacular</groupId>
+        <artifactId>ppwcode-vernacular-exception-II</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ppwcode.util</groupId>
+        <artifactId>ppwcode-util-reflection-I</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+      -->
+      <dependency>
+        <groupId>org.toryt</groupId>
+        <artifactId>Toryt-annotations-I</artifactId>
+        <version>1.0</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils-core</artifactId>
+        <version>1.7.0</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging-api</artifactId>
+        <version>1.1</version> <!-- should be 1.1.1 -->
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>commons-cli</groupId>
+        <artifactId>commons-cli</artifactId>
+        <version>1.0</version>
+        <type>jar</type>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.4</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <build>
+    <plugins>
+      <plugin>
+        <!-- the artifacts in which to look for the checkstyle definition and license headers -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.2</version>
+        <dependencies>
+          <dependency>
+            <!-- dependency on the checkstyle resource -->
+            <groupId>org.ppwcode.checkstyle</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+          </dependency>
+          <dependency>
+            <!-- dependency on the license templates --> <!-- MUDO other license !!!! -->
+            <groupId>org.ppwcode.checkstyle</groupId>
+            <artifactId>licenses</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>com.agilejava.docbkx</groupId>
+        <artifactId>docbkx-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate-html</goal>
+            </goals>
+            <phase>pre-site</phase>
+            <configuration>
+              <!-- Copy images so they would be available for the site -->
+              <preProcess>
+                  <copy todir="${site.target.docbooks}/images" failOnError="false">
+                    <fileset dir="src/docbkx/images" />
+                  </copy>
+              </preProcess>
+
+              <targetDirectory>${site.target.docbooks}</targetDirectory>
+              <htmlhelpEnumerateImages>true</htmlhelpEnumerateImages>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.docbook</groupId>
+            <artifactId>docbook-xml</artifactId>
+            <version>4.4</version>
+            <scope>runtime</scope>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
