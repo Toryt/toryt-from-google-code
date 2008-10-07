@@ -27,6 +27,11 @@
     <author email="jandockx@gmail.com">Jan Dockx</author>
   </properties>
   <body>
+    <release version="1.0.3" date="2008-10-07" description="artifact id">
+      <action dev="jandockx@gmail.com" type="fix">
+        Artifact id is Toryt..., not toryt...
+      </action>
+    </release>
     <release version="1.0.2" date="2008-10-03" description="version numbers">
       <action dev="jandockx@gmail.com" type="add">
         Use ppwcode-library-parent-pom for pwcode version numbers.

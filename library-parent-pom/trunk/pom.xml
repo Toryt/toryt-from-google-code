@@ -38,7 +38,7 @@
   <!-- VERSION, PACKAGING, NAME & DESCRIPTION: OVERWRITE IN THE CHILD POM-->
   <!-- for Toryt projects, groupId and artifactId are calculated, and used in the magic mantra (see below) -->
   <groupId>org.toryt</groupId> <!-- cannot use calculated value for inherited poms -->
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <packaging>pom</packaging>
   <name>Toryt library parent pom</name>
   <description>A parent pom for Toryt libaries.</description>
@@ -119,7 +119,7 @@
     <!-- CALCULATIONS -->
 
     <!-- Calculation of the artifact id (for child poms, not used in this pom) -->
-    <toryt.artifactId>toryt-${toryt.shortArtifactName}-${toryt.markVersion}</toryt.artifactId>
+    <toryt.artifactId>Toryt-${toryt.shortArtifactName}-${toryt.markVersion}</toryt.artifactId>
 
     <!-- The relative path in the Java http site where the project documentation site will reside.
          For Toryt libraries, we separate the artifact Id in the shortArtifactName and the markVersion,
