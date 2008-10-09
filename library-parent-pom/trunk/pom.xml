@@ -179,7 +179,7 @@
        that is superfluous
   <artifactId>${ppwcode.artifactId}</artifactId>
   -->
-  <artifactId>toryt-library-parent-pom</artifactId>
+  <artifactId>Toryt-library-parent-pom</artifactId>
   <url>${ppwcode.url}</url>
   <scm>
     <connection>${ppwcode.scm.connection}</connection>
