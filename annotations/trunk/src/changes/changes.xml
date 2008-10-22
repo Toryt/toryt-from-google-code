@@ -1,0 +1,22 @@
+<document>
+
+  <!-- see http://maven.apache.org/reference/plugins/changes/ for documentation -->
+  <!-- There are four valid values for action type:  add, fix, remove, update. -->
+
+  <properties>
+    <title>Changes to Toryt annotations</title>
+    <author email="jandockx@gmail.com">Jan Dockx</author>
+  </properties>
+  <body>
+
+    <release version="I v2.0" date="2008-10-23" description="Preconditions possible for basic inspectors">
+      <action dev="jand" type="add">
+        Extension of the Basic annotation. Now we can also add preconditions to basic inspectors.
+        This doesn't happen often, but sometime we really need it.
+      </action>
+    </release>
+
+    // MUDO add first releases
+
+  </body>
+</document>

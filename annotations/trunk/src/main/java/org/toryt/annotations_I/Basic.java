@@ -37,7 +37,8 @@ import org.ppwcode.metainfo_I.vcs.SvnInfo;
  * an implicit constructor). We can also add type invariants: instead of mentioning
  * type invariants on the type level using {@link Invars}, for invariants that
  * are only concerned with 1 property, it often is clearer for the human reader to
- * find them with the property it is concerned with.
+ * find them with the property it is concerned with. Finally, we can state preconditions
+ * as with a {@link MethodContract}.
  */
 @Copyright("2008 - $Date: 2008-03-15 18:07:05 +0100 (Sat, 15 Mar 2008) $, Jan Dockx")
 @License(APACHE_V2)
@@ -60,6 +61,12 @@ public @interface Basic {
    * describe facts about the initial value if necessary.
    */
   Expression[] init() default {};
+
+  /**
+   * Preconditions on a basic inspector. This doesn't happen often, but sometimes we
+   * really want it.
+   */
+  Expression[] pre() default {};
 
 }
 

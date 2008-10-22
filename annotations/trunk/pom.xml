@@ -48,7 +48,7 @@
 
   <!-- VERSION, PACKAGING, NAME & DESCRIPTION: OVERWRITE IN THE CHILD POM-->
   <!-- for Toryt projects, groupId and artifactId are calculated, and used in the magic mantra (see below) -->
-  <version>1.2</version>
+  <version>2.0</version>
   <packaging>jar</packaging>
   <name>Toryt annotations</name>
   <description>Annotations for contracts.</description>
