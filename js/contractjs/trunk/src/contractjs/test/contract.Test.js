@@ -243,43 +243,4 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function(queue) {
   }
 };
 
-//
-//ContractTest.prototype.test_contract3 = function(queue) {
-//  var called = {
-//    pre: [false, false, false, false],
-//    impl: false,
-//    post: [false, false, false],
-//    exc: [false]
-//  };
-//  var definition = {
-//    pre: [
-//      function(x, y) {called.pre[0] =  true; return typeof x === "number";},
-//      function(x, y) {called.pre[1] =  true; return x >= 0;},
-//      function(x, y) {called.pre[2] =  true; return typeof y === "number";},
-//      function(x, y) {called.pre[3] =  true; return y > 0;}
-//    ],
-//    impl: function(x, y) {
-//      called.impl =  true;
-//      return x / y;
-//    },
-//    post: [
-//      function(x, y, result) {called.post[0] =  true; return typeof result === "number";},
-//      function(x, y, result) {called.post[1] =  true; return result >= 0;},
-//      function(x, y, result) {called.post[2] =  true; return result * y === x;}
-//    ],
-//    exc: [
-//      function() {called.post[0] =  true; return true;}
-//    ]
-//  };
-//  var result = instrumentFunction(definition);
-//  var execResult = result(1, 2);
-//  assertTrue(called.pre[0]);
-//  assertTrue(called.pre[1]);
-//  assertTrue(called.pre[2]);
-//  assertTrue(called.pre[3]);
-//  assertTrue(called.impl);
-//  assertTrue(called.post[0]);
-//  assertTrue(called.post[1]);
-//  assertTrue(called.post[2]);
-//  assertTrue(called.exc[0]);
-//};
+
