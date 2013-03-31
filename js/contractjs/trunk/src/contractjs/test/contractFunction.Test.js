@@ -1,4 +1,4 @@
-ContractTest = AsyncTestCase("contract");
+ContractTest = TestCase("contracts of functions");
 
 ContractTest.prototype.test_module_load = function(queue) {
   assertFunction(window.instrumentFunction);
@@ -242,5 +242,3 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function(queue) {
     console.log(e);
   }
 };
-
-
