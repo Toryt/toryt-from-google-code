@@ -1,4 +1,4 @@
-define([], function() {
+//define([], function() {
 
   /*
     var FunctionDefinition = {
@@ -75,7 +75,7 @@ define([], function() {
   var isArrayOfFunctions = function(/*Object*/ af) {
     return isArray(af) && // return Boolean
       af.every(function(c) {
-        isFunction(c);
+        return isFunction(c);
       });
   };
 
@@ -125,44 +125,69 @@ define([], function() {
     }
   };
 
+  var argsToString = function(args) {
+    if (args === undefined) {
+      return "undefined";
+    }
+    if (args === null) {
+      return "null";
+    }
+    var result = "(";
+    var i;
+    for (i = 0; i < args.length; i++) {
+      result += args[i];
+      result += (i < args.length - 1) ? ", " : "";
+    }
+    result += ")";
+    return result;
+  };
+
   var ContractViolation = function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Function*/ violatingCondition) {
     this.subject = subject;
     this.function = impl;
     this.args = args;
     this.violation = violatingCondition;
+    this.msg = this.toString();
   };
+  ContractViolation.prototype = new Error();
+  ContractViolation.prototype.constructor = ContractViolation;
   ContractViolation.prototype.kindString = "ABSTRACT";
   ContractViolation.prototype.extraToString = function() {
     return null;
   };
   ContractViolation.prototype.toString = function() {
     var extra = this.extraToString();
-    return this.kindString + " VIOLATION (condition " + this.violation + " failed on function " +
-      this.function + " when called on " + this.subject + " with arguments " +
-      this.args + (extra ? " " + extra : "");
+    return this.kindString + " VIOLATION: condition " + this.violation + " failed on function " +
+      this.function + " when called on " + this.subject + " with arguments " + argsToString(this.args)
+      + (extra ? " " + extra : "");
   };
 
-  //MUDO inheritance
   var PreconditionViolation = function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Function*/ violatingCondition) {
-    ContractViolation(subject, impl, args, violatingCondition);
+    ContractViolation.apply(this, arguments);
   };
+  PreconditionViolation.prototype = new ContractViolation();
+  PreconditionViolation.prototype.constructor = PreconditionViolation;
   PreconditionViolation.prototype.kindString = "PRECONDITION";
 
   var PostconditionViolation = function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Object*/ result, /*Function*/ violatingCondition) {
-    ContractViolation(subject, impl, args, violatingCondition);
+    ContractViolation.call(this, subject, impl, args, violatingCondition);
     this.result = result;
   };
+  PostconditionViolation.prototype = new ContractViolation();
+  PostconditionViolation.prototype.constructor = PostconditionViolation;
   PostconditionViolation.prototype.kindString = "POSTCONDITION";
-  ContractViolation.prototype.extraToString = function() {
+  PostconditionViolation.prototype.extraToString = function() {
     return "with result " + this.result;
   };
 
   var ExceptionViolation = function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Object*/ exc, /*Function*/ violatingCondition) {
-    ContractViolation(subject, impl, args, violatingCondition);
+    ContractViolation.call(this, subject, impl, args, violatingCondition);
     this.exc = exc;
   };
+  ExceptionViolation.prototype = new ContractViolation();
+  ExceptionViolation.prototype.constructor = ExceptionViolation;
   ExceptionViolation.prototype.kindString = "EXCEPTION CONDITION";
-  ContractViolation.prototype.extraToString = function() {
+  ExceptionViolation.prototype.extraToString = function() {
     return "with exception " + this.exc;
   };
 
@@ -170,7 +195,8 @@ define([], function() {
     pres.forEach(function(pre) {
       var preResult = pre.apply(self, args);
       if (!preResult) {
-        throw new PreconditionViolation(self, impl, args, pre);
+        var error = new PreconditionViolation(self, impl, args, pre);
+        throw error;
       }
     });
   };
@@ -271,19 +297,19 @@ define([], function() {
       };
     }
     else {
-      throw "ERROR: validation postconditions, but not preconditions, makes no sense."
+      throw "ERROR: validation of postconditions, but not preconditions, makes no sense."
     }
 
     if (inst.include.pre) {
-      instrumented.pre = fd.pre;
+      instrumented.pre = fd.pre.slice(0);
     }
     if (inst.include.post) {
-      instrumented.post = fd.post;
-      instrumented.exc = fd.exc;
+      instrumented.post = fd.post.slice(0);
+      instrumented.exc = fd.exc.slice(0);
     }
     return instrumented;
   };
-
-  return instrumentFunction;
-});
+//
+//  return instrumentFunction;
+//});
 
