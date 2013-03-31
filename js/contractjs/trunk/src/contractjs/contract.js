@@ -202,8 +202,10 @@
   };
 
   var validateNominalPostconditions = function(/*Object*/ self, /*Array*/ nomPosts, /*Array*/ args, /*Object*/ result, /*Function*/ impl) {
+    var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
+    argsArray.push(result);
     nomPosts.forEach(function(npost) {
-      var postResult = true; // npost.apply(self, args, result); // MUDO result must be pushed to args (which is not an array)
+      var postResult = npost.apply(self, argsArray);
       if (!postResult) {
         throw new PostconditionViolation(self, impl, args, result, npost);
       }
@@ -211,13 +213,19 @@
   };
 
   var validateExceptionalPostconditions = function(/*Object*/ self, /*Array*/ excPosts, /*Array*/ args, /*Object*/ exc, /*Function*/ impl) {
+    var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
+    argsArray.push(exc);
     excPosts.forEach(function(epost) {
-      var postResult = true; // epost.apply(self, args, exc); // MUDO exc must be pushed to args (which is not an array)
+      var postResult = epost.apply(self, argsArray);
       if (!postResult) {
         throw new ExceptionViolation(self, impl, args, exc, epost);
       }
     });
   };
+
+  var noExceptionExpected = function UnexpectedException() {
+    return false;
+  }
 
   var instrumentFunction = function(/*FunctionDefinition*/ fd, /*String*/ instrument) {
     // summary:
@@ -277,21 +285,23 @@
     }
     else if (inst.instrument.pre && !inst.instrument.post) {
       instrumented = function() {
-        validatePreconditions(this, fd.pre, arguments, fd.impl);
-        var result = fd.impl.apply(this, arguments);
+        validatePreconditions(this, instrumented.pre, arguments, instrumented.impl);
+        var result = instrumented.impl.apply(this, arguments);
         return result;
       };
     }
     else if (inst.instrument.pre && inst.instrument.post) {
       instrumented = function() {
-        validatePreconditions(this, fd.pre, arguments, fd.impl);
+        validatePreconditions(this, instrumented.pre, arguments, instrumented.impl);
         try {
-          var result = fd.impl.apply(this, arguments);
-          validateNominalPostconditions(this, fd.post, arguments, result, fd.impl);
+          var result = instrumented.impl.apply(this, arguments);
+          validateNominalPostconditions(this, instrumented.post, arguments, result, instrumented.impl);
           return result;
         }
         catch (exc) {
-          validateExceptionalPostconditions(this, fd.exc, arguments, exc, fd.impl);
+          if (! exc instanceof ContractViolation) {
+            validateExceptionalPostconditions(this, instrumented.exc, arguments, exc, instrumented.impl);
+          }
           throw exc;
         }
       };
@@ -300,12 +310,18 @@
       throw "ERROR: validation of postconditions, but not preconditions, makes no sense."
     }
 
+    if (inst.include.pre || inst.include.post) {
+      instrumented.impl = fd.impl;
+    }
     if (inst.include.pre) {
       instrumented.pre = fd.pre.slice(0);
     }
     if (inst.include.post) {
       instrumented.post = fd.post.slice(0);
       instrumented.exc = fd.exc.slice(0);
+      if (instrumented.exc.length === 0) {
+        instrumented.exc.push(noExceptionExpected);
+      }
     }
     return instrumented;
   };
