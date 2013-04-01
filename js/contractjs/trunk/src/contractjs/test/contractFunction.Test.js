@@ -1,6 +1,6 @@
 ContractTest = TestCase("contracts of functions");
 
-ContractTest.prototype.test_module_load = function(queue) {
+ContractTest.prototype.test_module_load = function() {
   assertObject(window._tc_);
   assertFunction(window._tc_.buildf);
 };
@@ -30,7 +30,7 @@ ContractTest.prototype.tearDown = function() {
   delete this.definition;
 };
 
-ContractTest.prototype.test_contract_def_nopre_nopost = function() {
+ContractTest.prototype.test_contract_def_noPre_noPost = function() {
   var result = _tc_.buildf(this.definition);
   assertFunction(result);
   assertEquals(this.definition.impl, result);
@@ -41,7 +41,7 @@ ContractTest.prototype.test_contract_def_nopre_nopost = function() {
   assertEquals(0.5, execResult);
 };
 
-ContractTest.prototype.test_contract_def_pre_nopost = function(queue) {
+ContractTest.prototype.test_contract_def_pre_noPost = function() {
   var result = _tc_.buildf(this.definition, "+pre");
   assertFunction(result);
   assertEquals(this.definition.impl, result);
@@ -54,7 +54,7 @@ ContractTest.prototype.test_contract_def_pre_nopost = function(queue) {
   assertEquals(0.5, execResult);
 };
 
-ContractTest.prototype.test_contract_def_pre_post = function(queue) {
+ContractTest.prototype.test_contract_def_pre_post = function() {
   var result = _tc_.buildf(this.definition, "+pre +post");
   assertFunction(result);
   assertEquals(this.definition.impl, result);
@@ -71,7 +71,7 @@ ContractTest.prototype.test_contract_def_pre_post = function(queue) {
   assertEquals(0.5, execResult);
 };
 
-ContractTest.prototype.test_contract_exec_pre_nopost_ok = function(queue) {
+ContractTest.prototype.test_contract_exec_pre_noPost_ok = function() {
   var result = _tc_.buildf(this.definition, "#pre");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
@@ -84,7 +84,7 @@ ContractTest.prototype.test_contract_exec_pre_nopost_ok = function(queue) {
   assertEquals(0.5, execResult);
 };
 
-ContractTest.prototype.test_contract_exec_pre_nopost_nok = function(queue) {
+ContractTest.prototype.test_contract_exec_pre_noPost_nok = function() {
   var result = _tc_.buildf(this.definition, "#pre");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
@@ -103,7 +103,7 @@ ContractTest.prototype.test_contract_exec_pre_nopost_nok = function(queue) {
   }
 };
 
-ContractTest.prototype.test_contract_exec_pre_post_ok = function(queue) {
+ContractTest.prototype.test_contract_exec_pre_post_ok = function() {
   var result = _tc_.buildf(this.definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
@@ -120,7 +120,7 @@ ContractTest.prototype.test_contract_exec_pre_post_ok = function(queue) {
   assertEquals(0.5, execResult);
 };
 
-ContractTest.prototype.test_contract_exec_pre_post_nok = function(queue) {
+ContractTest.prototype.test_contract_exec_pre_post_nok = function() {
   var definition = {
     pre: [
       function(x, y) {return typeof x === "number";},
@@ -161,7 +161,7 @@ ContractTest.prototype.test_contract_exec_pre_post_nok = function(queue) {
   }
 };
 
-ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function(queue) {
+ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function() {
   var definition = {
     pre: [
       function(x, y) {return typeof x === "number";},
@@ -202,7 +202,7 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function(queue) {
   }
 };
 
-ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function(queue) {
+ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function() {
   var definition = {
     pre: [
       function(x, y) {return typeof x === "number";},

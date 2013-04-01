@@ -6,69 +6,70 @@ var _tc_ = {
   //   (On the way to AMD).
 
   /*
-    var FunctionDefinition = {
-      // pre: Array<Function>
-      //   Mandatory array of preconditions.
-      //   Preconditions are functions whose return value must be true
-      //   before the function is called.
-      //   The precondition-functions have the same arguments (including this)
-      //   as the actual function. Their value is their state at the moment of
-      //   the call. The functions should never change the state
-      //   of anything.
-      //   If a function is called in violation of its preconditions, the
-      //   implementation of the function has no responsibility for the effects
-      //   whatsoever.
-      //   When there are no preconditions, this must be explicitly the empty Array.
-      pre: [],
+  FunctionDefinition: {
+    // pre: Array<Function>
+    //   Mandatory array of preconditions.
+    //   Preconditions are functions whose return value must be true
+    //   before the function is called.
+    //   The precondition-functions have the same arguments (including this)
+    //   as the actual function. Their value is their state at the moment of
+    //   the call. The functions should never change the state
+    //   of anything.
+    //   If a function is called in violation of its preconditions, the
+    //   implementation of the function has no responsibility for the effects
+    //   whatsoever.
+    //   When there are no preconditions, this must be explicitly the empty Array.
+    pre: [],
 
-      // impl: Function
-      //   The actual implementation of this function. Optional.
-      //   If called with respect for the preconditions, this function must
-      //   either end nominally, fulfilling the nominal postconditions, or
-      //   exceptionally, fulfilling the matching exceptional postconditions.
-      //   All other outcomes are a programming error.
-      //   This can be null or undefined (intended to be used for abstract functions
-      //   in an OO context).
-      impl: null,
+    // impl: Function
+    //   The actual implementation of this function. Optional.
+    //   If called with respect for the preconditions, this function must
+    //   either end nominally, fulfilling the nominal postconditions, or
+    //   exceptionally, fulfilling the matching exceptional postconditions.
+    //   All other outcomes are a programming error.
+    //   This can be null or undefined (intended to be used for abstract functions
+    //   in an OO context).
+    impl: null,
 
-      // post: Array<Function>
-      //   Mandatory array of nominal postconditions.
-      //   Nominal postconditions are functions whose return value must be true
-      //   when the function ends nominally, if it was called in accordance
-      //   to the specified preconditions.
-      //   The postcondition-functions have the same arguments (including this)
-      //   as the actual function, with their value after impl has executed,
-      //   and have access to the state that is reachable
-      //   from the arguments of the function as it was just before the call.
-      //   They have an extra argument added at the end of the argument list,
-      //   that is the result of the implementation.
-      //   The functions should never change the state
-      //   of anything.
-      //   TODO SYNTAX OLD
-      //   When there are no nominal postconditions, this must be explicitly the
-      //   empty Array.
-      post: [],
+    // post: Array<Function>
+    //   Mandatory array of nominal postconditions.
+    //   Nominal postconditions are functions whose return value must be true
+    //   when the function ends nominally, if it was called in accordance
+    //   to the specified preconditions.
+    //   The postcondition-functions have the same arguments (including this)
+    //   as the actual function, with their value after impl has executed,
+    //   and have access to the state that is reachable
+    //   from the arguments of the function as it was just before the call.
+    //   They have an extra argument added at the end of the argument list,
+    //   that is the result of the implementation.
+    //   The functions should never change the state
+    //   of anything.
+    //   TODO SYNTAX OLD
+    //   When there are no nominal postconditions, this must be explicitly the
+    //   empty Array.
+    post: [],
 
-      // exc: Array<Function>
-      //   Mandatory array of exceptional postconditions.
-      //   Exceptional postconditions are functions whose return value must be true
-      //   when the function ends with an exception, if it was called in accordance
-      //   to the specified preconditions.
-      //   The postcondition-functions have the same arguments (including this)
-      //   as the actual function, with their value after impl has executed. This has
-      //   to be the same value as these arguments had just before the call (when
-      //   a function throws an exception, nothing should have changed).
-      //   They have an extra argument added at the end of the argument list,
-      //   that is the exception that was thrown.
-      //   TODO SYNTAX OLD
-      //   The functions should never change the state
-      //   of anything.
-      //   When there are no exceptional postconditions, this must be explicitly the
-      //   empty Array.
-      exc: []
-    }
-   */
-  isFunctionDefinition: function(/*FunctionDefinition*/ fd) {
+    // exc: Array<Function>
+    //   Mandatory array of exceptional postconditions.
+    //   Exceptional postconditions are functions whose return value must be true
+    //   when the function ends with an exception, if it was called in accordance
+    //   to the specified preconditions.
+    //   The postcondition-functions have the same arguments (including this)
+    //   as the actual function, with their value after impl has executed. This has
+    //   to be the same value as these arguments had just before the call (when
+    //   a function throws an exception, nothing should have changed).
+    //   They have an extra argument added at the end of the argument list,
+    //   that is the exception that was thrown.
+    //   TODO SYNTAX OLD
+    //   The functions should never change the state
+    //   of anything.
+    //   When there are no exceptional postconditions, this must be explicitly the
+    //   empty Array.
+    exc: []
+  }
+  */
+
+  isFunctionDefinition: function(/*Object*/ fd) {
 
     function isArray(/*Object*/ a) {
       return a && (a instanceof Array || typeof a == "array"); // return Boolean
@@ -120,7 +121,7 @@ var _tc_ = {
     return false;
   },
 
-  buildf: function(/*FunctionDefinition*/ fd, /*String*/ instrument) {
+  buildf: function(/*Object*/ fd, /*String*/ instrument) {
     // summary:
     //    Transforms a FunctionDefinition into a function, with optionally
     //    attached preconditions, nominal postconditions and exceptional
@@ -159,7 +160,7 @@ var _tc_ = {
     //    Anything else results in an error.
     // description:
     //   The result is a function with the exact same effect as impl, when all
-    //   conditions are met. Optionally (see `instrument`), the precondtions,
+    //   conditions are met. Optionally (see `instrument`), the preconditions,
     //   nominal and exceptional postconditions, are added as instance variables
     //   to the result, and impl is instrumented to verify the conditions.
 
@@ -274,10 +275,10 @@ var _tc_ = {
     function validateNominalPostconditions(/*Object*/ self, /*Array*/ nomPosts, /*Array*/ args, /*Object*/ result, /*Function*/ impl, /*Function*/ caller) {
       var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
       argsArray.push(result);
-      nomPosts.forEach(function(npost) {
-        var postResult = npost.apply(self, argsArray);
+      nomPosts.forEach(function(nPost) {
+        var postResult = nPost.apply(self, argsArray);
         if (!postResult) {
-          throw new _tc_.PostconditionViolation(self, impl, args, result, npost, caller);
+          throw new _tc_.PostconditionViolation(self, impl, args, result, nPost, caller);
         }
       });
     }
@@ -286,10 +287,10 @@ var _tc_ = {
       // MUDO must be changed to an "at least one"! (or)
       var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
       argsArray.push(exc);
-      excPosts.forEach(function(epost) {
-        var postResult = epost.apply(self, argsArray);
+      excPosts.forEach(function(ePost) {
+        var postResult = ePost.apply(self, argsArray);
         if (!postResult) {
-          throw new _tc_.ExceptionViolation(self, impl, args, exc, epost, caller);
+          throw new _tc_.ExceptionViolation(self, impl, args, exc, ePost, caller);
         }
       });
     }
