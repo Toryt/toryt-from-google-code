@@ -213,6 +213,7 @@ var validateNominalPostconditions = function(/*Object*/ self, /*Array*/ nomPosts
 };
 
 var validateExceptionalPostconditions = function(/*Object*/ self, /*Array*/ excPosts, /*Array*/ args, /*Object*/ exc, /*Function*/ impl, /*Function*/ caller) {
+  // MUDO must be changed to an "at least one"! (or)
   var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
   argsArray.push(exc);
   excPosts.forEach(function(epost) {
@@ -225,6 +226,55 @@ var validateExceptionalPostconditions = function(/*Object*/ self, /*Array*/ excP
 
 var noExceptionExpected = function unexpectedException() {
   return false;
+};
+
+var methodPropertyName = function(self, method) {
+  if (!self) {
+    return undefined;
+  }
+  for (var pName in self) {
+    if (self[pName] === method) {
+      return pName;
+    }
+  }
+  return undefined;
+};
+
+var methodInheritanceChain = function(o, methodName) {
+  var result = [];
+  function smRecursive(oRec, acc) {
+    if (!oRec) {
+      return acc;
+    }
+    if (oRec.hasOwnProperty(methodName)) {
+      acc.push(oRec[methodName]);
+    }
+    var oRecPrototype = Object.getPrototypeOf(oRec);
+    return smRecursive(oRecPrototype, acc);
+  }
+  return smRecursive(o, result);
+};
+
+var overrideChain = function(self, instrumented) {
+  var methodName = methodPropertyName(self, instrumented);
+  var methods = null;
+  if (methodName) {
+    methods = methodInheritanceChain(self, methodName);
+  }
+  else {
+    methods = [instrumented];
+  }
+  return methods;
+};
+
+var gatherConditions = function(methods, conditionName) {
+  var result = methods.reduce(
+    function(acc, method) {
+      return method[conditionName] ? acc.concat(method[conditionName]) : acc;
+    },
+    []
+  );
+  return result;
 };
 
 var instrumentFunction = function(/*FunctionDefinition*/ fd, /*String*/ instrument) {
@@ -270,12 +320,16 @@ var instrumentFunction = function(/*FunctionDefinition*/ fd, /*String*/ instrume
   //   nominal and exceptional postconditions, are added as instance variables
   //   to the result, and impl is instrumented to verify the conditions.
 
+
+
+
   if (!isFunctionDefinition(fd)) {
     throw "ERROR: not a FunctionDefinition (" + fd + ")";
   }
   var inst = crackInstrument(instrument);
 
   var instrumented = null;
+
   if (!fd.impl) {
     instrumented = function() { throw "ERROR: abstract method called"};
     // instrumentation makes no sense
@@ -292,15 +346,20 @@ var instrumentFunction = function(/*FunctionDefinition*/ fd, /*String*/ instrume
   }
   else if (inst.instrument.pre && inst.instrument.post) {
     instrumented = function() {
-      validatePreconditions(this, instrumented.pre, arguments, instrumented.impl, instrumented.caller);
+      // IDEA cache this
+      var methods = overrideChain(this, instrumented);
+      var preconditions = gatherConditions(methods, "pre");
+      validatePreconditions(this, preconditions, arguments, instrumented.impl, instrumented.caller);
       try {
         var result = instrumented.impl.apply(this, arguments);
-        validateNominalPostconditions(this, instrumented.post, arguments, result, instrumented.impl, instrumented.caller);
+        var postconditions = gatherConditions(methods, "post");
+        validateNominalPostconditions(this, postconditions, arguments, result, instrumented.impl, instrumented.caller);
         return result;
       }
       catch (exc) {
         if (! exc instanceof ContractViolation) {
-          validateExceptionalPostconditions(this, instrumented.exc, arguments, exc, instrumented.impl, instrumented.caller);
+          var excConditions = gatherConditions(methods, "exc");
+          validateExceptionalPostconditions(this, excConditions, arguments, exc, instrumented.impl, instrumented.caller);
         }
         throw exc;
       }
