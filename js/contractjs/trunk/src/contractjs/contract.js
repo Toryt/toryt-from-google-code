@@ -51,18 +51,23 @@ var _tc_ = {
 
     // exc: Array<Function>
     //   Mandatory array of exceptional postconditions.
-    //   Exceptional postconditions are functions whose return value must be true
-    //   when the function ends with an exception, if it was called in accordance
-    //   to the specified preconditions.
-    //   The postcondition-functions have the same arguments (including this)
+    //   When the function was called in accordance to the specified preconditions,
+    //   and the call does not end nominally, but throws an exception,
+    //   at least one of the exceptional postconditions must evaluate truthy.
+    //
+    //   Exceptional postconditions are objects, with 2 properties:
+    //   - when: a function that takes the exception as an argument; it returns
+    //           true if this set of conditions applies to this exception
+    //   - then: an array of functions, which all must return true for
+    //           exceptions for which `when` returns true
+    //   The then-functions have the same arguments (including this)
     //   as the actual function, with their value after impl has executed. This has
     //   to be the same value as these arguments had just before the call (when
     //   a function throws an exception, nothing should have changed).
     //   They have an extra argument added at the end of the argument list,
     //   that is the exception that was thrown.
     //   TODO SYNTAX OLD
-    //   The functions should never change the state
-    //   of anything.
+    //   The functions should never change the state of anything.
     //   When there are no exceptional postconditions, this must be explicitly the
     //   empty Array.
     exc: []
@@ -79,17 +84,30 @@ var _tc_ = {
       return Object.prototype.toString.call(f) === "[object Function]"; // return Boolean
     }
 
-    function isArrayOfFunctions(/*Object*/ af) {
+    function isArrayOfFunctions(/*Array*/ af) {
       return isArray(af) && // return Boolean
         af.every(function(c) {
           return isFunction(c);
         });
     }
 
+    function isExceptionalPostcondition(epc) {
+      return epc instanceof Object && // return Boolean
+        isFunction(epc.when) &&
+        isArrayOfFunctions(epc.then);
+    }
+
+    function isArrayOfExceptionalPostconditions(/*Array*/ aepc) {
+      return isArray(aepc) && // return Boolean
+        aepc.every(function(epc) {
+          return isExceptionalPostcondition(epc);
+        });
+    }
+
     return fd && // return Boolean
       isArrayOfFunctions(fd.pre) &&
       isArrayOfFunctions(fd.post) &&
-      isArrayOfFunctions(fd.exc) &&
+      isArrayOfExceptionalPostconditions(fd.exc) &&
       (fd.impl ? isFunction(fd.impl) : true);
   },
 
@@ -107,7 +125,7 @@ var _tc_ = {
     return undefined;
   },
 
-  ContractViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
+  ContractViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args) {
 
     function functionRepresentation(/*Object*/ self, /*Function*/ fct) {
       if (!fct) {
@@ -140,30 +158,52 @@ var _tc_ = {
     this.subject = subject;
     this.function = f ? f.impl : undefined;
     this.args = args;
-    this.violation = violatingCondition;
     this.caller = f ? f.caller : undefined;
     this.functionRepresentation = functionRepresentation(subject, f);
     this.callerRepresentation = functionRepresentation(subject, this.caller);
+  },
+
+  ConditionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
+    _tc_.ContractViolation.call(this, subject, f, args);
+    this.violation = violatingCondition;
     this.msg = this.toString();
   },
 
   PreconditionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
-    _tc_.ContractViolation.apply(this, arguments);
+    _tc_.ConditionViolation.apply(this, arguments);
   },
 
   PostconditionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ result, /*Function*/ violatingCondition) {
-    _tc_.ContractViolation.call(this, subject, f, args, violatingCondition);
+    _tc_.ConditionViolation.call(this, subject, f, args, violatingCondition);
     this.result = result;
   },
 
   ExceptionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ exc, /*Function*/ violatingCondition) {
-    _tc_.ContractViolation.call(this, subject, f, args, violatingCondition);
+    _tc_.ConditionViolation.call(this, subject, f, args, violatingCondition);
     this.exc = exc;
   },
 
-  noExceptionExpected: function () {
-    // Exception handling needs to be changed to OR. Then this will be removed.
-    return false;
+  UnexpectedException: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ exc) {
+    _tc_.ContractViolation.call(this, subject, f, args, exc);
+    this.exc = exc;
+    this.msg = this.toString();
+  },
+
+  argsToString: function(args) {
+    if (args === undefined) {
+      return "undefined";
+    }
+    if (args === null) {
+      return "null";
+    }
+    var result = "(";
+    var i;
+    for (i = 0; i < args.length; i++) {
+      result += args[i];
+      result += (i < args.length - 1) ? ", " : "";
+    }
+    result += ")";
+    return result;
   },
 
   buildf: function(/*Object*/ fd, /*String*/ instrument) {
@@ -315,18 +355,23 @@ var _tc_ = {
     }
 
     function validateExceptionalPostconditions(/*Object*/ self, /*Array*/ excPosts, /*Array*/ args, /*Object*/ exc, /*Function*/ f) {
-      // MUDO must be changed to an "at least one"! (or)
+      var applicable = excPosts.filter(function(excPost) {
+        return excPost.when.call(self, exc);
+      });
+      if (applicable.length <= 0) {
+        // we did not expect this exception
+        throw new _tc_.UnexpectedException(self, f, args, exc);
+      }
+      // we only use the first matching excPost
       var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
       argsArray.push(exc);
-      excPosts.forEach(function(ePost) {
+      applicable[0].then.forEach(function(ePost) {
         var postResult = ePost.apply(self, argsArray);
         if (!postResult) {
           throw new _tc_.ExceptionViolation(self, f, args, exc, ePost);
         }
       });
     }
-
-
 
 
 
@@ -349,7 +394,7 @@ var _tc_ = {
         // IDEA cache this
         var methods = overrideChain(this, instrumented);
         var preconditions = gatherConditions(methods, "pre");
-        validatePreconditions(this, preconditions, arguments, instrumented, instrumented.caller);
+        validatePreconditions(this, preconditions, arguments, instrumented);
         var result = instrumented.impl.apply(this, arguments);
         return result;
       };
@@ -359,17 +404,17 @@ var _tc_ = {
         // IDEA cache this
         var methods = overrideChain(this, instrumented);
         var preconditions = gatherConditions(methods, "pre");
-        validatePreconditions(this, preconditions, arguments, instrumented, instrumented.caller);
+        validatePreconditions(this, preconditions, arguments, instrumented);
         try {
           var result = instrumented.impl.apply(this, arguments);
           var postconditions = gatherConditions(methods, "post");
-          validateNominalPostconditions(this, postconditions, arguments, result, instrumented, instrumented.caller);
+          validateNominalPostconditions(this, postconditions, arguments, result, instrumented);
           return result;
         }
         catch (exc) {
-          if (! exc instanceof _tc_.ContractViolation) {
+          if (!(exc instanceof _tc_.ContractViolation)) {
             var excConditions = gatherConditions(methods, "exc");
-            validateExceptionalPostconditions(this, excConditions, arguments, exc, instrumented, instrumented.caller);
+            validateExceptionalPostconditions(this, excConditions, arguments, exc, instrumented);
           }
           throw exc;
         }
@@ -388,9 +433,6 @@ var _tc_ = {
     if (inst.include.post) {
       instrumented.post = fd.post.slice(0);
       instrumented.exc = fd.exc.slice(0);
-      if (instrumented.exc.length === 0) {
-        instrumented.exc.push(_tc_.noExceptionExpected);
-      }
     }
     return instrumented;
   }
@@ -399,51 +441,45 @@ var _tc_ = {
 _tc_.ContractViolation.prototype = new Error();
 _tc_.ContractViolation.prototype.constructor = _tc_.ContractViolation;
 _tc_.ContractViolation.prototype.kindString = "ABSTRACT";
-_tc_.ContractViolation.prototype.extraToString = function() {
+
+_tc_.ConditionViolation.prototype = new _tc_.ContractViolation();
+_tc_.ConditionViolation.prototype.constructor = _tc_.ConditionViolation;
+_tc_.ConditionViolation.prototype.extraToString = function() {
   return null;
 };
-_tc_.ContractViolation.prototype.toString = function() {
-
-  function argsToString(args) {
-    if (args === undefined) {
-      return "undefined";
-    }
-    if (args === null) {
-      return "null";
-    }
-    var result = "(";
-    var i;
-    for (i = 0; i < args.length; i++) {
-      result += args[i];
-      result += (i < args.length - 1) ? ", " : "";
-    }
-    result += ")";
-    return result;
-  }
-
+_tc_.ConditionViolation.prototype.toString = function() {
   var extra = this.extraToString();
   return this.kindString + " VIOLATION:\ncondition\n" + this.violation + "\nfailed on function\n" +
-    this.functionRepresentation + "\nwhen called on " + this.subject + "\nwith arguments " + argsToString(this.args) +
-    (extra ? "\n" + extra : "") +
+    this.functionRepresentation + "\nwhen called on " + this.subject + "\nwith arguments " +
+    _tc_.argsToString(this.args) + (extra ? "\n" + extra : "") +
     (this.caller ? "\nby function\n" + this.callerRepresentation : "");
 };
 
-_tc_.PreconditionViolation.prototype = new _tc_.ContractViolation();
+_tc_.PreconditionViolation.prototype = new _tc_.ConditionViolation();
 _tc_.PreconditionViolation.prototype.constructor = _tc_.PreconditionViolation;
 _tc_.PreconditionViolation.prototype.kindString = "PRECONDITION";
 
-_tc_.PostconditionViolation.prototype = new _tc_.ContractViolation();
+_tc_.PostconditionViolation.prototype = new _tc_.ConditionViolation();
 _tc_.PostconditionViolation.prototype.constructor = _tc_.PostconditionViolation;
 _tc_.PostconditionViolation.prototype.kindString = "POSTCONDITION";
 _tc_.PostconditionViolation.prototype.extraToString = function() {
   return "with result " + this.result;
 };
 
-_tc_.ExceptionViolation.prototype = new _tc_.ContractViolation();
+_tc_.ExceptionViolation.prototype = new _tc_.ConditionViolation();
 _tc_.ExceptionViolation.prototype.constructor = _tc_.ExceptionViolation;
 _tc_.ExceptionViolation.prototype.kindString = "EXCEPTION CONDITION";
 _tc_.ExceptionViolation.prototype.extraToString = function() {
   return "with exception " + this.exc;
 };
 
+_tc_.UnexpectedException.prototype = new _tc_.ContractViolation();
+_tc_.UnexpectedException.prototype.constructor = _tc_.UnexpectedException;
+_tc_.UnexpectedException.prototype.kindString = "UNEXPECTED EXCEPTION";
+_tc_.UnexpectedException.prototype.toString = function() {
+  return this.kindString + " (CONTRACT VIOLATION):\n" + this.exc +
+    "\noccured on function\n" + this.functionRepresentation + "\nwhen called on " +
+    this.subject + "\nwith arguments " + _tc_.argsToString(this.args) +
+    (this.caller ? "\nby function\n" + this.callerRepresentation : "");
+};
 

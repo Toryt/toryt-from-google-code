@@ -65,7 +65,7 @@ ContractTest.prototype.test_contract_def_pre_post = function() {
   assertEquals(this.definition.post, result.post);
   assertTrue(this.definition.post !== result.post);
   assertNotUndefined(result.exc);
-  assertEquals([_tc_.noExceptionExpected], result.exc);
+  assertEquals(this.definition.exc, result.exc);
   assertTrue(this.definition.exc !== result.exc);
   var execResult = result(1, 2);
   assertEquals(0.5, execResult);
@@ -114,7 +114,7 @@ ContractTest.prototype.test_contract_exec_pre_post_ok = function() {
   assertEquals(this.definition.post, result.post);
   assertTrue(this.definition.post !== result.post);
   assertNotUndefined(result.exc);
-  assertEquals([_tc_.noExceptionExpected], result.exc);
+  assertEquals(this.definition.exc, result.exc);
   assertTrue(this.definition.exc !== result.exc);
   var execResult = result(1, 2);
   assertEquals(0.5, execResult);
@@ -149,7 +149,7 @@ ContractTest.prototype.test_contract_exec_pre_post_nok = function() {
   assertEquals(definition.post, result.post);
   assertTrue(definition.post !== result.post);
   assertNotUndefined(result.exc);
-  assertEquals([_tc_.noExceptionExpected], result.exc);
+  assertEquals(this.definition.exc, result.exc);
   assertTrue(definition.exc !== result.exc);
   try {
     var execResult = result(1, 2);
@@ -161,7 +161,7 @@ ContractTest.prototype.test_contract_exec_pre_post_nok = function() {
   }
 };
 
-ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function() {
+ContractTest.prototype.test_contract_exec_pre_post_exc_unexpected1 = function() {
   var definition = {
     pre: [
       function(x, y) {return typeof x === "number";},
@@ -190,19 +190,69 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function() {
   assertEquals(definition.post, result.post);
   assertTrue(definition.post !== result.post);
   assertNotUndefined(result.exc);
-  assertEquals([_tc_.noExceptionExpected], result.exc);
+  assertEquals(this.definition.exc, result.exc);
   assertTrue(definition.exc !== result.exc);
   try {
     var execResult = result(1, 2);
     fail();
   }
   catch (e) {
-    assertInstanceOf(_tc_.ExceptionViolation, e);
+    assertInstanceOf(_tc_.UnexpectedException, e);
     console.log(e);
   }
 };
 
-ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function() {
+ContractTest.prototype.test_contract_exec_pre_post_exc_unexpected2 = function() {
+  var definition = {
+    pre: [
+      function(x, y) {return typeof x === "number";},
+      function(x, y) {return typeof y === "number";}
+    ],
+    impl: function(x, y) {
+      throw "UNEXPECTED ERROR";
+    },
+    post: [
+      function(x, y, result) {return typeof result === "number";},
+      function(x, y, result) {return result * y === x;}
+    ],
+    exc: [
+      {
+        when: function(e) {return e === "DIV/0";},
+        then: [
+          function(x, y, exc) {return y === 0;}
+        ]
+      },
+      {
+        when: function(e) {return e === "ANOTHER";},
+        then: [
+          function(x, y, exc) {return y === 4;}
+        ]
+      }
+    ]
+  };
+  var result = _tc_.buildf(definition, "#pre #post");
+  assertFunction(result);
+  assertNotEquals(definition.impl, result);
+  assertNotUndefined(result.pre);
+  assertEquals(definition.pre, result.pre);
+  assertTrue(definition.pre !== result.pre);
+  assertNotUndefined(result.post);
+  assertEquals(definition.post, result.post);
+  assertTrue(definition.post !== result.post);
+  assertNotUndefined(result.exc);
+  assertEquals(definition.exc, result.exc);
+  assertTrue(definition.exc !== result.exc);
+  try {
+    var execResult = result(1, 0);
+    fail();
+  }
+  catch (e) {
+    assertInstanceOf(_tc_.UnexpectedException, e);
+    console.log(e);
+  }
+};
+
+ContractTest.prototype.test_contract_exec_pre_post_exc_ok = function() {
   var definition = {
     pre: [
       function(x, y) {return typeof x === "number";},
@@ -219,7 +269,12 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function() {
       function(x, y, result) {return result * y === x;}
     ],
     exc: [
-      function(x, y, exc) {return exc === "DIV/0" && y === 0;}
+      {
+        when: function(e) {return e === "DIV/0";},
+        then: [
+          function(x, y, exc) {return y === 0;}
+        ]
+      }
     ]
   };
   var result = _tc_.buildf(definition, "#pre #post");
@@ -240,6 +295,50 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function() {
   }
   catch (e) {
     assertEquals("DIV/0", e);
+    console.log(e);
+  }
+};
+
+ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function() {
+  var definition = {
+    pre: [
+      function(x, y) {return typeof x === "number";},
+      function(x, y) {return typeof y === "number";}
+    ],
+    impl: function(x, y) {
+      throw "DIV/0"
+    },
+    post: [
+      function(x, y, result) {return typeof result === "number";},
+      function(x, y, result) {return result * y === x;}
+    ],
+    exc: [
+      {
+        when: function(e) {return e === "DIV/0";},
+        then: [
+          function(x, y, exc) {return y === 0;}
+        ]
+      }
+    ]
+  };
+  var result = _tc_.buildf(definition, "#pre #post");
+  assertFunction(result);
+  assertNotEquals(definition.impl, result);
+  assertNotUndefined(result.pre);
+  assertEquals(definition.pre, result.pre);
+  assertTrue(definition.pre !== result.pre);
+  assertNotUndefined(result.post);
+  assertEquals(definition.post, result.post);
+  assertTrue(definition.post !== result.post);
+  assertNotUndefined(result.exc);
+  assertEquals(definition.exc, result.exc);
+  assertTrue(definition.exc !== result.exc);
+  try {
+    var execResult = result(1, 4);
+    fail();
+  }
+  catch (e) {
+    assertInstanceOf(_tc_.ExceptionViolation, e);
     console.log(e);
   }
 };
