@@ -1,3 +1,18 @@
+function isArray(/*Object*/ a) {
+  return a && (a instanceof Array || typeof a == "array"); // return Boolean
+}
+
+function isFunction(/*Object*/ f) {
+  return Object.prototype.toString.call(f) === "[object Function]"; // return Boolean
+}
+
+function isArrayOfFunctions(/*Object*/ af) {
+  return isArray(af) && // return Boolean
+    af.every(function(c) {
+      return isFunction(c);
+    });
+}
+
 /*
   var FunctionDefinition = {
     // pre: Array<Function>
@@ -61,69 +76,15 @@
     exc: []
   }
  */
-
-var isArray = function(/*Object*/ a) {
-  return a && (a instanceof Array || typeof a == "array"); // return Boolean
-};
-
-var isFunction = function(/*Object*/ f) {
-  return Object.prototype.toString.call(f) === "[object Function]"; // return Boolean
-};
-
-var isArrayOfFunctions = function(/*Object*/ af) {
-  return isArray(af) && // return Boolean
-    af.every(function(c) {
-      return isFunction(c);
-    });
-};
-
-var isFunctionDefinition = function(/*FunctionDefinition*/ fd) {
+function isFunctionDefinition(/*FunctionDefinition*/ fd) {
   return fd && // return Boolean
     isArrayOfFunctions(fd.pre) &&
     isArrayOfFunctions(fd.post) &&
     isArrayOfFunctions(fd.exc) &&
     (fd.impl ? isFunction(fd.impl) : true);
-};
+}
 
-var crackInstrument = function(/*String*/ instrument) {
-  if (!instrument) {
-    return {
-      include:    { pre:  false, post: false },
-      instrument: { pre:  false, post: false }
-    }
-  }
-  switch (instrument) {
-    case "+pre":
-      return {
-        include:    { pre:  true, post: false },
-        instrument: { pre:  false, post: false }
-      };
-    case "+pre +post":
-      return {
-        include:    { pre:  true, post: true },
-        instrument: { pre:  false, post: false }
-      };
-    case "#pre":
-      return {
-        include:    { pre:  true, post: false },
-        instrument: { pre:  true, post: false }
-      };
-    case "#pre +post":
-      return {
-        include:    { pre:  true, post: true},
-        instrument: { pre:  true, post: false }
-      };
-    case "#pre #post":
-      return {
-        include:    { pre:  true, post: true },
-        instrument: { pre:  true, post: true }
-      };
-    default:
-      throw "ERROR: illegal instrument argument (" + instrument + ")";
-  }
-};
-
-var argsToString = function(args) {
+function argsToString(args) {
   if (args === undefined) {
     return "undefined";
   }
@@ -138,7 +99,7 @@ var argsToString = function(args) {
   }
   result += ")";
   return result;
-};
+}
 
 var ContractViolation = function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Function*/ violatingCondition, /*Function*/ caller) {
   this.subject = subject;
@@ -191,91 +152,9 @@ ExceptionViolation.prototype.extraToString = function() {
   return "with exception " + this.exc;
 };
 
-var validatePreconditions = function(/*Object*/ self, /*Array*/ pres, /*Array*/ args, /*Function*/ impl, /*Function*/ caller) {
-  pres.forEach(function(pre) {
-    var preResult = pre.apply(self, args);
-    if (!preResult) {
-      var error = new PreconditionViolation(self, impl, args, pre, caller);
-      throw error;
-    }
-  });
-};
-
-var validateNominalPostconditions = function(/*Object*/ self, /*Array*/ nomPosts, /*Array*/ args, /*Object*/ result, /*Function*/ impl, /*Function*/ caller) {
-  var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
-  argsArray.push(result);
-  nomPosts.forEach(function(npost) {
-    var postResult = npost.apply(self, argsArray);
-    if (!postResult) {
-      throw new PostconditionViolation(self, impl, args, result, npost, caller);
-    }
-  });
-};
-
-var validateExceptionalPostconditions = function(/*Object*/ self, /*Array*/ excPosts, /*Array*/ args, /*Object*/ exc, /*Function*/ impl, /*Function*/ caller) {
-  // MUDO must be changed to an "at least one"! (or)
-  var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
-  argsArray.push(exc);
-  excPosts.forEach(function(epost) {
-    var postResult = epost.apply(self, argsArray);
-    if (!postResult) {
-      throw new ExceptionViolation(self, impl, args, exc, epost, caller);
-    }
-  });
-};
-
-var noExceptionExpected = function unexpectedException() {
+function noExceptionExpected() {
   return false;
-};
-
-var methodPropertyName = function(self, method) {
-  if (!self) {
-    return undefined;
-  }
-  for (var pName in self) {
-    if (self[pName] === method) {
-      return pName;
-    }
-  }
-  return undefined;
-};
-
-var methodInheritanceChain = function(o, methodName) {
-  var result = [];
-  function smRecursive(oRec, acc) {
-    if (!oRec) {
-      return acc;
-    }
-    if (oRec.hasOwnProperty(methodName)) {
-      acc.push(oRec[methodName]);
-    }
-    var oRecPrototype = Object.getPrototypeOf(oRec);
-    return smRecursive(oRecPrototype, acc);
-  }
-  return smRecursive(o, result);
-};
-
-var overrideChain = function(self, instrumented) {
-  var methodName = methodPropertyName(self, instrumented);
-  var methods = null;
-  if (methodName) {
-    methods = methodInheritanceChain(self, methodName);
-  }
-  else {
-    methods = [instrumented];
-  }
-  return methods;
-};
-
-var gatherConditions = function(methods, conditionName) {
-  var result = methods.reduce(
-    function(acc, method) {
-      return method[conditionName] ? acc.concat(method[conditionName]) : acc;
-    },
-    []
-  );
-  return result;
-};
+}
 
 var instrumentFunction = function(/*FunctionDefinition*/ fd, /*String*/ instrument) {
   // summary:
@@ -320,6 +199,127 @@ var instrumentFunction = function(/*FunctionDefinition*/ fd, /*String*/ instrume
   //   nominal and exceptional postconditions, are added as instance variables
   //   to the result, and impl is instrumented to verify the conditions.
 
+  function crackInstrument(/*String*/ instrument) {
+    if (!instrument) {
+      return {
+        include:    { pre:  false, post: false },
+        instrument: { pre:  false, post: false }
+      }
+    }
+    switch (instrument) {
+      case "+pre":
+        return {
+          include:    { pre:  true, post: false },
+          instrument: { pre:  false, post: false }
+        };
+      case "+pre +post":
+        return {
+          include:    { pre:  true, post: true },
+          instrument: { pre:  false, post: false }
+        };
+      case "#pre":
+        return {
+          include:    { pre:  true, post: false },
+          instrument: { pre:  true, post: false }
+        };
+      case "#pre +post":
+        return {
+          include:    { pre:  true, post: true},
+          instrument: { pre:  true, post: false }
+        };
+      case "#pre #post":
+        return {
+          include:    { pre:  true, post: true },
+          instrument: { pre:  true, post: true }
+        };
+      default:
+        throw "ERROR: illegal instrument argument (" + instrument + ")";
+    }
+  }
+
+  function methodPropertyName(self, method) {
+    if (!self) {
+      return undefined;
+    }
+    for (var pName in self) {
+      if (self[pName] === method) {
+        return pName;
+      }
+    }
+    return undefined;
+  }
+
+  function methodInheritanceChain(o, methodName) {
+    var result = [];
+    function smRecursive(oRec, acc) {
+      if (!oRec) {
+        return acc;
+      }
+      if (oRec.hasOwnProperty(methodName)) {
+        acc.push(oRec[methodName]);
+      }
+      var oRecPrototype = Object.getPrototypeOf(oRec);
+      return smRecursive(oRecPrototype, acc);
+    }
+    return smRecursive(o, result);
+  }
+
+  function overrideChain(self, instrumented) {
+    var methodName = methodPropertyName(self, instrumented);
+    var methods = null;
+    if (methodName) {
+      methods = methodInheritanceChain(self, methodName);
+    }
+    else {
+      methods = [instrumented];
+    }
+    return methods;
+  }
+
+  function gatherConditions(methods, conditionName) {
+    var result = methods.reduce(
+      function(acc, method) {
+        return method[conditionName] ? acc.concat(method[conditionName]) : acc;
+      },
+      []
+    );
+    return result;
+  }
+
+  function validatePreconditions(/*Object*/ self, /*Array*/ pres, /*Array*/ args, /*Function*/ impl, /*Function*/ caller) {
+    pres.forEach(function(pre) {
+      var preResult = pre.apply(self, args);
+      if (!preResult) {
+        var error = new PreconditionViolation(self, impl, args, pre, caller);
+        throw error;
+      }
+    });
+  }
+
+  function validateNominalPostconditions(/*Object*/ self, /*Array*/ nomPosts, /*Array*/ args, /*Object*/ result, /*Function*/ impl, /*Function*/ caller) {
+    var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
+    argsArray.push(result);
+    nomPosts.forEach(function(npost) {
+      var postResult = npost.apply(self, argsArray);
+      if (!postResult) {
+        throw new PostconditionViolation(self, impl, args, result, npost, caller);
+      }
+    });
+  }
+
+  function validateExceptionalPostconditions(/*Object*/ self, /*Array*/ excPosts, /*Array*/ args, /*Object*/ exc, /*Function*/ impl, /*Function*/ caller) {
+    // MUDO must be changed to an "at least one"! (or)
+    var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
+    argsArray.push(exc);
+    excPosts.forEach(function(epost) {
+      var postResult = epost.apply(self, argsArray);
+      if (!postResult) {
+        throw new ExceptionViolation(self, impl, args, exc, epost, caller);
+      }
+    });
+  }
+
+
 
 
 
@@ -339,7 +339,10 @@ var instrumentFunction = function(/*FunctionDefinition*/ fd, /*String*/ instrume
   }
   else if (inst.instrument.pre && !inst.instrument.post) {
     instrumented = function() {
-      validatePreconditions(this, instrumented.pre, arguments, instrumented.impl, instrumented.caller);
+      // IDEA cache this
+      var methods = overrideChain(this, instrumented);
+      var preconditions = gatherConditions(methods, "pre");
+      validatePreconditions(this, instrumented.pre, arguments, preconditions, instrumented.caller);
       var result = instrumented.impl.apply(this, arguments);
       return result;
     };
