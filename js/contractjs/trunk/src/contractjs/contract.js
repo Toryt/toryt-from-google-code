@@ -350,9 +350,6 @@ var _tc_ = {
         var methods = overrideChain(this, instrumented);
         var preconditions = gatherConditions(methods, "pre");
         validatePreconditions(this, preconditions, arguments, instrumented, instrumented.caller);
-        if (!instrumented.impl) {
-          throw "ABSTRACT METHOD";
-        }
         var result = instrumented.impl.apply(this, arguments);
         return result;
       };
@@ -363,9 +360,6 @@ var _tc_ = {
         var methods = overrideChain(this, instrumented);
         var preconditions = gatherConditions(methods, "pre");
         validatePreconditions(this, preconditions, arguments, instrumented, instrumented.caller);
-        if (!instrumented.impl) {
-          throw "ABSTRACT METHOD";
-        }
         try {
           var result = instrumented.impl.apply(this, arguments);
           var postconditions = gatherConditions(methods, "post");

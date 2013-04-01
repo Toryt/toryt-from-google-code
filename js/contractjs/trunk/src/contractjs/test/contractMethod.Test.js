@@ -100,6 +100,16 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
+  Person.prototype.firstName = _tc_.buildf(
+    {
+      pre: [],
+      post: [
+        function(result) {return typeof result === "string";}
+      ],
+      exc: []
+    },
+    "#pre #post"
+  );
   this.Person = Person;
 };
 
@@ -146,6 +156,18 @@ ContractTest.prototype.test_classObject_nok2 = function() {
   }
   catch (e) {
     assertInstanceOf(_tc_.PostconditionViolation, e);
+    console.log(e);
+  }
+};
+
+ContractTest.prototype.test_classObject_abstract = function() {
+  try {
+    var p = new this.Person("Jan", new Date(1966, 9, 3));
+    var result = p.firstName();
+    fail(p);
+  }
+  catch (e) {
+    assertEquals("ERROR: abstract method called", e);
     console.log(e);
   }
 };
