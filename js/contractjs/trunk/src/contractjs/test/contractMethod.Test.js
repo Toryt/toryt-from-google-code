@@ -1,8 +1,9 @@
 ContractTest = TestCase("contracts of overrideChain");
 
 var epoch = new Date(0);
+var epochYear = epoch.getFullYear();
+
 ContractTest.prototype.setUp = function() {
-  var epochYear = epoch.getFullYear();
   var Person = _tc_.buildf(
     {
       pre: [
@@ -106,7 +107,7 @@ ContractTest.prototype.tearDown = function() {
   delete this.Person;
 };
 
-ContractTest.prototype.test_classobject_ok = function() {
+ContractTest.prototype.test_classObject_ok = function() {
   try {
     var p = new this.Person("Jan", new Date(1966, 9, 3));
     var ageAt = p.ageAt(new Date(2013, 2, 31));
@@ -124,7 +125,7 @@ ContractTest.prototype.test_classobject_ok = function() {
   }
 };
 
-ContractTest.prototype.test_classobject_nok1 = function() {
+ContractTest.prototype.test_classObject_nok1 = function() {
   try {
     var future = new Date();
     future.setFullYear(future.getFullYear() + 5);
@@ -137,7 +138,7 @@ ContractTest.prototype.test_classobject_nok1 = function() {
   }
 };
 
-ContractTest.prototype.test_classobject_nok2 = function() {
+ContractTest.prototype.test_classObject_nok2 = function() {
   try {
     var p = new this.Person("Jan", new Date(1966, 9, 3));
     var result = p.wrongImpl();
@@ -149,13 +150,13 @@ ContractTest.prototype.test_classobject_nok2 = function() {
   }
 };
 
-ContractTest.prototype.test_classobject__inherit_ok = function() {
+ContractTest.prototype.test_classObject__inherit_ok = function() {
   var Person = this.Person;
   var Person2 = _tc_.buildf(
     {
       pre: [
-        function(firstName, lastName, dob) {return firstName && typeof name === "string";},
-        function(firstName, lastName, dob) {return lastName && typeof name === "string";},
+        function(firstName, lastName, dob) {return firstName && typeof firstName === "string";},
+        function(firstName, lastName, dob) {return lastName && typeof lastName === "string";},
         function(firstName, lastName, dob) {return dob && dob instanceof Date;},
         function(firstName, lastName, dob) {return dob < Date.now();}
       ],
@@ -192,13 +193,13 @@ ContractTest.prototype.test_classobject__inherit_ok = function() {
   console.log(result);
 };
 
-ContractTest.prototype.test_classobject__inherit_nok1 = function() {
+ContractTest.prototype.test_classObject__inherit_nok1 = function() {
   var Person = this.Person;
   var Person2 = _tc_.buildf(
     {
       pre: [
-        function(firstName, lastName, dob) {return firstName && typeof name === "string";},
-        function(firstName, lastName, dob) {return lastName && typeof name === "string";},
+        function(firstName, lastName, dob) {return firstName && typeof firstName === "string";},
+        function(firstName, lastName, dob) {return lastName && typeof lastName === "string";},
         function(firstName, lastName, dob) {return dob && dob instanceof Date;},
         function(firstName, lastName, dob) {return dob < Date.now();}
       ],
@@ -242,13 +243,13 @@ ContractTest.prototype.test_classobject__inherit_nok1 = function() {
 };
 
 
-ContractTest.prototype.test_classobject__inherit_nok2 = function() {
+ContractTest.prototype.test_classObject__inherit_nok2 = function() {
   var Person = this.Person;
   var Person2 = _tc_.buildf(
     {
       pre: [
-        function(firstName, lastName, dob) {return firstName && typeof name === "string";},
-        function(firstName, lastName, dob) {return lastName && typeof name === "string";},
+        function(firstName, lastName, dob) {return firstName && typeof firstName === "string";},
+        function(firstName, lastName, dob) {return lastName && typeof lastName === "string";},
         function(firstName, lastName, dob) {return dob && dob instanceof Date;},
         function(firstName, lastName, dob) {return dob < Date.now();}
       ],
