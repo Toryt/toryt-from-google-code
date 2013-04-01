@@ -1,18 +1,3 @@
-function isArray(/*Object*/ a) {
-  return a && (a instanceof Array || typeof a == "array"); // return Boolean
-}
-
-function isFunction(/*Object*/ f) {
-  return Object.prototype.toString.call(f) === "[object Function]"; // return Boolean
-}
-
-function isArrayOfFunctions(/*Object*/ af) {
-  return isArray(af) && // return Boolean
-    af.every(function(c) {
-      return isFunction(c);
-    });
-}
-
 /*
   var FunctionDefinition = {
     // pre: Array<Function>
@@ -77,28 +62,27 @@ function isArrayOfFunctions(/*Object*/ af) {
   }
  */
 function isFunctionDefinition(/*FunctionDefinition*/ fd) {
+
+  function isArray(/*Object*/ a) {
+    return a && (a instanceof Array || typeof a == "array"); // return Boolean
+  }
+
+  function isFunction(/*Object*/ f) {
+    return Object.prototype.toString.call(f) === "[object Function]"; // return Boolean
+  }
+
+  function isArrayOfFunctions(/*Object*/ af) {
+    return isArray(af) && // return Boolean
+      af.every(function(c) {
+        return isFunction(c);
+      });
+  }
+
   return fd && // return Boolean
     isArrayOfFunctions(fd.pre) &&
     isArrayOfFunctions(fd.post) &&
     isArrayOfFunctions(fd.exc) &&
     (fd.impl ? isFunction(fd.impl) : true);
-}
-
-function argsToString(args) {
-  if (args === undefined) {
-    return "undefined";
-  }
-  if (args === null) {
-    return "null";
-  }
-  var result = "(";
-  var i;
-  for (i = 0; i < args.length; i++) {
-    result += args[i];
-    result += (i < args.length - 1) ? ", " : "";
-  }
-  result += ")";
-  return result;
 }
 
 var ContractViolation = function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Function*/ violatingCondition, /*Function*/ caller) {
@@ -116,6 +100,24 @@ ContractViolation.prototype.extraToString = function() {
   return null;
 };
 ContractViolation.prototype.toString = function() {
+  
+  function argsToString(args) {
+    if (args === undefined) {
+      return "undefined";
+    }
+    if (args === null) {
+      return "null";
+    }
+    var result = "(";
+    var i;
+    for (i = 0; i < args.length; i++) {
+      result += args[i];
+      result += (i < args.length - 1) ? ", " : "";
+    }
+    result += ")";
+    return result;
+  }
+
   var extra = this.extraToString();
   return this.kindString + " VIOLATION: condition " + this.violation + " failed on function " +
     this.function + " when called on " + this.subject + " with arguments " + argsToString(this.args) +
