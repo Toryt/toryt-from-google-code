@@ -216,6 +216,15 @@ var _tc_ = {
     }
 
     function methodInheritanceChain(o, methodName) {
+      // summary:
+      //   All the methods in the prototype chain of `o`,
+      //   starting with `o`, with name `methodName`,
+      //   except when `methodName === "constructor"`.
+      //   In that case, only the first encountered method
+      //   of that name.
+      if (methodName === "constructor") {
+        return o["constructor"] ? [o["constructor"]] : [];
+      }
       var result = [];
       function smRecursive(oRec, acc) {
         if (!oRec) {
