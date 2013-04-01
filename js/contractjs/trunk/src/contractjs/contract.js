@@ -93,6 +93,20 @@ var _tc_ = {
       (fd.impl ? isFunction(fd.impl) : true);
   },
 
+  methodPropertyName: function(self, method) {
+    if (!self) {
+      return undefined;
+    }
+    for (var pName in self) {
+      //noinspection JSUnfilteredForInLoop
+      if (self[pName] === method) {
+        //noinspection JSUnfilteredForInLoop
+        return pName;
+      }
+    }
+    return undefined;
+  },
+
   ContractViolation: function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Function*/ violatingCondition, /*Function*/ caller) {
     this.subject = subject;
     this.function = impl;
@@ -100,6 +114,7 @@ var _tc_ = {
     this.violation = violatingCondition;
     this.caller =  caller;
     this.msg = this.toString();
+
   },
 
   PreconditionViolation: function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Function*/ violatingCondition, /*Function*/ caller) {
@@ -202,20 +217,6 @@ var _tc_ = {
       }
     }
 
-    function methodPropertyName(self, method) {
-      if (!self) {
-        return undefined;
-      }
-      for (var pName in self) {
-        //noinspection JSUnfilteredForInLoop
-        if (self[pName] === method) {
-          //noinspection JSUnfilteredForInLoop
-          return pName;
-        }
-      }
-      return undefined;
-    }
-
     function methodInheritanceChain(o, methodName) {
       // summary:
       //   All the methods in the prototype chain of `o`,
@@ -241,7 +242,7 @@ var _tc_ = {
     }
 
     function overrideChain(self, instrumented) {
-      var methodName = methodPropertyName(self, instrumented);
+      var methodName = _tc_.methodPropertyName(self, instrumented);
       var methods = null;
       if (methodName) {
         methods = methodInheritanceChain(self, methodName);
@@ -318,7 +319,7 @@ var _tc_ = {
         // IDEA cache this
         var methods = overrideChain(this, instrumented);
         var preconditions = gatherConditions(methods, "pre");
-        validatePreconditions(this, instrumented.pre, arguments, preconditions, instrumented.caller);
+        validatePreconditions(this, preconditions, arguments, instrumented, instrumented.caller);
         var result = instrumented.impl.apply(this, arguments);
         return result;
       };
@@ -328,17 +329,17 @@ var _tc_ = {
         // IDEA cache this
         var methods = overrideChain(this, instrumented);
         var preconditions = gatherConditions(methods, "pre");
-        validatePreconditions(this, preconditions, arguments, instrumented.impl, instrumented.caller);
+        validatePreconditions(this, preconditions, arguments, instrumented, instrumented.caller);
         try {
           var result = instrumented.impl.apply(this, arguments);
           var postconditions = gatherConditions(methods, "post");
-          validateNominalPostconditions(this, postconditions, arguments, result, instrumented.impl, instrumented.caller);
+          validateNominalPostconditions(this, postconditions, arguments, result, instrumented, instrumented.caller);
           return result;
         }
         catch (exc) {
           if (! exc instanceof _tc_.ContractViolation) {
             var excConditions = gatherConditions(methods, "exc");
-            validateExceptionalPostconditions(this, excConditions, arguments, exc, instrumented.impl, instrumented.caller);
+            validateExceptionalPostconditions(this, excConditions, arguments, exc, instrumented, instrumented.caller);
           }
           throw exc;
         }
