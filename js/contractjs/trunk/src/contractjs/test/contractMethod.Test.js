@@ -1,4 +1,4 @@
-ContractTest = TestCase("contracts of methods");
+ContractTest = TestCase("contracts of overrideChain");
 
 ContractTest.prototype.setUp = function() {
   var epochYear = new Date(0).getFullYear();
@@ -85,6 +85,19 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
+  Person.prototype.fullName = instrumentFunction(
+    {
+      pre: [],
+      impl: function() {
+        return this.name;
+      },
+      post: [
+        function(result) {return result.indexOf(this.name) >= 0;}
+      ],
+      exc: []
+    },
+    "#pre #post"
+  )
   this.Person = Person;
 };
 
@@ -103,6 +116,7 @@ ContractTest.prototype.test_classobject_ok = function() {
     var asString = p.toString();
     console.log(asString);
     console.log(p);
+    var fullName = p.fullName();
   }
   catch (e) {
     fail(e);
