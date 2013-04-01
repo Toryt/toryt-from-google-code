@@ -170,7 +170,7 @@
         }
 
         this.subject = subject;
-        this.function = f ? f.impl : undefined;
+        this.subjectFunction = f ? f.impl : undefined;
         this.args = args;
         this.caller = f ? f.caller : undefined;
         this.functionRepresentation = functionRepresentation(subject, f);
