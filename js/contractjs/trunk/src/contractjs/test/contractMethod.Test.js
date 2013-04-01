@@ -100,7 +100,7 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
-  Person.prototype.firstName = _tc_.buildf(
+  Person.prototype.getFirstName = _tc_.buildf(
     {
       pre: [],
       post: [
@@ -163,7 +163,7 @@ ContractTest.prototype.test_classObject_nok2 = function() {
 ContractTest.prototype.test_classObject_abstract = function() {
   try {
     var p = new this.Person("Jan", new Date(1966, 9, 3));
-    var result = p.firstName();
+    var result = p.getFirstName();
     fail(p);
   }
   catch (e) {
@@ -264,7 +264,6 @@ ContractTest.prototype.test_classObject__inherit_nok1 = function() {
   }
 };
 
-
 ContractTest.prototype.test_classObject__inherit_nok2 = function() {
   var Person = this.Person;
   var Person2 = _tc_.buildf(
@@ -312,4 +311,88 @@ ContractTest.prototype.test_classObject__inherit_nok2 = function() {
     console.log(e);
   }
 };
+
+ContractTest.prototype.test_classObject__inherit_abstract_ok = function() {
+  var Person = this.Person;
+  var Person2 = _tc_.buildf(
+    {
+      pre: [
+        function(firstName, lastName, dob) {return firstName && typeof firstName === "string";},
+        function(firstName, lastName, dob) {return lastName && typeof lastName === "string";},
+        function(firstName, lastName, dob) {return dob && dob instanceof Date;},
+        function(firstName, lastName, dob) {return dob < Date.now();}
+      ],
+      impl: function(/*String*/ firstName, /*String*/ lastName, /*Date*/ dob) {
+        Person.call(this, lastName, dob);
+        this.firstName = firstName;
+      },
+      post: [
+        function(firstName, lastName, dob) {return this.firstName === firstName;},
+        function(firstName, lastName, dob) {return this.name === lastName;},
+        function(firstName, lastName, dob) {return this.dob === dob;}
+      ],
+      exc: []
+    },
+    "#pre #post"
+  );
+  Person2.prototype = new Person("DEFAULT NAME", epoch);
+  Person2.prototype.constructor = Person2;
+  Person2.prototype.getFirstName = _tc_.buildf(
+    {
+      pre: [],
+      impl: function() {return this.firstName;},
+      post: [],
+      exc: []
+    },
+    "#pre #post"
+  );
+  var p = new Person2("Jan", "Dockx", new Date(1966, 9, 3));
+  var result = p.getFirstName();
+  assertEquals("Jan", result);
+};
+
+ContractTest.prototype.test_classObject__inherit_abstract_nok = function() {
+  var Person = this.Person;
+  var Person2 = _tc_.buildf(
+    {
+      pre: [
+        function(firstName, lastName, dob) {return firstName && typeof firstName === "string";},
+        function(firstName, lastName, dob) {return lastName && typeof lastName === "string";},
+        function(firstName, lastName, dob) {return dob && dob instanceof Date;},
+        function(firstName, lastName, dob) {return dob < Date.now();}
+      ],
+      impl: function(/*String*/ firstName, /*String*/ lastName, /*Date*/ dob) {
+        Person.call(this, lastName, dob);
+        this.firstName = firstName;
+      },
+      post: [
+        function(firstName, lastName, dob) {return this.firstName === firstName;},
+        function(firstName, lastName, dob) {return this.name === lastName;},
+        function(firstName, lastName, dob) {return this.dob === dob;}
+      ],
+      exc: []
+    },
+    "#pre #post"
+  );
+  Person2.prototype = new Person("DEFAULT NAME", epoch);
+  Person2.prototype.constructor = Person2;
+  Person2.prototype.getFirstName = _tc_.buildf(
+    {
+      pre: [],
+      impl: function() {return 5;},
+      post: [],
+      exc: []
+    },
+    "#pre #post"
+  );
+  try {
+    var p = new Person2("Jan", "Dockx", new Date(1966, 9, 3));
+    var result = p.getFirstName();
+  }
+  catch (e) {
+    assertInstanceOf(_tc_.PostconditionViolation, e);
+    console.log(e);
+  }
+};
+
 
