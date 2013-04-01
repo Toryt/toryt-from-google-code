@@ -108,13 +108,43 @@ var _tc_ = {
   },
 
   ContractViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
+
+    function functionRepresentation(/*Object*/ self, /*Function*/ fct) {
+      if (!fct) {
+        return undefined;
+      }
+      if (!self) {
+        if (fct.impl) {
+          return fct.impl.toString();
+        }
+        return fct.toString();
+      }
+      var mPropName = _tc_.methodPropertyName(self, fct);
+      if (mPropName) {
+        return mPropName;
+      }
+      if (fct.name) {
+        return fct.name;
+      }
+      if (fct.nom) {
+        return fct.nom;
+      }
+      if (fct.impl) {
+        return fct.impl.toString();
+      }
+      else {
+        return fct.toString();
+      }
+    }
+
     this.subject = subject;
     this.function = f ? f.impl : undefined;
     this.args = args;
     this.violation = violatingCondition;
     this.caller = f ? f.caller : undefined;
+    this.functionRepresentation = functionRepresentation(subject, f);
+    this.callerRepresentation = functionRepresentation(subject, this.caller);
     this.msg = this.toString();
-
   },
 
   PreconditionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
@@ -392,10 +422,10 @@ _tc_.ContractViolation.prototype.toString = function() {
   }
 
   var extra = this.extraToString();
-  return this.kindString + " VIOLATION: condition " + this.violation + " failed on function " +
-    this.function + " when called on " + this.subject + " with arguments " + argsToString(this.args) +
-    (extra ? " " + extra : "") +
-    (this.caller ? " by function " + this.caller : "");
+  return this.kindString + " VIOLATION:\ncondition\n" + this.violation + "\nfailed on function\n" +
+    this.functionRepresentation + "\nwhen called on " + this.subject + "\nwith arguments " + argsToString(this.args) +
+    (extra ? "\n" + extra : "") +
+    (this.caller ? "\nby function\n" + this.callerRepresentation : "");
 };
 
 _tc_.PreconditionViolation.prototype = new _tc_.ContractViolation();
