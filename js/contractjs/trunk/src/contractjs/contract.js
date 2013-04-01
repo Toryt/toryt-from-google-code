@@ -501,14 +501,18 @@
   }
 
   try {
+    console.log("contractjs: trying to define as AMD");
     define([], function() {
+      console.log("contractjs: loading as AMD");
       return generateTorytContracts();
     });
     // if this succeeds, we had an AMD loader, and we defined a module
   }
   catch (re) {
     // if this fails, we generate the structures, and put them in a global variable
+    console.log("contractjs: failed to define as AMD");
     if (re instanceof ReferenceError) {
+      console.log("contractjs: defining in _tc_ global variable");
       //noinspection JSUndeclaredVariable
       _tc_ = generateTorytContracts(); /*global*/
     }
