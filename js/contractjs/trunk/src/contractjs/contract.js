@@ -107,27 +107,27 @@ var _tc_ = {
     return undefined;
   },
 
-  ContractViolation: function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Function*/ violatingCondition, /*Function*/ caller) {
+  ContractViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
     this.subject = subject;
-    this.function = impl;
+    this.function = f ? f.impl : undefined;
     this.args = args;
     this.violation = violatingCondition;
-    this.caller =  caller;
+    this.caller = f ? f.caller : undefined;
     this.msg = this.toString();
 
   },
 
-  PreconditionViolation: function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Function*/ violatingCondition, /*Function*/ caller) {
+  PreconditionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
     _tc_.ContractViolation.apply(this, arguments);
   },
 
-  PostconditionViolation: function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Object*/ result, /*Function*/ violatingCondition, /*Function*/ caller) {
-    _tc_.ContractViolation.call(this, subject, impl, args, violatingCondition, caller);
+  PostconditionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ result, /*Function*/ violatingCondition) {
+    _tc_.ContractViolation.call(this, subject, f, args, violatingCondition);
     this.result = result;
   },
 
-  ExceptionViolation: function(/*Object*/ subject, /*Function*/ impl, /*Array*/ args, /*Object*/ exc, /*Function*/ violatingCondition, /*Function*/ caller) {
-    _tc_.ContractViolation.call(this, subject, impl, args, violatingCondition, caller);
+  ExceptionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ exc, /*Function*/ violatingCondition) {
+    _tc_.ContractViolation.call(this, subject, f, args, violatingCondition);
     this.exc = exc;
   },
 
@@ -263,35 +263,35 @@ var _tc_ = {
       return result;
     }
 
-    function validatePreconditions(/*Object*/ self, /*Array*/ pres, /*Array*/ args, /*Function*/ impl, /*Function*/ caller) {
+    function validatePreconditions(/*Object*/ self, /*Array*/ pres, /*Array*/ args, /*Function*/ f) {
       pres.forEach(function(pre) {
         var preResult = pre.apply(self, args);
         if (!preResult) {
-          var error = new _tc_.PreconditionViolation(self, impl, args, pre, caller);
+          var error = new _tc_.PreconditionViolation(self, f, args, pre);
           throw error;
         }
       });
     }
 
-    function validateNominalPostconditions(/*Object*/ self, /*Array*/ nomPosts, /*Array*/ args, /*Object*/ result, /*Function*/ impl, /*Function*/ caller) {
+    function validateNominalPostconditions(/*Object*/ self, /*Array*/ nomPosts, /*Array*/ args, /*Object*/ result, /*Function*/ f) {
       var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
       argsArray.push(result);
       nomPosts.forEach(function(nPost) {
         var postResult = nPost.apply(self, argsArray);
         if (!postResult) {
-          throw new _tc_.PostconditionViolation(self, impl, args, result, nPost, caller);
+          throw new _tc_.PostconditionViolation(self, f, args, result, nPost);
         }
       });
     }
 
-    function validateExceptionalPostconditions(/*Object*/ self, /*Array*/ excPosts, /*Array*/ args, /*Object*/ exc, /*Function*/ impl, /*Function*/ caller) {
+    function validateExceptionalPostconditions(/*Object*/ self, /*Array*/ excPosts, /*Array*/ args, /*Object*/ exc, /*Function*/ f) {
       // MUDO must be changed to an "at least one"! (or)
       var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
       argsArray.push(exc);
       excPosts.forEach(function(ePost) {
         var postResult = ePost.apply(self, argsArray);
         if (!postResult) {
-          throw new _tc_.ExceptionViolation(self, impl, args, exc, ePost, caller);
+          throw new _tc_.ExceptionViolation(self, f, args, exc, ePost);
         }
       });
     }
