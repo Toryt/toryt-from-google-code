@@ -42,7 +42,12 @@ ContractTest.prototype.setUp = function() {
         function(d, result) {return d.getFullYear() - result >= this.dob.getFullYear();}
       ],
       exc: [
-        function(d, exc) {return exc instanceof String && d < this.dob;}
+        {
+          when: function(e) {return typeof e === "string";},
+          then: [
+            function(d, exc) {return d < this.dob;}
+          ]
+        }
       ]
     },
     "#pre #post"
