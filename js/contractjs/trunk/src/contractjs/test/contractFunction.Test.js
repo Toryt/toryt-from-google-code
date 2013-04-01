@@ -1,7 +1,8 @@
 ContractTest = TestCase("contracts of functions");
 
 ContractTest.prototype.test_module_load = function(queue) {
-  assertFunction(window.instrumentFunction);
+  assertObject(window._tc_);
+  assertFunction(window._tc_.buildf);
 };
 
 ContractTest.prototype.setUp = function() {
@@ -29,8 +30,8 @@ ContractTest.prototype.tearDown = function() {
   delete this.definition;
 };
 
-ContractTest.prototype.test_contract_def_nopre_nopost = function(queue) {
-  var result = instrumentFunction(this.definition);
+ContractTest.prototype.test_contract_def_nopre_nopost = function() {
+  var result = _tc_.buildf(this.definition);
   assertFunction(result);
   assertEquals(this.definition.impl, result);
   assertUndefined(result.pre);
@@ -41,7 +42,7 @@ ContractTest.prototype.test_contract_def_nopre_nopost = function(queue) {
 };
 
 ContractTest.prototype.test_contract_def_pre_nopost = function(queue) {
-  var result = instrumentFunction(this.definition, "+pre");
+  var result = _tc_.buildf(this.definition, "+pre");
   assertFunction(result);
   assertEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -54,7 +55,7 @@ ContractTest.prototype.test_contract_def_pre_nopost = function(queue) {
 };
 
 ContractTest.prototype.test_contract_def_pre_post = function(queue) {
-  var result = instrumentFunction(this.definition, "+pre +post");
+  var result = _tc_.buildf(this.definition, "+pre +post");
   assertFunction(result);
   assertEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -64,14 +65,14 @@ ContractTest.prototype.test_contract_def_pre_post = function(queue) {
   assertEquals(this.definition.post, result.post);
   assertTrue(this.definition.post !== result.post);
   assertNotUndefined(result.exc);
-  assertEquals([noExceptionExpected], result.exc);
+  assertEquals([_tc_.noExceptionExpected], result.exc);
   assertTrue(this.definition.exc !== result.exc);
   var execResult = result(1, 2);
   assertEquals(0.5, execResult);
 };
 
 ContractTest.prototype.test_contract_exec_pre_nopost_ok = function(queue) {
-  var result = instrumentFunction(this.definition, "#pre");
+  var result = _tc_.buildf(this.definition, "#pre");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -84,7 +85,7 @@ ContractTest.prototype.test_contract_exec_pre_nopost_ok = function(queue) {
 };
 
 ContractTest.prototype.test_contract_exec_pre_nopost_nok = function(queue) {
-  var result = instrumentFunction(this.definition, "#pre");
+  var result = _tc_.buildf(this.definition, "#pre");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -97,13 +98,13 @@ ContractTest.prototype.test_contract_exec_pre_nopost_nok = function(queue) {
     fail();
   }
   catch (e) {
-    assertInstanceOf(PreconditionViolation, e);
+    assertInstanceOf(_tc_.PreconditionViolation, e);
     console.log(e);
   }
 };
 
 ContractTest.prototype.test_contract_exec_pre_post_ok = function(queue) {
-  var result = instrumentFunction(this.definition, "#pre #post");
+  var result = _tc_.buildf(this.definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -113,7 +114,7 @@ ContractTest.prototype.test_contract_exec_pre_post_ok = function(queue) {
   assertEquals(this.definition.post, result.post);
   assertTrue(this.definition.post !== result.post);
   assertNotUndefined(result.exc);
-  assertEquals([noExceptionExpected], result.exc);
+  assertEquals([_tc_.noExceptionExpected], result.exc);
   assertTrue(this.definition.exc !== result.exc);
   var execResult = result(1, 2);
   assertEquals(0.5, execResult);
@@ -138,7 +139,7 @@ ContractTest.prototype.test_contract_exec_pre_post_nok = function(queue) {
     exc: [
     ]
   };
-  var result = instrumentFunction(definition, "#pre #post");
+  var result = _tc_.buildf(definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(definition.impl, result);
   assertNotUndefined(result.pre);
@@ -148,14 +149,14 @@ ContractTest.prototype.test_contract_exec_pre_post_nok = function(queue) {
   assertEquals(definition.post, result.post);
   assertTrue(definition.post !== result.post);
   assertNotUndefined(result.exc);
-  assertEquals([noExceptionExpected], result.exc);
+  assertEquals([_tc_.noExceptionExpected], result.exc);
   assertTrue(definition.exc !== result.exc);
   try {
     var execResult = result(1, 2);
     fail();
   }
   catch (e) {
-    assertInstanceOf(PostconditionViolation, e);
+    assertInstanceOf(_tc_.PostconditionViolation, e);
     console.log(e);
   }
 };
@@ -179,7 +180,7 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function(queue) {
     exc: [
     ]
   };
-  var result = instrumentFunction(definition, "#pre #post");
+  var result = _tc_.buildf(definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(definition.impl, result);
   assertNotUndefined(result.pre);
@@ -189,14 +190,14 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function(queue) {
   assertEquals(definition.post, result.post);
   assertTrue(definition.post !== result.post);
   assertNotUndefined(result.exc);
-  assertEquals([noExceptionExpected], result.exc);
+  assertEquals([_tc_.noExceptionExpected], result.exc);
   assertTrue(definition.exc !== result.exc);
   try {
     var execResult = result(1, 2);
     fail();
   }
   catch (e) {
-    assertInstanceOf(ExceptionViolation, e);
+    assertInstanceOf(_tc_.ExceptionViolation, e);
     console.log(e);
   }
 };
@@ -221,7 +222,7 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function(queue) {
       function(x, y, exc) {return exc === "DIV/0" && y === 0;}
     ]
   };
-  var result = instrumentFunction(definition, "#pre #post");
+  var result = _tc_.buildf(definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(definition.impl, result);
   assertNotUndefined(result.pre);

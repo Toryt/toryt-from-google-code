@@ -2,7 +2,7 @@ ContractTest = TestCase("contracts of overrideChain");
 
 ContractTest.prototype.setUp = function() {
   var epochYear = new Date(0).getFullYear();
-  var Person = instrumentFunction(
+  var Person = _tc_.buildf(
     {
       pre: [
         function(name, dob) {return name && typeof name === "string";},
@@ -22,7 +22,7 @@ ContractTest.prototype.setUp = function() {
     "#pre #post"
   );
   Person.prototype.constructor = Person;
-  Person.prototype.ageAt = instrumentFunction(
+  Person.prototype.ageAt = _tc_.buildf(
     {
       pre: [
         function(d) {return d && d instanceof Date;}
@@ -45,7 +45,7 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
-  Person.prototype.age = instrumentFunction(
+  Person.prototype.age = _tc_.buildf(
     {
       pre: [],
       impl: function() {
@@ -59,7 +59,7 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
-  Person.prototype.toString = instrumentFunction(
+  Person.prototype.toString = _tc_.buildf(
     {
       pre: [],
       impl: function() {
@@ -72,7 +72,7 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
-  Person.prototype.wrongImpl = instrumentFunction(
+  Person.prototype.wrongImpl = _tc_.buildf(
     {
       pre: [],
       impl: function() {
@@ -85,7 +85,7 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
-  Person.prototype.fullName = instrumentFunction(
+  Person.prototype.fullName = _tc_.buildf(
     {
       pre: [],
       impl: function() {
@@ -97,7 +97,7 @@ ContractTest.prototype.setUp = function() {
       exc: []
     },
     "#pre #post"
-  )
+  );
   this.Person = Person;
 };
 
@@ -131,7 +131,7 @@ ContractTest.prototype.test_classobject_nok1 = function() {
     fail(p);
   }
   catch (e) {
-    assertInstanceOf(PreconditionViolation, e);
+    assertInstanceOf(_tc_.PreconditionViolation, e);
     console.log(e);
   }
 };
@@ -143,7 +143,7 @@ ContractTest.prototype.test_classobject_nok2 = function() {
     fail(p);
   }
   catch (e) {
-    assertInstanceOf(PostconditionViolation, e);
+    assertInstanceOf(_tc_.PostconditionViolation, e);
     console.log(e);
   }
 };
