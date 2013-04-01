@@ -1,7 +1,8 @@
 ContractTest = TestCase("contracts of overrideChain");
 
+var epoch = new Date(0);
 ContractTest.prototype.setUp = function() {
-  var epochYear = new Date(0).getFullYear();
+  var epochYear = epoch.getFullYear();
   var Person = _tc_.buildf(
     {
       pre: [
@@ -144,6 +145,147 @@ ContractTest.prototype.test_classobject_nok2 = function() {
   }
   catch (e) {
     assertInstanceOf(_tc_.PostconditionViolation, e);
+    console.log(e);
+  }
+};
+
+ContractTest.prototype.test_classobject__inherit_ok = function() {
+  var Person = this.Person;
+  var Person2 = _tc_.buildf(
+    {
+      pre: [
+        function(firstName, lastName, dob) {return firstName && typeof name === "string";},
+        function(firstName, lastName, dob) {return lastName && typeof name === "string";},
+        function(firstName, lastName, dob) {return dob && dob instanceof Date;},
+        function(firstName, lastName, dob) {return dob < Date.now();}
+      ],
+      impl: function(/*String*/ firstName, /*String*/ lastName, /*Date*/ dob) {
+        Person.call(this, lastName, dob);
+        this.firstName = firstName;
+      },
+      post: [
+        function(firstName, lastName, dob) {return this.firstName === firstName;},
+        function(firstName, lastName, dob) {return this.name === lastName;},
+        function(firstName, lastName, dob) {return this.dob === dob;}
+      ],
+      exc: []
+    },
+    "#pre #post"
+  );
+  Person2.prototype = new Person("DEFAULT NAME", epoch);
+  Person2.prototype.constructor = Person2;
+  Person2.prototype.fullName = _tc_.buildf(
+    {
+      pre: [],
+      impl: function() {
+        return this.firstName + " " + this.name;
+      },
+      post: [
+        function(result) {return result.indexOf(this.firstName) >= 0;}
+      ],
+      exc: []
+    },
+    "#pre #post"
+  );
+  var p = new Person2("Jan", "Dockx", new Date(1966, 9, 3));
+  var result = p.fullName();
+  console.log(result);
+};
+
+ContractTest.prototype.test_classobject__inherit_nok1 = function() {
+  var Person = this.Person;
+  var Person2 = _tc_.buildf(
+    {
+      pre: [
+        function(firstName, lastName, dob) {return firstName && typeof name === "string";},
+        function(firstName, lastName, dob) {return lastName && typeof name === "string";},
+        function(firstName, lastName, dob) {return dob && dob instanceof Date;},
+        function(firstName, lastName, dob) {return dob < Date.now();}
+      ],
+      impl: function(/*String*/ firstName, /*String*/ lastName, /*Date*/ dob) {
+        Person.call(this, lastName, dob);
+        this.firstName = firstName;
+      },
+      post: [
+        function(firstName, lastName, dob) {return this.firstName === firstName;},
+        function(firstName, lastName, dob) {return this.name === lastName;},
+        function(firstName, lastName, dob) {return this.dob === dob;}
+      ],
+      exc: []
+    },
+    "#pre #post"
+  );
+  Person2.prototype = new Person("DEFAULT NAME", epoch);
+  Person2.prototype.constructor = Person2;
+  Person2.prototype.fullName = _tc_.buildf(
+    {
+      pre: [],
+      impl: function() {
+        return this.firstName;
+      },
+      post: [
+        function(result) {return result.indexOf(this.firstName) >= 0;}
+      ],
+      exc: []
+    },
+    "#pre #post"
+  );
+  var p = new Person2("Jan", "Dockx", new Date(1966, 9, 3));
+  try {
+    var result = p.fullName();
+    fail(result);
+  }
+  catch (e) {
+    assertInstanceOf(_tc_.PostconditionViolation, e);
+    console.log(e);
+  }
+};
+
+
+ContractTest.prototype.test_classobject__inherit_nok2 = function() {
+  var Person = this.Person;
+  var Person2 = _tc_.buildf(
+    {
+      pre: [
+        function(firstName, lastName, dob) {return firstName && typeof name === "string";},
+        function(firstName, lastName, dob) {return lastName && typeof name === "string";},
+        function(firstName, lastName, dob) {return dob && dob instanceof Date;},
+        function(firstName, lastName, dob) {return dob < Date.now();}
+      ],
+      impl: function(/*String*/ firstName, /*String*/ lastName, /*Date*/ dob) {
+        Person.call(this, lastName, dob);
+        this.firstName = firstName;
+      },
+      post: [
+        function(firstName, lastName, dob) {return this.firstName === firstName;},
+        function(firstName, lastName, dob) {return this.name === lastName;},
+        function(firstName, lastName, dob) {return this.dob === dob;}
+      ],
+      exc: []
+    },
+    "#pre #post"
+  );
+  Person2.prototype = new Person("DEFAULT NAME", epoch);
+  Person2.prototype.constructor = Person2;
+  Person2.prototype.ageAt = _tc_.buildf(
+    {
+      pre: [], // means no extra preconditions
+      impl: function(/*Date*/ d) { // actually weakens preconditions: not allowed
+        var age = d - this.dob;
+        return new Date(age).getFullYear() - epochYear; // return Number
+      },
+      post: [],
+      exc: []
+    },
+    "#pre #post"
+  );
+  var p = new Person2("Jan", "Dockx", new Date(1966, 9, 3));
+  try {
+    var result = p.ageAt(null);
+    fail(result);
+  }
+  catch (e) {
+    assertInstanceOf(_tc_.PreconditionViolation, e);
     console.log(e);
   }
 };
