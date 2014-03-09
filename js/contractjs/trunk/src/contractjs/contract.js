@@ -13,6 +13,451 @@
 
   function generateTorytContracts() {
 
+    function isFunctionDefinition(/*Object*/ fd) {
+
+      function isArray(/*Object*/ a) {
+        return a && (a instanceof Array || typeof a == "array"); // return Boolean
+      }
+
+      function isFunction(/*Object*/ f) {
+        return Object.prototype.toString.call(f) === "[object Function]"; // return Boolean
+      }
+
+      function isArrayOfFunctions(/*Array*/ af) {
+        return isArray(af) && // return Boolean
+               af.every(function(c) {
+                 return isFunction(c);
+               });
+      }
+
+      function isExceptionalPostcondition(epc) {
+        return epc instanceof Object && // return Boolean
+               isFunction(epc.when) &&
+               isArrayOfFunctions(epc.then);
+      }
+
+      function isArrayOfExceptionalPostconditions(/*Array*/ aepc) {
+        return isArray(aepc) && // return Boolean
+               aepc.every(function(epc) {
+                 return isExceptionalPostcondition(epc);
+               });
+      }
+
+      return fd && // return Boolean
+             isArrayOfFunctions(fd.pre) &&
+             isArrayOfFunctions(fd.post) &&
+             isArrayOfExceptionalPostconditions(fd.exc) &&
+             (fd.impl ? isFunction(fd.impl) : true);
+    }
+
+
+
+    function methodPropertyName(self, method) {
+      if (!self) {
+        return undefined;
+      }
+      for (var pName in self) {
+        //noinspection JSUnfilteredForInLoop
+        if (self[pName] === method) {
+          //noinspection JSUnfilteredForInLoop
+          return pName;
+        }
+      }
+      return undefined;
+    }
+
+
+
+    function argsToString(args) {
+      if (args === undefined) {
+        return "undefined";
+      }
+      if (args === null) {
+        return "null";
+      }
+      var result = "(";
+      var i;
+      for (i = 0; i < args.length; i++) {
+        result += args[i];
+        result += (i < args.length - 1) ? ", " : "";
+      }
+      result += ")";
+      return result;
+    }
+
+
+
+
+
+    function ContractViolation(/*Object*/ subject, /*Function*/ f, /*Array*/ args) {
+
+      function functionRepresentation(/*Object*/ self, /*Function*/ fct) {
+        if (!fct) {
+          return undefined;
+        }
+        if (!self) {
+          if (fct.impl) {
+            return fct.impl.toString();
+          }
+          return fct.toString();
+        }
+        var mPropName = methodPropertyName(self, fct);
+        if (mPropName) {
+          return mPropName;
+        }
+        if (fct.name) {
+          return fct.name;
+        }
+        if (fct.nom) {
+          return fct.nom;
+        }
+        if (fct.impl) {
+          return fct.impl.toString();
+        }
+        else {
+          return fct.toString();
+        }
+      }
+
+      this.subject = subject;
+      this.subjectFunction = f ? f.impl : undefined;
+      this.args = args;
+      this.caller = f ? f.caller : undefined;
+      this.functionRepresentation = functionRepresentation(subject, f);
+      this.callerRepresentation = functionRepresentation(subject, this.caller);
+    }
+
+    ContractViolation.prototype = new Error();
+    ContractViolation.prototype.constructor = ContractViolation;
+    ContractViolation.prototype.kindString = "ABSTRACT";
+
+
+
+
+
+    function ConditionViolation(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
+      ContractViolation.call(this, subject, f, args);
+      this.violation = violatingCondition;
+      this.msg = this.toString();
+    }
+
+    ConditionViolation.prototype = new ContractViolation();
+    ConditionViolation.prototype.constructor = ConditionViolation;
+    ConditionViolation.prototype.extraToString = function() {
+      return null;
+    };
+    ConditionViolation.prototype.toString = function() {
+      var extra = this.extraToString();
+      return this.kindString + " VIOLATION:\ncondition\n" + this.violation + "\nfailed on function\n" +
+             this.functionRepresentation + "\nwhen called on " + this.subject + "\nwith arguments " +
+             argsToString(this.args) + (extra ? "\n" + extra : "") +
+             (this.caller ? "\nby function\n" + this.callerRepresentation : "");
+    };
+
+
+
+
+
+    function PreconditionViolation(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
+      ConditionViolation.apply(this, arguments);
+    }
+
+    PreconditionViolation.prototype = new ConditionViolation();
+    PreconditionViolation.prototype.constructor = PreconditionViolation;
+    PreconditionViolation.prototype.kindString = "PRECONDITION";
+
+
+
+
+
+    function PostconditionViolation(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ result, /*Function*/ violatingCondition) {
+      ConditionViolation.call(this, subject, f, args, violatingCondition);
+      this.result = result;
+    }
+
+    PostconditionViolation.prototype = new ConditionViolation();
+    PostconditionViolation.prototype.constructor = PostconditionViolation;
+    PostconditionViolation.prototype.kindString = "POSTCONDITION";
+    PostconditionViolation.prototype.extraToString = function() {
+      return "with result " + this.result;
+    };
+
+
+
+
+
+    function ExceptionViolation(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ exc, /*Function*/ violatingCondition) {
+      ConditionViolation.call(this, subject, f, args, violatingCondition);
+      this.exc = exc;
+    }
+
+    ExceptionViolation.prototype = new ConditionViolation();
+    ExceptionViolation.prototype.constructor = ExceptionViolation;
+    ExceptionViolation.prototype.kindString = "EXCEPTION CONDITION";
+    ExceptionViolation.prototype.extraToString = function() {
+      return "with exception " + this.exc;
+    };
+
+
+
+
+
+    function UnexpectedException(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ exc) {
+      ContractViolation.call(this, subject, f, args, exc);
+      this.exc = exc;
+      this.msg = this.toString();
+    }
+
+    UnexpectedException.prototype = new ContractViolation();
+    UnexpectedException.prototype.constructor = UnexpectedException;
+    UnexpectedException.prototype.kindString = "UNEXPECTED EXCEPTION";
+    UnexpectedException.prototype.toString = function() {
+      return this.kindString + " (CONTRACT VIOLATION):\n" + this.exc +
+             "\noccured on function\n" + this.functionRepresentation + "\nwhen called on " +
+             this.subject + "\nwith arguments " + argsToString(this.args) +
+             (this.caller ? "\nby function\n" + this.callerRepresentation : "");
+    };
+
+
+
+
+    function buildf(/*Object*/ fd, /*String*/ instrument) {
+      // summary:
+      //    Transforms a FunctionDefinition into a function, with optionally
+      //    attached preconditions, nominal postconditions and exceptional
+      //    postconditions; optionally instrumented to verify the conditions
+      //    during an execution.
+      // fd: FunctionDefinition
+      //    The function definition. Mandatory.
+      // instrument: string
+      //    With this variable, you can vary whether or not contracts are verified,
+      //    e.g., based on whether you are running the code in test, debug or production
+      //    mode.
+      //    - If null or undefined, the resulting function is fd.impl.
+      //      Preconditions, nominal postconditions and exceptional postconditions
+      //      are not included in the resulting function.
+      //    - If "+pre", the resulting function is fd.impl.
+      //      The preconditions are available in result.pre.
+      //      Nominal postconditions and exceptional postconditions are not included
+      //      in the resulting function.
+      //    - If "+pre +post", the resulting function is fd.impl.
+      //      The preconditions are available in result.pre.
+      //      Nominal postconditions and exceptional postconditions are  available in
+      //      result.post and result.exc respectively.
+      //    - If "#pre", the resulting function is setup to verify preconditions.
+      //      The preconditions are available in result.pre.
+      //      Nominal postconditions and exceptional postconditions are not included
+      //      in the resulting function.
+      //    - If "#pre +post", the resulting function is setup to verify preconditions.
+      //      The preconditions are available in result.pre.
+      //      Nominal postconditions and exceptional postconditions are  available in
+      //      result.post and result.exc respectively.
+      //    - If "#pre #post", the resulting function is setup to verify preconditions,
+      //      nominal postconditions and exceptional conditions.
+      //      The preconditions are available in result.pre.
+      //      Nominal postconditions and exceptional postconditions are  available in
+      //      result.post and result.exc respectively.
+      //    Anything else results in an error.
+      // description:
+      //   The result is a function with the exact same effect as impl, when all
+      //   conditions are met. Optionally (see `instrument`), the preconditions,
+      //   nominal and exceptional postconditions, are added as instance variables
+      //   to the result, and impl is instrumented to verify the conditions.
+
+      function crackInstrument(/*String*/ instrument) {
+        if (!instrument) {
+          return {
+            include:    { pre:  false, post: false },
+            instrument: { pre:  false, post: false }
+          }
+        }
+        switch (instrument) {
+          case "+pre":
+            return {
+              include:    { pre:  true, post: false },
+              instrument: { pre:  false, post: false }
+            };
+          case "+pre +post":
+            return {
+              include:    { pre:  true, post: true },
+              instrument: { pre:  false, post: false }
+            };
+          case "#pre":
+            return {
+              include:    { pre:  true, post: false },
+              instrument: { pre:  true, post: false }
+            };
+          case "#pre +post":
+            return {
+              include:    { pre:  true, post: true},
+              instrument: { pre:  true, post: false }
+            };
+          case "#pre #post":
+            return {
+              include:    { pre:  true, post: true },
+              instrument: { pre:  true, post: true }
+            };
+          default:
+            throw "ERROR: illegal instrument argument (" + instrument + ")";
+        }
+      }
+
+      function methodInheritanceChain(o, methodName) {
+        // summary:
+        //   All the methods in the prototype chain of `o`,
+        //   starting with `o`, with name `methodName`,
+        //   except when `methodName === "constructor"`.
+        //   In that case, only the first encountered method
+        //   of that name.
+        if (methodName === "constructor") {
+          return o["constructor"] ? [o["constructor"]] : [];
+        }
+        var result = [];
+
+        function smRecursive(oRec, acc) {
+          if (!oRec) {
+            return acc;
+          }
+          if (oRec.hasOwnProperty(methodName)) {
+            acc.push(oRec[methodName]);
+          }
+          var oRecPrototype = Object.getPrototypeOf(oRec);
+          return smRecursive(oRecPrototype, acc);
+        }
+
+        return smRecursive(o, result);
+      }
+
+      function overrideChain(self, instrumented) {
+        var methodName = methodPropertyName(self, instrumented);
+        var methods = null;
+        if (methodName) {
+          methods = methodInheritanceChain(self, methodName);
+        }
+        else {
+          methods = [instrumented];
+        }
+        return methods;
+      }
+
+      function gatherConditions(methods, conditionName) {
+        var result = methods.reduce(
+          function(acc, method) {
+            return method[conditionName] ? acc.concat(method[conditionName]) : acc;
+          },
+          []
+        );
+        return result;
+      }
+
+      function validatePreconditions(/*Object*/ self, /*Array*/ pres, /*Array*/ args, /*Function*/ f) {
+        pres.forEach(function(pre) {
+          var preResult = pre.apply(self, args);
+          if (!preResult) {
+            var error = new PreconditionViolation(self, f, args, pre);
+            throw error;
+          }
+        });
+      }
+
+      function validateNominalPostconditions(/*Object*/ self, /*Array*/ nomPosts, /*Array*/ args, /*Object*/ result, /*Function*/ f) {
+        var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
+        argsArray.push(result);
+        nomPosts.forEach(function(nPost) {
+          var postResult = nPost.apply(self, argsArray);
+          if (!postResult) {
+            throw new PostconditionViolation(self, f, args, result, nPost);
+          }
+        });
+      }
+
+      function validateExceptionalPostconditions(/*Object*/ self, /*Array*/ excPosts, /*Array*/ args, /*Object*/ exc, /*Function*/ f) {
+        var applicable = excPosts.filter(function(excPost) {
+          return excPost.when.call(self, exc);
+        });
+        if (applicable.length <= 0) {
+          // we did not expect this exception
+          throw new UnexpectedException(self, f, args, exc);
+        }
+        // we only use the first matching excPost
+        var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
+        argsArray.push(exc);
+        applicable[0].then.forEach(function(ePost) {
+          var postResult = ePost.apply(self, argsArray);
+          if (!postResult) {
+            throw new ExceptionViolation(self, f, args, exc, ePost);
+          }
+        });
+      }
+
+
+
+      if (!isFunctionDefinition(fd)) {
+        throw "ERROR: not a FunctionDefinition (" + fd + ")";
+      }
+      var inst = crackInstrument(instrument);
+
+      var instrumented = null;
+
+      if (!fd.impl) {
+        instrumented = function() { throw "ERROR: abstract method called"};
+        // instrumentation makes no sense
+      }
+      else if (!inst.instrument.pre && !inst.instrument.post) {
+        instrumented = fd.impl;
+      }
+      else if (inst.instrument.pre && !inst.instrument.post) {
+        instrumented = function() {
+          // IDEA cache this
+          var methods = overrideChain(this, instrumented);
+          var preconditions = gatherConditions(methods, "pre");
+          validatePreconditions(this, preconditions, arguments, instrumented);
+          var result = instrumented.impl.apply(this, arguments);
+          return result;
+        };
+      }
+      else if (inst.instrument.pre && inst.instrument.post) {
+        instrumented = function() {
+          // IDEA cache this
+          var methods = overrideChain(this, instrumented);
+          var preconditions = gatherConditions(methods, "pre");
+          validatePreconditions(this, preconditions, arguments, instrumented);
+          try {
+            var result = instrumented.impl.apply(this, arguments);
+            var postconditions = gatherConditions(methods, "post");
+            validateNominalPostconditions(this, postconditions, arguments, result, instrumented);
+            return result;
+          }
+          catch (exc) {
+            if (!(exc instanceof ContractViolation)) {
+              var excConditions = gatherConditions(methods, "exc");
+              validateExceptionalPostconditions(this, excConditions, arguments, exc, instrumented);
+            }
+            throw exc;
+          }
+        };
+      }
+      else {
+        throw "ERROR: validation of postconditions, but not preconditions, makes no sense."
+      }
+
+      if (inst.include.pre || inst.include.post) {
+        instrumented.impl = fd.impl;
+      }
+      if (inst.include.pre) {
+        instrumented.pre = fd.pre.slice(0);
+      }
+      if (inst.include.post) {
+        instrumented.post = fd.post.slice(0);
+        instrumented.exc = fd.exc.slice(0);
+      }
+      return instrumented;
+    }
+
+
+
+
+
     var _tc_ = {
       // summary:
       //   Toryt contracts.
@@ -21,7 +466,7 @@
 
       /*
       FunctionDefinition: {
-        // pre: Array<Function>
+        // pre: Function[]
         //   Mandatory array of preconditions.
         //   Preconditions are functions whose return value must be true
         //   before the function is called.
@@ -45,7 +490,7 @@
         //   in an OO context).
         impl: null,
 
-        // post: Array<Function>
+        // post: Function[]
         //   Mandatory array of nominal postconditions.
         //   Nominal postconditions are functions whose return value must be true
         //   when the function ends nominally, if it was called in accordance
@@ -63,7 +508,7 @@
         //   empty Array.
         post: [],
 
-        // exc: Array<Function>
+        // exc: Function[]
         //   Mandatory array of exceptional postconditions.
         //   When the function was called in accordance to the specified preconditions,
         //   and the call does not end nominally, but throws an exception,
@@ -88,413 +533,18 @@
       }
       */
 
-      isFunctionDefinition: function(/*Object*/ fd) {
+      isFunctionDefinition: isFunctionDefinition,
+      methodPropertyName: methodPropertyName,
+      argsToString: argsToString,
 
-        function isArray(/*Object*/ a) {
-          return a && (a instanceof Array || typeof a == "array"); // return Boolean
-        }
+      ContractViolation: ContractViolation,
+      ConditionViolation: ConditionViolation,
+      PreconditionViolation: PreconditionViolation,
+      PostconditionViolation: PostconditionViolation,
+      ExceptionViolation: ExceptionViolation,
+      UnexpectedException: UnexpectedException,
 
-        function isFunction(/*Object*/ f) {
-          return Object.prototype.toString.call(f) === "[object Function]"; // return Boolean
-        }
-
-        function isArrayOfFunctions(/*Array*/ af) {
-          return isArray(af) && // return Boolean
-            af.every(function(c) {
-              return isFunction(c);
-            });
-        }
-
-        function isExceptionalPostcondition(epc) {
-          return epc instanceof Object && // return Boolean
-            isFunction(epc.when) &&
-            isArrayOfFunctions(epc.then);
-        }
-
-        function isArrayOfExceptionalPostconditions(/*Array*/ aepc) {
-          return isArray(aepc) && // return Boolean
-            aepc.every(function(epc) {
-              return isExceptionalPostcondition(epc);
-            });
-        }
-
-        return fd && // return Boolean
-          isArrayOfFunctions(fd.pre) &&
-          isArrayOfFunctions(fd.post) &&
-          isArrayOfExceptionalPostconditions(fd.exc) &&
-          (fd.impl ? isFunction(fd.impl) : true);
-      },
-
-      methodPropertyName: function(self, method) {
-        if (!self) {
-          return undefined;
-        }
-        for (var pName in self) {
-          //noinspection JSUnfilteredForInLoop
-          if (self[pName] === method) {
-            //noinspection JSUnfilteredForInLoop
-            return pName;
-          }
-        }
-        return undefined;
-      },
-
-      ContractViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args) {
-
-        function functionRepresentation(/*Object*/ self, /*Function*/ fct) {
-          if (!fct) {
-            return undefined;
-          }
-          if (!self) {
-            if (fct.impl) {
-              return fct.impl.toString();
-            }
-            return fct.toString();
-          }
-          var mPropName = _tc_.methodPropertyName(self, fct);
-          if (mPropName) {
-            return mPropName;
-          }
-          if (fct.name) {
-            return fct.name;
-          }
-          if (fct.nom) {
-            return fct.nom;
-          }
-          if (fct.impl) {
-            return fct.impl.toString();
-          }
-          else {
-            return fct.toString();
-          }
-        }
-
-        this.subject = subject;
-        this.subjectFunction = f ? f.impl : undefined;
-        this.args = args;
-        this.caller = f ? f.caller : undefined;
-        this.functionRepresentation = functionRepresentation(subject, f);
-        this.callerRepresentation = functionRepresentation(subject, this.caller);
-      },
-
-      ConditionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
-        _tc_.ContractViolation.call(this, subject, f, args);
-        this.violation = violatingCondition;
-        this.msg = this.toString();
-      },
-
-      PreconditionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Function*/ violatingCondition) {
-        _tc_.ConditionViolation.apply(this, arguments);
-      },
-
-      PostconditionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ result, /*Function*/ violatingCondition) {
-        _tc_.ConditionViolation.call(this, subject, f, args, violatingCondition);
-        this.result = result;
-      },
-
-      ExceptionViolation: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ exc, /*Function*/ violatingCondition) {
-        _tc_.ConditionViolation.call(this, subject, f, args, violatingCondition);
-        this.exc = exc;
-      },
-
-      UnexpectedException: function(/*Object*/ subject, /*Function*/ f, /*Array*/ args, /*Object*/ exc) {
-        _tc_.ContractViolation.call(this, subject, f, args, exc);
-        this.exc = exc;
-        this.msg = this.toString();
-      },
-
-      argsToString: function(args) {
-        if (args === undefined) {
-          return "undefined";
-        }
-        if (args === null) {
-          return "null";
-        }
-        var result = "(";
-        var i;
-        for (i = 0; i < args.length; i++) {
-          result += args[i];
-          result += (i < args.length - 1) ? ", " : "";
-        }
-        result += ")";
-        return result;
-      },
-
-      buildf: function(/*Object*/ fd, /*String*/ instrument) {
-        // summary:
-        //    Transforms a FunctionDefinition into a function, with optionally
-        //    attached preconditions, nominal postconditions and exceptional
-        //    postconditions; optionally instrumented to verify the conditions
-        //    during an execution.
-        // fd: FunctionDefinition
-        //    The function definition. Mandatory.
-        // instrument: string
-        //    With this variable, you can vary whether or not contracts are verified,
-        //    e.g., based on whether you are running the code in test, debug or production
-        //    mode.
-        //    - If null or undefined, the resulting function is fd.impl.
-        //      Preconditions, nominal postconditions and exceptional postconditions
-        //      are not included in the resulting function.
-        //    - If "+pre", the resulting function is fd.impl.
-        //      The preconditions are available in result.pre.
-        //      Nominal postconditions and exceptional postconditions are not included
-        //      in the resulting function.
-        //    - If "+pre +post", the resulting function is fd.impl.
-        //      The preconditions are available in result.pre.
-        //      Nominal postconditions and exceptional postconditions are  available in
-        //      result.post and result.exc respectively.
-        //    - If "#pre", the resulting function is setup to verify preconditions.
-        //      The preconditions are available in result.pre.
-        //      Nominal postconditions and exceptional postconditions are not included
-        //      in the resulting function.
-        //    - If "#pre +post", the resulting function is setup to verify preconditions.
-        //      The preconditions are available in result.pre.
-        //      Nominal postconditions and exceptional postconditions are  available in
-        //      result.post and result.exc respectively.
-        //    - If "#pre #post", the resulting function is setup to verify preconditions,
-        //      nominal postconditions and exceptional conditions.
-        //      The preconditions are available in result.pre.
-        //      Nominal postconditions and exceptional postconditions are  available in
-        //      result.post and result.exc respectively.
-        //    Anything else results in an error.
-        // description:
-        //   The result is a function with the exact same effect as impl, when all
-        //   conditions are met. Optionally (see `instrument`), the preconditions,
-        //   nominal and exceptional postconditions, are added as instance variables
-        //   to the result, and impl is instrumented to verify the conditions.
-
-        function crackInstrument(/*String*/ instrument) {
-          if (!instrument) {
-            return {
-              include:    { pre:  false, post: false },
-              instrument: { pre:  false, post: false }
-            }
-          }
-          switch (instrument) {
-            case "+pre":
-              return {
-                include:    { pre:  true, post: false },
-                instrument: { pre:  false, post: false }
-              };
-            case "+pre +post":
-              return {
-                include:    { pre:  true, post: true },
-                instrument: { pre:  false, post: false }
-              };
-            case "#pre":
-              return {
-                include:    { pre:  true, post: false },
-                instrument: { pre:  true, post: false }
-              };
-            case "#pre +post":
-              return {
-                include:    { pre:  true, post: true},
-                instrument: { pre:  true, post: false }
-              };
-            case "#pre #post":
-              return {
-                include:    { pre:  true, post: true },
-                instrument: { pre:  true, post: true }
-              };
-            default:
-              throw "ERROR: illegal instrument argument (" + instrument + ")";
-          }
-        }
-
-        function methodInheritanceChain(o, methodName) {
-          // summary:
-          //   All the methods in the prototype chain of `o`,
-          //   starting with `o`, with name `methodName`,
-          //   except when `methodName === "constructor"`.
-          //   In that case, only the first encountered method
-          //   of that name.
-          if (methodName === "constructor") {
-            return o["constructor"] ? [o["constructor"]] : [];
-          }
-          var result = [];
-          function smRecursive(oRec, acc) {
-            if (!oRec) {
-              return acc;
-            }
-            if (oRec.hasOwnProperty(methodName)) {
-              acc.push(oRec[methodName]);
-            }
-            var oRecPrototype = Object.getPrototypeOf(oRec);
-            return smRecursive(oRecPrototype, acc);
-          }
-          return smRecursive(o, result);
-        }
-
-        function overrideChain(self, instrumented) {
-          var methodName = _tc_.methodPropertyName(self, instrumented);
-          var methods = null;
-          if (methodName) {
-            methods = methodInheritanceChain(self, methodName);
-          }
-          else {
-            methods = [instrumented];
-          }
-          return methods;
-        }
-
-        function gatherConditions(methods, conditionName) {
-          var result = methods.reduce(
-            function(acc, method) {
-              return method[conditionName] ? acc.concat(method[conditionName]) : acc;
-            },
-            []
-          );
-          return result;
-        }
-
-        function validatePreconditions(/*Object*/ self, /*Array*/ pres, /*Array*/ args, /*Function*/ f) {
-          pres.forEach(function(pre) {
-            var preResult = pre.apply(self, args);
-            if (!preResult) {
-              var error = new _tc_.PreconditionViolation(self, f, args, pre);
-              throw error;
-            }
-          });
-        }
-
-        function validateNominalPostconditions(/*Object*/ self, /*Array*/ nomPosts, /*Array*/ args, /*Object*/ result, /*Function*/ f) {
-          var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
-          argsArray.push(result);
-          nomPosts.forEach(function(nPost) {
-            var postResult = nPost.apply(self, argsArray);
-            if (!postResult) {
-              throw new _tc_.PostconditionViolation(self, f, args, result, nPost);
-            }
-          });
-        }
-
-        function validateExceptionalPostconditions(/*Object*/ self, /*Array*/ excPosts, /*Array*/ args, /*Object*/ exc, /*Function*/ f) {
-          var applicable = excPosts.filter(function(excPost) {
-            return excPost.when.call(self, exc);
-          });
-          if (applicable.length <= 0) {
-            // we did not expect this exception
-            throw new _tc_.UnexpectedException(self, f, args, exc);
-          }
-          // we only use the first matching excPost
-          var argsArray = Array.prototype.slice.call(args); // to make it an array for sure
-          argsArray.push(exc);
-          applicable[0].then.forEach(function(ePost) {
-            var postResult = ePost.apply(self, argsArray);
-            if (!postResult) {
-              throw new _tc_.ExceptionViolation(self, f, args, exc, ePost);
-            }
-          });
-        }
-
-
-
-        if (!_tc_.isFunctionDefinition(fd)) {
-          throw "ERROR: not a FunctionDefinition (" + fd + ")";
-        }
-        var inst = crackInstrument(instrument);
-
-        var instrumented = null;
-
-        if (!fd.impl) {
-          instrumented = function() { throw "ERROR: abstract method called"};
-          // instrumentation makes no sense
-        }
-        else if (!inst.instrument.pre && !inst.instrument.post) {
-          instrumented = fd.impl;
-        }
-        else if (inst.instrument.pre && !inst.instrument.post) {
-          instrumented = function() {
-            // IDEA cache this
-            var methods = overrideChain(this, instrumented);
-            var preconditions = gatherConditions(methods, "pre");
-            validatePreconditions(this, preconditions, arguments, instrumented);
-            var result = instrumented.impl.apply(this, arguments);
-            return result;
-          };
-        }
-        else if (inst.instrument.pre && inst.instrument.post) {
-          instrumented = function() {
-            // IDEA cache this
-            var methods = overrideChain(this, instrumented);
-            var preconditions = gatherConditions(methods, "pre");
-            validatePreconditions(this, preconditions, arguments, instrumented);
-            try {
-              var result = instrumented.impl.apply(this, arguments);
-              var postconditions = gatherConditions(methods, "post");
-              validateNominalPostconditions(this, postconditions, arguments, result, instrumented);
-              return result;
-            }
-            catch (exc) {
-              if (!(exc instanceof _tc_.ContractViolation)) {
-                var excConditions = gatherConditions(methods, "exc");
-                validateExceptionalPostconditions(this, excConditions, arguments, exc, instrumented);
-              }
-              throw exc;
-            }
-          };
-        }
-        else {
-          throw "ERROR: validation of postconditions, but not preconditions, makes no sense."
-        }
-
-        if (inst.include.pre || inst.include.post) {
-          instrumented.impl = fd.impl;
-        }
-        if (inst.include.pre) {
-          instrumented.pre = fd.pre.slice(0);
-        }
-        if (inst.include.post) {
-          instrumented.post = fd.post.slice(0);
-          instrumented.exc = fd.exc.slice(0);
-        }
-        return instrumented;
-      }
-    };
-
-    _tc_.ContractViolation.prototype = new Error();
-    _tc_.ContractViolation.prototype.constructor = _tc_.ContractViolation;
-    _tc_.ContractViolation.prototype.kindString = "ABSTRACT";
-
-    _tc_.ConditionViolation.prototype = new _tc_.ContractViolation();
-    _tc_.ConditionViolation.prototype.constructor = _tc_.ConditionViolation;
-    _tc_.ConditionViolation.prototype.extraToString = function() {
-      return null;
-    };
-    _tc_.ConditionViolation.prototype.toString = function() {
-      var extra = this.extraToString();
-      return this.kindString + " VIOLATION:\ncondition\n" + this.violation + "\nfailed on function\n" +
-        this.functionRepresentation + "\nwhen called on " + this.subject + "\nwith arguments " +
-        _tc_.argsToString(this.args) + (extra ? "\n" + extra : "") +
-        (this.caller ? "\nby function\n" + this.callerRepresentation : "");
-    };
-
-    _tc_.PreconditionViolation.prototype = new _tc_.ConditionViolation();
-    _tc_.PreconditionViolation.prototype.constructor = _tc_.PreconditionViolation;
-    _tc_.PreconditionViolation.prototype.kindString = "PRECONDITION";
-
-    _tc_.PostconditionViolation.prototype = new _tc_.ConditionViolation();
-    _tc_.PostconditionViolation.prototype.constructor = _tc_.PostconditionViolation;
-    _tc_.PostconditionViolation.prototype.kindString = "POSTCONDITION";
-    _tc_.PostconditionViolation.prototype.extraToString = function() {
-      return "with result " + this.result;
-    };
-
-    _tc_.ExceptionViolation.prototype = new _tc_.ConditionViolation();
-    _tc_.ExceptionViolation.prototype.constructor = _tc_.ExceptionViolation;
-    _tc_.ExceptionViolation.prototype.kindString = "EXCEPTION CONDITION";
-    _tc_.ExceptionViolation.prototype.extraToString = function() {
-      return "with exception " + this.exc;
-    };
-
-    _tc_.UnexpectedException.prototype = new _tc_.ContractViolation();
-    _tc_.UnexpectedException.prototype.constructor = _tc_.UnexpectedException;
-    _tc_.UnexpectedException.prototype.kindString = "UNEXPECTED EXCEPTION";
-    _tc_.UnexpectedException.prototype.toString = function() {
-      return this.kindString + " (CONTRACT VIOLATION):\n" + this.exc +
-        "\noccured on function\n" + this.functionRepresentation + "\nwhen called on " +
-        this.subject + "\nwith arguments " + _tc_.argsToString(this.args) +
-        (this.caller ? "\nby function\n" + this.callerRepresentation : "");
+      buildf: buildf
     };
 
     return _tc_;
