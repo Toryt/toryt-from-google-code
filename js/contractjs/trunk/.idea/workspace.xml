@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="2da0d57c-b3f2-4c57-be59-034a5f661faf" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contractjs/contract.js" afterPath="$PROJECT_DIR$/src/contractjs/contract.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js" afterPath="$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contractjs/test/contractMethod.Test.js" afterPath="$PROJECT_DIR$/src/contractjs/test/contractMethod.Test.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="contractjs.iws" />
@@ -34,10 +37,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="contractMethod.Test.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="contractMethod.Test.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractMethod.Test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="162" column="0" selection-start="4066" selection-end="4066" vertical-scroll-proportion="0.0" vertical-offset="2430" max-vertical-offset="6135">
+            <state line="363" column="24" selection-start="10544" selection-end="10544" vertical-scroll-proportion="0.5460894" vertical-offset="5054" max-vertical-offset="6135">
               <folding />
             </state>
           </provider>
@@ -46,8 +49,10 @@
       <file leaf-file-name="contract.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/contractjs/contract.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="401" column="21" selection-start="14346" selection-end="14346" vertical-scroll-proportion="-20.115385" vertical-offset="5387" max-vertical-offset="8520">
-              <folding />
+            <state line="544" column="10" selection-start="20723" selection-end="20723" vertical-scroll-proportion="-22.692308" vertical-offset="7570" max-vertical-offset="8625">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -70,10 +75,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="contractFunction.Test.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="contractFunction.Test.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="0" selection-start="1604" selection-end="1604" vertical-scroll-proportion="1.1522347" vertical-offset="0" max-vertical-offset="4800">
+            <state line="293" column="20" selection-start="8854" selection-end="8854" vertical-scroll-proportion="0.0" vertical-offset="3719" max-vertical-offset="4800">
               <folding />
             </state>
           </provider>
@@ -115,9 +120,9 @@
         <option value="$PROJECT_DIR$/src/contractjs/test/a.Test.js" />
         <option value="$PROJECT_DIR$/src/jsTestDriver.conf" />
         <option value="$PROJECT_DIR$/src/contractjs/test/contract.Test.js" />
-        <option value="$PROJECT_DIR$/src/contractjs/test/contractMethod.Test.js" />
         <option value="$PROJECT_DIR$/src/contractjs/contract.js" />
         <option value="$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js" />
+        <option value="$PROJECT_DIR$/src/contractjs/test/contractMethod.Test.js" />
       </list>
     </option>
   </component>
@@ -482,7 +487,11 @@
       <created>1394449213103</created>
       <updated>1394449213103</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="removed bad IDEA">
+      <created>1394449237104</created>
+      <updated>1394449237104</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -492,6 +501,7 @@
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32912534" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30928764" sideWeight="0.6216553" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.3638344" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -506,7 +516,6 @@
       <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924527" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40012446" sideWeight="0.6575472" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -588,7 +597,9 @@
     <entry file="file://$PROJECT_DIR$/src/contractjs/contract.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="174" column="27" selection-start="5399" selection-end="5399" vertical-scroll-proportion="0.0" vertical-offset="5929" max-vertical-offset="8550">
-          <folding />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -640,7 +651,9 @@
     <entry file="file://$PROJECT_DIR$/src/contractjs/contract.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="0" selection-start="671" selection-end="671" vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="7905">
-          <folding />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -736,13 +749,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractMethod.Test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="162" column="0" selection-start="4066" selection-end="4066" vertical-scroll-proportion="0.0" vertical-offset="2430" max-vertical-offset="6135">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/contractjs/a.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="3" column="0" selection-start="37" selection-end="37" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="135">
@@ -752,14 +758,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/contractjs/contract.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="401" column="21" selection-start="14346" selection-end="14346" vertical-scroll-proportion="-20.115385" vertical-offset="5387" max-vertical-offset="8520">
-          <folding />
+        <state line="544" column="10" selection-start="20723" selection-end="20723" vertical-scroll-proportion="-22.692308" vertical-offset="7570" max-vertical-offset="8625">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="0" selection-start="1604" selection-end="1604" vertical-scroll-proportion="1.1522347" vertical-offset="0" max-vertical-offset="4800">
+        <state line="293" column="20" selection-start="8854" selection-end="8854" vertical-scroll-proportion="0.0" vertical-offset="3719" max-vertical-offset="4800">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractMethod.Test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="363" column="24" selection-start="10544" selection-end="10544" vertical-scroll-proportion="0.5460894" vertical-offset="5054" max-vertical-offset="6135">
           <folding />
         </state>
       </provider>
