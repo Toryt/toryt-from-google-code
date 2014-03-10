@@ -408,8 +408,7 @@
       }
       else if (inst.instrument.pre && !inst.instrument.post) {
         instrumented = function() {
-          // IDEA cache this
-          var methods = overrideChain(this, instrumented);
+          var methods = overrideChain(this, instrumented); // can't be cached; might change after a first call
           var preconditions = gatherConditions(methods, "pre");
           validatePreconditions(this, preconditions, arguments, instrumented);
           var result = instrumented.impl.apply(this, arguments);
@@ -418,8 +417,7 @@
       }
       else if (inst.instrument.pre && inst.instrument.post) {
         instrumented = function() {
-          // IDEA cache this
-          var methods = overrideChain(this, instrumented);
+          var methods = overrideChain(this, instrumented); // can't be cached; might change after a first call
           var preconditions = gatherConditions(methods, "pre");
           validatePreconditions(this, preconditions, arguments, instrumented);
           try {
