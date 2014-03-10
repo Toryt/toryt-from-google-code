@@ -2,7 +2,7 @@ ContractTest = TestCase("contracts of functions");
 
 ContractTest.prototype.test_module_load = function() {
   assertObject(window._tc_);
-  assertFunction(window._tc_.buildf);
+  assertFunction(window._tc_.fn);
 };
 
 ContractTest.prototype.setUp = function() {
@@ -31,7 +31,7 @@ ContractTest.prototype.tearDown = function() {
 };
 
 ContractTest.prototype.test_contract_def_noPre_noPost = function() {
-  var result = _tc_.buildf(this.definition);
+  var result = _tc_.fn(this.definition);
   assertFunction(result);
   assertEquals(this.definition.impl, result);
   assertUndefined(result.pre);
@@ -42,7 +42,7 @@ ContractTest.prototype.test_contract_def_noPre_noPost = function() {
 };
 
 ContractTest.prototype.test_contract_def_pre_noPost = function() {
-  var result = _tc_.buildf(this.definition, "+pre");
+  var result = _tc_.fn(this.definition, "+pre");
   assertFunction(result);
   assertEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -55,7 +55,7 @@ ContractTest.prototype.test_contract_def_pre_noPost = function() {
 };
 
 ContractTest.prototype.test_contract_def_pre_post = function() {
-  var result = _tc_.buildf(this.definition, "+pre +post");
+  var result = _tc_.fn(this.definition, "+pre +post");
   assertFunction(result);
   assertEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -72,7 +72,7 @@ ContractTest.prototype.test_contract_def_pre_post = function() {
 };
 
 ContractTest.prototype.test_contract_exec_pre_noPost_ok = function() {
-  var result = _tc_.buildf(this.definition, "#pre");
+  var result = _tc_.fn(this.definition, "#pre");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -85,7 +85,7 @@ ContractTest.prototype.test_contract_exec_pre_noPost_ok = function() {
 };
 
 ContractTest.prototype.test_contract_exec_pre_noPost_nok = function() {
-  var result = _tc_.buildf(this.definition, "#pre");
+  var result = _tc_.fn(this.definition, "#pre");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -104,7 +104,7 @@ ContractTest.prototype.test_contract_exec_pre_noPost_nok = function() {
 };
 
 ContractTest.prototype.test_contract_exec_pre_post_ok = function() {
-  var result = _tc_.buildf(this.definition, "#pre #post");
+  var result = _tc_.fn(this.definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -124,7 +124,7 @@ ContractTest.prototype.test_contract_exec_pre_post_nok = function() {
   this.definition.impl = function(x, y) {
     return 5 / y;
   };
-  var result = _tc_.buildf(this.definition, "#pre #post");
+  var result = _tc_.fn(this.definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -150,7 +150,7 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_unexpected1 = function() 
   this.definition.impl = function(x, y) {
     throw "UNEXPECTED ERROR";
   };
-  var result = _tc_.buildf(this.definition, "#pre #post");
+  var result = _tc_.fn(this.definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(this.definition.impl, result);
   assertNotUndefined(result.pre);
@@ -200,7 +200,7 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_unexpected2 = function() 
       }
     ]
   };
-  var result = _tc_.buildf(definition, "#pre #post");
+  var result = _tc_.fn(definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(definition.impl, result);
   assertNotUndefined(result.pre);
@@ -247,7 +247,7 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_ok = function() {
       }
     ]
   };
-  var result = _tc_.buildf(definition, "#pre #post");
+  var result = _tc_.fn(definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(definition.impl, result);
   assertNotUndefined(result.pre);
@@ -291,7 +291,7 @@ ContractTest.prototype.test_contract_exec_pre_post_exc_nok = function() {
       }
     ]
   };
-  var result = _tc_.buildf(definition, "#pre #post");
+  var result = _tc_.fn(definition, "#pre #post");
   assertFunction(result);
   assertNotEquals(definition.impl, result);
   assertNotUndefined(result.pre);

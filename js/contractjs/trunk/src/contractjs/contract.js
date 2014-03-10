@@ -221,7 +221,7 @@
 
 
 
-    function buildf(/*Object*/ fd, /*String*/ instrument) {
+    function fn(/*Object*/ fd, /*String*/ instrument) {
       // summary:
       //    Transforms a FunctionDefinition into a function, with optionally
       //    attached preconditions, nominal postconditions and exceptional
@@ -542,7 +542,7 @@
       ExceptionViolation: ExceptionViolation,
       UnexpectedException: UnexpectedException,
 
-      buildf: buildf
+      fn: fn
     };
 
     return _tc_;

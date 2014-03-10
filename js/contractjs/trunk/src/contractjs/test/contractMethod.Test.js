@@ -4,7 +4,7 @@ var epoch = new Date(0);
 var epochYear = epoch.getFullYear();
 
 ContractTest.prototype.setUp = function() {
-  var Person = _tc_.buildf(
+  var Person = _tc_.fn(
     {
       pre: [
         function(name, dob) {return name && typeof name === "string";},
@@ -24,7 +24,7 @@ ContractTest.prototype.setUp = function() {
     "#pre #post"
   );
   Person.prototype.constructor = Person;
-  Person.prototype.ageAt = _tc_.buildf(
+  Person.prototype.ageAt = _tc_.fn(
     {
       pre: [
         function(d) {return d && d instanceof Date;}
@@ -52,7 +52,7 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
-  Person.prototype.age = _tc_.buildf(
+  Person.prototype.age = _tc_.fn(
     {
       pre: [],
       impl: function() {
@@ -66,7 +66,7 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
-  Person.prototype.toString = _tc_.buildf(
+  Person.prototype.toString = _tc_.fn(
     {
       pre: [],
       impl: function() {
@@ -79,7 +79,7 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
-  Person.prototype.wrongImpl = _tc_.buildf(
+  Person.prototype.wrongImpl = _tc_.fn(
     {
       pre: [],
       impl: function() {
@@ -92,7 +92,7 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
-  Person.prototype.fullName = _tc_.buildf(
+  Person.prototype.fullName = _tc_.fn(
     {
       pre: [],
       impl: function() {
@@ -105,7 +105,7 @@ ContractTest.prototype.setUp = function() {
     },
     "#pre #post"
   );
-  Person.prototype.getFirstName = _tc_.buildf(
+  Person.prototype.getFirstName = _tc_.fn(
     {
       pre: [],
       post: [
@@ -179,7 +179,7 @@ ContractTest.prototype.test_classObject_abstract = function() {
 
 ContractTest.prototype.test_classObject__inherit_ok = function() {
   var Person = this.Person;
-  var Person2 = _tc_.buildf(
+  var Person2 = _tc_.fn(
     {
       pre: [
         function(firstName, lastName, dob) {return firstName && typeof firstName === "string";},
@@ -202,7 +202,7 @@ ContractTest.prototype.test_classObject__inherit_ok = function() {
   );
   Person2.prototype = new Person("DEFAULT NAME", epoch);
   Person2.prototype.constructor = Person2;
-  Person2.prototype.fullName = _tc_.buildf(
+  Person2.prototype.fullName = _tc_.fn(
     {
       pre: [],
       impl: function() {
@@ -222,7 +222,7 @@ ContractTest.prototype.test_classObject__inherit_ok = function() {
 
 ContractTest.prototype.test_classObject__inherit_nok1 = function() {
   var Person = this.Person;
-  var Person2 = _tc_.buildf(
+  var Person2 = _tc_.fn(
     {
       pre: [
         function(firstName, lastName, dob) {return firstName && typeof firstName === "string";},
@@ -245,7 +245,7 @@ ContractTest.prototype.test_classObject__inherit_nok1 = function() {
   );
   Person2.prototype = new Person("DEFAULT NAME", epoch);
   Person2.prototype.constructor = Person2;
-  Person2.prototype.fullName = _tc_.buildf(
+  Person2.prototype.fullName = _tc_.fn(
     {
       pre: [],
       impl: function() {
@@ -271,7 +271,7 @@ ContractTest.prototype.test_classObject__inherit_nok1 = function() {
 
 ContractTest.prototype.test_classObject__inherit_nok2 = function() {
   var Person = this.Person;
-  var Person2 = _tc_.buildf(
+  var Person2 = _tc_.fn(
     {
       pre: [
         function(firstName, lastName, dob) {return firstName && typeof firstName === "string";},
@@ -294,7 +294,7 @@ ContractTest.prototype.test_classObject__inherit_nok2 = function() {
   );
   Person2.prototype = new Person("DEFAULT NAME", epoch);
   Person2.prototype.constructor = Person2;
-  Person2.prototype.ageAt = _tc_.buildf(
+  Person2.prototype.ageAt = _tc_.fn(
     {
       pre: [], // means no extra preconditions
       impl: function(/*Date*/ d) { // actually weakens preconditions: not allowed
@@ -319,7 +319,7 @@ ContractTest.prototype.test_classObject__inherit_nok2 = function() {
 
 ContractTest.prototype.test_classObject__inherit_abstract_ok = function() {
   var Person = this.Person;
-  var Person2 = _tc_.buildf(
+  var Person2 = _tc_.fn(
     {
       pre: [
         function(firstName, lastName, dob) {return firstName && typeof firstName === "string";},
@@ -342,7 +342,7 @@ ContractTest.prototype.test_classObject__inherit_abstract_ok = function() {
   );
   Person2.prototype = new Person("DEFAULT NAME", epoch);
   Person2.prototype.constructor = Person2;
-  Person2.prototype.getFirstName = _tc_.buildf(
+  Person2.prototype.getFirstName = _tc_.fn(
     {
       pre: [],
       impl: function() {return this.firstName;},
@@ -358,7 +358,7 @@ ContractTest.prototype.test_classObject__inherit_abstract_ok = function() {
 
 ContractTest.prototype.test_classObject__inherit_abstract_nok = function() {
   var Person = this.Person;
-  var Person2 = _tc_.buildf(
+  var Person2 = _tc_.fn(
     {
       pre: [
         function(firstName, lastName, dob) {return firstName && typeof firstName === "string";},
@@ -381,7 +381,7 @@ ContractTest.prototype.test_classObject__inherit_abstract_nok = function() {
   );
   Person2.prototype = new Person("DEFAULT NAME", epoch);
   Person2.prototype.constructor = Person2;
-  Person2.prototype.getFirstName = _tc_.buildf(
+  Person2.prototype.getFirstName = _tc_.fn(
     {
       pre: [],
       impl: function() {return 5;},
