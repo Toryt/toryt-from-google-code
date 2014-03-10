@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="2da0d57c-b3f2-4c57-be59-034a5f661faf" name="Default" comment="Code cleanup">
+    <list default="true" readonly="true" id="2da0d57c-b3f2-4c57-be59-034a5f661faf" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contractjs/contract.js" afterPath="$PROJECT_DIR$/src/contractjs/contract.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js" afterPath="$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/contractjs.iml" afterPath="$PROJECT_DIR$/.idea/contractjs.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="contractjs.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="atlassian-ide-plugin.xml" />
+    <ignored path="jsTestDriver.conf Coverage Results.lcov" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,10 +17,11 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/contractjs$jsTestDriver_conf.coverage" NAME="jsTestDriver.conf Coverage Results" MODIFIED="1364854782074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="JstdCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/contractjs$jsTestDriver_conf.coverage" NAME="jsTestDriver.conf Coverage Results" MODIFIED="1394398690938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="JstdCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="CoverageViewManager">
     <option name="myAutoScrollToSource" value="true" />
+    <option name="myAutoScrollFromSource" value="true" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -38,7 +38,7 @@
       <file leaf-file-name="contractMethod.Test.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractMethod.Test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="162" column="0" selection-start="4066" selection-end="4066" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6135">
+            <state line="162" column="0" selection-start="4066" selection-end="4066" vertical-scroll-proportion="0.0" vertical-offset="2430" max-vertical-offset="6135">
               <folding />
             </state>
           </provider>
@@ -47,10 +47,8 @@
       <file leaf-file-name="contract.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/contractjs/contract.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="510" column="26" selection-start="18863" selection-end="18863" vertical-scroll-proportion="-39.846153" vertical-offset="6614" max-vertical-offset="8655">
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
+            <state line="401" column="21" selection-start="14346" selection-end="14346" vertical-scroll-proportion="-20.115385" vertical-offset="5387" max-vertical-offset="8520">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -58,7 +56,7 @@
       <file leaf-file-name="a.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/contractjs/a.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="0" selection-start="37" selection-end="37" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="135">
+            <state line="3" column="0" selection-start="37" selection-end="37" vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="135">
               <folding />
             </state>
           </provider>
@@ -76,7 +74,7 @@
       <file leaf-file-name="contractFunction.Test.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="11" selection-start="511" selection-end="511" vertical-scroll-proportion="0.37709498" vertical-offset="0" max-vertical-offset="4800">
+            <state line="55" column="0" selection-start="1604" selection-end="1604" vertical-scroll-proportion="0.34776536" vertical-offset="576" max-vertical-offset="4800">
               <folding />
             </state>
           </provider>
@@ -85,7 +83,7 @@
       <file leaf-file-name="jsTestDriver.conf" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/jsTestDriver.conf">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="0" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
+            <state line="7" column="0" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="195">
               <folding />
             </state>
           </provider>
@@ -94,7 +92,7 @@
       <file leaf-file-name="README.md" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/requirejs/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="855">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="855">
               <folding />
             </state>
           </provider>
@@ -378,14 +376,6 @@
       <ConfigurationWrapper RunnerId="JsTestDriverClientRunner" />
       <method />
     </configuration>
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
-      <method />
-    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -396,8 +386,12 @@
       <option name="showConsoleOnStdOut" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
-      <envs />
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
       <method />
     </configuration>
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
@@ -405,6 +399,10 @@
       <setting name="settingsFile" value="" />
       <setting name="serverType" value="INTERNAL" />
       <setting name="preferredDebugBrowser" value="CHROME" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
@@ -477,6 +475,11 @@
       <created>1361136222886</created>
       <updated>1361136222886</updated>
     </task>
+    <task id="LOCAL-00001" summary="Code cleanup">
+      <created>1394398552110</created>
+      <updated>1394398552110</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -484,24 +487,24 @@
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32912534" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30943397" sideWeight="0.6171171" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32986766" sideWeight="0.3638344" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30928764" sideWeight="0.6216553" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.3638344" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924527" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13005601" sideWeight="0.6575472" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3417493" sideWeight="0.99501663" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="JsTestDriver Server" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3417493" sideWeight="0.375" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="JsTestDriver Server" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30928764" sideWeight="0.37772247" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924527" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40049753" sideWeight="0.6575472" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Coverage" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40012446" sideWeight="0.6575472" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.49964914" order="5" side_tool="false" content_ui="tabs" />
@@ -534,7 +537,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="80" />
+      <option name="time" value="84" />
     </breakpoint-manager>
   </component>
   <component name="atlassian-ide-plugin-workspace">
@@ -573,6 +576,58 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractMethod.Test.js">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="162" column="0" selection-start="4066" selection-end="4066" vertical-scroll-proportion="0.0" vertical-offset="2430" max-vertical-offset="6135">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/contractjs/contract.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="174" column="27" selection-start="5399" selection-end="5399" vertical-scroll-proportion="0.0" vertical-offset="5929" max-vertical-offset="8550">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/contractjs/a.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="0" selection-start="37" selection-end="37" vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="135">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/contractjs/test/a.Test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="6" selection-start="257" selection-end="257" vertical-scroll-proportion="0.0" vertical-offset="288" max-vertical-offset="990">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="68" selection-start="865" selection-end="865" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="4800">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jsTestDriver.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="0" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="195">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/requirejs/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="855">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractMethod.Test.js">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="162" column="0" selection-start="4066" selection-end="4066" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6135">
           <folding />
         </state>
@@ -581,9 +636,7 @@
     <entry file="file://$PROJECT_DIR$/src/contractjs/contract.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="0" selection-start="671" selection-end="671" vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="7905">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -672,22 +725,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/contractjs/contract.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="510" column="26" selection-start="18863" selection-end="18863" vertical-scroll-proportion="-39.846153" vertical-offset="6614" max-vertical-offset="8655">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/contractjs/a.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="37" selection-end="37" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="135">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/contractjs/test/a.Test.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="6" selection-start="257" selection-end="257" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
@@ -702,9 +739,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/contractjs/a.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="0" selection-start="37" selection-end="37" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="135">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/contractjs/contract.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="401" column="21" selection-start="14346" selection-end="14346" vertical-scroll-proportion="-20.115385" vertical-offset="5387" max-vertical-offset="8520">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="11" selection-start="511" selection-end="511" vertical-scroll-proportion="0.37709498" vertical-offset="0" max-vertical-offset="4800">
+        <state line="55" column="0" selection-start="1604" selection-end="1604" vertical-scroll-proportion="0.34776536" vertical-offset="576" max-vertical-offset="4800">
           <folding />
         </state>
       </provider>
