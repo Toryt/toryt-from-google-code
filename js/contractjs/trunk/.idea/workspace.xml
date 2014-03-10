@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="2da0d57c-b3f2-4c57-be59-034a5f661faf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contractjs/contract.js" afterPath="$PROJECT_DIR$/src/contractjs/contract.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="contractjs.iws" />
@@ -74,7 +73,7 @@
       <file leaf-file-name="contractFunction.Test.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="0" selection-start="1604" selection-end="1604" vertical-scroll-proportion="0.34776536" vertical-offset="576" max-vertical-offset="4800">
+            <state line="55" column="0" selection-start="1604" selection-end="1604" vertical-scroll-proportion="1.1522347" vertical-offset="0" max-vertical-offset="4800">
               <folding />
             </state>
           </provider>
@@ -479,7 +478,11 @@
       <created>1394398552110</created>
       <updated>1394398552110</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="removed bad IDEA">
+      <created>1394449213103</created>
+      <updated>1394449213103</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -523,7 +526,8 @@
       <TodoPanelSettings />
     </option>
     <MESSAGE value="Code cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Code cleanup" />
+    <MESSAGE value="removed bad IDEA" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed bad IDEA" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -755,7 +759,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/contractjs/test/contractFunction.Test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="0" selection-start="1604" selection-end="1604" vertical-scroll-proportion="0.34776536" vertical-offset="576" max-vertical-offset="4800">
+        <state line="55" column="0" selection-start="1604" selection-end="1604" vertical-scroll-proportion="1.1522347" vertical-offset="0" max-vertical-offset="4800">
           <folding />
         </state>
       </provider>
